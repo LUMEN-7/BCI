@@ -1,0 +1,101 @@
+@import '../../../styles/global.css';
+.register-page {
+	min-height: 100vh;
+	background-color: var(--color-primary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 40px;
+}
+
+.register-container {
+	width: 100%;
+	max-width: 420px;
+}
+
+.register-card h1 {
+	margin: 0;
+	color: var(--color-light-neutral);
+	font-family: var(--font-title);
+	font-size: 46px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.subtitle {
+	margin-top: 4px;
+	color: var(--color-light-neutral);
+	opacity: 0.8;
+}
+
+.photo-wrapper {
+	width: 106px;
+	height: 106px;
+	border-radius: 999px;
+	margin: 34px auto 0;
+	position: relative;
+	display: block;
+	cursor: pointer;
+}
+
+.profile-photo {
+	width: 106px;
+	height: 106px;
+	border-radius: 999px;
+	object-fit: cover;
+	border: 2px solid var(--color-secondary);
+}
+
+.photo-placeholder {
+	width: 106px;
+	height: 106px;
+	border-radius: 999px;
+	background-color: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.24);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-light-neutral);
+}
+
+.camera-button {
+	position: absolute;
+	right: 0;
+	bottom: 2px;
+	width: 34px;
+	height: 34px;
+	border-radius: 999px;
+	background-color: var(--color-secondary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-light-neutral);
+	border: 3px solid var(--color-primary);
+}
+
+.photo-text {
+	margin-top: 12px;
+	text-align: center;
+	color: var(--color-light-neutral);
+	font-family: var(--font-body-bold);
+	font-size: 11px;
+	text-transform: uppercase;
+	opacity: 0.75;
+}
+
+.form-fields {
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+@media (min-width: 900px) {
+	.register-container {
+		max-width: 460px;
+	}
+
+	.register-card h1 {
+		font-size: 56px;
+	}
+}

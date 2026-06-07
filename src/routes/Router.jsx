@@ -1,0 +1,25 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Login from '../pages/auth/Login/index';
+import Register from '../pages/auth/Register/index'
+import Home from '../pages/Home/index'
+import Search from '../pages/Search/index'
+import Compare from '../pages/Compare/index'
+import Information from '../pages/Information/index';
+import Detail from '../pages/Detail/index'
+
+export default function Router() {
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<Login />} />
+				<Route path="/register" element={<Register />} />
+				<Route path="/home" element={<Home />} />
+				<Route path="/search" element={<Search />} />
+				<Route path="/compare" element={<Compare />} />
+				<Route path="/information/:id" element={<Information />} />
+				<Route path="/compare/detail" element={<Detail />} />
+			</Routes>
+		</BrowserRouter>
+	);
+}

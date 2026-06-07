@@ -1,0 +1,16 @@
+:root {
+  --color-primary: #00142e;
+  --color-secondary: #0562d2;
+
+  --color-dark-neutral: #000000;
+  --color-light-neutral: #ffffff;
+
+  --color-dark-grey: #333333;
+  --color-light-grey: #666666;
+
+
+  --font-title: 'Anton', sans-serif;
+
+  --font-body: 'Titillium Web', sans-serif;
+  --font-body-bold: 'Titillium Web', sans-serif;
+}

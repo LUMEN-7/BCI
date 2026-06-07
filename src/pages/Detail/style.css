@@ -1,0 +1,244 @@
+@import '../../styles/global.css';
+
+.compare-detail-page {
+	min-height: 100vh;
+	background-color: var(--color-light-neutral);
+	padding: 48px;
+}
+
+.compare-detail-container {
+	max-width: 1180px;
+	margin: 0 auto;
+}
+
+.compare-detail-topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 28px;
+}
+
+.back-button,
+.favorite-button {
+	border: none;
+	background-color: rgba(0, 0, 0, 0.06);
+	color: var(--color-primary);
+	border-radius: 999px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.back-button {
+	gap: 8px;
+	padding: 10px 18px;
+	font-family: var(--font-body-bold);
+	text-transform: uppercase;
+}
+
+.favorite-button {
+	width: 44px;
+	height: 44px;
+	font-size: 22px;
+}
+
+.compare-detail-container h1 {
+	margin: 0;
+	font-family: var(--font-title);
+	font-size: 54px;
+	font-weight: 500;
+	color: var(--color-primary);
+	text-transform: uppercase;
+	line-height: 1;
+}
+
+.compare-subtitle {
+	margin-top: 10px;
+	margin-bottom: 34px;
+	max-width: 640px;
+	font-family: var(--font-body);
+	color: var(--color-dark-grey);
+	opacity: 0.72;
+	line-height: 1.5;
+}
+
+.compare-hero {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: center;
+	gap: 28px;
+	margin-bottom: 34px;
+}
+
+.car-side {
+	min-height: 230px;
+	border-radius: 24px;
+	background-color: rgba(0, 20, 46, 0.04);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+}
+
+.car-side img {
+	width: 100%;
+	max-width: 360px;
+	height: 150px;
+	object-fit: contain;
+}
+
+.car-side h2 {
+	margin: 18px 0 0;
+	font-family: var(--font-body-bold);
+	color: var(--color-secondary);
+	text-transform: uppercase;
+	font-size: 18px;
+	text-align: center;
+}
+
+.vs-circle {
+	width: 58px;
+	height: 58px;
+	border-radius: 999px;
+	background-color: var(--color-secondary);
+	color: var(--color-light-neutral);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--font-body-bold);
+	font-size: 16px;
+}
+
+.summary-card {
+	background-color: var(--color-primary);
+	border-radius: 24px;
+	padding: 26px;
+	margin-bottom: 34px;
+}
+
+.summary-card span {
+	display: block;
+	font-family: var(--font-body-bold);
+	color: var(--color-light-neutral);
+	text-transform: uppercase;
+	font-size: 16px;
+	margin-bottom: 12px;
+}
+
+.summary-card p {
+	margin: 0;
+	font-family: var(--font-body);
+	color: var(--color-light-neutral);
+	opacity: 0.82;
+	line-height: 1.6;
+}
+
+.comparison-section {
+	margin-bottom: 18px;
+}
+
+.section-header {
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+	background: transparent;
+	padding: 0 0 16px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+	color: var(--color-primary);
+}
+
+.section-header span {
+	font-family: var(--font-body-bold);
+	font-size: 24px;
+	text-transform: uppercase;
+}
+
+.section-header svg {
+	font-size: 22px;
+}
+
+.dual-cards {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+	margin-top: 18px;
+}
+
+.info-card {
+	background-color: #ececec;
+	border-radius: 18px;
+	padding: 20px;
+	border-left: 4px solid #ececec;
+	min-height: 150px;
+}
+
+.info-card-advantage {
+	background-color: rgba(5, 98, 210, 0.08);
+	border-left-color: var(--color-secondary);
+}
+
+.info-card-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 14px;
+}
+
+.info-card h3 {
+	margin: 0;
+	font-family: var(--font-body-bold);
+	color: var(--color-primary);
+	text-transform: uppercase;
+	font-size: 14px;
+}
+
+.winner-badge {
+	background-color: var(--color-secondary);
+	color: var(--color-light-neutral);
+	border-radius: 999px;
+	padding: 4px 10px;
+	font-family: var(--font-body-bold);
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.info-card ul {
+	margin: 0;
+	padding-left: 18px;
+}
+
+.info-card li {
+	font-family: var(--font-body);
+	color: var(--color-primary);
+	opacity: 0.75;
+	line-height: 1.7;
+	font-size: 14px;
+}
+
+@media (max-width: 850px) {
+	.compare-detail-page {
+		padding: 28px;
+	}
+
+	.compare-hero {
+		grid-template-columns: 1fr;
+	}
+
+	.vs-circle {
+		margin: 0 auto;
+	}
+
+	.dual-cards {
+		grid-template-columns: 1fr;
+	}
+
+	.compare-detail-container h1 {
+		font-size: 42px;
+	}
+}
