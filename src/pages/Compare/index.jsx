@@ -81,17 +81,30 @@ export default function Compare() {
 	const canCompare = firstCar && secondCar;
 
 	function selectCar(car) {
-		if (activeSlot === 'first') {
+		if (firstCar?.id === car.id) {
+			setFirstCar(null);
+			return;
+		}
+		
+		if (secondCar?.id === car.id) {
+			setSecondCar(null);
+			return;
+		}
+		if (!firstCar) {
 			setFirstCar(car);
-
-			if (!secondCar) {
-				setActiveSlot('second');
-			}
-
+			return;
+		}
+		if (!secondCar) {
+			setSecondCar(car);
 			return;
 		}
 
-		setSecondCar(car);
+
+		if (activeSlot === 'first') {
+			setFirstCar(car);
+		} else {
+			setSecondCar(car);
+		}
 	}
 
 	function removeCar(slot) {
@@ -148,7 +161,7 @@ export default function Compare() {
 						onRemove={() => removeCar('first')}
 					/>
 
-					<div className="vs-circle">X</div>
+					<div className="vs-circle" onClick={handleCompare}>X</div>
 
 					<SelectedSlot
 						label="Modelo 2"
