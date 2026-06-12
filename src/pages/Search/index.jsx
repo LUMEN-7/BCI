@@ -80,7 +80,7 @@ export default function Search() {
 					<button
 						type="button"
 						className="back-button"
-						onClick={() => navigate('/home')}
+						onClick={() => navigate(-1)}
 					>
 						<IoArrowBackOutline />
 						<span>Voltar</span>

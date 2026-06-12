@@ -201,7 +201,7 @@ export default function Information() {
 				<div className="information-container">
 					<button
 						className="back-button"
-						onClick={() => navigate('/search')}
+						onClick={() => navigate(-1)}
 					>
 						<IoArrowBack />
 						Voltar
@@ -231,7 +231,7 @@ export default function Information() {
 				<header className="information-topbar">
 					<button
 						className="back-button"
-						onClick={() => navigate('/search')}
+						onClick={() => navigate(-1)}
 					>
 						<IoArrowBack />
 						Voltar

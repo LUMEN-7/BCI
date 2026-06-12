@@ -204,7 +204,7 @@ return (
 				<button
 					type="button"
 					className="back-button"
-					onClick={() => navigate('/compare')}
+					onClick={() => navigate(-1)}
 				>
 					<IoArrowBack />
 					Voltar
