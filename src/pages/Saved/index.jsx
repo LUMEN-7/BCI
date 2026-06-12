@@ -108,7 +108,11 @@ export default function Saved() {
 									openCard === car.id ? 'saved-card-open' : ''
 								}`}
 							>
-								<div className="saved-image">
+								<div
+									className="saved-image"
+									onClick={() => navigate(`/information/${car.id}`)}
+									style={{ cursor: 'pointer' }}
+								>
 									<img src={car.image} alt={car.name} />
 
 									<button
