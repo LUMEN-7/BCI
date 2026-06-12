@@ -16,7 +16,7 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 40px;
+	padding: 24px;
 }
 
 .login-container {
@@ -55,6 +55,8 @@ body {
 	opacity: 0.8;
 }
 
+/* FORM */
+
 .form-fields {
 	margin-top: 40px;
 	display: flex;
@@ -85,7 +87,6 @@ body {
 	position: absolute;
 	left: 14px;
 	top: 17px;
-	background-color: var(--color-primary);
 	padding: 0 5px;
 	color: rgba(255, 255, 255, 0.7);
 	font-size: 14px;
@@ -99,7 +100,7 @@ body {
 .input-focused .label {
 	top: -9px;
 	font-size: 11px;
-	color: var(--color-secondary);
+	color: var(--color-light-neutral);
 }
 
 .label-error {
@@ -155,6 +156,8 @@ body {
 	text-align: center;
 }
 
+/* BUTTONS */
+
 .primary-button {
 	width: 100%;
 	margin-top: 40px;
@@ -168,11 +171,12 @@ body {
 	font-weight: 700;
 	text-transform: uppercase;
 	cursor: pointer;
-	transition: opacity 0.2s ease;
+	transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .primary-button:hover {
 	opacity: 0.9;
+	transform: translateY(-2px);
 }
 
 .link-button {
@@ -194,12 +198,137 @@ body {
 	opacity: 1;
 }
 
-@media (min-width: 900px) {
+/* DESKTOP */
+
+@media (min-width: 1000px) {
+	.login-page {
+		padding: 48px;
+		background:
+			linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.45)),
+			var(--color-primary);
+		background-image: url('https://wallpapercave.com/wp/wp12639722.jpg');
+		background-size: cover;
+		background-repeat: no-repeat;
+
+	}
+
 	.login-container {
-		max-width: 460px;
+		max-width: 80vw;
+		min-height: 80vh;
+		display: grid;
+		grid-template-columns: 30vw 1fr;
+		border-radius: 28px;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.055);
+		box-shadow: 0 30px 90px rgba(0, 0, 0, 0.35);
+	}
+
+	.logo {
+		display: none;
+	}
+
+	.login-card {
+		background: rgba(10, 10, 10, 0.897);
+		padding: 56px 44px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.login-card::before {
+		content: '';
+		width: 90px;
+		height: 42px;
+		background-image: url('https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/logo.png');
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: left center;
+		margin-bottom: 24px;
+		margin-left: -10px 
 	}
 
 	.login-card h1 {
-		font-size: 56px;
+		font-size: 30px;
+		line-height: 1;
+	}
+
+	.subtitle {
+		font-size: 14px;
+		max-width: 300px;
+		opacity: 0.7;
+	}
+
+
+	.login-container::after {
+		content: '';
+		background:
+			linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent);
+		background-size: cover;
+		background-position: center;
+	}
+
+	.primary-button {
+		width: 100%;
+		margin-top: 12px;
+		padding: 6px;
+		font-size: 16px;
+	}
+
+	.link-button{
+		font-size: 14px;
+	}
+
+	.link-button:hover {
+		color: var(--color-secondary);
+	}
+
+	.input {
+		padding: 12px;
+		border-radius: 8px;
+		background: rgba(10, 10, 10, 0.824);
+	}
+
+	.login-card .input-wrapper .label,
+	.login-card .input-wrapper.input-focused .label {
+		top: -20px;
+		left: 2px;
+		padding: 0;
+		background: transparent;
+		font-size: 12px;
+		color: rgba(255, 255, 255, 0.68);
+		transform: none;
+	}
+	.input-container {
+		margin-top: 10px;
+		border-color: transparent;
+	}
+
+	.input-error {
+		height: 20px;
+		margin: 0 0 0 4px;
+		color: #ff4d6d;
+		font-size: 10px;
+		font-family: var(--font-body-bold);
+		font-weight: 700;
+	}
+}
+
+/* MOBILE */
+
+@media (max-width: 999px) {
+	.login-page {
+		padding: 40px 24px;
+	}
+
+	.login-container {
+		max-width: 420px;
+	}
+
+	.logo {
+		margin-bottom: 72px;
+	}
+
+	.logo img {
+		width: 180px;
 	}
 }

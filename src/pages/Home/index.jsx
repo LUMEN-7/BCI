@@ -6,6 +6,8 @@ import {
 	IoPersonCircleOutline,
 	IoBookmarkOutline,
 	IoDocumentTextOutline,
+	IoSearchOutline,
+	IoGitCompareOutline
 } from 'react-icons/io5';
 
 import './style.css';
@@ -113,20 +115,22 @@ export default function Home() {
 				</p>
 
                 <div className="hero-actions">
-                    <button
-                        className="hero-button primary"
-                        onClick={() => navigate('/search')}
-                    >
-                        Pesquisar Veículos
-                    </button>
+					<button
+						className="hero-button primary"
+						onClick={() => navigate('/search')}
+					>
+						<IoSearchOutline />
+						<span>Pesquisar</span>
+					</button>
 
-                    <button
-                        className="hero-button secondary"
-                        onClick={() => navigate('/compare')}
-                    >
-                        Comparar Modelos
-                    </button>
-                </div>
+					<button
+						className="hero-button secondary"
+						onClick={() => navigate('/compare')}
+					>
+						<IoGitCompareOutline />
+						<span>Comparar</span>
+					</button>
+				</div>
 			</header>
 
 			<section className="hero">
@@ -141,9 +145,9 @@ export default function Home() {
 				/>
 			</section>
 
-			<div className="fab-container">
-				{open &&
-					actions.map((action) => (
+			<div className={`fab-container ${open ? 'is-open' : ''}`}>
+				<div className="action-list">
+					{actions.map((action) => (
 						<button
 							key={action.label}
 							className="action-button"
@@ -156,6 +160,7 @@ export default function Home() {
 							<span>{action.label}</span>
 						</button>
 					))}
+				</div>
 
 				<button
 					className="fab"

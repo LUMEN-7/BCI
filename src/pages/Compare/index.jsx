@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
 	IoSearchOutline,
 	IoCloseCircle,
@@ -7,6 +7,7 @@ import {
 	IoAdd,
 	IoCheckmark,
 	IoCloseOutline,
+	IoArrowBackOutline 
 } from 'react-icons/io5';
 
 import './style.css';
@@ -51,11 +52,16 @@ const mockCars = [
 ];
 
 export default function Compare() {
-	const navigate = useNavigate();
+		const navigate = useNavigate();
+	const location = useLocation();
 
-	const [firstCar, setFirstCar] = useState(null);
+	const initialFirstCar = location.state?.firstCar || null;
+
+	const [firstCar, setFirstCar] = useState(initialFirstCar);
 	const [secondCar, setSecondCar] = useState(null);
-	const [activeSlot, setActiveSlot] = useState('first');
+	const [activeSlot, setActiveSlot] = useState(
+		initialFirstCar ? 'second' : 'first'
+	);
 	const [search, setSearch] = useState('');
 
 	const results = useMemo(() => {
@@ -118,11 +124,6 @@ export default function Compare() {
 				<header className="compare-header">
 					<div>
 						<h1>Comparar</h1>
-
-						<p>
-							Pesquise dois modelos para comparar desempenho,
-							consumo e diferenciais.
-						</p>
 					</div>
 
 					<button
@@ -130,10 +131,14 @@ export default function Compare() {
 						className="back-button"
 						onClick={() => navigate('/home')}
 					>
-						Voltar
+						<IoArrowBackOutline />
+						<span>Voltar</span>
 					</button>
 				</header>
-
+				<p className='description'>
+					Pesquise dois modelos para comparar desempenho,
+					consumo e diferenciais.
+				</p>
 				<section className="selected-area">
 					<SelectedSlot
 						label="Modelo 1"

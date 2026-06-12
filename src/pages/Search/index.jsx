@@ -5,6 +5,7 @@ import {
 	IoCloseCircle,
 	IoStar,
 	IoStarOutline,
+	IoArrowBackOutline 
 } from 'react-icons/io5';
 
 import './style.css';
@@ -71,15 +72,20 @@ export default function Search() {
 	return (
 		<main className="search-page">
 			<div className="search-container">
-				<h1>Encontre o modelo</h1>
-				<button
+				<header className="search-header">
+					<div>
+						<h1>Encontre o modelo</h1>
+					</div>
+
+					<button
 						type="button"
 						className="back-button"
 						onClick={() => navigate('/home')}
 					>
-						Voltar
+						<IoArrowBackOutline />
+						<span>Voltar</span>
 					</button>
-
+				</header>
 				<p>
 					Pesquise pela marca ou modelo para comparar
 					diferenciais com mais facilidade.
