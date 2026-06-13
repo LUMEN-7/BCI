@@ -10,7 +10,8 @@ import {
 	IoFlashOutline,
 	IoCarSportOutline,
 	IoWaterOutline,
-	IoCheckmarkCircleOutline
+	IoCheckmarkCircleOutline,
+	IoHardwareChipOutline
 } from 'react-icons/io5';
 
 import './style.css';
@@ -329,6 +330,7 @@ export default function Information() {
 							]}
 							open={openSection === 'consumption'}
 							onClick={() => toggleSection('consumption')}
+							iaGen
 						/>
 
 						<Accordion
@@ -469,7 +471,7 @@ function TechnicalGroup({ title, items }) {
 	);
 }
 
-function Accordion({ title, items, open, onClick, verified }) {
+function Accordion({ title, items, open, onClick, verified, iaGen }) {
 	return (
 		<div className="accordion">
 			<button onClick={onClick}>
@@ -483,6 +485,15 @@ function Accordion({ title, items, open, onClick, verified }) {
 						/>
 						</span>
 					)}
+					{
+						iaGen && (
+							<span className="iaGen-badge">
+								<IoHardwareChipOutline
+								className="iaGen-icon"
+								/>
+								</span>
+						)
+					}
 				</span>
 
 				{open ? <IoChevronUp /> : <IoChevronDown />}

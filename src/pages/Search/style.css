@@ -287,6 +287,44 @@
 		opacity: 0.92;
 		transform: translateY(-2px);
 	}
+	.search-filters {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin-top: 28px;
+	}
+
+	.search-filters .search-box {
+		flex: 1;
+		margin-top: 0;
+	}
+
+	.filter-select {
+		height: 56px;
+		padding: 0 18px;
+
+		border: none;
+		border-radius: 999px;
+
+		background: rgba(255, 255, 255, 0.9);
+
+		font-family: var(--font-body-bold);
+		font-size: 14px;
+
+		color: var(--color-primary);
+
+		cursor: pointer;
+		outline: none;
+
+		box-shadow: 0 18px 50px rgba(0, 20, 46, 0.12);
+
+		transition: all 0.2s ease;
+	}
+
+	.filter-select:hover,
+	.filter-select:focus {
+		box-shadow: 0 22px 60px rgba(0, 20, 46, 0.18);
+	}
 }
 
 /* MOBILE */
