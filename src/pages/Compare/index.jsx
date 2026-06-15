@@ -7,7 +7,8 @@ import {
 	IoAdd,
 	IoCheckmark,
 	IoCloseOutline,
-	IoArrowBackOutline 
+	IoArrowBackOutline,
+	IoHomeOutline 
 } from 'react-icons/io5';
 
 import './style.css';
@@ -135,18 +136,31 @@ export default function Compare() {
 		<main className="compare-page">
 			<section className="compare-container">
 				<header className="compare-header">
-					<div>
-						<h1>Comparar</h1>
+					<div className="header-actions">
+						<button
+							type="button"
+							className="back-button"
+							onClick={() => navigate(-1)}
+						>
+							<IoArrowBackOutline />
+							<span>Voltar</span>
+						</button>
+
+						<button
+							type="button"
+							className="home-button"
+							onClick={() => navigate('/home')}
+						>
+							<IoHomeOutline />
+						</button>
 					</div>
 
-					<button
-						type="button"
-						className="back-button"
-						onClick={() => navigate(-1)}
-					>
-						<IoArrowBackOutline />
-						<span>Voltar</span>
-					</button>
+					<h1>Comparar</h1>
+
+					<p className="description">
+						Pesquise dois modelos para comparar desempenho,
+						consumo e diferenciais.
+					</p>
 				</header>
 				<p className='description'>
 					Pesquise dois modelos para comparar desempenho,

@@ -18,6 +18,38 @@
 	margin-bottom: 28px;
 }
 
+.topbar-actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.home-button,
+.favorite-button {
+	width: 44px;
+	height: 44px;
+
+	border: none;
+	border-radius: 50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	cursor: pointer;
+	font-size: 22px;
+
+	background: white;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+	transition: transform 0.2s ease;
+}
+
+.home-button:hover,
+.favorite-button:hover {
+	transform: translateY(-2px);
+}
+
 .back-button,
 .favorite-button {
 	border: none;

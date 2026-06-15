@@ -13,9 +13,15 @@
 
 .search-header {
 	display: flex;
-	align-items: flex-start;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.header-actions {
+	width: 100%;
+	display: flex;
 	justify-content: space-between;
-	gap: 24px;
+	align-items: center;
 }
 
 .search-header p {
@@ -168,8 +174,29 @@
 
 	opacity: 0.7;
 	transition: all 0.2s ease;
+}
 
-	transform: translateX(-20px);
+.home-button {
+	width: 44px;
+	height: 44px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	border: none;
+	border-radius: 50%;
+
+	background: white;
+	color: var(--color-primary);
+
+	cursor: pointer;
+
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.home-button svg {
+	font-size: 22px;
 }
 
 .back-button:hover {

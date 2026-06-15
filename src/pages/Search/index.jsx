@@ -5,7 +5,8 @@ import {
 	IoCloseCircle,
 	IoStar,
 	IoStarOutline,
-	IoArrowBackOutline 
+	IoArrowBackOutline,
+	IoHomeOutline 
 } from 'react-icons/io5';
 
 import './style.css';
@@ -93,23 +94,32 @@ export default function Search() {
 		<main className="search-page">
 			<div className="search-container">
 				<header className="search-header">
-					<div>
-						<h1>Encontre o modelo</h1>
+					<div className="header-actions">
+						<button
+							type="button"
+							className="back-button"
+							onClick={() => navigate(-1)}
+						>
+							<IoArrowBackOutline />
+							<span>Voltar</span>
+						</button>
+
+						<button
+							type="button"
+							className="home-button"
+							onClick={() => navigate('/home')}
+						>
+							<IoHomeOutline />
+						</button>
 					</div>
 
-					<button
-						type="button"
-						className="back-button"
-						onClick={() => navigate(-1)}
-					>
-						<IoArrowBackOutline />
-						<span>Voltar</span>
-					</button>
+					<h1>Encontre o modelo</h1>
+
+					<p>
+						Pesquise pela marca ou modelo para comparar
+						diferenciais com mais facilidade.
+					</p>
 				</header>
-				<p>
-					Pesquise pela marca ou modelo para comparar
-					diferenciais com mais facilidade.
-				</p>
 
 				<div className="search-filters">
 					<div className="search-box">

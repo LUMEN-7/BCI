@@ -11,7 +11,8 @@ import {
 	IoCarSportOutline,
 	IoWaterOutline,
 	IoCheckmarkCircleOutline,
-	IoHardwareChipOutline
+	IoHardwareChipOutline,
+	IoHomeOutline
 } from 'react-icons/io5';
 
 import './style.css';
@@ -238,12 +239,21 @@ export default function Information() {
 						Voltar
 					</button>
 
-					<button
-						className="favorite-button"
-						onClick={() => setFavorite(!favorite)}
-					>
-						{favorite ? <IoStar /> : <IoStarOutline />}
-					</button>
+					<div className="topbar-actions">
+						<button
+							className="home-button"
+							onClick={() => navigate('/home')}
+						>
+							<IoHomeOutline />
+						</button>
+
+						<button
+							className="favorite-button"
+							onClick={() => setFavorite(!favorite)}
+						>
+							{favorite ? <IoStar /> : <IoStarOutline />}
+						</button>
+					</div>
 				</header>
 
 				<section className="information-hero">
