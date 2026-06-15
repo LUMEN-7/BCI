@@ -306,6 +306,7 @@ export default function Information() {
 							]}
 							open={openSection === 'base'}
 							onClick={() => toggleSection('base')}
+							confidence={97}
 						/>
 
 						<Accordion
@@ -320,6 +321,7 @@ export default function Information() {
 							]}
 							open={openSection === 'specs'}
 							onClick={() => toggleSection('specs')}
+							confidence={80}
 						/>
 
 						<Accordion
@@ -343,6 +345,7 @@ export default function Information() {
 							]}
 							open={openSection === 'dimensions'}
 							onClick={() => toggleSection('dimensions')}
+							confidence={87}
 						/>
 
 						<Accordion
@@ -368,6 +371,7 @@ export default function Information() {
 							]}
 							open={openSection === 'extras'}
 							onClick={() => toggleSection('extras')}
+							confidence={81}
 						/>
 					</div>
 
@@ -389,6 +393,7 @@ export default function Information() {
 							items={car.sections.security}
 							open={openSection === 'security'}
 							onClick={() => toggleSection('security')}
+							confidence={95}
 						/>
 
 						<Accordion
@@ -404,6 +409,7 @@ export default function Information() {
 							items={car.sections.comfort}
 							open={openSection === 'comfort'}
 							onClick={() => toggleSection('comfort')}
+							confidence={67}
 						/>
 					</div>
 				</section>
@@ -471,7 +477,7 @@ function TechnicalGroup({ title, items }) {
 	);
 }
 
-function Accordion({ title, items, open, onClick, verified, iaGen }) {
+function Accordion({ title, items, open, onClick, verified, iaGen, confidence }) {
 	return (
 		<div className="accordion">
 			<button onClick={onClick}>
@@ -494,6 +500,19 @@ function Accordion({ title, items, open, onClick, verified, iaGen }) {
 								</span>
 						)
 					}
+					{confidence !== undefined && !verified && (
+					<span
+					className={`confidence-badge ${
+						confidence >= 80
+							? 'high'
+							: confidence >= 60
+							? 'medium'
+							: 'low'
+					}`}
+				>
+					{confidence}%
+				</span>
+				)}
 				</span>
 
 				{open ? <IoChevronUp /> : <IoChevronDown />}

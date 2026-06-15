@@ -47,7 +47,7 @@ export default function Login() {
 		}
 
 		try {
-			navigate('/search');
+			navigate('/home');
 		} catch (error) {
 			setAuthError(error.message || 'Não foi possível entrar.');
 		}
