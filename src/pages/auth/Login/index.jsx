@@ -47,6 +47,15 @@ export default function Login() {
 		}
 
 		try {
+			const currentUser = JSON.parse(
+				localStorage.getItem('currentUser')
+			);
+
+			if (!currentUser) {
+				setAuthError('Nenhum usuário cadastrado.');
+				return;
+			}
+
 			navigate('/home');
 		} catch (error) {
 			setAuthError(error.message || 'Não foi possível entrar.');
