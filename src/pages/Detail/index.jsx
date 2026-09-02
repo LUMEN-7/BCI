@@ -6,7 +6,8 @@ import {
 	IoStarOutline,
 	IoChevronDown,
 	IoChevronUp,
-	IoCheckmarkCircleOutline
+	IoCheckmarkCircleOutline,
+	IoHomeOutline
 } from 'react-icons/io5';
 
 import './style.css';
@@ -204,19 +205,29 @@ return (
 				<button
 					type="button"
 					className="back-button"
-					onClick={() => navigate('/compare')}
+					onClick={() => navigate(-1)}
 				>
 					<IoArrowBack />
 					Voltar
 				</button>
 
-				<button
-					type="button"
-					className="favorite-button"
-					onClick={() => setFavorite(!favorite)}
-				>
-					{favorite ? <IoStar /> : <IoStarOutline />}
-				</button>
+				<div className="topbar-actions">
+					<button
+						type="button"
+						className="home-button"
+						onClick={() => navigate('/home')}
+					>
+						<IoHomeOutline />
+					</button>
+
+					<button
+						type="button"
+						className="favorite-button"
+						onClick={() => setFavorite(!favorite)}
+					>
+						{favorite ? <IoStar /> : <IoStarOutline />}
+					</button>
+				</div>
 			</header>
 
 			<h1>Comparação detalhada</h1>

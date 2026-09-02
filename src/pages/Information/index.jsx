@@ -10,7 +10,9 @@ import {
 	IoFlashOutline,
 	IoCarSportOutline,
 	IoWaterOutline,
-	IoCheckmarkCircleOutline
+	IoCheckmarkCircleOutline,
+	IoHardwareChipOutline,
+	IoHomeOutline
 } from 'react-icons/io5';
 
 import './style.css';
@@ -201,7 +203,7 @@ export default function Information() {
 				<div className="information-container">
 					<button
 						className="back-button"
-						onClick={() => navigate('/search')}
+						onClick={() => navigate(-1)}
 					>
 						<IoArrowBack />
 						Voltar
@@ -231,18 +233,27 @@ export default function Information() {
 				<header className="information-topbar">
 					<button
 						className="back-button"
-						onClick={() => navigate('/search')}
+						onClick={() => navigate(-1)}
 					>
 						<IoArrowBack />
 						Voltar
 					</button>
 
-					<button
-						className="favorite-button"
-						onClick={() => setFavorite(!favorite)}
-					>
-						{favorite ? <IoStar /> : <IoStarOutline />}
-					</button>
+					<div className="topbar-actions">
+						<button
+							className="home-button"
+							onClick={() => navigate('/home')}
+						>
+							<IoHomeOutline />
+						</button>
+
+						<button
+							className="favorite-button"
+							onClick={() => setFavorite(!favorite)}
+						>
+							{favorite ? <IoStar /> : <IoStarOutline />}
+						</button>
+					</div>
 				</header>
 
 				<section className="information-hero">
@@ -305,6 +316,7 @@ export default function Information() {
 							]}
 							open={openSection === 'base'}
 							onClick={() => toggleSection('base')}
+							confidence={97}
 						/>
 
 						<Accordion
@@ -319,6 +331,7 @@ export default function Information() {
 							]}
 							open={openSection === 'specs'}
 							onClick={() => toggleSection('specs')}
+							confidence={80}
 						/>
 
 						<Accordion
@@ -329,6 +342,7 @@ export default function Information() {
 							]}
 							open={openSection === 'consumption'}
 							onClick={() => toggleSection('consumption')}
+							iaGen
 						/>
 
 						<Accordion
@@ -341,6 +355,7 @@ export default function Information() {
 							]}
 							open={openSection === 'dimensions'}
 							onClick={() => toggleSection('dimensions')}
+							confidence={87}
 						/>
 
 						<Accordion
@@ -366,6 +381,7 @@ export default function Information() {
 							]}
 							open={openSection === 'extras'}
 							onClick={() => toggleSection('extras')}
+							confidence={81}
 						/>
 					</div>
 
@@ -387,6 +403,7 @@ export default function Information() {
 							items={car.sections.security}
 							open={openSection === 'security'}
 							onClick={() => toggleSection('security')}
+							confidence={95}
 						/>
 
 						<Accordion
@@ -402,6 +419,7 @@ export default function Information() {
 							items={car.sections.comfort}
 							open={openSection === 'comfort'}
 							onClick={() => toggleSection('comfort')}
+							confidence={67}
 						/>
 					</div>
 				</section>
@@ -469,7 +487,7 @@ function TechnicalGroup({ title, items }) {
 	);
 }
 
-function Accordion({ title, items, open, onClick, verified }) {
+function Accordion({ title, items, open, onClick, verified, iaGen, confidence }) {
 	return (
 		<div className="accordion">
 			<button onClick={onClick}>
@@ -483,6 +501,28 @@ function Accordion({ title, items, open, onClick, verified }) {
 						/>
 						</span>
 					)}
+					{
+						iaGen && (
+							<span className="iaGen-badge">
+								<IoHardwareChipOutline
+								className="iaGen-icon"
+								/>
+								</span>
+						)
+					}
+					{confidence !== undefined && !verified && (
+					<span
+					className={`confidence-badge ${
+						confidence >= 80
+							? 'high'
+							: confidence >= 60
+							? 'medium'
+							: 'low'
+					}`}
+				>
+					{confidence}%
+				</span>
+				)}
 				</span>
 
 				{open ? <IoChevronUp /> : <IoChevronDown />}

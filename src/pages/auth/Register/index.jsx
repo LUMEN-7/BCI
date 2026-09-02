@@ -64,6 +64,15 @@ export default function Register() {
 		}
 
 		try {
+			localStorage.setItem(
+				'currentUser',
+				JSON.stringify({
+					name,
+					email,
+					photo,
+				})
+			);
+
 			navigate('/home');
 		} catch (error) {
 			setAuthError(error.message || 'Não foi possível criar a conta.');

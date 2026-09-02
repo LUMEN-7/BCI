@@ -7,7 +7,8 @@ import {
 	IoAdd,
 	IoCheckmark,
 	IoCloseOutline,
-	IoArrowBackOutline 
+	IoArrowBackOutline,
+	IoHomeOutline 
 } from 'react-icons/io5';
 
 import './style.css';
@@ -81,17 +82,30 @@ export default function Compare() {
 	const canCompare = firstCar && secondCar;
 
 	function selectCar(car) {
-		if (activeSlot === 'first') {
+		if (firstCar?.id === car.id) {
+			setFirstCar(null);
+			return;
+		}
+		
+		if (secondCar?.id === car.id) {
+			setSecondCar(null);
+			return;
+		}
+		if (!firstCar) {
 			setFirstCar(car);
-
-			if (!secondCar) {
-				setActiveSlot('second');
-			}
-
+			return;
+		}
+		if (!secondCar) {
+			setSecondCar(car);
 			return;
 		}
 
-		setSecondCar(car);
+
+		if (activeSlot === 'first') {
+			setFirstCar(car);
+		} else {
+			setSecondCar(car);
+		}
 	}
 
 	function removeCar(slot) {
@@ -122,18 +136,31 @@ export default function Compare() {
 		<main className="compare-page">
 			<section className="compare-container">
 				<header className="compare-header">
-					<div>
-						<h1>Comparar</h1>
+					<div className="header-actions">
+						<button
+							type="button"
+							className="back-button"
+							onClick={() => navigate(-1)}
+						>
+							<IoArrowBackOutline />
+							<span>Voltar</span>
+						</button>
+
+						<button
+							type="button"
+							className="home-button"
+							onClick={() => navigate('/home')}
+						>
+							<IoHomeOutline />
+						</button>
 					</div>
 
-					<button
-						type="button"
-						className="back-button"
-						onClick={() => navigate('/home')}
-					>
-						<IoArrowBackOutline />
-						<span>Voltar</span>
-					</button>
+					<h1>Comparar</h1>
+
+					<p className="description">
+						Pesquise dois modelos para comparar desempenho,
+						consumo e diferenciais.
+					</p>
 				</header>
 				<p className='description'>
 					Pesquise dois modelos para comparar desempenho,
@@ -148,7 +175,7 @@ export default function Compare() {
 						onRemove={() => removeCar('first')}
 					/>
 
-					<div className="vs-circle">X</div>
+					<div className="vs-circle" onClick={handleCompare}>X</div>
 
 					<SelectedSlot
 						label="Modelo 2"

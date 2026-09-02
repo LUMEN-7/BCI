@@ -5,7 +5,8 @@ import {
 	IoCloseCircle,
 	IoStar,
 	IoStarOutline,
-	IoArrowBackOutline 
+	IoArrowBackOutline,
+	IoHomeOutline 
 } from 'react-icons/io5';
 
 import './style.css';
@@ -14,6 +15,7 @@ const cars = [
 	{
 		id: '1',
 		brand: 'Ford',
+		year: 2024,
 		name: 'Mustang GT 2024',
 		image:
 			'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/mustang.png',
@@ -21,6 +23,7 @@ const cars = [
 	{
 		id: '2',
 		brand: 'Ford',
+		year: 2021,
 		name: 'Bronco 2021',
 		image:
 			'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2021_ford_bronco.png',
@@ -28,6 +31,7 @@ const cars = [
 	{
 		id: '3',
 		brand: 'Ford',
+		year: 2025,
 		name: 'Bronco Sport 2025',
 		image:
 			'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2025_ford_bronco_sport.png',
@@ -35,6 +39,7 @@ const cars = [
 	{
 		id: '4',
 		brand: 'Ford',
+		year: 2026,
 		name: 'Explorer 2026',
 		image:
 			'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2026_ford_explorer.png',
@@ -43,23 +48,39 @@ const cars = [
 
 export default function Search() {
 	const navigate = useNavigate();
+	const [selectedBrand, setSelectedBrand] = useState('');
+	const [selectedYear, setSelectedYear] = useState('');
 
 	const [search, setSearch] = useState('');
 	const [favorites, setFavorites] = useState([]);
 
+	const brands = [...new Set(cars.map((car) => car.brand))];
+	const years = [...new Set(cars.map((car) => car.year))].sort(
+		(a, b) => b - a
+	);
+
 	const results = useMemo(() => {
-		const term = search.toLowerCase().trim();
+	const term = search.toLowerCase().trim();
 
-		if (!term) {
-			return cars;
-		}
+	return cars.filter((car) => {
+		const matchesSearch =
+			!term ||
+			car.name.toLowerCase().includes(term) ||
+			car.brand.toLowerCase().includes(term);
 
-		return cars.filter(
-			(car) =>
-				car.name.toLowerCase().includes(term) ||
-				car.brand.toLowerCase().includes(term)
+		const matchesBrand =
+			!selectedBrand || car.brand === selectedBrand;
+
+		const matchesYear =
+			!selectedYear || car.year === Number(selectedYear);
+
+		return (
+			matchesSearch &&
+			matchesBrand &&
+			matchesYear
 		);
-	}, [search]);
+	});
+}, [search, selectedBrand, selectedYear]);
 
 	function toggleFavorite(id) {
 		setFavorites((prev) =>
@@ -73,46 +94,81 @@ export default function Search() {
 		<main className="search-page">
 			<div className="search-container">
 				<header className="search-header">
-					<div>
-						<h1>Encontre o modelo</h1>
-					</div>
-
-					<button
-						type="button"
-						className="back-button"
-						onClick={() => navigate('/home')}
-					>
-						<IoArrowBackOutline />
-						<span>Voltar</span>
-					</button>
-				</header>
-				<p>
-					Pesquise pela marca ou modelo para comparar
-					diferenciais com mais facilidade.
-				</p>
-
-				<div className="search-box">
-					<IoSearchOutline />
-
-					<input
-						type="text"
-						placeholder="Ex: Ford Mustang"
-						value={search}
-						onChange={(e) =>
-							setSearch(e.target.value)
-						}
-					/>
-
-					{search && (
+					<div className="header-actions">
 						<button
 							type="button"
-							onClick={() =>
-								setSearch('')
-							}
+							className="back-button"
+							onClick={() => navigate(-1)}
 						>
-							<IoCloseCircle />
+							<IoArrowBackOutline />
+							<span>Voltar</span>
 						</button>
-					)}
+
+						<button
+							type="button"
+							className="home-button"
+							onClick={() => navigate('/home')}
+						>
+							<IoHomeOutline />
+						</button>
+					</div>
+
+					<h1>Encontre o modelo</h1>
+
+					<p>
+						Pesquise pela marca ou modelo para comparar
+						diferenciais com mais facilidade.
+					</p>
+				</header>
+
+				<div className="search-filters">
+					<div className="search-box">
+						<IoSearchOutline />
+
+						<input
+							type="text"
+							placeholder="Ex: Ford Mustang"
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+						/>
+
+						{search && (
+							<button
+								type="button"
+								onClick={() => setSearch('')}
+							>
+								<IoCloseCircle />
+							</button>
+						)}
+					</div>
+
+					<select
+						className="filter-select"
+						value={selectedBrand}
+						onChange={(e) => setSelectedBrand(e.target.value)}
+					>
+						<option value="">Todas as marcas</option>
+
+						{brands.map((brand) => (
+							<option key={brand} value={brand}>
+								{brand}
+							</option>
+						))}
+					</select>
+
+					<select
+						className="filter-select"
+						value={selectedYear}
+						onChange={(e) => setSelectedYear(e.target.value)}
+					>
+						<option value="">Todos os anos</option>
+
+						{years.map((year) => (
+							<option key={year} value={year}>
+								{year}
+							</option>
+						))}
+					</select>
 				</div>
 
 				<div className="cars-grid">
