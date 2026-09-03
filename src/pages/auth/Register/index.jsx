@@ -92,27 +92,6 @@ export default function Register() {
 
             <section className="register-container">
 
-                {/* ÁREA VISUAL */}
-                <div className="register-visual">
-
-                    <div className="visual-overlay" />
-
-                    <div className="visual-content">
-
-                        <span className="visual-label">
-                            BUSINESS COMPETITIVE
-                        </span>
-
-                        <h2>
-                            Inteligência
-                            <br />
-                            para ir além.
-                        </h2>
-
-                    </div>
-
-                </div>
-
                 {/* ÁREA DE CADASTRO */}
                 <form
                     className="register-card"
