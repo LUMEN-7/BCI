@@ -1,16 +1,26 @@
 :root {
-  --color-primary: #00142e;
-  --color-secondary: #0562d2;
+    /* BRAND */
+    --color-primary: #00142e;
+    --color-secondary: #0562d2;
 
-  --color-dark-neutral: #000000;
-  --color-light-neutral: #ffffff;
+    /* NEUTRALS */
+    --color-dark-neutral: #000000;
+    --color-light-neutral: #ffffff;
 
-  --color-dark-grey: #333333;
-  --color-light-grey: #666666;
+    --color-dark-grey: #333333;
+    --color-light-grey: #666666;
 
+    /* SURFACES */
+    --color-surface: #f7f7f5;
+    --color-surface-soft: #f1f2f0;
+    --color-border: #d8dce1;
+    --color-muted: #737d89;
 
-  --font-title: 'Anton', sans-serif;
+    /* STATES */
+    --color-error: #c9434f;
 
-  --font-body: 'Titillium Web', sans-serif;
-  --font-body-bold: 'Titillium Web', sans-serif;
+    /* TYPOGRAPHY */
+    --font-title: 'Anton', sans-serif;
+    --font-body: 'Titillium Web', sans-serif;
+    --font-body-bold: 'Titillium Web', sans-serif;
 }

@@ -1,135 +1,225 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import FloatingInput from '../../../components/FloatingInput';
+import { validateLogin } from './validation';
 
 import './style.css';
 
-function isValidEmail(email) {
-	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+const LOGO_URL =
+    'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/logo.png';
 
 export default function Login() {
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
-	const [errors, setErrors] = useState({
-		email: '',
-		password: '',
-	});
+    const [errors, setErrors] = useState({
+        email: '',
+        password: '',
+    });
 
-	const [authError, setAuthError] = useState('');
+    const [authError, setAuthError] = useState('');
 
-	async function handleLogin(event) {
-		event.preventDefault();
+    function handleLogin(event) {
+        event.preventDefault();
 
-		setAuthError('');
+        setAuthError('');
 
-		const newErrors = {
-			email: '',
-			password: '',
-		};
+        const newErrors = validateLogin(email, password);
 
-		if (!isValidEmail(email)) {
-			newErrors.email = 'E-mail não existe ou está inválido.';
-		}
+        setErrors(newErrors);
 
-		if (password.trim().length < 6) {
-			newErrors.password = 'Senha incorreta.';
-		}
+        if (newErrors.email || newErrors.password) {
+            return;
+        }
 
-		setErrors(newErrors);
+        try {
+            const currentUser = JSON.parse(
+                localStorage.getItem('currentUser')
+            );
 
-		if (newErrors.email || newErrors.password) {
-			return;
-		}
+            if (!currentUser) {
+                setAuthError('Nenhum usuário cadastrado.');
+                return;
+            }
 
-		try {
-			const currentUser = JSON.parse(
-				localStorage.getItem('currentUser')
-			);
+            navigate('/home');
+        } catch (error) {
+            setAuthError(
+                error.message || 'Não foi possível entrar.'
+            );
+        }
+    }
 
-			if (!currentUser) {
-				setAuthError('Nenhum usuário cadastrado.');
-				return;
-			}
+    function handleEmailChange(value) {
+        setEmail(value);
 
-			navigate('/home');
-		} catch (error) {
-			setAuthError(error.message || 'Não foi possível entrar.');
-		}
-	}
+        setErrors((prev) => ({
+            ...prev,
+            email: '',
+        }));
+    }
 
-	return (
-		<main className="login-page">
-			<section className="login-container">
-				<div className="logo">
-					<img
-						src="https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/logo.png"
-						alt="Logo BCI"
-					/>
-				</div>
+    function handlePasswordChange(value) {
+        setPassword(value);
 
-				<form className="login-card" onSubmit={handleLogin}>
-					<h1>Login</h1>
+        setErrors((prev) => ({
+            ...prev,
+            password: '',
+        }));
+    }
 
-					<p className="subtitle">
-						Preencha as informações para continuar.
-					</p>
+    return (
+        <main className="login-page">
+            <section className="login-shell">
 
-					<div className="form-fields">
-						<FloatingInput
-							label="E-MAIL"
-							value={email}
-							onChange={(text) => {
-								setEmail(text);
-								setErrors((prev) => ({
-									...prev,
-									email: '',
-								}));
-							}}
-							error={errors.email}
-						/>
+                <div className="login-visual">
+                    <div className="visual-content">
+                        <span className="visual-label">
+                            BUSINESS COMPETITIVE
+                        </span>
 
-						<FloatingInput
-							label="SENHA"
-							value={password}
-							onChange={(text) => {
-								setPassword(text);
-								setErrors((prev) => ({
-									...prev,
-									password: '',
-								}));
-							}}
-							type="password"
-							error={errors.password}
-						/>
+                        <h2>
+                            Inteligência
+                            <br />
+                            para ir além.
+                        </h2>
+                    </div>
+                </div>
 
-						{authError && (
-							<p className="auth-error">
-								{authError}
-							</p>
-						)}
-					</div>
+                <form
+                    className="login-card"
+                    onSubmit={handleLogin}
+                >
+                    <div className="login-brand">
+                        <img
+                            src={LOGO_URL}
+                            alt="Ford"
+                        />
 
-					<button
-						className="primary-button"
-						type="submit"
-					>
-						Entrar
-					</button>
+                        <span>BCI</span>
+                    </div>
 
-					<button
-						type="button"
-						className="link-button"
-						onClick={() => navigate('/register')}
-					>
-						Criar conta
-					</button>
-				</form>
-			</section>
-		</main>
-	);
+                    <div className="login-heading">
+                        <span className="eyebrow">
+                            ACESSO
+                        </span>
+
+                        <h1>
+                            Bem-vindo
+                            <br />
+                            de volta.
+                        </h1>
+
+                        <p>
+                            Entre para continuar suas análises
+                            de inteligência competitiva.
+                        </p>
+                    </div>
+
+                    <div className="form-fields">
+
+                        <div className="field">
+                            <label htmlFor="email">
+                                E-MAIL
+                            </label>
+
+                            <input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(event) =>
+                                    handleEmailChange(
+                                        event.target.value
+                                    )
+                                }
+                            />
+
+                            {errors.email && (
+                                <span className="field-error">
+                                    {errors.email}
+                                </span>
+                            )}
+                        </div>
+
+                        <div className="field">
+                            <label htmlFor="password">
+                                SENHA
+                            </label>
+
+                            <div className="password-field">
+                                <input
+                                    id="password"
+                                    type={
+                                        showPassword
+                                            ? 'text'
+                                            : 'password'
+                                    }
+                                    value={password}
+                                    onChange={(event) =>
+                                        handlePasswordChange(
+                                            event.target.value
+                                        )
+                                    }
+                                />
+
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() =>
+                                        setShowPassword(
+                                            !showPassword
+                                        )
+                                    }
+                                    aria-label={
+                                        showPassword
+                                            ? 'Ocultar senha'
+                                            : 'Mostrar senha'
+                                    }
+                                >
+                                    {showPassword ? '◉' : '◌'}
+                                </button>
+                            </div>
+
+                            {errors.password && (
+                                <span className="field-error">
+                                    {errors.password}
+                                </span>
+                            )}
+                        </div>
+
+                        {authError && (
+                            <p className="auth-error">
+                                {authError}
+                            </p>
+                        )}
+                    </div>
+
+                    <button
+                        className="primary-button"
+                        type="submit"
+                    >
+                        <span>Entrar</span>
+                        <span>→</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        className="link-button"
+                        onClick={() => navigate('/register')}
+                    >
+                        <span>
+                            Ainda não possui uma conta?
+                        </span>
+
+                        <strong>
+                            Criar conta
+                        </strong>
+                    </button>
+                </form>
+            </section>
+        </main>
+    );
 }
