@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+    IoArrowForward
+} from 'react-icons/io5';
 
 import { validateLogin } from './validation';
 
@@ -202,7 +205,7 @@ export default function Login() {
                         type="submit"
                     >
                         <span>Entrar</span>
-                        <span>→</span>
+                        <IoArrowForward />
                     </button>
 
                     <button

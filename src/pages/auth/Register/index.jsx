@@ -117,11 +117,11 @@ export default function Register() {
                             CADASTRO
                         </span>
 
-                        <h1>
+                        <h2>
                             Criar
                             <br />
                             conta.
-                        </h1>
+                        </h2>
 
                         <p>
                             Crie seu acesso para começar a explorar
@@ -129,30 +129,7 @@ export default function Register() {
                         </p>
 
                     </div>
-
-                    {/* ETAPAS */}
-                    <div className="register-steps">
-
-                        <div className="step active">
-                            <span>01</span>
-                            <strong>Seus dados</strong>
-                        </div>
-
-                        <div className="step-line" />
-
-                        <div className="step">
-                            <span>02</span>
-                            <strong>Acesso</strong>
-                        </div>
-
-                        <div className="step-line" />
-
-                        <div className="step">
-                            <span>03</span>
-                            <strong>Segurança</strong>
-                        </div>
-
-                    </div>
+                    
 
                     {/* CONTEÚDO */}
                     <div className="register-content">

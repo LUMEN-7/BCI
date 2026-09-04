@@ -113,7 +113,7 @@ body {
     font-family: var(--font-title);
     font-size: clamp(48px, 5vw, 72px);
     font-weight: 400;
-    line-height: 0.88;
+    line-height: 0.90;
     padding-bottom: 0.5rem;
 
     text-transform: uppercase;
@@ -280,19 +280,6 @@ body {
         background-color 0.2s ease;
 }
 
-.field input:hover {
-    border-color: rgba(216, 220, 225, 1);
-}
-
-.field input:focus {
-    border-color: var(--color-secondary);
-
-    box-shadow:
-        inset 3px 3px 7px rgba(0, 20, 46, 0.09),
-        inset -3px -3px 7px rgba(255, 255, 255, 0.95),
-        0 0 0 3px rgba(5, 98, 210, 0.10);
-}
-
 .field input::placeholder {
     color: var(--color-muted);
 }
@@ -432,9 +419,15 @@ body {
         0 3px 6px rgba(0, 20, 46, 0.16);
 }
 
-.primary-button span:last-child {
+.primary-button svg {
     font-size: 18px;
     font-weight: 400;
+
+    transition: transform 0.25s ease;
+}
+
+.primary-button:hover svg {
+    transform: translateX(5px);
 }
 
 /* ========================================
@@ -666,6 +659,7 @@ body {
 
     .login-heading h1 {
         font-size: 42px;
+        line-height: 0.92;
     }
 
     .login-heading p {
