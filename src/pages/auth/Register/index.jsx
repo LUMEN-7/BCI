@@ -1,182 +1,287 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoCameraOutline, IoPersonOutline } from 'react-icons/io5';
-
-import FloatingInput from '../../../components/FloatingInput';
+import {
+    IoCameraOutline,
+    IoPersonOutline,
+    IoArrowForward
+} from 'react-icons/io5';
 
 import './style.css';
 
 function isValidEmail(email) {
-	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 export default function Register() {
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
-	const [photo, setPhoto] = useState(null);
-	const [name, setName] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+    const [photo, setPhoto] = useState(null);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-	const [errors, setErrors] = useState({
-		name: '',
-		email: '',
-		password: '',
-	});
+    const [errors, setErrors] = useState({
+        name: '',
+        email: '',
+        password: '',
+    });
 
-	const [authError, setAuthError] = useState('');
+    const [authError, setAuthError] = useState('');
 
-	function handleImage(event) {
-		const file = event.target.files?.[0];
+    function handleImage(event) {
+        const file = event.target.files?.[0];
 
-		if (file) {
-			setPhoto(URL.createObjectURL(file));
-		}
-	}
+        if (file) {
+            setPhoto(URL.createObjectURL(file));
+        }
+    }
 
-	async function handleRegister(event) {
-		event.preventDefault();
+    function handleRegister(event) {
+        event.preventDefault();
 
-		setAuthError('');
+        setAuthError('');
 
-		const newErrors = {
-			name: '',
-			email: '',
-			password: '',
-		};
+        const newErrors = {
+            name: '',
+            email: '',
+            password: '',
+        };
 
-		if (name.trim().length < 3) {
-			newErrors.name = 'Nome muito curto.';
-		}
+        if (name.trim().length < 3) {
+            newErrors.name = 'Nome muito curto.';
+        }
 
-		if (!isValidEmail(email)) {
-			newErrors.email = 'E-mail inválido.';
-		}
+        if (!isValidEmail(email)) {
+            newErrors.email = 'E-mail inválido.';
+        }
 
-		if (password.trim().length < 6) {
-			newErrors.password = 'Mínimo de 6 caracteres.';
-		}
+        if (password.trim().length < 6) {
+            newErrors.password = 'Mínimo de 6 caracteres.';
+        }
 
-		setErrors(newErrors);
+        setErrors(newErrors);
 
-		if (newErrors.name || newErrors.email || newErrors.password) {
-			return;
-		}
+        if (
+            newErrors.name ||
+            newErrors.email ||
+            newErrors.password
+        ) {
+            return;
+        }
 
-		try {
-			localStorage.setItem(
-				'currentUser',
-				JSON.stringify({
-					name,
-					email,
-					photo,
-				})
-			);
+        try {
+            localStorage.setItem(
+                'currentUser',
+                JSON.stringify({
+                    name,
+                    email,
+                    photo,
+                })
+            );
 
-			navigate('/home');
-		} catch (error) {
-			setAuthError(error.message || 'Não foi possível criar a conta.');
-		}
-	}
+            navigate('/home');
+        } catch (error) {
+            setAuthError(
+                error.message || 'Não foi possível criar a conta.'
+            );
+        }
+    }
 
-	return (
-		<main className="register-page">
-			<section className="register-container">
-				<form className="register-card" onSubmit={handleRegister}>
-					<h1>Criar Conta</h1>
+    return (
+        <main className="register-page">
 
-					<p className="subtitle">
-						Cadastre um usuário válido para liberar o acesso.
-					</p>
+            <section className="register-container">
 
-					<label className="photo-wrapper">
-						<input
-							type="file"
-							accept="image/*"
-							onChange={handleImage}
-							hidden
-						/>
+                {/* ÁREA DE CADASTRO */}
+                <form
+                    className="register-card"
+                    onSubmit={handleRegister}
+                >
 
-						{photo ? (
-							<img
-								src={photo}
-								alt="Foto de perfil"
-								className="profile-photo"
-							/>
-						) : (
-							<div className="photo-placeholder">
-								<IoPersonOutline size={38} />
-							</div>
-						)}
+                    {/* BRAND */}
+                    <div className="register-brand">
 
-						<div className="camera-button">
-							<IoCameraOutline />
-						</div>
-					</label>
+                        <img
+                            src="https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/logo.png"
+                            alt="Ford"
+                        />
 
-					<p className="photo-text">
-						Adicionar foto de perfil
-					</p>
+                        <span>BCI</span>
 
-					<div className="form-fields">
-						<FloatingInput
-							label="NOME"
-							value={name}
-							onChange={(text) => {
-								setName(text);
-								setErrors((prev) => ({
-									...prev,
-									name: '',
-								}));
-							}}
-							error={errors.name}
-						/>
+                    </div>
 
-						<FloatingInput
-							label="E-MAIL"
-							value={email}
-							onChange={(text) => {
-								setEmail(text);
-								setErrors((prev) => ({
-									...prev,
-									email: '',
-								}));
-							}}
-							error={errors.email}
-						/>
+                    {/* HEADER */}
+                    <div className="register-heading">
 
-						<FloatingInput
-							label="SENHA"
-							value={password}
-							onChange={(text) => {
-								setPassword(text);
-								setErrors((prev) => ({
-									...prev,
-									password: '',
-								}));
-							}}
-							type="password"
-							error={errors.password}
-						/>
+                        <span className="eyebrow">
+                            CADASTRO
+                        </span>
 
-						<button type="submit" className="primary-button">
-							Cadastrar e Entrar
-						</button>
+                        <h2>
+                            Criar
+                            <br />
+                            conta.
+                        </h2>
 
-						{authError && (
-							<p className="auth-error">{authError}</p>
-						)}
+                        <p>
+                            Crie seu acesso para começar a explorar
+                            análises de inteligência competitiva.
+                        </p>
 
-						<button
-							type="button"
-							className="link-button"
-							onClick={() => navigate('/')}
-						>
-							Voltar para Login
-						</button>
-					</div>
-				</form>
-			</section>
-		</main>
-	);
+                    </div>
+                    
+
+                    {/* CONTEÚDO */}
+                    <div className="register-content">
+
+                        {/* FOTO */}
+                        <div className="photo-area">
+
+                            <label className="photo-wrapper">
+
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImage}
+                                />
+
+                                {photo ? (
+                                    <img
+                                        src={photo}
+                                        alt="Foto de perfil"
+                                        className="profile-photo"
+                                    />
+                                ) : (
+                                    <div className="photo-placeholder">
+                                        <IoPersonOutline />
+                                    </div>
+                                )}
+
+                                <span className="camera-button">
+                                    <IoCameraOutline />
+                                </span>
+
+                            </label>
+
+                            <span className="photo-text">
+                                Adicionar foto
+                            </span>
+
+                        </div>
+
+                        {/* CAMPOS */}
+                        <div className="form-fields">
+
+                            <div className="field">
+                                <label htmlFor="name">
+                                    NOME
+                                </label>
+
+                                <input
+                                    id="name"
+                                    type="text"
+                                    value={name}
+                                    onChange={(event) => {
+                                        setName(event.target.value);
+
+                                        setErrors((prev) => ({
+                                            ...prev,
+                                            name: '',
+                                        }));
+                                    }}
+                                />
+
+                                {errors.name && (
+                                    <span className="field-error">
+                                        {errors.name}
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="field">
+                                <label htmlFor="email">
+                                    E-MAIL
+                                </label>
+
+                                <input
+                                    id="email"
+                                    type="email"
+                                    value={email}
+                                    onChange={(event) => {
+                                        setEmail(event.target.value);
+
+                                        setErrors((prev) => ({
+                                            ...prev,
+                                            email: '',
+                                        }));
+                                    }}
+                                />
+
+                                {errors.email && (
+                                    <span className="field-error">
+                                        {errors.email}
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="field">
+                                <label htmlFor="password">
+                                    SENHA
+                                </label>
+
+                                <input
+                                    id="password"
+                                    type="password"
+                                    value={password}
+                                    onChange={(event) => {
+                                        setPassword(event.target.value);
+
+                                        setErrors((prev) => ({
+                                            ...prev,
+                                            password: '',
+                                        }));
+                                    }}
+                                />
+
+                                {errors.password && (
+                                    <span className="field-error">
+                                        {errors.password}
+                                    </span>
+                                )}
+                            </div>
+
+                            {authError && (
+                                <p className="auth-error">
+                                    {authError}
+                                </p>
+                            )}
+
+                            <button
+                                type="submit"
+                                className="primary-button"
+                            >
+                                <span>Cadastrar</span>
+
+                                <IoArrowForward />
+                            </button>
+
+                            <button
+                                type="button"
+                                className="link-button"
+                                onClick={() => navigate('/')}
+                            >
+                                Já possui uma conta?
+                                <strong>Entrar</strong>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </main>
+    );
 }
