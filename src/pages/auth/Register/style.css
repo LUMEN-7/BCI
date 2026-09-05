@@ -28,7 +28,7 @@
 ========================================================= */
 
 .register-container {
-    width: min(1040px, 100%);
+    width: min(1100px, 100%);
     height: min(760px, calc(100vh - 64px));
 
     background: var(--color-surface);
@@ -38,7 +38,7 @@
     overflow: hidden;
 
     box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.16);
+        0 30px 80px rgba(0, 0, 0, 0.28);
 }
 
 
