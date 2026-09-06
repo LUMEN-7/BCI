@@ -191,13 +191,13 @@ export default function Login() {
                                     {errors.password}
                                 </span>
                             )}
-                        </div>
 
-                        {authError && (
-                            <p className="auth-error">
-                                {authError}
-                            </p>
-                        )}
+                            {authError && (
+                                <span className="field-error">
+                                    {authError}
+                                </span>
+                             )}
+                        </div>
                     </div>
 
                     <button
