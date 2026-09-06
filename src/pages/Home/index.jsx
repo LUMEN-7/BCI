@@ -4,16 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import {
     IoSearchOutline,
     IoGitCompareOutline,
-    IoPersonCircleOutline,
-    IoBookmarkOutline,
-    IoDocumentTextOutline,
     IoArrowForward,
     IoTrendingUpOutline,
-    IoTimeOutline,
     IoWarningOutline,
     IoStatsChartOutline,
 } from 'react-icons/io5';
 
+import Navbar from '../../components/Navbar/Navbar';
 import './style.css';
 
 const cars = [
@@ -138,38 +135,7 @@ export default function Home() {
 
     return (
         <main className="home-page">
-
-            {/* NAVBAR LATERAL */}
-            <aside className="home-navbar">
-
-                <button
-                    className="nav-item"
-                    onClick={() => navigate('/profile')}
-                    title="Perfil"
-                >
-                    <IoPersonCircleOutline />
-                    <span>Perfil</span>
-                </button>
-
-                <button
-                    className="nav-item"
-                    onClick={() => navigate('/saved')}
-                    title="Salvos"
-                >
-                    <IoBookmarkOutline />
-                    <span>Salvos</span>
-                </button>
-
-                <button
-                    className="nav-item"
-                    onClick={() => navigate('/notes')}
-                    title="Anotações"
-                >
-                    <IoDocumentTextOutline />
-                    <span>Anotações</span>
-                </button>
-
-            </aside>
+            <Navbar />
 
 
             {/* HERO */}
