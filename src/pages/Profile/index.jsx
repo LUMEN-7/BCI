@@ -3,8 +3,6 @@ import {
 	IoArrowBackOutline,
 	IoPersonOutline,
 	IoPencilOutline,
-	IoBookmarkOutline,
-	IoDocumentTextOutline,
 	IoLockClosedOutline,
 	IoLogOutOutline,
 	IoChevronForwardOutline,
@@ -45,66 +43,111 @@ export default function Profile() {
 	return (
 		<main className="profile-page">
 			<section className="profile-container">
-				<button
-					type="button"
-					className="profile-back"
-					onClick={() => navigate('/home')}
-				>
-					<IoArrowBackOutline />
-					<span>Voltar</span>
-				</button>
 
-				<div className="profile-hero">
+				{/* TOPBAR */}
+				<header className="profile-topbar">
+					<button
+						type="button"
+						className="profile-back"
+						onClick={() => navigate('/home')}
+					>
+						<IoArrowBackOutline />
+						<span>Voltar</span>
+					</button>
+				</header>
+
+				{/* HERO */}
+				<section className="profile-hero">
 					<div className="profile-avatar">
 						{profilePhoto ? (
-							<img src={profilePhoto} alt="Foto de perfil" />
+							<img
+								src={profilePhoto}
+								alt="Foto de perfil"
+							/>
 						) : (
 							<IoPersonOutline />
 						)}
 					</div>
 
 					<div className="profile-info">
-						<p className="profile-eyebrow">Minha conta</p>
+						<span className="profile-eyebrow">
+							Minha conta
+						</span>
+
 						<h1>{displayName}</h1>
+
 						<p>{displayEmail}</p>
 					</div>
-				</div>
+				</section>
 
-				<div className="profile-section-title">
-					<h2>Configurações</h2>
-					<p>Gerencie sua experiência no app.</p>
-				</div>
-
-				<div className="profile-menu">
-					{menuItems.map((item) => (
-						<button
-							key={item.title}
-							type="button"
-							className="profile-menu-item"
-							onClick={() => navigate(item.route)}
-						>
-							<span className="profile-menu-icon">
-								{item.icon}
+				{/* SETTINGS */}
+				<section className="profile-settings">
+					<div className="profile-section-heading">
+						<div>
+							<span className="section-eyebrow">
+								Preferências
 							</span>
 
-							<span className="profile-menu-text">
-								<strong>{item.title}</strong>
-								<small>{item.subtitle}</small>
-							</span>
+							<h2 className="section-title">
+								Configurações
+							</h2>
+						</div>
 
-							<IoChevronForwardOutline className="profile-chevron" />
-						</button>
-					))}
-				</div>
+						<p>
+							Gerencie seus dados e sua experiência
+							no app.
+						</p>
+					</div>
 
-				<button
-					type="button"
-					className="logout-button"
-					onClick={handleLogout}
-				>
-					<IoLogOutOutline />
-					Sair da conta
-				</button>
+					<div className="profile-menu">
+						{menuItems.map((item) => (
+							<button
+								key={item.title}
+								type="button"
+								className="profile-menu-item"
+								onClick={() => navigate(item.route)}
+							>
+								<span className="profile-menu-icon">
+									{item.icon}
+								</span>
+
+								<span className="profile-menu-text">
+									<strong>{item.title}</strong>
+									<small>{item.subtitle}</small>
+								</span>
+
+								<span className="profile-chevron">
+									<IoChevronForwardOutline />
+								</span>
+							</button>
+						))}
+					</div>
+				</section>
+
+				{/* LOGOUT */}
+				<section className="profile-danger">
+					<div>
+						<span className="section-eyebrow">
+							Sessão
+						</span>
+
+						<strong>Sair da conta</strong>
+
+						<p>
+							Encerre sua sessão neste dispositivo.
+						</p>
+					</div>
+
+					<button
+						type="button"
+						className="logout-button"
+						onClick={handleLogout}
+					>
+						<IoLogOutOutline />
+						Sair
+					</button>
+				</section>
+
 			</section>
 		</main>
 	);
