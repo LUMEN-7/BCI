@@ -1,16 +1,18 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import {
 	IoSearchOutline,
 	IoCloseCircle,
 	IoStar,
 	IoStarOutline,
-	IoArrowBackOutline,
-	IoHomeOutline 
+	IoArrowForward,
+	IoChevronDownOutline
 } from 'react-icons/io5';
 
-import './style.css';
 import Navbar from '../../components/Navbar/Navbar';
+
+import './style.css';
 
 const cars = [
 	{
@@ -18,6 +20,7 @@ const cars = [
 		brand: 'Ford',
 		year: 2024,
 		name: 'Mustang GT 2024',
+		segment: 'Esportivo',
 		image:
 			'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/mustang.png',
 	},
@@ -26,6 +29,7 @@ const cars = [
 		brand: 'Ford',
 		year: 2021,
 		name: 'Bronco 2021',
+		segment: 'SUV',
 		image:
 			'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2021_ford_bronco.png',
 	},
@@ -34,6 +38,7 @@ const cars = [
 		brand: 'Ford',
 		year: 2025,
 		name: 'Bronco Sport 2025',
+		segment: 'SUV Compacto',
 		image:
 			'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2025_ford_bronco_sport.png',
 	},
@@ -42,6 +47,7 @@ const cars = [
 		brand: 'Ford',
 		year: 2026,
 		name: 'Explorer 2026',
+		segment: 'SUV',
 		image:
 			'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2026_ford_explorer.png',
 	},
@@ -49,39 +55,49 @@ const cars = [
 
 export default function Search() {
 	const navigate = useNavigate();
+
 	const [selectedBrand, setSelectedBrand] = useState('');
 	const [selectedYear, setSelectedYear] = useState('');
-
 	const [search, setSearch] = useState('');
 	const [favorites, setFavorites] = useState([]);
 
-	const brands = [...new Set(cars.map((car) => car.brand))];
-	const years = [...new Set(cars.map((car) => car.year))].sort(
-		(a, b) => b - a
+	const brands = useMemo(
+		() => [...new Set(cars.map((car) => car.brand))],
+		[]
+	);
+
+	const years = useMemo(
+		() =>
+			[...new Set(cars.map((car) => car.year))].sort(
+				(a, b) => b - a
+			),
+		[]
 	);
 
 	const results = useMemo(() => {
-	const term = search.toLowerCase().trim();
+		const term = search.toLowerCase().trim();
 
-	return cars.filter((car) => {
-		const matchesSearch =
-			!term ||
-			car.name.toLowerCase().includes(term) ||
-			car.brand.toLowerCase().includes(term);
+		return cars.filter((car) => {
+			const matchesSearch =
+				!term ||
+				car.name.toLowerCase().includes(term) ||
+				car.brand.toLowerCase().includes(term) ||
+				car.segment.toLowerCase().includes(term);
 
-		const matchesBrand =
-			!selectedBrand || car.brand === selectedBrand;
+			const matchesBrand =
+				!selectedBrand || car.brand === selectedBrand;
 
-		const matchesYear =
-			!selectedYear || car.year === Number(selectedYear);
+			const matchesYear =
+				!selectedYear ||
+				car.year === Number(selectedYear);
 
-		return (
-			matchesSearch &&
-			matchesBrand &&
-			matchesYear
-		);
-	});
-}, [search, selectedBrand, selectedYear]);
+			return (
+				matchesSearch &&
+				matchesBrand &&
+				matchesYear
+			);
+		});
+	}, [search, selectedBrand, selectedYear]);
 
 	function toggleFavorite(id) {
 		setFavorites((prev) =>
@@ -91,117 +107,336 @@ export default function Search() {
 		);
 	}
 
+	function clearFilters() {
+		setSearch('');
+		setSelectedBrand('');
+		setSelectedYear('');
+	}
+
+	const hasFilters =
+		search.trim() ||
+		selectedBrand ||
+		selectedYear;
+
 	return (
 		<main className="search-page">
 			<Navbar />
+
 			<div className="search-container">
+
+				{/* =====================================================
+				    HEADER
+				===================================================== */}
+
 				<header className="search-header">
 
-					<h1>Encontre o modelo</h1>
+					<div className="search-eyebrow">
+						BUSINESS COMPETITIVE INTELLIGENCE
+					</div>
+
+					<h1>
+						ENCONTRE SEU
+						<br />
+						PRÓXIMO MODELO.
+					</h1>
 
 					<p>
-						Pesquise pela marca ou modelo para comparar
-						diferenciais com mais facilidade.
+						Pesquise, filtre e explore os veículos
+						disponíveis para construir sua análise
+						competitiva.
 					</p>
+
 				</header>
 
-				<div className="search-filters">
-					<div className="search-box">
-						<IoSearchOutline />
+
+				{/* =====================================================
+				    SEARCH / FILTERS
+				===================================================== */}
+
+				<section className="search-controls">
+
+					<div className="search-page-box">
+
+						<IoSearchOutline className="search-page-icon" />
 
 						<input
 							type="text"
-							placeholder="Ex: Ford Mustang"
+							placeholder="Pesquisar modelo, marca ou segmento"
 							value={search}
-							onChange={(e) => setSearch(e.target.value)}
+							onChange={(e) =>
+								setSearch(e.target.value)
+							}
 						/>
 
 						{search && (
 							<button
 								type="button"
+								className="search-page-clear"
 								onClick={() => setSearch('')}
+								aria-label="Limpar pesquisa"
 							>
 								<IoCloseCircle />
 							</button>
 						)}
+
 					</div>
 
-					<select
-						className="filter-select"
-						value={selectedBrand}
-						onChange={(e) => setSelectedBrand(e.target.value)}
-					>
-						<option value="">Todas as marcas</option>
 
-						{brands.map((brand) => (
-							<option key={brand} value={brand}>
-								{brand}
-							</option>
-						))}
-					</select>
+					<div className="filter-row">
 
-					<select
-						className="filter-select"
-						value={selectedYear}
-						onChange={(e) => setSelectedYear(e.target.value)}
-					>
-						<option value="">Todos os anos</option>
+						<div className="select-wrapper">
 
-						{years.map((year) => (
-							<option key={year} value={year}>
-								{year}
-							</option>
-						))}
-					</select>
-				</div>
+							<select
+								className="filter-select"
+								value={selectedBrand}
+								onChange={(e) =>
+									setSelectedBrand(
+										e.target.value
+									)
+								}
+							>
+								<option value="">
+									Todas as marcas
+								</option>
 
-				<div className="cars-grid">
-					{results.map((car) => (
-						<div
-							key={car.id}
-							className="car-card"
-						>
-							<div className="card-header">
-								<span>
-									{car.brand}
-								</span>
+								{brands.map((brand) => (
+									<option
+										key={brand}
+										value={brand}
+									>
+										{brand}
+									</option>
+								))}
+							</select>
+
+							<IoChevronDownOutline />
+
+						</div>
+
+
+						<div className="select-wrapper">
+
+							<select
+								className="filter-select"
+								value={selectedYear}
+								onChange={(e) =>
+									setSelectedYear(
+										e.target.value
+									)
+								}
+							>
+								<option value="">
+									Todos os anos
+								</option>
+
+								{years.map((year) => (
+									<option
+										key={year}
+										value={year}
+									>
+										{year}
+									</option>
+								))}
+							</select>
+
+							<IoChevronDownOutline />
+
+						</div>
+
+
+						{hasFilters && (
+							<button
+								type="button"
+								className="clear-filters"
+								onClick={clearFilters}
+							>
+								Limpar filtros
+							</button>
+						)}
+
+					</div>
+
+				</section>
+
+
+				{/* =====================================================
+				    RESULTS HEADER
+				===================================================== */}
+
+				<section className="results-header">
+
+					<div>
+						<span className="section-label">
+							{hasFilters
+								? 'RESULTADOS DA PESQUISA'
+								: 'MODELOS DISPONÍVEIS'}
+						</span>
+
+						<h2>
+							{hasFilters
+								? search
+									? `RESULTADOS PARA "${search.toUpperCase()}"`
+									: 'MODELOS ENCONTRADOS'
+								: 'EXPLORE OS MODELOS'}
+						</h2>
+					</div>
+
+					<span className="results-count">
+						{results.length}{' '}
+						{results.length === 1
+							? 'MODELO'
+							: 'MODELOS'}
+					</span>
+
+				</section>
+
+
+				{/* =====================================================
+				    RESULTS
+				===================================================== */}
+
+				{results.length > 0 ? (
+					<div className="cars-grid">
+
+						{results.map((car) => (
+
+							<article
+								key={car.id}
+								className="car-card"
+							>
+
+								<div className="card-top">
+
+									<span className="car-brand">
+										{car.brand}
+									</span>
+
+									<button
+										type="button"
+										className={`favorite-button ${
+											favorites.includes(
+												car.id
+											)
+												? 'is-favorite'
+												: ''
+										}`}
+										onClick={() =>
+											toggleFavorite(
+												car.id
+											)
+										}
+										aria-label={
+											favorites.includes(
+												car.id
+											)
+												? 'Remover dos favoritos'
+												: 'Adicionar aos favoritos'
+										}
+									>
+										{favorites.includes(
+											car.id
+										) ? (
+											<IoStar />
+										) : (
+											<IoStarOutline />
+										)}
+									</button>
+
+								</div>
+
+
+								<div className="car-image-container">
+
+									<img
+										src={car.image}
+										alt={car.name}
+										className="car-image"
+									/>
+
+								</div>
+
+
+								<div className="car-information">
+
+									<div className="car-meta">
+										{car.segment}
+									</div>
+
+									<h3>
+										{car.name.replace(
+											` ${car.year}`,
+											''
+										)}
+									</h3>
+
+									<span className="car-year">
+										{car.year}
+									</span>
+
+								</div>
+
 
 								<button
+									type="button"
+									className="details-button"
 									onClick={() =>
-										toggleFavorite(
-											car.id
+										navigate(
+											`/information/${car.id}`
 										)
 									}
 								>
-									{favorites.includes(
-										car.id
-									) ? (
-										<IoStar />
-									) : (
-										<IoStarOutline />
-									)}
+									<span>
+										EXPLORAR MODELO
+									</span>
+
+									<IoArrowForward />
+
 								</button>
-							</div>
 
-							<img
-								src={car.image}
-								alt={car.name}
-							/>
+							</article>
 
-							<h3>{car.name}</h3>
+						))}
 
-							<button
-								className="details-button"
-								onClick={() => navigate(`/information/${car.id}`
-									
-								)
-								}
-							>
-								Saiba Mais
-							</button>
+					</div>
+				) : (
+
+					/* =================================================
+					   EMPTY STATE
+					================================================= */
+
+					<section className="empty-state">
+
+						<div className="empty-icon">
+							<IoSearchOutline />
 						</div>
-					))}
-				</div>
+
+						<span className="section-label">
+							NENHUM RESULTADO
+						</span>
+
+						<h2>
+							NENHUM MODELO ENCONTRADO.
+						</h2>
+
+						<p>
+							Não encontramos veículos para os
+							filtros selecionados. Tente
+							alterar sua pesquisa.
+						</p>
+
+						<button
+							type="button"
+							className="empty-button"
+							onClick={clearFilters}
+						>
+							LIMPAR FILTROS
+							<IoArrowForward />
+						</button>
+
+					</section>
+
+				)}
+
 			</div>
 		</main>
 	);
