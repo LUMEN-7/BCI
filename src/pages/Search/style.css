@@ -7,12 +7,10 @@
 
 .search-page {
 	min-height: 100vh;
-	padding: 64px 40px 80px;
-
 	background:
 		radial-gradient(
-			circle at 85% 8%,
-			rgba(0, 20, 46, 0.055),
+			circle at 85% 0%,
+			rgba(5, 98, 210, 0.07),
 			transparent 28%
 		),
 		linear-gradient(
@@ -21,7 +19,7 @@
 			var(--color-light-neutral) 100%
 		);
 
-	color: var(--color-primary);
+	padding: 40px 48px 64px;
 }
 
 
@@ -40,47 +38,46 @@
    HEADER
 ========================================================= */
 
-.search-header {
-	max-width: 760px;
+.compare-header {
+	margin-bottom: 48px;
 }
 
-.search-eyebrow {
-	margin-bottom: 18px;
+.compare-eyebrow,
+.section-eyebrow {
+	display: block;
 
 	font-family: var(--font-body-bold);
-	font-size: 11px;
+	font-size: 10px;
 	font-weight: 700;
-
-	letter-spacing: 4px;
+	letter-spacing: 2.4px;
 	text-transform: uppercase;
 
-	color: #8c98a8;
+	color: var(--color-secondary);
 }
 
-.search-header h1 {
-	margin: 0;
+.compare-header h1 {
+	margin: 8px 0 0;
 
 	font-family: var(--font-title);
-	font-size: clamp(52px, 6vw, 84px);
-	font-weight: 900;
-
-	line-height: 0.94;
-
+	font-size: clamp(58px, 6vw, 82px);
+	font-weight: 500;
+	line-height: 0.95;
 	text-transform: uppercase;
 
 	color: var(--color-primary);
 }
 
-.search-header p {
-	max-width: 620px;
-	margin: 26px 0 0;
+.compare-header p {
+	margin: 18px 0 0;
+
+	max-width: 600px;
 
 	font-family: var(--font-body);
-	font-size: 16px;
-	line-height: 1.7;
+	font-size: 15px;
+	line-height: 1.65;
 
 	color: var(--color-dark-grey);
-	opacity: 0.78;
+	opacity: 0.75;
 }
 
 
@@ -121,14 +118,6 @@
         border-color 0.2s ease,
         box-shadow 0.2s ease,
         background-color 0.2s ease;
-}
-
-.search-page-box:focus-within {
-	transform: translateY(-1px);
-
-	box-shadow:
-		0 18px 40px rgba(0, 20, 46, 0.11),
-		0 4px 10px rgba(0, 20, 46, 0.05);
 }
 
 .search-page-icon {
@@ -211,7 +200,7 @@
 
 	padding: 0 42px 0 18px;
 
-	border: none;
+	border: 1px solid rgba(0, 20, 46, 0.08);
 	border-radius: 999px;
 
 	background: rgba(255, 255, 255, 0.9);
@@ -230,14 +219,12 @@
 
 	cursor: pointer;
 
-    box-shadow:
-        0 8px 16px rgba(0, 20, 46, 0.132),
-        0 3px 6px rgba(0, 20, 46, 0.12);
+	box-shadow:
+		0 7px 18px rgba(0, 20, 46, 0.05);
 
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        background-color 0.2s ease;
+	transition:
+		box-shadow 0.2s ease,
+		border-color 0.2s ease;
 }
 
 .filter-select:hover,

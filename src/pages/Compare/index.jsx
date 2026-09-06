@@ -2,13 +2,12 @@ import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
 	IoSearchOutline,
-	IoCloseCircle,
+	IoCloseCircleOutline,
 	IoCarSportOutline,
-	IoAdd,
-	IoCheckmark,
+	IoAddOutline,
+	IoCheckmarkOutline,
 	IoCloseOutline,
-	IoArrowBackOutline,
-	IoHomeOutline 
+	IoSwapHorizontalOutline,
 } from 'react-icons/io5';
 
 import './style.css';
@@ -54,16 +53,18 @@ const mockCars = [
 ];
 
 export default function Compare() {
-		const navigate = useNavigate();
+	const navigate = useNavigate();
 	const location = useLocation();
 
 	const initialFirstCar = location.state?.firstCar || null;
 
 	const [firstCar, setFirstCar] = useState(initialFirstCar);
 	const [secondCar, setSecondCar] = useState(null);
+
 	const [activeSlot, setActiveSlot] = useState(
 		initialFirstCar ? 'second' : 'first'
 	);
+
 	const [search, setSearch] = useState('');
 
 	const results = useMemo(() => {
@@ -74,34 +75,44 @@ export default function Compare() {
 		}
 
 		return mockCars.filter((car) =>
-			`${car.brand} ${car.name} ${car.engine} ${car.type}`
+			`${car.brand} ${car.name} ${car.engine} ${car.power} ${car.type}`
 				.toLowerCase()
 				.includes(term)
 		);
 	}, [search]);
 
-	const canCompare = firstCar && secondCar;
+	const canCompare = Boolean(firstCar && secondCar);
 
 	function selectCar(car) {
+		// Se clicar no modelo que já está selecionado,
+		// remove ele do slot correspondente.
 		if (firstCar?.id === car.id) {
 			setFirstCar(null);
+			setActiveSlot('first');
 			return;
 		}
-		
+
 		if (secondCar?.id === car.id) {
 			setSecondCar(null);
+			setActiveSlot('second');
 			return;
 		}
+
+		// Primeiro slot vazio
 		if (!firstCar) {
 			setFirstCar(car);
+			setActiveSlot('second');
 			return;
 		}
+
+		// Segundo slot vazio
 		if (!secondCar) {
 			setSecondCar(car);
 			return;
 		}
 
-
+		// Se ambos estiverem preenchidos,
+		// substitui o slot ativo.
 		if (activeSlot === 'first') {
 			setFirstCar(car);
 		} else {
@@ -136,99 +147,201 @@ export default function Compare() {
 	return (
 		<main className="compare-page">
 			<Navbar />
-			<section className="compare-container">
+
+			<div className="compare-container">
 				<header className="compare-header">
+					<div className="compare-eyebrow">
+						COMPARAÇÃO DE MODELOS
+					</div>
 
 					<h1>Comparar</h1>
 
-					<p className="description">
-						Pesquise dois modelos para comparar desempenho,
-						consumo e diferenciais.
+					<p>
+						Selecione dois modelos para analisar desempenho,
+						consumo, características e diferenciais lado a lado.
 					</p>
 				</header>
-				<p className='description'>
-					Pesquise dois modelos para comparar desempenho,
-					consumo e diferenciais.
-				</p>
-				<section className="selected-area">
-					<SelectedSlot
-						label="Modelo 1"
-						car={firstCar}
-						active={activeSlot === 'first'}
-						onClick={() => setActiveSlot('first')}
-						onRemove={() => removeCar('first')}
-					/>
 
-					<div className="vs-circle" onClick={handleCompare}>X</div>
+				<section className="selected-section">
+					<div className="selected-section-header">
+						<div>
+							<span className="section-eyebrow">
+								SUA SELEÇÃO
+							</span>
 
-					<SelectedSlot
-						label="Modelo 2"
-						car={secondCar}
-						active={activeSlot === 'second'}
-						onClick={() => setActiveSlot('second')}
-						onRemove={() => removeCar('second')}
-					/>
-				</section>
-
-				<section className="search-area">
-					<div>
-						<h2>
-							Buscar para{' '}
-							{activeSlot === 'first' ? 'modelo 1' : 'modelo 2'}
-						</h2>
-
-						<div className="search-box">
-							<IoSearchOutline />
-
-							<input
-								type="text"
-								placeholder="Ex: Ford Mustang 2024"
-								value={search}
-								onChange={(event) => setSearch(event.target.value)}
-							/>
-
-							{search && (
-								<button
-									type="button"
-									className="clear-search"
-									onClick={() => setSearch('')}
-								>
-									<IoCloseCircle />
-								</button>
-							)}
+							<h2>
+								Escolha os modelos
+							</h2>
 						</div>
+
+						<div className="selection-status">
+							<span
+								className={
+									firstCar
+										? 'status-dot status-dot-active'
+										: 'status-dot'
+								}
+							/>
+							<span>
+								{firstCar ? '1' : '0'} de 2 selecionados
+							</span>
+						</div>
+					</div>
+
+					<div className="selected-area">
+						<SelectedSlot
+							label="Modelo 1"
+							car={firstCar}
+							active={activeSlot === 'first'}
+							onClick={() => setActiveSlot('first')}
+							onRemove={() => removeCar('first')}
+						/>
+
+						<div className="vs-wrapper">
+							<div className="vs-line" />
+
+							<button
+								type="button"
+								className={`vs-circle ${
+									canCompare ? 'vs-circle-ready' : ''
+								}`}
+								onClick={handleCompare}
+								disabled={!canCompare}
+								aria-label="Comparar modelos"
+							>
+								<span>VS</span>
+								<IoSwapHorizontalOutline />
+							</button>
+
+							<div className="vs-line" />
+						</div>
+
+						<SelectedSlot
+							label="Modelo 2"
+							car={secondCar}
+							active={activeSlot === 'second'}
+							onClick={() => setActiveSlot('second')}
+							onRemove={() => removeCar('second')}
+						/>
 					</div>
 				</section>
 
-				<section className="results-area">
+				<section className="search-section">
+					<div className="search-header">
+						<div>
+							<span className="section-eyebrow">
+								SELECIONAR MODELO
+							</span>
+
+							<h2>
+								Buscar para{' '}
+								<strong>
+									{activeSlot === 'first'
+										? 'modelo 1'
+										: 'modelo 2'}
+								</strong>
+							</h2>
+						</div>
+
+						<span className="search-hint">
+							{activeSlot === 'first'
+								? 'Primeiro veículo'
+								: 'Segundo veículo'}
+						</span>
+					</div>
+
+					<div className="search-box">
+						<div className="search-icon">
+							<IoSearchOutline />
+						</div>
+
+						<input
+							type="text"
+							placeholder="Pesquise por marca, modelo, motor ou tipo..."
+							value={search}
+							onChange={(event) =>
+								setSearch(event.target.value)
+							}
+						/>
+
+						{search && (
+							<button
+								type="button"
+								className="clear-search"
+								onClick={() => setSearch('')}
+								aria-label="Limpar busca"
+							>
+								<IoCloseCircleOutline />
+							</button>
+						)}
+					</div>
+				</section>
+
+				<section className="results-section">
+					<div className="results-header">
+						<div>
+							<span className="section-eyebrow">
+								MODELOS DISPONÍVEIS
+							</span>
+
+							<h2>
+								{search
+									? `${results.length} resultado${
+											results.length !== 1
+												? 's'
+												: ''
+									  }`
+									: 'Todos os modelos'}
+							</h2>
+						</div>
+					</div>
+
 					{results.length > 0 ? (
 						<div className="results-grid">
 							{results.map((car) => {
 								const selected =
-									firstCar?.id === car.id || secondCar?.id === car.id;
+									firstCar?.id === car.id ||
+									secondCar?.id === car.id;
+
+								const selectedSlot =
+									firstCar?.id === car.id
+										? 'Modelo 1'
+										: secondCar?.id === car.id
+										? 'Modelo 2'
+										: null;
 
 								return (
 									<button
 										type="button"
 										key={car.id}
 										className={`result-card ${
-											selected ? 'result-card-selected' : ''
+											selected
+												? 'result-card-selected'
+												: ''
 										}`}
-										onClick={() => selectCar(car)}
+										onClick={() =>
+											selectCar(car)
+										}
 									>
 										<div className="result-image-wrapper">
 											{car.image ? (
-												<img src={car.image} alt={car.name} />
+												<img
+													src={car.image}
+													alt={car.name}
+												/>
 											) : (
 												<IoCarSportOutline />
 											)}
 										</div>
 
 										<div className="result-info">
-											<h3>{car.name}</h3>
-											<p>{car.brand}</p>
+											<span className="result-brand">
+												{car.brand}
+											</span>
 
-											<div className="specs">
+											<h3>{car.name}</h3>
+
+											<div className="result-specs">
 												<span>{car.engine}</span>
 												<span>{car.power}</span>
 												<span>{car.type}</span>
@@ -237,48 +350,95 @@ export default function Compare() {
 
 										<div
 											className={`add-button ${
-												selected ? 'add-button-selected' : ''
+												selected
+													? 'add-button-selected'
+													: ''
 											}`}
 										>
-											{selected ? <IoCheckmark /> : <IoAdd />}
+											{selected ? (
+												<IoCheckmarkOutline />
+											) : (
+												<IoAddOutline />
+											)}
 										</div>
+
+										{selected && (
+											<span className="selected-label">
+												{selectedSlot}
+											</span>
+										)}
 									</button>
 								);
 							})}
 						</div>
 					) : (
 						<div className="empty-box">
-							<IoCarSportOutline />
+							<div className="empty-icon">
+								<IoCarSportOutline />
+							</div>
 
 							<h3>Nenhum modelo encontrado</h3>
 
 							<p>
-								Tente pesquisar com marca, modelo ou ano.
+								Tente pesquisar por outra marca, modelo,
+								motor ou tipo de veículo.
 							</p>
+
+							<button
+								type="button"
+								onClick={() => setSearch('')}
+							>
+								Ver todos os modelos
+							</button>
 						</div>
 					)}
 				</section>
 
 				<footer className="compare-footer">
+					<div className="footer-info">
+						<span
+							className={
+								canCompare
+									? 'footer-indicator ready'
+									: 'footer-indicator'
+							}
+						/>
+
+						<p>
+							{canCompare
+								? 'Pronto para comparar os dois modelos'
+								: 'Selecione dois modelos para continuar'}
+						</p>
+					</div>
+
 					<button
 						type="button"
 						className="compare-button"
 						disabled={!canCompare}
 						onClick={handleCompare}
 					>
-						Comparar Modelos
+						Comparar modelos
+						<IoSwapHorizontalOutline />
 					</button>
 				</footer>
-			</section>
+			</div>
 		</main>
 	);
 }
 
-function SelectedSlot({ label, car, active, onClick, onRemove }) {
+function SelectedSlot({
+	label,
+	car,
+	active,
+	onClick,
+	onRemove,
+}) {
 	return (
 		<button
 			type="button"
-			className={`slot-card ${active ? 'slot-card-active' : ''}`}
+			className={`slot-card ${
+				active ? 'slot-card-active' : ''
+			} ${car ? 'slot-card-filled' : 'slot-card-empty'}`}
 			onClick={onClick}
 		>
 			{car ? (
@@ -292,24 +452,43 @@ function SelectedSlot({ label, car, active, onClick, onRemove }) {
 					</div>
 
 					<div className="slot-info">
-						<span>{label}</span>
+						<span className="slot-label">
+							{label}
+						</span>
+
 						<strong>{car.name}</strong>
+
+						<div className="slot-meta">
+							<span>{car.engine}</span>
+							<span>{car.power}</span>
+							<span>{car.type}</span>
+						</div>
 					</div>
 
-					<span
+					<button
+						type="button"
 						className="remove-button"
 						onClick={(event) => {
 							event.stopPropagation();
 							onRemove();
 						}}
+						aria-label={`Remover ${car.name}`}
 					>
 						<IoCloseOutline />
-					</span>
+					</button>
 				</>
 			) : (
 				<div className="empty-slot">
-					<IoCarSportOutline />
-					<span>{label}</span>
+					<div className="empty-slot-icon">
+						<IoCarSportOutline />
+					</div>
+
+					<div>
+						<span>{label}</span>
+						<strong>Adicionar modelo</strong>
+					</div>
+
+					<IoAddOutline className="empty-slot-add" />
 				</div>
 			)}
 		</button>
