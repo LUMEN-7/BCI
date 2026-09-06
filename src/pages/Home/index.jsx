@@ -1,174 +1,446 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import {
-	IoAdd,
-	IoClose,
-	IoPersonCircleOutline,
-	IoBookmarkOutline,
-	IoDocumentTextOutline,
-	IoSearchOutline,
-	IoGitCompareOutline
+    IoSearchOutline,
+    IoGitCompareOutline,
+    IoArrowForward,
+    IoTrendingUpOutline,
+    IoWarningOutline,
+    IoStatsChartOutline,
 } from 'react-icons/io5';
 
+import Navbar from '../../components/Navbar/Navbar';
 import './style.css';
 
 const cars = [
-	{
-		id: '1',
-		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2021_ford_bronco.png',
-		widthRatio: 1.4,
-		rightRatio: -0.5,
-	},
-	{
-		id: '2',
-		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/mustang.png',
-		widthRatio: 1.2,
-		rightRatio: -0.4,
-	},
-	{
-		id: '3',
-		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2025_ford_bronco_sport.png',
-		widthRatio: 1.4,
-		rightRatio: -0.5,
-	},
-	{
-		id: '4',
-		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2026_ford_expedition.png',
-		widthRatio: 1.4,
-		rightRatio: -0.5,
-	},
-	{
-		id: '5',
-		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2026_ford_explorer.png',
-		widthRatio: 1.4,
-		rightRatio: -0.5,
-	},
-	{
-		id: '6',
-		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2026_ford_mustang_mach.png',
-		widthRatio: 1.3,
-		rightRatio: -0.45,
-	},
+    {
+        id: '1',
+        image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2021_ford_bronco.png',
+    },
+    {
+        id: '2',
+        image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/mustang.png',
+    },
+    {
+        id: '3',
+        image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2025_ford_bronco_sport.png',
+    },
+    {
+        id: '4',
+        image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2026_ford_expedition.png',
+    },
+    {
+        id: '5',
+        image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2026_ford_explorer.png',
+    },
+    {
+        id: '6',
+        image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2026_ford_mustang_mach.png',
+    },
+];
+
+const highlights = [
+    {
+        category: 'PICKUP',
+        title: 'FORD RANGER',
+        description: 'Maior crescimento de intenção de compra na semana.',
+        variation: '↑ 4,2%',
+        featured: true,
+    },
+    {
+        category: 'SUV COMPACTO',
+        title: 'HYUNDAI CRETA',
+        description: 'Subiu 2 posições no ranking Q3.',
+        featured: false,
+    },
+    {
+        category: 'HATCHBACK',
+        title: 'CHEVROLET ONIX',
+        description: 'Queda de avaliações pós-recall voluntário.',
+        featured: false,
+    },
+];
+
+const coverage = [
+    {
+        name: 'SUVs Compactos',
+        models: 34,
+        percentage: 82,
+    },
+    {
+        name: 'Pickups',
+        models: 22,
+        percentage: 67,
+    },
+    {
+        name: 'Hatchbacks',
+        models: 41,
+        percentage: 54,
+    },
+    {
+        name: 'Sedãs',
+        models: 17,
+        percentage: 38,
+    },
+];
+
+const recentActivity = [
+    {
+        type: 'ANÁLISE DE MERCADO',
+        title: 'SUVs compactos',
+        date: 'Hoje, 14:32',
+    },
+    {
+        type: 'COMPARAÇÃO',
+        title: 'Ford Territory × Jeep Compass',
+        date: 'Hoje, 11:18',
+    },
+    {
+        type: 'PESQUISA',
+        title: 'Ford Ranger',
+        date: 'Ontem, 17:42',
+    },
 ];
 
 export default function Home() {
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
-	const [currentIndex, setCurrentIndex] = useState(0);
-	const [open, setOpen] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-	const currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    const currentUser =
+        JSON.parse(localStorage.getItem('currentUser')) || null;
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setCurrentIndex((prevIndex) =>
-				prevIndex === cars.length - 1 ? 0 : prevIndex + 1
-			);
-		}, 3000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) =>
+                prev === cars.length - 1 ? 0 : prev + 1
+            );
+        }, 5000);
 
-		return () => clearInterval(interval);
-	}, []);
+        return () => clearInterval(interval);
+    }, []);
 
-	const currentCar = cars[currentIndex];
-	const displayName = currentUser?.name?.trim() || 'Usuário';
+    const firstName =
+        currentUser?.name?.trim()?.split(/\s+/)[0] || 'Usuário';
 
-	function getGreetingByHour() {
-		const hour = new Date().getHours();
+    function getGreetingByHour() {
+        const hour = new Date().getHours();
 
-		if (hour < 12) return 'Bom dia';
-		if (hour < 18) return 'Boa tarde';
+        if (hour < 12) return 'BOM DIA,';
+        if (hour < 18) return 'BOA TARDE,';
 
-		return 'Boa noite';
-	}
+        return 'BOA NOITE,';
+    }
 
-	const actions = [
-		{
-			label: 'Perfil',
-			icon: <IoPersonCircleOutline />,
-			route: '/profile',
-		},
-		{
-			label: 'Salvos',
-			icon: <IoBookmarkOutline />,
-			route: '/saved',
-		},
-		{
-			label: 'Anotações',
-			icon: <IoDocumentTextOutline />,
-			route: '/notes',
-		},
-	];
+    return (
+        <main className="home-page">
+            <Navbar />
 
-	return (
-		<main className="home-page">
-			<header className="home-header">
-				<h1>
-					{getGreetingByHour()}, {displayName}
-				</h1>
 
-				<p>
-					Built Beyond Comparison é mais do que um conceito, é o
-					compromisso de transformar inovação, estratégia e criatividade
-					em experiências que mantêm a Ford sempre além de qualquer
-					comparação. E você, está pronto para levar a Ford além da
-					comparação?
-				</p>
+            {/* HERO */}
+            <section className="home-hero">
 
-                <div className="hero-actions">
-					<button
-						className="hero-button primary"
-						onClick={() => navigate('/search')}
-					>
-						<IoSearchOutline />
-						<span>Pesquisar</span>
-					</button>
+                <div className="hero-content">
 
-					<button
-						className="hero-button secondary"
-						onClick={() => navigate('/compare')}
-					>
-						<IoGitCompareOutline />
-						<span>Comparar</span>
-					</button>
-				</div>
-			</header>
+                    <span className="eyebrow">
+                        BUSINESS COMPETITIVE INTELLIGENCE
+                    </span>
 
-			<section className="hero">
-				<img
-					src={currentCar.image}
-					alt="Carro Ford"
-					className="car-image"
-					style={{
-						width: `${currentCar.widthRatio * 55}vw`,
-						right: `${currentCar.rightRatio * 55}vw`,
-					}}
-				/>
-			</section>
+                    <h1>
+                        {getGreetingByHour()}
+                        <br />
+                        {firstName}.
+                    </h1>
 
-			<div className={`fab-container ${open ? 'is-open' : ''}`}>
-				<div className="action-list">
-					{actions.map((action) => (
-						<button
-							key={action.label}
-							className="action-button"
-							onClick={() => navigate(action.route)}
-						>
-							<span className="action-icon">
-								{action.icon}
-							</span>
+                    <p className="hero-description">
+                        Explore o mercado, compare modelos e transforme
+                        dados em decisões estratégicas para a Ford.
+                    </p>
 
-							<span>{action.label}</span>
-						</button>
-					))}
-				</div>
+                    <div className="hero-actions">
 
-				<button
-					className="fab"
-					onClick={() => setOpen(!open)}
-				>
-					{open ? <IoClose /> : <IoAdd />}
-				</button>
-			</div>
-		</main>
-	);
+                        <button
+                            className="hero-button hero-button-primary"
+                            onClick={() => navigate('/search')}
+                        >
+                            <IoSearchOutline />
+
+                            <span>PESQUISAR</span>
+
+                            <IoArrowForward className="button-arrow" />
+                        </button>
+
+                        <button
+                            className="hero-button hero-button-secondary"
+                            onClick={() => navigate('/compare')}
+                        >
+                            <IoGitCompareOutline />
+
+                            <span>COMPARAR</span>
+
+                            <IoArrowForward className="button-arrow" />
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                {/* CARRO */}
+                <div className="hero-car">
+
+                    <img
+                        src={cars[currentIndex].image}
+                        alt="Veículo Ford"
+                    />
+
+                    <div className="hero-car-info">
+                        <span>
+                            {String(currentIndex + 1).padStart(2, '0')}
+                        </span>
+
+                        <span>/</span>
+
+                        <span>
+                            {String(cars.length).padStart(2, '0')}
+                        </span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            {/* VISÃO GERAL */}
+            <section className="overview-section">
+
+                <div className="section-heading">
+                    <span>VISÃO GERAL</span>
+                    <div />
+                </div>
+
+                <div className="metrics-grid">
+
+                    <div className="metric">
+                        <strong>124</strong>
+                        <span>MODELOS<br />MONITORADOS</span>
+                    </div>
+
+                    <div className="metric">
+                        <strong>38</strong>
+                        <span>CONCORRENTES<br />MAPEADOS</span>
+                    </div>
+
+                    <div className="metric">
+                        <strong>17</strong>
+                        <span>ANÁLISES<br />ESTA SEMANA</span>
+                    </div>
+
+                    <div className="metric">
+                        <strong>06</strong>
+                        <span>ALERTAS<br />ATIVOS</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            {/* DESTAQUES */}
+            <section className="highlights-section">
+
+                <div className="section-heading">
+                    <span>DESTAQUES DA SEMANA</span>
+                    <div />
+                </div>
+
+                <div className="highlights-grid">
+
+                    {highlights.map((item, index) => (
+                        <article
+                            key={item.title}
+                            className={`highlight-card ${
+                                item.featured ? 'featured' : ''
+                            }`}
+                        >
+
+                            <div className="highlight-content">
+
+                                <span className="card-category">
+                                    {item.category}
+                                </span>
+
+                                <h2>{item.title}</h2>
+
+                                <p>{item.description}</p>
+
+                            </div>
+
+                            {item.featured && (
+                                <div className="highlight-variation">
+                                    <IoTrendingUpOutline />
+                                    <span>{item.variation}</span>
+                                </div>
+                            )}
+
+                            {!item.featured && (
+                                <IoArrowForward className="card-arrow" />
+                            )}
+
+                        </article>
+                    ))}
+
+                </div>
+
+            </section>
+
+
+            {/* COBERTURA */}
+            <section className="coverage-section">
+
+                <div className="section-heading">
+                    <span>COBERTURA DO MERCADO</span>
+                    <div />
+                </div>
+
+                <div className="coverage-list">
+
+                    {coverage.map((item) => (
+                        <div
+                            className="coverage-item"
+                            key={item.name}
+                        >
+
+                            <div className="coverage-header">
+
+                                <strong>{item.name}</strong>
+
+                                <span>
+                                    {item.models} modelos — {item.percentage}%
+                                </span>
+
+                            </div>
+
+                            <div className="coverage-bar">
+                                <div
+                                    style={{
+                                        width: `${item.percentage}%`,
+                                    }}
+                                />
+                            </div>
+
+                        </div>
+                    ))}
+
+                </div>
+
+            </section>
+
+
+            {/* ALERTAS */}
+            <section className="alerts-section">
+
+                <div className="section-heading">
+                    <span>MONITORAMENTO</span>
+                    <div />
+                </div>
+
+                <div className="alerts-header">
+
+                    <div>
+                        <span className="alert-number">27</span>
+
+                        <div>
+                            <h2>ALERTAS AGUARDAM REVISÃO</h2>
+
+                            <p>
+                                Existem movimentações do mercado
+                                que podem exigir sua atenção.
+                            </p>
+                        </div>
+                    </div>
+
+                    <IoWarningOutline />
+
+                </div>
+
+
+                <div className="alert-card">
+
+                    <span className="alert-dot" />
+
+                    <div>
+                        <strong>
+                            Variações de competidores detectadas
+                            desde segunda-feira.
+                        </strong>
+
+                        <button onClick={() => navigate('/search')}>
+                            Revisar alertas
+                            <IoArrowForward />
+                        </button>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            {/* ATIVIDADE */}
+            <section className="activity-section">
+
+                <div className="section-heading">
+                    <span>ATIVIDADE RECENTE</span>
+                    <div />
+                </div>
+
+                <div className="activity-list">
+
+                    {recentActivity.map((activity) => (
+                        <button
+                            className="activity-item"
+                            key={`${activity.type}-${activity.title}`}
+                        >
+
+                            <div className="activity-icon">
+                                {activity.type === 'COMPARAÇÃO' ? (
+                                    <IoGitCompareOutline />
+                                ) : activity.type === 'PESQUISA' ? (
+                                    <IoSearchOutline />
+                                ) : (
+                                    <IoStatsChartOutline />
+                                )}
+                            </div>
+
+                            <div className="activity-info">
+                                <span>{activity.type}</span>
+                                <strong>{activity.title}</strong>
+                            </div>
+
+                            <time>{activity.date}</time>
+
+                            <IoArrowForward />
+
+                        </button>
+                    ))}
+
+                </div>
+
+            </section>
+
+
+            {/* FOOTER */}
+            <footer className="home-footer">
+                <span>
+                    © 2026 Ford Motor Company · Uso interno
+                </span>
+
+                <span>
+                    BCI · Business Competitive Intelligence
+                </span>
+            </footer>
+
+        </main>
+    );
 }
