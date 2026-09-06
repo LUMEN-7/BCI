@@ -10,6 +10,7 @@ import {
 } from 'react-icons/io5';
 
 import './style.css';
+import Navbar from '../../components/Navbar/Navbar';
 
 const savedCars = [
 	{
@@ -61,17 +62,9 @@ export default function Saved() {
 
 	return (
 		<main className="saved-page">
+			<Navbar />
 			<section className="saved-container">
 				<header className="saved-header">
-					<button
-						type="button"
-						className="back-button"
-						onClick={() => navigate('/home')}
-					>
-						<IoArrowBackOutline />
-						<span>Voltar</span>
-					</button>
-
 					<div>
 						<h1>Salvos</h1>
 						<p>

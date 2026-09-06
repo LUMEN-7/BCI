@@ -9,6 +9,7 @@ import {
 } from 'react-icons/io5';
 
 import './style.css';
+import Navbar from '../../components/Navbar/Navbar';
 
 const mockNotes = [
 	{
@@ -59,16 +60,8 @@ export default function Notes() {
 
 	return (
 		<main className="notes-page">
+			<Navbar />
 			<section className="notes-container">
-				<button
-					type="button"
-					className="notes-back"
-					onClick={() => navigate('/home')}
-				>
-					<IoArrowBackOutline />
-					<span>Voltar</span>
-				</button>
-
 				<header className="notes-header">
 					<div>
 						<p className="notes-eyebrow">Workspace</p>

@@ -12,6 +12,7 @@ import {
 } from 'react-icons/io5';
 
 import './style.css';
+import Navbar from '../../components/Navbar/Navbar';
 
 const mockCars = [
 	{
@@ -134,26 +135,9 @@ export default function Compare() {
 
 	return (
 		<main className="compare-page">
+			<Navbar />
 			<section className="compare-container">
 				<header className="compare-header">
-					<div className="header-actions">
-						<button
-							type="button"
-							className="back-button"
-							onClick={() => navigate(-1)}
-						>
-							<IoArrowBackOutline />
-							<span>Voltar</span>
-						</button>
-
-						<button
-							type="button"
-							className="home-button"
-							onClick={() => navigate('/home')}
-						>
-							<IoHomeOutline />
-						</button>
-					</div>
 
 					<h1>Comparar</h1>
 
