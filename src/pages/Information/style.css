@@ -1138,11 +1138,11 @@
 
 
 .technical-row {
+	position: relative;
 	min-height: 54px;
 
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 
 	gap: 20px;
 
@@ -1190,6 +1190,12 @@
 
 .source-tag {
 	flex-shrink: 0;
+	width: fit-content;
+	max-width: 100%;
+	position: absolute;
+	right: 14px;
+	top: 50%;
+	transform: translateY(-50%);
 
 	display: inline-flex;
 	align-items: center;
@@ -1628,6 +1634,7 @@
 	.technical-row {
 		align-items: flex-start;
 
+		display: flex;
 		flex-direction: column;
 
 		gap: 8px;
@@ -1648,7 +1655,10 @@
 
 
 	.source-tag {
-		align-self: flex-start;
+		position: static;
+		align-self: flex-end;
+		margin-left: 0;
+		transform: none;
 	}
 
 

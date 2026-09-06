@@ -128,24 +128,16 @@ export default function Search() {
 				    HEADER
 				===================================================== */}
 
-				<header className="search-header">
-
-					<div className="search-eyebrow">
-						BUSINESS COMPETITIVE INTELLIGENCE
+				<header className="compare-header">
+					<div className="compare-eyebrow">
+						PESQUISA DE VEÍCULOS
 					</div>
 
-					<h1>
-						ENCONTRE SEU
-						<br />
-						PRÓXIMO MODELO.
-					</h1>
+					<h1>BUSCAR</h1>
 
 					<p>
-						Pesquise, filtre e explore os veículos
-						disponíveis para construir sua análise
-						competitiva.
+						Pesquise, filtre e explore os veículos disponíveis para construir sua análise competitiva.
 					</p>
-
 				</header>
 
 
