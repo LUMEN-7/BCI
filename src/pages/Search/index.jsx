@@ -10,6 +10,7 @@ import {
 } from 'react-icons/io5';
 
 import './style.css';
+import Navbar from '../../components/Navbar/Navbar';
 
 const cars = [
 	{
@@ -92,26 +93,9 @@ export default function Search() {
 
 	return (
 		<main className="search-page">
+			<Navbar />
 			<div className="search-container">
 				<header className="search-header">
-					<div className="header-actions">
-						<button
-							type="button"
-							className="back-button"
-							onClick={() => navigate(-1)}
-						>
-							<IoArrowBackOutline />
-							<span>Voltar</span>
-						</button>
-
-						<button
-							type="button"
-							className="home-button"
-							onClick={() => navigate('/home')}
-						>
-							<IoHomeOutline />
-						</button>
-					</div>
 
 					<h1>Encontre o modelo</h1>
 

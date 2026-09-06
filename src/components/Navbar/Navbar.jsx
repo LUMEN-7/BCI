@@ -18,7 +18,7 @@ import {
 import './style.css';
 
 const navigationItems = [
-    { icon: IoHomeOutline, label: 'Home', path: '/insights' },
+    { icon: IoHomeOutline, label: 'Home', path: '/home' },
     { icon: IoSearchOutline, label: 'Pesquisar', path: '/search' },
     { icon: IoGitCompareOutline, label: 'Comparar', path: '/compare' },
     { icon: IoAnalyticsOutline, label: 'Insights', path: '/insights' },
