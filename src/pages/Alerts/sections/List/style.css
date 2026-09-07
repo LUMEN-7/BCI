@@ -1,0 +1,46 @@
+.alerts-list { display: flex; flex-direction: column; gap: 10px; }
+.alert-card { position: relative; min-height: 100px; display: flex; align-items: center; gap: 16px; padding: 17px 18px; border: 1px solid rgba(0, 20, 46, 0.07); border-radius: 20px; background: rgba(255, 255, 255, 0.72); box-shadow: 0 7px 22px rgba(0, 20, 46, 0.035); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease; }
+.alert-card:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 20, 46, 0.07); border-color: rgba(0, 20, 46, 0.11); }
+.alert-card.is-unread { background: #ffffff; border-color: rgba(0, 20, 46, 0.10); box-shadow: 0 9px 27px rgba(0, 20, 46, 0.055); }
+.alert-icon { width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 14px; font-size: 20px; }
+.alert-icon.update { background: rgba(0, 20, 46, 0.055); color: #506174; }
+.alert-icon.attention { background: rgba(245, 158, 11, 0.10); color: #b45309; }
+.alert-icon.information { background: rgba(113, 149, 220, 0.11); color: #5d7fc2; }
+.alert-icon.system { background: rgba(0, 20, 46, 0.045); color: #718093; }
+.alert-content { flex: 1; min-width: 0; }
+.alert-top { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+.alert-type { display: flex; align-items: center; gap: 7px; }
+.alert-type > span:last-child { font-family: var(--font-body-bold); font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: #8994a1; }
+.unread-dot { width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; background: var(--color-secondary); box-shadow: 0 0 0 4px rgba(113, 149, 220, 0.10); }
+.alert-top small { font-family: var(--font-body); font-size: 9px; color: #9aa3ad; white-space: nowrap; }
+.alert-content h2 { margin: 6px 0 0; font-family: var(--font-body-bold); font-size: 14px; letter-spacing: 0.4px; text-transform: uppercase; color: var(--color-primary); }
+.alert-content p { max-width: 720px; margin: 5px 0 0; font-family: var(--font-body); font-size: 11px; line-height: 1.55; color: #7f8995; }
+.alert-actions { display: flex; align-items: center; gap: 6px; }
+.read-button, .delete-alert-button { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 50%; cursor: pointer; transition: background-color 0.2s ease; }
+.read-button { background: rgba(34, 197, 94, 0.08); color: #15803d; }
+.delete-alert-button { background: rgba(0, 20, 46, 0.045); color: #7d8793; }
+.read-button:hover { transform: none; background: rgba(34, 197, 94, 0.14); }
+.delete-alert-button:hover { transform: none; background: rgba(239, 68, 68, 0.09); color: #b91c1c; }
+.read-button svg, .delete-alert-button svg { font-size: 15px; transform: none; }
+.alerts-empty { padding: 65px 30px; display: flex; flex-direction: column; align-items: center; border: 1px solid rgba(0, 20, 46, 0.07); border-radius: 22px; background: rgba(255, 255, 255, 0.72); box-shadow: 0 9px 28px rgba(0, 20, 46, 0.04); text-align: center; }
+.alerts-empty-icon { width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(34, 197, 94, 0.08); color: #15803d; font-size: 24px; }
+.alerts-empty h2 { margin: 18px 0 0; font-family: var(--font-title); font-size: 30px; line-height: 1; text-transform: uppercase; color: var(--color-primary); }
+.alerts-empty p { margin-top: 8px; font-family: var(--font-body); font-size: 11px; color: #929ca8; }
+
+@media (max-width: 600px) {
+    .alert-card { align-items: flex-start; padding: 15px; border-radius: 18px; }
+    .alert-icon { width: 40px; height: 40px; border-radius: 12px; font-size: 18px; }
+    .alert-top { align-items: flex-start; flex-direction: column; gap: 5px; }
+    .alert-content h2 { font-size: 12px; }
+    .alert-content p { font-size: 10px; }
+    .alert-actions { flex-direction: column; }
+    .read-button, .delete-alert-button { width: 30px; height: 30px; }
+    .alerts-empty { padding: 50px 20px; }
+}
+
+@media (max-width: 400px) {
+    .alert-card { gap: 10px; padding: 13px; }
+    .alert-icon { width: 36px; height: 36px; font-size: 16px; }
+    .alert-content h2 { font-size: 11px; }
+    .alert-content p { font-size: 9px; }
+}

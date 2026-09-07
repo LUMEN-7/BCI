@@ -1,0 +1,76 @@
+.register-page .register-card { width: 100%; height: 100%; display: flex; flex-direction: column; padding: 42px 68px; background: var(--color-surface); }
+.register-page .register-brand { display: flex; align-items: center; width: fit-content; gap: 14px; margin-bottom: 42px; }
+.register-page .register-brand img { width: 76px; height: auto; display: block; filter: brightness(0); }
+.register-page .register-brand::after { content: ''; width: 1px; height: 22px; background: var(--color-border); }
+.register-page .register-brand span { order: 3; color: var(--color-primary); font-family: var(--font-body-bold); font-size: 12px; font-weight: 700; letter-spacing: 3px; }
+.register-page .register-content { min-height: 0; flex: 1; display: grid; grid-template-columns: 190px minmax(0, 1fr); column-gap: 48px; align-items: center; }
+.register-page .photo-area { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; }
+.register-page .photo-wrapper { position: relative; width: 118px; height: 118px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.register-page .photo-wrapper input { display: none; }
+.register-page .profile-photo, .register-page .photo-placeholder { width: 118px; height: 118px; border-radius: 50%; object-fit: cover; }
+.register-page .photo-placeholder { display: flex; align-items: center; justify-content: center; background: var(--color-surface); color: var(--color-primary); box-shadow: inset 5px 5px 11px rgba(0, 20, 46, 0.10), inset -5px -5px 11px rgba(255, 255, 255, 0.95); }
+.register-page .photo-placeholder svg { width: 42px; height: 42px; }
+.register-page .camera-button { position: absolute; right: -2px; bottom: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--color-primary); color: var(--color-light-neutral); font-size: 17px; box-shadow: 0 5px 12px rgba(0, 20, 46, 0.20); }
+.register-page .photo-text { margin-top: 12px; color: var(--color-muted); font-family: var(--font-body); font-size: 11px; }
+.register-page .form-fields { min-width: 0; display: flex; flex-direction: column; gap: 15px; }
+.register-page .field { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.register-page .field label { color: var(--color-primary); font-family: var(--font-body-bold); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; }
+.register-page .field input { width: 100%; height: 48px; padding: 0 15px; border: none; border-radius: 999px; outline: none; background: var(--color-surface); color: var(--color-primary); font-family: var(--font-body); font-size: 14px; box-shadow: inset 4px 4px 9px rgba(0, 20, 46, 0.10), inset -4px -4px 9px rgba(255, 255, 255, 0.95); transition: box-shadow 0.2s ease, background-color 0.2s ease; }
+.register-page .field input:focus { box-shadow: inset 4px 4px 9px rgba(0, 20, 46, 0.13), inset -4px -4px 9px rgba(255, 255, 255, 0.95); }
+.register-page .field-error { color: var(--color-error); font-family: var(--font-body-bold); font-size: 10px; line-height: 1; }
+.register-page .auth-error { margin: -4px 0 0; color: var(--color-error); font-family: var(--font-body); font-size: 11px; }
+.register-page .primary-button { width: 45%; height: 48px; display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 6px; border: none; border-radius: 999px; background: var(--color-primary); color: var(--color-light-neutral); font-family: var(--font-body-bold); font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; box-shadow: 0 7px 14px rgba(0, 20, 46, 0.16), 0 2px 5px rgba(0, 20, 46, 0.08); transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease; }
+.register-page .primary-button:hover { transform: translateY(-1px); box-shadow: 0 9px 18px rgba(0, 20, 46, 0.20), 0 3px 7px rgba(0, 20, 46, 0.10); }
+.register-page .primary-button:active { transform: translateY(1px); box-shadow: 0 3px 7px rgba(0, 20, 46, 0.14); }
+.primary-button svg { font-size: 18px; font-weight: 400; transition: transform 0.25s ease; }
+.primary-button:hover svg { transform: translateX(5px); }
+.register-page .link-button { width: 100%; display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 0; padding: 0; border: none; background: transparent; color: var(--color-muted); font-family: var(--font-body); font-size: 12px; cursor: pointer; }
+.register-page .link-button strong { color: var(--color-primary); font-family: var(--font-body-bold); font-weight: 700; }
+.register-page .link-button:hover strong { color: var(--color-secondary); }
+
+@media (max-width: 900px) and (min-width: 701px) {
+    .register-page .register-card { padding: 34px 44px; }
+    .register-page .register-brand { margin-bottom: 32px; }
+    .register-page .register-content { grid-template-columns: 160px minmax(0, 1fr); column-gap: 34px; }
+    .register-page .photo-wrapper, .register-page .profile-photo, .register-page .photo-placeholder { width: 100px; height: 100px; }
+}
+@media (max-width: 700px) {
+    .register-page .register-card { width: 100%; height: 100%; min-height: 0; display: flex; flex-direction: column; padding: 22px 20px 16px; overflow: hidden; }
+    .register-page .register-brand { width: fit-content; display: flex; align-items: center; gap: 12px; margin: 0 0 24px; }
+    .register-page .register-brand img { width: 68px; }
+    .register-page .register-brand::after { height: 20px; }
+    .register-page .register-brand span { font-size: 10px; letter-spacing: 2.5px; }
+    .register-page .register-content { width: 100%; min-height: 0; flex: 1; display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+    .register-page .photo-area { width: 100%; padding: 0; margin: 0 0 17px; }
+    .register-page .photo-wrapper { width: 72px; height: 72px; }
+    .register-page .profile-photo, .register-page .photo-placeholder { width: 72px; height: 72px; }
+    .register-page .photo-placeholder svg { width: 30px; height: 30px; }
+    .register-page .camera-button { right: -1px; bottom: -1px; width: 27px; height: 27px; font-size: 13px; }
+    .register-page .photo-text { margin: 7px 0 0; font-size: 9px; text-align: center; }
+    .register-page .form-fields { width: 100%; min-width: 0; min-height: 0; gap: 10px; }
+    .register-page .field { width: 100%; gap: 4px; }
+    .register-page .field label { margin: 0; font-size: 9px; letter-spacing: 1.3px; }
+    .register-page .field input { height: 41px; margin: 0; padding: 0 12px; border-radius: 9px; font-size: 13px; }
+    .register-page .field-error, .register-page .auth-error { font-size: 9px; }
+    .register-page .primary-button { width: 100%; height: 41px; margin: 3px 0 0; padding: 0; gap: 13px; font-size: 11px; }
+    .register-page .primary-button svg { font-size: 14px; }
+    .register-page .link-button { width: 100%; margin: 0; padding: 0; font-size: 9px; }
+}
+@media (max-width: 450px) {
+    .register-page .register-card { padding: 18px 16px 13px; }
+    .register-page .register-brand { margin-bottom: 19px; }
+    .register-page .register-brand img { width: 64px; }
+    .register-page .register-brand span { font-size: 9px; }
+    .register-page .photo-area { margin-bottom: 14px; }
+    .register-page .photo-wrapper, .register-page .profile-photo, .register-page .photo-placeholder { width: 100px; height: 100px; }
+    .register-page .photo-placeholder svg { width: 27px; height: 27px; }
+    .register-page .camera-button { width: 25px; height: 25px; font-size: 11px; }
+    .register-page .photo-text { margin-top: 6px; font-size: 8px; }
+    .register-page .form-fields { gap: 16px; }
+    .register-page .field { gap: 7px; }
+    .register-page .field label { font-size: 12px; }
+    .register-page .field input { height: 38px; padding: 0 11px; border-radius: 4px; font-size: 12px; }
+    .register-page .primary-button { height: 38px; margin-top: 28px; font-size: 14px; }
+    .register-page .primary-button svg { font-size: 13px; }
+    .register-page .link-button { font-size: 12px; }
+}
