@@ -1,0 +1,38 @@
+export const mockCars = [
+	{
+		id: '1',
+		brand: 'Ford',
+		name: 'Ford Mustang 2024',
+		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/mustang.png',
+		engine: '5.0 V8',
+		power: '488 cv',
+		type: 'Coupé',
+	},
+	{
+		id: '2',
+		brand: 'Ford',
+		name: 'Ford Bronco 2021',
+		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2021_ford_bronco.png',
+		engine: '2.7 V6',
+		power: '330 cv',
+		type: 'SUV',
+	},
+	{
+		id: '3',
+		brand: 'Ford',
+		name: 'Ford Bronco Sport 2025',
+		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2025_ford_bronco_sport.png',
+		engine: '2.0 EcoBoost',
+		power: '250 cv',
+		type: 'SUV',
+	},
+	{
+		id: '4',
+		brand: 'Ford',
+		name: 'Ford Explorer 2026',
+		image: 'https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/carros/2026_ford_explorer.png',
+		engine: '2.3 EcoBoost',
+		power: '300 cv',
+		type: 'SUV',
+	},
+];
