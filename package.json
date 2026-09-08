@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource/anton": "^5.2.7",
     "@fontsource/titillium-web": "^5.2.8",
+    "firebase": "^12.18.0",
     "framer-motion": "^13.2.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
