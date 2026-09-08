@@ -1,46 +1,71 @@
-
 .overview-section {
-	padding: 20px 0 90px;
+  padding: 20px 0 90px;
 }
 
 .metrics-grid {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	border-top: 1px solid rgba(0, 20, 46, 0.12);
-	border-bottom: 1px solid rgba(0, 20, 46, 0.12);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid rgba(0, 20, 46, 0.12);
+  border-bottom: 1px solid rgba(0, 20, 46, 0.12);
 }
 
 .metric span {
-	white-space: pre-line;
+  white-space: pre-line;
 }
 
 .metric {
-	min-height: 135px;
-	padding: 28px 25px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	border-right: 1px solid rgba(0, 20, 46, 0.10);
+  min-height: 135px;
+  padding: 28px 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid rgba(0, 20, 46, 0.1);
 }
 
-.metric:last-child { border-right: none; }
-.metric strong { font-family: var(--font-title); font-size: 52px; line-height: 0.9; font-weight: 500; }
-.metric span { margin-top: 12px; font-family: var(--font-body-bold); font-size: 9px; line-height: 1.4; letter-spacing: 1.5px; color: var(--color-dark-grey); opacity: 0.62; }
+.metric:last-child {
+  border-right: none;
+}
+.metric strong {
+  font-family: var(--font-title);
+  font-size: 52px;
+  line-height: 0.9;
+  font-weight: 500;
+}
+.metric span {
+  margin-top: 12px;
+  font-family: var(--font-body-bold);
+  font-size: 9px;
+  line-height: 1.4;
+  letter-spacing: 1.5px;
+  color: var(--color-dark-grey);
+  opacity: 0.62;
+}
 
 @media (max-width: 899px) {
-	.metric { min-height: 110px; padding: 20px; border-bottom: 1px solid rgba(0, 20, 46, 0.10); }
-	.metric:nth-child(2), .metric:nth-child(4) { border-right: none; }
-	.metric:nth-child(3), .metric:nth-child(4) { border-bottom: none; }
-	.metric strong { font-size: 42px; }
+  .metric {
+    min-height: 110px;
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 20, 46, 0.1);
+  }
+  .metric:nth-child(2),
+  .metric:nth-child(4) {
+    border-right: none;
+  }
+  .metric:nth-child(3),
+  .metric:nth-child(4) {
+    border-bottom: none;
+  }
+  .metric strong {
+    font-size: 42px;
+  }
 }
 
 @media (max-width: 899px) {
-	.overview-section {
-		padding: 15px 0 65px;
-	}
+  .overview-section {
+    padding: 15px 0 65px;
+  }
 
-	.metrics-grid {
-		grid-template-columns: 1fr 1fr;
-	}
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
-

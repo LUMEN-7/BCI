@@ -1,17 +1,68 @@
-@import '../../../styles/global.css';
+@import "../../../styles/global.css";
 
-* { box-sizing: border-box; }
-html, body, #root { margin: 0; width: 100%; min-height: 100%; }
-body { font-family: var(--font-body); background: var(--color-primary); }
-.login-page { width: 100%; height: 100svh; min-height: 600px; padding: 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--color-primary); }
-.login-shell { width: min(1100px, 100%); height: min(680px, calc(100svh - 80px)); display: grid; grid-template-columns: 1fr 0.85fr; overflow: hidden; border-radius: 28px; background: var(--color-surface); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28); }
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+body {
+  font-family: var(--font-body);
+  background: var(--color-primary);
+}
+.login-page {
+  width: 100%;
+  height: 100svh;
+  min-height: 600px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--color-primary);
+}
+.login-shell {
+  width: min(1100px, 100%);
+  height: min(680px, calc(100svh - 80px));
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--color-surface);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+}
 
 @media (max-width: 900px) {
-    .login-page { padding: 24px; }
-    .login-shell { width: 100%; height: min(680px, calc(100svh - 48px)); grid-template-columns: 0.9fr 1fr; }
+  .login-page {
+    padding: 24px;
+  }
+  .login-shell {
+    width: 100%;
+    height: min(680px, calc(100svh - 48px));
+    grid-template-columns: 0.9fr 1fr;
+  }
 }
 
 @media (max-width: 700px) {
-    .login-page { width: 100%; height: 100svh; min-height: 0; padding: 0; align-items: stretch; overflow: hidden; }
-    .login-shell { width: 100%; height: 100svh; min-height: 0; display: flex; flex-direction: column; border-radius: 0; box-shadow: none; }
+  .login-page {
+    width: 100%;
+    height: 100svh;
+    min-height: 0;
+    padding: 0;
+    align-items: stretch;
+    overflow: hidden;
+  }
+  .login-shell {
+    width: 100%;
+    height: 100svh;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0;
+    box-shadow: none;
+  }
 }

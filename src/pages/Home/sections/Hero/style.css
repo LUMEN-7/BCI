@@ -1,190 +1,262 @@
 .home-hero {
-	min-height: 680px;
-	position: relative;
-	display: flex;
-	align-items: center;
-	padding: 90px 7vw 80px 9vw;
-	overflow: hidden;
+  min-height: 680px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 90px 7vw 80px 9vw;
+  overflow: hidden;
 }
 
 .eyebrow {
-	display: block;
-	margin-bottom: 20px;
-	font-family: var(--font-body-bold);
-	font-size: 11px;
-	letter-spacing: 4px;
-	color: var(--color-primary);
-	opacity: 0.48;
+  display: block;
+  margin-bottom: 20px;
+  font-family: var(--font-body-bold);
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--color-primary);
+  opacity: 0.48;
 }
 
 .hero-content h1 {
-	margin: 0;
-	font-family: var(--font-title);
-	font-size: clamp(68px, 7vw, 110px);
-	line-height: 0.9;
-	letter-spacing: -2px;
-	text-transform: uppercase;
-	color: var(--color-primary);
-	font-weight: 500;
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: clamp(68px, 7vw, 110px);
+  line-height: 0.9;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  font-weight: 500;
 }
 
 .hero-description {
-	max-width: 420px;
-	margin: 30px 0 0;
-	font-family: var(--font-body);
-	font-size: 15px;
-	line-height: 1.7;
-	color: var(--color-dark-grey);
-	opacity: 0.78;
+  max-width: 420px;
+  margin: 30px 0 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-dark-grey);
+  opacity: 0.78;
 }
 
 .hero-button {
-	height: 52px;
-	padding: 0 20px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 10px;
-	border-radius: 999px;
-	font-family: var(--font-body-bold);
-	font-size: 12px;
-	font-weight: 600;
-	letter-spacing: 0.5px;
-	text-transform: uppercase;
-	cursor: pointer;
-	transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+  height: 52px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 999px;
+  font-family: var(--font-body-bold);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
 }
 
-.hero-button svg { font-size: 18px; flex-shrink: 0; }
-.hero-button .button-arrow { margin-left: 4px; transition: transform 0.25s ease; }
+.hero-button svg {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.hero-button .button-arrow {
+  margin-left: 4px;
+  transition: transform 0.25s ease;
+}
 
 .hero-button-primary {
-	min-width: 190px;
-	border: none;
-	background: var(--color-primary);
-	color: var(--color-light-neutral);
-	box-shadow: 0 8px 16px rgba(0, 20, 46, 0.20), 0 3px 6px rgba(0, 20, 46, 0.12);
+  min-width: 190px;
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-light-neutral);
+  box-shadow:
+    0 8px 16px rgba(0, 20, 46, 0.2),
+    0 3px 6px rgba(0, 20, 46, 0.12);
 }
 
 .hero-button-primary:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 16px 30px rgba(0, 20, 46, 0.22), 0 5px 10px rgba(0, 20, 46, 0.12);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 30px rgba(0, 20, 46, 0.22),
+    0 5px 10px rgba(0, 20, 46, 0.12);
 }
 
 .hero-button-primary:hover .button-arrow,
-.hero-button-secondary:hover .button-arrow { transform: translateX(5px); }
+.hero-button-secondary:hover .button-arrow {
+  transform: translateX(5px);
+}
 
 .hero-button-secondary {
-	min-width: 170px;
-	border: none;
-	background: rgba(255, 255, 255, 0.765);
-	color: var(--color-primary);
-	box-shadow: 0 8px 16px rgba(0, 20, 46, 0.20), 0 3px 6px rgba(0, 20, 46, 0.12);
+  min-width: 170px;
+  border: none;
+  background: rgba(255, 255, 255, 0.765);
+  color: var(--color-primary);
+  box-shadow:
+    0 8px 16px rgba(0, 20, 46, 0.2),
+    0 3px 6px rgba(0, 20, 46, 0.12);
 }
 
 .hero-button-secondary:hover {
-	transform: translateY(-2px);
-	background: var(--color-primary);
-	color: var(--color-light-neutral);
-	box-shadow: 0 12px 25px rgba(0, 20, 46, 0.18);
+  transform: translateY(-2px);
+  background: var(--color-primary);
+  color: var(--color-light-neutral);
+  box-shadow: 0 12px 25px rgba(0, 20, 46, 0.18);
 }
 
 .hero-car {
-	position: absolute;
-	right: -120px;
-	bottom: 0;
-	width: 42vw;
-	max-width: 900px;
-	height: 650px;
-	display: flex;
-	align-items: flex-end;
-	justify-content: flex-end;
-	z-index: 2;
-	pointer-events: none;
+  position: absolute;
+  right: -120px;
+  bottom: 0;
+  width: 42vw;
+  max-width: 900px;
+  height: 650px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .hero-car::before {
-	content: '';
-	position: absolute;
-	width: 650px;
-	height: 650px;
-	right: 40px;
-	bottom: -80px;
-	background: radial-gradient(circle, rgba(0, 20, 46, 0.09), transparent 68%);
-	filter: blur(20px);
+  content: "";
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  right: 40px;
+  bottom: -80px;
+  background: radial-gradient(circle, rgba(0, 20, 46, 0.09), transparent 68%);
+  filter: blur(20px);
 }
 
 .hero-car img {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	object-fit: contain;
-	object-position: right bottom;
-	filter: drop-shadow(0 28px 35px rgba(0, 20, 46, 0.18));
-	animation: carEnter 0.7s ease;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: right bottom;
+  filter: drop-shadow(0 28px 35px rgba(0, 20, 46, 0.18));
+  animation: carEnter 0.7s ease;
 }
 
 @keyframes carEnter {
-	from { opacity: 0; transform: translateX(25px) scale(0.97); }
-	to { opacity: 1; transform: translateX(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateX(25px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
 }
 
 .hero-car-info {
-	position: absolute;
-	right: 80px;
-	bottom: 32px;
-	display: flex;
-	gap: 6px;
-	font-family: var(--font-body-bold);
-	font-size: 9px;
-	letter-spacing: 2px;
-	color: var(--color-primary);
-	opacity: 0.5;
+  position: absolute;
+  right: 80px;
+  bottom: 32px;
+  display: flex;
+  gap: 6px;
+  font-family: var(--font-body-bold);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--color-primary);
+  opacity: 0.5;
 }
 
 @media (max-width: 1100px) {
-	.home-hero { padding-left: 9vw; }
-	.hero-content { width: 420px; }
-	.hero-content h1 { font-size: 75px; }
-	.hero-car { right: -150px; width: 65vw; }
+  .home-hero {
+    padding-left: 9vw;
+  }
+  .hero-content {
+    width: 420px;
+  }
+  .hero-content h1 {
+    font-size: 75px;
+  }
+  .hero-car {
+    right: -150px;
+    width: 65vw;
+  }
 }
 
 @media (max-width: 899px) {
-	.eyebrow { margin-bottom: 18px; font-size: 9px; letter-spacing: 3px; }
-	.hero-content h1 { font-size: clamp(58px, 17vw, 82px); line-height: 0.86; letter-spacing: -1px; }
-	.hero-description { max-width: 330px; margin-top: 24px; font-size: 13px; line-height: 1.6; }
-	.hero-actions { margin-top: 25px; gap: 8px; }
-	.hero-button { height: 48px; padding: 0 15px; font-size: 10px; }
-	.hero-button-primary { min-width: 145px; }
-	.hero-button-secondary { min-width: 135px; }
-	.hero-car { right: -110px; bottom: -10px; width: 450px; height: 380px; max-width: none; }
-	.hero-car::before { width: 450px; height: 450px; right: 20px; bottom: -100px; }
-	.hero-car-info { right: 105px; bottom: 20px; font-size: 8px; }
+  .eyebrow {
+    margin-bottom: 18px;
+    font-size: 9px;
+    letter-spacing: 3px;
+  }
+  .hero-content h1 {
+    font-size: clamp(58px, 17vw, 82px);
+    line-height: 0.86;
+    letter-spacing: -1px;
+  }
+  .hero-description {
+    max-width: 330px;
+    margin-top: 24px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .hero-actions {
+    margin-top: 25px;
+    gap: 8px;
+  }
+  .hero-button {
+    height: 48px;
+    padding: 0 15px;
+    font-size: 10px;
+  }
+  .hero-button-primary {
+    min-width: 145px;
+  }
+  .hero-button-secondary {
+    min-width: 135px;
+  }
+  .hero-car {
+    right: -110px;
+    bottom: -10px;
+    width: 450px;
+    height: 380px;
+    max-width: none;
+  }
+  .hero-car::before {
+    width: 450px;
+    height: 450px;
+    right: 20px;
+    bottom: -100px;
+  }
+  .hero-car-info {
+    right: 105px;
+    bottom: 20px;
+    font-size: 8px;
+  }
 }
 
 .hero-content {
-	position: relative;
-	z-index: 5;
-	width: 470px;
-	max-width: 42vw;
+  position: relative;
+  z-index: 5;
+  width: 470px;
+  max-width: 42vw;
 }
 
 .hero-actions {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
 }
 
 @media (max-width: 899px) {
-	.home-hero {
-		min-height: 720px;
-		padding: 70px 28px 0;
-		display: block;
-	}
+  .home-hero {
+    min-height: 720px;
+    padding: 70px 28px 0;
+    display: block;
+  }
 
-	.hero-content {
-		width: 100%;
-		max-width: none;
-	}
+  .hero-content {
+    width: 100%;
+    max-width: none;
+  }
 }

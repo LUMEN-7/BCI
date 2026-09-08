@@ -1,15 +1,49 @@
-
-.compare-header { margin-bottom: 48px; }
-.compare-eyebrow { display: block; font-family: var(--font-body-bold); font-size: 10px; font-weight: 700; letter-spacing: 2.4px; text-transform: uppercase; color: var(--color-secondary); }
-.compare-header h1 { margin: 8px 0 0; font-family: var(--font-title); font-size: clamp(58px, 6vw, 82px); font-weight: 500; line-height: 0.95; text-transform: uppercase; color: var(--color-primary); }
-.compare-header p { margin: 18px 0 0; max-width: 600px; font-family: var(--font-body); font-size: 15px; line-height: 1.65; color: var(--color-dark-grey); opacity: 0.75; }
+.compare-header {
+  margin-bottom: 48px;
+}
+.compare-eyebrow {
+  display: block;
+  font-family: var(--font-body-bold);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+.compare-header h1 {
+  margin: 8px 0 0;
+  font-family: var(--font-title);
+  font-size: clamp(58px, 6vw, 82px);
+  font-weight: 500;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+.compare-header p {
+  margin: 18px 0 0;
+  max-width: 600px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--color-dark-grey);
+  opacity: 0.75;
+}
 
 @media (max-width: 700px) {
-	.compare-header h1 { font-size: clamp(44px, 13vw, 64px); line-height: 0.9; letter-spacing: -1px; }
-	.compare-header p { margin-top: 20px; font-size: 14px; line-height: 1.6; }
+  .compare-header h1 {
+    font-size: clamp(44px, 13vw, 64px);
+    line-height: 0.9;
+    letter-spacing: -1px;
+  }
+  .compare-header p {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
 }
 
 @media (max-width: 400px) {
-	.compare-header h1 { font-size: 43px; }
+  .compare-header h1 {
+    font-size: 43px;
+  }
 }
-

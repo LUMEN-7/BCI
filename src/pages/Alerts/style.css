@@ -1,26 +1,36 @@
-@import '../../styles/global.css';
+@import "../../styles/global.css";
 
 .alerts-page {
-    min-height: 100vh;
-    padding: 48px 40px 90px;
-    background: radial-gradient(circle at 82% 4%, rgba(0, 20, 46, 0.055), transparent 30%), linear-gradient(180deg, #ffffff 0%, var(--color-light-neutral) 100%);
-    color: var(--color-primary);
+  min-height: 100vh;
+  padding: 48px 40px 90px;
+  background:
+    radial-gradient(circle at 82% 4%, rgba(0, 20, 46, 0.055), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, var(--color-light-neutral) 100%);
+  color: var(--color-primary);
 }
 
 .alerts-container {
-    width: 100%;
-    max-width: 1180px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
 }
 
 @media (max-width: 900px) {
-    .alerts-page { padding-left: 80px; padding-right: 40px; }
+  .alerts-page {
+    padding-left: 80px;
+    padding-right: 40px;
+  }
 }
 
 @media (max-width: 600px) {
-    .alerts-page { padding: 30px 20px 70px; }
+  .alerts-page {
+    padding: 30px 20px 70px;
+  }
 }
 
 @media (max-width: 400px) {
-    .alerts-page { padding-left: 12px; padding-right: 12px; }
+  .alerts-page {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 }
