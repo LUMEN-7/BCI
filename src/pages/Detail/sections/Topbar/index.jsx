@@ -3,6 +3,7 @@ import {
   IoHomeOutline,
   IoStar,
   IoStarOutline,
+  IoDownloadOutline
 } from "react-icons/io5";
 import "./style.css";
 
@@ -30,6 +31,15 @@ export default function Topbar({ favorite, onBack, onHome, onToggleFavorite }) {
         >
           {favorite ? <IoStar /> : <IoStarOutline />}
         </button>
+		<button
+			type="button"
+			className="export-data-button"
+			// onClick={onExport}
+			aria-label="Exportar dados"
+		>
+			<IoDownloadOutline />
+			<span>Exportar dados</span>
+		</button>
       </div>
     </header>
   );

@@ -344,12 +344,12 @@ export default function Technical({
       </div>
       <h2 className="subsection-title">Dados técnicos</h2>
       <div className="accordion-group">
-        {groups.slice(0, 6).map((group) => (
+        {groups.slice(0, 6).map(({ key, ...group }) => (
           <Accordion
-            key={group.key}
+            key={key}
             {...group}
-            open={openSection === group.key}
-            onClick={() => onToggleSection(group.key)}
+            open={openSection === key}
+            onClick={() => onToggleSection(key)}
           />
         ))}
       </div>
@@ -357,12 +357,12 @@ export default function Technical({
         Recursos e Desempenho
       </h2>
       <div className="accordion-group">
-        {groups.slice(6).map((group) => (
+        {groups.slice(6).map(({ key, ...group }) => (
           <Accordion
-            key={group.key}
+            key={key}
             {...group}
-            open={openSection === group.key}
-            onClick={() => onToggleSection(group.key)}
+            open={openSection === key}
+            onClick={() => onToggleSection(key)}
           />
         ))}
       </div>
