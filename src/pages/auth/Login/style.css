@@ -3,6 +3,7 @@
 * {
   box-sizing: border-box;
 }
+
 html,
 body,
 #root {
@@ -10,10 +11,12 @@ body,
   width: 100%;
   min-height: 100%;
 }
+
 body {
   font-family: var(--font-body);
   background: var(--color-primary);
 }
+
 .login-page {
   width: 100%;
   height: 100svh;
@@ -25,6 +28,7 @@ body {
   overflow: hidden;
   background: var(--color-primary);
 }
+
 .login-shell {
   width: min(1100px, 100%);
   height: min(680px, calc(100svh - 80px));
@@ -40,6 +44,7 @@ body {
   .login-page {
     padding: 24px;
   }
+
   .login-shell {
     width: 100%;
     height: min(680px, calc(100svh - 48px));
@@ -56,6 +61,7 @@ body {
     align-items: stretch;
     overflow: hidden;
   }
+
   .login-shell {
     width: 100%;
     height: 100svh;
