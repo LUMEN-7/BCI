@@ -22,6 +22,7 @@ import Notes from '../pages/Notes/index';
 import NewNotes from '../pages/NewNotes/index';
 import Alerts from '../pages/Alerts/index';
 import EditProfile from "../pages/EditProfile/index";
+import ResetPassword from "../pages/ResetPassword";
 // import Insights from '../pages/Insights/index';
 // import Workspace from '../pages/Workspace/index';
 
@@ -83,6 +84,11 @@ function AnimatedRoutes() {
                     />
 
                     <Route
+                        path="/reset-password"
+                        element={<ResetPassword />}
+                    />
+
+                    <Route
                         path="/notes"
                         element={<Notes />}
                     />
@@ -96,7 +102,7 @@ function AnimatedRoutes() {
                         path="/alerts"
                         element={<Alerts />}
                     />
-{/* 
+                    {/* 
                     <Route
                         path="/Insights"
                         element={<Insights />}
