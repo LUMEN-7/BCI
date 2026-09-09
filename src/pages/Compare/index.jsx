@@ -1,4 +1,5 @@
 import Navbar from '../../components/Navbar/Navbar';
+import FloatingNotes from "../../components/FloantingNotes/FloatingNotes";
 import useCompareController from './hooks/useCompareController';
 import Footer from './sections/Footer';
 import Header from './sections/Header';
@@ -35,6 +36,7 @@ export default function Compare() {
 				/>
 				<Footer canCompare={controller.canCompare} onCompare={controller.handleCompare} />
 			</div>
+			<FloatingNotes />
 		</main>
 	);
 }

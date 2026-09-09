@@ -1,0 +1,465 @@
+@import "../../styles/global.css";
+
+/* =========================================================
+   FLOATING NOTES
+========================================================= */
+
+.floating-notes {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+
+    z-index: 9999;
+
+    font-family: var(--font-body);
+
+    --notes-width: 380px;
+}
+
+
+/* =========================================================
+   FLOATING BUTTON
+========================================================= */
+
+.floating-notes-button {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--color-secondary);
+    color: var(--color-white);
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.22),
+        0 0 0 1px rgba(255, 255, 255, 0.08);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.floating-notes-button svg {
+    width: 25px;
+    height: 25px;
+
+    transition: transform 0.3s ease;
+}
+
+.floating-notes-button:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.28),
+        0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.floating-notes-button:active {
+    transform: scale(0.94);
+}
+
+
+/* =========================================================
+   OPEN BUTTON
+========================================================= */
+
+.floating-notes.is-open .floating-notes-button {
+    transform: rotate(45deg);
+}
+
+.floating-notes.is-open .floating-notes-button:hover {
+    transform: rotate(45deg) translateY(-3px);
+}
+
+
+/* =========================================================
+   NOTES PANEL
+========================================================= */
+
+.notes-panel {
+    position: absolute;
+
+    right: 0;
+    bottom: 76px;
+
+    width: var(--notes-width);
+    min-height: 430px;
+    max-height: calc(100vh - 120px);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: var(--color-primary);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.30),
+        0 5px 20px rgba(0, 0, 0, 0.15);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateX(35px) scale(0.96);
+    transform-origin: bottom right;
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.3s ease;
+}
+
+
+/* =========================================================
+   PANEL OPEN
+========================================================= */
+
+.floating-notes.is-open .notes-panel {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateX(0) scale(1);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.notes-panel-header {
+    min-height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 18px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.notes-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notes-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.notes-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.notes-panel-title span {
+    display: block;
+
+    margin-bottom: 2px;
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+
+    opacity: 0.5;
+}
+
+.notes-panel-title h2 {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    letter-spacing: -0.02em;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.notes-close-button {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 9px;
+
+    background: transparent;
+    color: inherit;
+
+    cursor: pointer;
+
+    opacity: 0.55;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.notes-close-button svg {
+    width: 21px;
+    height: 21px;
+}
+
+.notes-close-button:hover {
+    background: rgba(255, 255, 255, 0.07);
+    opacity: 1;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.notes-form {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+
+    padding: 22px 20px;
+
+    overflow-y: auto;
+}
+
+.notes-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.notes-field label {
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.14em;
+
+    opacity: 0.55;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.notes-field input,
+.notes-field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.045);
+    color: inherit;
+
+    outline: none;
+
+    font-family: inherit;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.notes-field input {
+    height: 44px;
+
+    padding: 0 13px;
+
+    font-size: 13px;
+}
+
+.notes-field textarea {
+    min-height: 190px;
+
+    padding: 13px;
+
+    resize: none;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.notes-field input::placeholder,
+.notes-field textarea::placeholder {
+    color: inherit;
+    opacity: 0.28;
+}
+
+.notes-field input:focus,
+.notes-field textarea:focus {
+    border-color: rgba(255, 255, 255, 0.25);
+
+    background: rgba(255, 255, 255, 0.06);
+
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.notes-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 15px 20px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+.notes-cancel-button,
+.notes-save-button {
+    height: 40px;
+
+    padding: 0 15px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.notes-cancel-button {
+    border: none;
+
+    background: transparent;
+    color: inherit;
+
+    opacity: 0.55;
+}
+
+.notes-cancel-button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    opacity: 1;
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+.notes-save-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    border: none;
+
+    background: var(--color-secondary);
+    color: var(--color-white);
+}
+
+.notes-save-button svg {
+    width: 16px;
+    height: 16px;
+}
+
+.notes-save-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.notes-save-button:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.notes-save-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.notes-form::-webkit-scrollbar {
+    width: 5px;
+}
+
+.notes-form::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.notes-form::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 600px) {
+    .floating-notes {
+        right: 18px;
+        bottom: 18px;
+
+        --notes-width: min(380px, calc(100vw - 36px));
+    }
+
+    .floating-notes-button {
+        width: 54px;
+        height: 54px;
+    }
+
+    .notes-panel {
+        bottom: 68px;
+
+        max-height: calc(100vh - 100px);
+
+        border-radius: 16px;
+    }
+}
