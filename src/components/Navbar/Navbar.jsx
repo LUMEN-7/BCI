@@ -23,7 +23,7 @@ const navigationItems = [
     { icon: IoGitCompareOutline, label: 'Comparar', path: '/compare' },
     { icon: IoAnalyticsOutline, label: 'Insights', path: '/insights' },
     { icon: IoNotificationsOutline, label: 'Alertas', path: '/alerts', alert: true },
-    { icon: IoGridOutline, label: 'Workspace', path: '/notes' },
+    { icon: IoGridOutline, label: 'Workspace', path: '/workspace' },
     { icon: IoBookmarkOutline, label: 'Salvos', path: '/saved' },
     { icon: IoDocumentTextOutline, label: 'Anotações', path: '/notes' },
 ];
