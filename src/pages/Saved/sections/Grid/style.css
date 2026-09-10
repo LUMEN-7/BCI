@@ -181,6 +181,15 @@
   text-transform: uppercase;
   color: var(--color-primary);
 }
+.saved-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: #7d8793;
+}
 .saved-card-actions {
   display: flex;
   align-items: center;

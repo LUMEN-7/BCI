@@ -76,6 +76,7 @@ function SavedCard({
   onCarDetails,
   onComparisonDetails,
 }) {
+  console.log("CARRO SALVO:", item);
   const isCar = activeTab === "cars";
   const imageContent = isCar ? (
     <div className="saved-image" onClick={() => onCarDetails(item.id)}>
@@ -106,7 +107,7 @@ function SavedCard({
       {hasUpdates && (
         <span className="attention-dot" title="Atualização não lida" />
       )}
-      <button type="button" onClick={onComparisonDetails}>
+      <button type="button" onClick={() => onComparisonDetails(item)}>
         Ver comparação
         <IoArrowForwardOutline />
       </button>
@@ -119,7 +120,19 @@ function SavedCard({
         <div className="saved-card-header">
           <div className="saved-card-heading">
             <span>{isCar ? item.brand : "Comparação"}</span>
-            <h2>{isCar ? item.name : item.result}</h2>
+
+            <h2>
+              {isCar
+                ? item.name.split(" ")[0]
+                : `${item.firstCar.split(" ")[0]} VS ${item.secondCar.split(" ")[0]}`}
+            </h2>
+
+            {!isCar && item.savedAtLabel && (
+              <span className="saved-date">
+                <IoTimeOutline />
+                {item.savedAtLabel}
+              </span>
+            )}
           </div>
           <div className="saved-card-actions">
             {hasUpdates && (

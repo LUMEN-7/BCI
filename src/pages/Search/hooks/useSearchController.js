@@ -2,13 +2,14 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { cars } from '../data';
+import { getFavoriteCarIds, toggleFavoriteCar } from '../../../utils/savedItemsStorage';
 
 export default function useSearchController() {
     const navigate = useNavigate();
     const [selectedBrand, setSelectedBrand] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
     const [search, setSearch] = useState('');
-    const [favorites, setFavorites] = useState([]);
+    const [favorites, setFavorites] = useState(() => getFavoriteCarIds());
 
     const brands = useMemo(
         () => [...new Set(cars.map((car) => car.brand))],
@@ -39,11 +40,11 @@ export default function useSearchController() {
     const hasFilters = Boolean(search.trim() || selectedBrand || selectedYear);
 
     function toggleFavorite(id) {
-        setFavorites((previousFavorites) =>
-            previousFavorites.includes(id)
-                ? previousFavorites.filter((item) => item !== id)
-                : [...previousFavorites, id]
-        );
+        const car = cars.find((item) => item.id === id);
+        if (!car) return;
+
+        const updatedFavorites = toggleFavoriteCar(car);
+        setFavorites(updatedFavorites.map((item) => item.id));
     }
 
     function clearFilters() {
