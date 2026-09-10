@@ -181,15 +181,40 @@
   text-transform: uppercase;
   color: var(--color-primary);
 }
+
 .saved-date {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  display: inline-flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+
+  width: max-content;
+
+  gap: 5px;
   margin-top: 6px;
+
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 14px;
   color: #7d8793;
+
+  white-space: nowrap;
 }
+
+.saved-date svg {
+  display: block !important;
+
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+
+  flex: 0 0 14px;
+
+  padding: 0;
+  margin: 0;
+}
+
 .saved-card-actions {
   display: flex;
   align-items: center;
