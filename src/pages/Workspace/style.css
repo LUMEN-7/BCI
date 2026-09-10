@@ -6,7 +6,6 @@
 
 .workspace-page {
     min-height: 100vh;
-
     padding: 42px 38px 80px;
 
     background:
@@ -23,7 +22,6 @@
 .workspace-container {
     width: 100%;
     max-width: 1380px;
-
     margin: 0 auto;
 }
 
@@ -47,26 +45,22 @@
 
     margin-bottom: 8px;
 
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 10px;
     font-weight: 700;
 
     letter-spacing: 4px;
 
-    color:
-        rgba(0, 20, 46, 0.45);
+    color: rgba(0, 20, 46, 0.45);
 }
 
 .workspace-header h1 {
     margin: 0;
 
-    font-family:
-        var(--font-title);
+    font-family: var(--font-title);
 
-    font-size:
-        clamp(50px, 5vw, 72px);
+    font-size: clamp(50px, 5vw, 72px);
 
     font-weight: 400;
 
@@ -74,12 +68,11 @@
 }
 
 .workspace-header p {
-    max-width: 500px;
+    max-width: 520px;
 
     margin: 13px 0 0;
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 12px;
 
@@ -104,13 +97,11 @@
 
     padding: 15px;
 
-    border:
-        1px solid rgba(0, 20, 46, 0.07);
+    border: 1px solid rgba(0, 20, 46, 0.07);
 
     border-radius: 18px;
 
-    background:
-        rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.7);
 
     text-align: center;
 }
@@ -126,8 +117,7 @@
 
     margin-top: 5px;
 
-    font-family:
-        var(--font-title);
+    font-family: var(--font-title);
 
     font-size: 26px;
 
@@ -139,8 +129,7 @@
 
     margin-top: 2px;
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 8px;
 
@@ -162,8 +151,7 @@
 
     padding-bottom: 12px;
 
-    border-bottom:
-        1px solid rgba(0, 20, 46, 0.07);
+    border-bottom: 1px solid rgba(0, 20, 46, 0.07);
 }
 
 .workspace-tab {
@@ -181,11 +169,9 @@
 
     background: transparent;
 
-    color:
-        var(--color-primary);
+    color: var(--color-primary);
 
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 9px;
 
@@ -195,22 +181,20 @@
 
     transition:
         background 0.2s ease,
-        opacity 0.2s ease;
+        opacity 0.2s ease,
+        color 0.2s ease;
 }
 
 .workspace-tab:hover {
-    background:
-        rgba(0, 20, 46, 0.04);
+    background: rgba(0, 20, 46, 0.04);
 
     opacity: 1;
 }
 
 .workspace-tab-active {
-    background:
-        var(--color-primary);
+    background: var(--color-primary);
 
-    color:
-        var(--color-light-neutral);
+    color: var(--color-light-neutral);
 
     opacity: 1;
 }
@@ -237,88 +221,18 @@
 
 
 /* =========================================================
-   TOOLBAR
+   NEW POST BUTTON
 ========================================================= */
 
-.feed-toolbar {
-    display: grid;
-
-    grid-template-columns:
-        minmax(220px, 1fr) 180px auto;
-
-    gap: 10px;
+.workspace-new-post-area {
+    display: flex;
+    justify-content: flex-end;
 
     margin-bottom: 18px;
 }
 
-.feed-search,
-.feed-filter {
-    height: 44px;
-
-    border:
-        1px solid rgba(0, 20, 46, 0.08);
-
-    border-radius: 14px;
-
-    background:
-        rgba(255, 255, 255, 0.7);
-}
-
-.feed-search {
-    padding: 0 14px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-}
-
-.feed-search svg {
-    font-size: 15px;
-
-    opacity: 0.4;
-}
-
-.feed-search input {
-    width: 100%;
-
-    border: none;
-    outline: none;
-
-    background: transparent;
-
-    font-family:
-        var(--font-body);
-
-    font-size: 11px;
-
-    color:
-        var(--color-primary);
-}
-
-.feed-filter {
-    padding: 0 12px;
-
-    outline: none;
-
-    font-family:
-        var(--font-body);
-
-    font-size: 10px;
-
-    color:
-        var(--color-primary);
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.workspace-create-button,
-.workspace-primary-button,
-.workspace-secondary-button {
-    min-height: 44px;
+.workspace-new-post-button {
+    min-height: 42px;
 
     padding: 0 18px;
 
@@ -331,35 +245,34 @@
 
     gap: 7px;
 
-    font-family:
-        var(--font-body-bold);
+    background: var(--color-primary);
+
+    color: #ffffff;
+
+    font-family: var(--font-body-bold);
 
     font-size: 9px;
-    font-weight: 700;
 
     letter-spacing: 0.5px;
 
     cursor: pointer;
+
+    box-shadow:
+        0 8px 22px rgba(0, 20, 46, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.workspace-create-button,
-.workspace-primary-button {
-    background:
-        var(--color-primary);
+.workspace-new-post-button:hover {
+    transform: translateY(-1px);
 
-    color:
-        var(--color-light-neutral);
-}
+    opacity: 0.92;
 
-.workspace-secondary-button {
-    border:
-        1px solid rgba(0, 20, 46, 0.08);
-
-    background:
-        rgba(0, 20, 46, 0.04);
-
-    color:
-        var(--color-primary);
+    box-shadow:
+        0 10px 26px rgba(0, 20, 46, 0.12);
 }
 
 
@@ -372,35 +285,30 @@
 
     padding: 25px;
 
-    border:
-        1px solid rgba(5, 98, 210, 0.15);
+    border: 1px solid rgba(5, 98, 210, 0.15);
 
     border-radius: 24px;
 
-    background:
-        rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.84);
 
     box-shadow:
         0 15px 38px rgba(0, 20, 46, 0.05);
 }
 
 .create-post-header span {
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 8px;
 
     letter-spacing: 2.5px;
 
-    color:
-        var(--color-secondary);
+    color: var(--color-secondary);
 }
 
 .create-post-header h2 {
     margin: 5px 0 20px;
 
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 17px;
 }
@@ -413,8 +321,7 @@
 .create-post-form label {
     margin: 15px 0 7px;
 
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 9px;
 
@@ -428,21 +335,29 @@
 
     box-sizing: border-box;
 
-    border:
-        1px solid rgba(0, 20, 46, 0.09);
+    border: 1px solid rgba(0, 20, 46, 0.09);
 
     border-radius: 14px;
 
     outline: none;
 
-    background:
-        rgba(0, 20, 46, 0.018);
+    background: rgba(0, 20, 46, 0.018);
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
-    color:
-        var(--color-primary);
+    color: var(--color-primary);
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.create-post-form select:focus,
+.create-post-form input:focus,
+.create-post-form textarea:focus {
+    border-color: rgba(5, 98, 210, 0.3);
+
+    background: #ffffff;
 }
 
 .create-post-form select,
@@ -463,8 +378,7 @@
 .create-post-helper {
     margin-top: 6px;
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 9px;
 
@@ -473,12 +387,132 @@
 
 .create-post-actions {
     display: flex;
-
     justify-content: flex-end;
 
     gap: 8px;
 
     margin-top: 20px;
+}
+
+
+/* =========================================================
+   GENERAL BUTTONS
+========================================================= */
+
+.workspace-primary-button,
+.workspace-secondary-button {
+    min-height: 44px;
+
+    padding: 0 18px;
+
+    border-radius: 999px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    font-family: var(--font-body-bold);
+
+    font-size: 9px;
+
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+}
+
+.workspace-primary-button {
+    border: none;
+
+    background: var(--color-primary);
+
+    color: var(--color-light-neutral);
+}
+
+.workspace-secondary-button {
+    border: 1px solid rgba(0, 20, 46, 0.08);
+
+    background: rgba(0, 20, 46, 0.04);
+
+    color: var(--color-primary);
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.feed-toolbar {
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 1fr) 190px;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+}
+
+.feed-search,
+.feed-filter {
+    height: 44px;
+
+    border: 1px solid rgba(0, 20, 46, 0.08);
+
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.feed-search {
+    padding: 0 14px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.feed-search svg {
+    flex-shrink: 0;
+
+    font-size: 15px;
+
+    opacity: 0.4;
+}
+
+.feed-search input {
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    font-family: var(--font-body);
+
+    font-size: 11px;
+
+    color: var(--color-primary);
+}
+
+.feed-search input::placeholder {
+    color: var(--color-primary);
+
+    opacity: 0.35;
+}
+
+.feed-filter {
+    padding: 0 12px;
+
+    outline: none;
+
+    font-family: var(--font-body);
+
+    font-size: 10px;
+
+    color: var(--color-primary);
 }
 
 
@@ -499,28 +533,72 @@
 ========================================================= */
 
 .workspace-post-card {
-    overflow: hidden;
+    overflow: visible;
 
-    border:
-        1px solid rgba(0, 20, 46, 0.075);
+    position: relative;
+
+    border: 1px solid rgba(0, 20, 46, 0.075);
 
     border-radius: 24px;
 
-    background:
-        rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.82);
 
     box-shadow:
         0 14px 36px rgba(0, 20, 46, 0.035);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
 }
 
-.post-header {
-    padding:
-        20px 22px 0;
+.workspace-post-card:hover {
+    transform: translateY(-1px);
+
+    border-color: rgba(0, 20, 46, 0.1);
+
+    box-shadow:
+        0 17px 40px rgba(0, 20, 46, 0.05);
+}
+
+.workspace-post-pinned {
+    border-color: rgba(5, 98, 210, 0.18);
+}
+
+.post-pinned-label {
+    padding: 8px 22px;
+
+    border-radius: 24px 24px 0 0;
 
     display: flex;
+    align-items: center;
 
+    gap: 6px;
+
+    background: rgba(5, 98, 210, 0.045);
+
+    font-family: var(--font-body-bold);
+
+    font-size: 7px;
+
+    letter-spacing: 1.8px;
+
+    color: var(--color-secondary);
+}
+
+
+/* =========================================================
+   POST HEADER
+========================================================= */
+
+.post-header {
+    padding: 20px 22px 0;
+
+    display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 20px;
 }
 
 .post-author-area {
@@ -543,14 +621,11 @@
     align-items: center;
     justify-content: center;
 
-    background:
-        var(--color-primary);
+    background: var(--color-primary);
 
-    color:
-        var(--color-light-neutral);
+    color: var(--color-light-neutral);
 
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 10px;
 }
@@ -561,8 +636,7 @@
 }
 
 .post-author-area strong {
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 11px;
 }
@@ -570,12 +644,22 @@
 .post-author-area span {
     margin-top: 3px;
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 9px;
 
     opacity: 0.45;
+}
+
+
+/* =========================================================
+   POST OPTIONS MENU
+========================================================= */
+
+.post-menu-wrapper {
+    position: relative;
+
+    z-index: 40;
 }
 
 .post-more-button {
@@ -593,17 +677,79 @@
 
     cursor: pointer;
 
-    color:
-        var(--color-primary);
+    color: var(--color-primary);
 
     opacity: 0.45;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease;
 }
 
 .post-more-button:hover {
-    background:
-        rgba(0, 20, 46, 0.04);
+    background: rgba(0, 20, 46, 0.04);
 
     opacity: 1;
+}
+
+.post-options-menu {
+    position: absolute;
+
+    top: calc(100% + 6px);
+    right: 0;
+
+    z-index: 100;
+
+    min-width: 195px;
+
+    padding: 6px;
+
+    border: 1px solid rgba(0, 20, 46, 0.08);
+
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 15px 35px rgba(0, 20, 46, 0.12);
+}
+
+.post-options-menu button {
+    width: 100%;
+
+    min-height: 38px;
+
+    padding: 0 11px;
+
+    border: none;
+    border-radius: 9px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    background: transparent;
+
+    color: var(--color-primary);
+
+    font-family: var(--font-body);
+
+    font-size: 9px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.post-options-menu button:hover {
+    background: rgba(0, 20, 46, 0.045);
+}
+
+.post-options-menu .post-delete-option {
+    color: #a33b3b;
 }
 
 
@@ -612,8 +758,15 @@
 ========================================================= */
 
 .post-body {
-    padding:
-        17px 22px 20px;
+    padding: 17px 22px 20px;
+}
+
+.post-meta-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 7px;
 }
 
 .post-type {
@@ -622,9 +775,9 @@
     border-radius: 999px;
 
     display: inline-flex;
+    align-items: center;
 
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 8px;
 
@@ -632,52 +785,105 @@
 }
 
 .post-type-update {
-    background:
-        rgba(0, 20, 46, 0.06);
+    background: rgba(0, 20, 46, 0.06);
 }
 
 .post-type-insight {
-    background:
-        rgba(5, 98, 210, 0.08);
+    background: rgba(5, 98, 210, 0.08);
 
-    color:
-        var(--color-secondary);
+    color: var(--color-secondary);
 }
 
 .post-type-review {
-    background:
-        rgba(174, 114, 20, 0.09);
+    background: rgba(174, 114, 20, 0.09);
 
-    color:
-        #8c631a;
+    color: #8c631a;
 }
 
 .post-type-decision {
-    background:
-        rgba(70, 102, 86, 0.1);
+    background: rgba(70, 102, 86, 0.1);
 
-    color:
-        #466656;
+    color: #466656;
 }
 
 .post-type-comparison {
-    background:
-        rgba(0, 20, 46, 0.08);
+    background: rgba(0, 20, 46, 0.08);
 }
 
 .post-text {
-    margin:
-        14px 0 0;
+    margin: 14px 0 0;
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 12px;
 
     line-height: 1.7;
 
-    color:
-        var(--color-primary);
+    color: var(--color-primary);
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.post-status {
+    padding: 5px 8px;
+
+    border-radius: 999px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 4px;
+
+    font-family: var(--font-body-bold);
+
+    font-size: 8px;
+
+    text-transform: uppercase;
+}
+
+.post-status-pending {
+    background: rgba(173, 111, 17, 0.1);
+
+    color: #8c631a;
+}
+
+.post-status-progress {
+    background: rgba(5, 98, 210, 0.08);
+
+    color: var(--color-secondary);
+}
+
+.post-status-resolved {
+    background: rgba(49, 116, 77, 0.1);
+
+    color: #397455;
+}
+
+
+/* =========================================================
+   RESPONSIBLE
+========================================================= */
+
+.post-responsible {
+    margin-top: 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    font-family: var(--font-body);
+
+    font-size: 9px;
+
+    opacity: 0.6;
+}
+
+.post-responsible strong {
+    font-family: var(--font-body-bold);
 }
 
 
@@ -695,13 +901,11 @@
 }
 
 .post-tags span {
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 9px;
 
-    color:
-        var(--color-secondary);
+    color: var(--color-secondary);
 }
 
 
@@ -716,24 +920,39 @@
 
     padding: 13px 15px;
 
-    border:
-        1px solid rgba(0, 20, 46, 0.07);
+    border: 1px solid rgba(0, 20, 46, 0.07);
 
     border-radius: 14px;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
-    background:
-        rgba(0, 20, 46, 0.025);
+    gap: 10px;
 
-    color:
-        var(--color-primary);
+    background: rgba(0, 20, 46, 0.025);
+
+    color: var(--color-primary);
 
     text-align: left;
 
     cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.linked-content:hover {
+    background: rgba(5, 98, 210, 0.04);
+
+    border-color: rgba(5, 98, 210, 0.12);
+
+    transform: translateY(-1px);
+}
+
+.linked-content>div {
+    flex: 1;
 }
 
 .linked-content span,
@@ -744,8 +963,7 @@
 .linked-content span {
     margin-bottom: 3px;
 
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 7px;
 
@@ -755,8 +973,7 @@
 }
 
 .linked-content strong {
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 10px;
 }
@@ -771,8 +988,7 @@
 
     padding: 0 22px;
 
-    border-top:
-        1px solid rgba(0, 20, 46, 0.055);
+    border-top: 1px solid rgba(0, 20, 46, 0.055);
 
     display: flex;
     align-items: center;
@@ -795,67 +1011,693 @@
 
     background: transparent;
 
-    color:
-        var(--color-primary);
+    color: var(--color-primary);
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 9px;
 
     cursor: pointer;
 
     opacity: 0.55;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease;
 }
 
 .post-action:hover {
-    background:
-        rgba(0, 20, 46, 0.04);
+    background: rgba(0, 20, 46, 0.04);
 
     opacity: 1;
 }
 
 .post-action-liked {
-    color:
-        var(--color-secondary);
+    color: var(--color-secondary);
 
     opacity: 1;
 }
 
-.post-action-label {
+.post-open-thread {
     margin-left: auto;
 
-    font-family:
-        var(--font-body);
+    min-height: 31px;
+
+    padding: 0;
+
+    border: none;
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    background: transparent;
+
+    color: var(--color-primary);
+
+    font-family: var(--font-body-bold);
 
     font-size: 8px;
 
-    opacity: 0.4;
+    cursor: pointer;
+
+    opacity: 0.5;
+
+    transition: opacity 0.2s ease;
+}
+
+.post-open-thread:hover {
+    opacity: 1;
 }
 
 
 /* =========================================================
-   THREAD
+   SIDEBAR
 ========================================================= */
 
-.post-thread {
-    padding:
-        18px 22px 20px;
+.workspace-sidebar {
+    display: flex;
+    flex-direction: column;
 
-    border-top:
-        1px solid rgba(0, 20, 46, 0.055);
+    gap: 12px;
 
-    background:
-        rgba(0, 20, 46, 0.015);
+    position: sticky;
+
+    top: 20px;
 }
 
-.thread-comments {
+
+/* =========================================================
+   EXPANDABLE CARDS
+========================================================= */
+
+.workspace-expand-card {
+    overflow: hidden;
+
+    border: 1px solid rgba(0, 20, 46, 0.07);
+
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.72);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.workspace-expand-card-open {
+    border-color: rgba(5, 98, 210, 0.12);
+
+    box-shadow:
+        0 10px 28px rgba(0, 20, 46, 0.035);
+}
+
+.workspace-expand-header {
+    width: 100%;
+
+    min-height: 66px;
+
+    padding: 0 16px;
+
+    border: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    background: transparent;
+
+    color: var(--color-primary);
+
+    cursor: pointer;
+
+    text-align: left;
+}
+
+.expand-header-info {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.expand-header-icon {
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 20, 46, 0.045);
+
+    font-size: 14px;
+}
+
+.expand-header-info span,
+.expand-header-info strong {
+    display: block;
+}
+
+.expand-header-info span {
+    margin-bottom: 3px;
+
+    font-family: var(--font-body-bold);
+
+    font-size: 7px;
+
+    letter-spacing: 1.5px;
+
+    color: var(--color-secondary);
+}
+
+.expand-header-info strong {
+    font-family: var(--font-body-bold);
+
+    font-size: 9px;
+}
+
+.expand-chevron {
+    flex-shrink: 0;
+
+    font-size: 15px;
+
+    opacity: 0.4;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.2s ease;
+}
+
+.workspace-expand-header:hover .expand-chevron {
+    opacity: 0.8;
+}
+
+.workspace-expand-card-open .expand-chevron {
+    transform: rotate(180deg);
+}
+
+.workspace-expand-content {
+    padding: 13px 16px 16px;
+
+    border-top: 1px solid rgba(0, 20, 46, 0.05);
+}
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+.workspace-member-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.workspace-member {
+    min-height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.member-avatar,
+.activity-avatar {
+    width: 29px;
+    height: 29px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 20, 46, 0.07);
+
+    color: var(--color-primary);
+
+    font-family: var(--font-body-bold);
+
+    font-size: 7px;
+}
+
+.workspace-member span {
+    font-family: var(--font-body);
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   ACTIVITY
+========================================================= */
+
+.workspace-activity-list {
     display: flex;
     flex-direction: column;
 
     gap: 16px;
+}
+
+.workspace-activity-item {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 9px;
+}
+
+.workspace-activity-item p {
+    margin: 0;
+
+    font-family: var(--font-body);
+
+    font-size: 8.5px;
+
+    line-height: 1.45;
+
+    opacity: 0.7;
+}
+
+.workspace-activity-item p strong {
+    font-family: var(--font-body-bold);
+}
+
+.workspace-activity-item span {
+    display: block;
+
+    margin-top: 3px;
+
+    font-family: var(--font-body);
+
+    font-size: 7px;
+
+    opacity: 0.35;
+}
+
+
+/* =========================================================
+   THREAD OVERLAY
+========================================================= */
+
+.thread-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 998;
+
+    background: rgba(0, 20, 46, 0.2);
+
+    backdrop-filter: blur(3px);
+}
+
+
+/* =========================================================
+   THREAD DRAWER
+========================================================= */
+
+.thread-drawer {
+    position: fixed;
+
+    top: 0;
+    right: 0;
+
+    z-index: 999;
+
+    width: min(520px, 94vw);
+
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    box-shadow:
+        -18px 0 50px rgba(0, 20, 46, 0.13);
+
+    animation:
+        threadSlide 0.28s ease;
+}
+
+@keyframes threadSlide {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+
+/* =========================================================
+   THREAD HEADER
+========================================================= */
+
+.thread-drawer-header {
+    min-height: 85px;
+
+    padding: 0 25px;
+
+    border-bottom: 1px solid rgba(0, 20, 46, 0.07);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.thread-drawer-header span {
+    display: block;
+
+    font-family: var(--font-body-bold);
+
+    font-size: 7px;
+
+    letter-spacing: 2.5px;
+
+    color: var(--color-secondary);
+}
+
+.thread-drawer-header h2 {
+    margin: 3px 0 0;
+
+    font-family: var(--font-title);
+
+    font-size: 28px;
+
+    font-weight: 400;
+}
+
+.thread-drawer-header button {
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 20, 46, 0.045);
+
+    color: var(--color-primary);
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.thread-drawer-header button:hover {
+    background: rgba(0, 20, 46, 0.08);
+}
+
+
+/* =========================================================
+   THREAD BODY
+========================================================= */
+
+.thread-drawer-body {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 25px;
+}
+
+
+/* =========================================================
+   THREAD ORIGINAL POST
+========================================================= */
+
+.thread-original-post {
+    padding-bottom: 25px;
+}
+
+.thread-author {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
 
     margin-bottom: 18px;
+}
+
+.thread-author strong,
+.thread-author span {
+    display: block;
+}
+
+.thread-author strong {
+    font-family: var(--font-body-bold);
+
+    font-size: 10px;
+}
+
+.thread-author span {
+    margin-top: 2px;
+
+    font-family: var(--font-body);
+
+    font-size: 8px;
+
+    opacity: 0.45;
+}
+
+.thread-original-post>p {
+    margin: 15px 0 0;
+
+    font-family: var(--font-body);
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   THREAD RESPONSIBLE
+========================================================= */
+
+.thread-responsible {
+    margin-top: 18px;
+
+    padding: 12px 14px;
+
+    border-radius: 13px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    background: rgba(0, 20, 46, 0.03);
+}
+
+.thread-responsible svg {
+    font-size: 15px;
+
+    opacity: 0.45;
+}
+
+.thread-responsible span,
+.thread-responsible strong {
+    display: block;
+}
+
+.thread-responsible span {
+    font-family: var(--font-body-bold);
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+
+    opacity: 0.4;
+}
+
+.thread-responsible strong {
+    margin-top: 2px;
+
+    font-family: var(--font-body-bold);
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   THREAD STATUS
+========================================================= */
+
+.thread-status-area {
+    margin-top: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.thread-status-area>span {
+    font-family: var(--font-body-bold);
+
+    font-size: 8px;
+
+    letter-spacing: 1px;
+
+    opacity: 0.5;
+}
+
+.thread-status-area select {
+    min-width: 135px;
+
+    height: 37px;
+
+    padding: 0 10px;
+
+    border: 1px solid rgba(0, 20, 46, 0.08);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: rgba(0, 20, 46, 0.025);
+
+    font-family: var(--font-body);
+
+    font-size: 9px;
+
+    color: var(--color-primary);
+}
+
+
+/* =========================================================
+   THREAD LINKED CONTENT
+========================================================= */
+
+.thread-linked-item {
+    width: 100%;
+
+    margin-top: 17px;
+
+    padding: 13px 14px;
+
+    border: 1px solid rgba(0, 20, 46, 0.07);
+
+    border-radius: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(5, 98, 210, 0.025);
+
+    color: var(--color-primary);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.thread-linked-item:hover {
+    background: rgba(5, 98, 210, 0.05);
+
+    border-color: rgba(5, 98, 210, 0.13);
+}
+
+.thread-linked-item span,
+.thread-linked-item strong {
+    display: block;
+}
+
+.thread-linked-item span {
+    font-family: var(--font-body-bold);
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+
+    opacity: 0.4;
+}
+
+.thread-linked-item strong {
+    margin-top: 3px;
+
+    font-family: var(--font-body-bold);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   THREAD DIVIDER
+========================================================= */
+
+.thread-divider {
+    padding: 14px 0;
+
+    border-top: 1px solid rgba(0, 20, 46, 0.07);
+    border-bottom: 1px solid rgba(0, 20, 46, 0.07);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.thread-divider span {
+    font-family: var(--font-body-bold);
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+}
+
+.thread-divider strong {
+    min-width: 24px;
+    height: 24px;
+
+    border-radius: 999px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 20, 46, 0.05);
+
+    font-family: var(--font-body-bold);
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   THREAD COMMENTS
+========================================================= */
+
+.thread-drawer-comments {
+    padding: 22px 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
 }
 
 .workspace-comment {
@@ -883,15 +1725,13 @@
 }
 
 .comment-header strong {
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 9px;
 }
 
 .comment-header span {
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 8px;
 
@@ -901,8 +1741,7 @@
 .comment-content p {
     margin: 5px 0 0;
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 10px;
 
@@ -911,60 +1750,114 @@
 
 
 /* =========================================================
-   COMMENT INPUT
+   THREAD EMPTY
 ========================================================= */
 
-.comment-form {
-    display: flex;
-    align-items: center;
+.thread-empty {
+    padding: 35px 20px;
 
-    gap: 10px;
+    text-align: center;
 }
 
-.comment-avatar-small {
-    width: 30px;
-    height: 30px;
+.thread-empty svg {
+    font-size: 23px;
 
-    font-size: 8px;
+    opacity: 0.25;
 }
 
-.comment-input {
-    flex: 1;
-
-    min-height: 40px;
-
-    padding: 0 7px 0 13px;
-
-    border:
-        1px solid rgba(0, 20, 46, 0.08);
-
-    border-radius: 999px;
-
-    display: flex;
-    align-items: center;
-
-    background:
-        #ffffff;
+.thread-empty strong,
+.thread-empty span {
+    display: block;
 }
 
-.comment-input input {
-    flex: 1;
+.thread-empty strong {
+    margin-top: 8px;
 
-    border: none;
-    outline: none;
-
-    background:
-        transparent;
-
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body-bold);
 
     font-size: 10px;
 }
 
-.comment-input button {
-    width: 31px;
-    height: 31px;
+.thread-empty span {
+    max-width: 260px;
+
+    margin: 5px auto 0;
+
+    font-family: var(--font-body);
+
+    font-size: 9px;
+
+    line-height: 1.5;
+
+    opacity: 0.45;
+}
+
+
+/* =========================================================
+   THREAD FORM
+========================================================= */
+
+.thread-drawer-form {
+    padding: 15px 20px;
+
+    border-top: 1px solid rgba(0, 20, 46, 0.07);
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 9px;
+
+    background: #ffffff;
+}
+
+.thread-drawer-form>div:last-child {
+    flex: 1;
+
+    min-height: 42px;
+
+    padding: 6px 7px 6px 13px;
+
+    border: 1px solid rgba(0, 20, 46, 0.08);
+
+    border-radius: 18px;
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 7px;
+}
+
+.thread-drawer-form textarea {
+    flex: 1;
+
+    min-height: 28px;
+    max-height: 110px;
+
+    padding: 6px 0;
+
+    border: none;
+    outline: none;
+
+    resize: none;
+
+    font-family: var(--font-body);
+
+    font-size: 10px;
+
+    color: var(--color-primary);
+}
+
+.thread-drawer-form textarea::placeholder {
+    color: var(--color-primary);
+
+    opacity: 0.35;
+}
+
+.thread-drawer-form button {
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
 
     border: none;
     border-radius: 50%;
@@ -973,158 +1866,23 @@
     align-items: center;
     justify-content: center;
 
-    background:
-        var(--color-primary);
+    background: var(--color-primary);
 
-    color:
-        var(--color-light-neutral);
+    color: #ffffff;
 
     cursor: pointer;
 }
 
 
 /* =========================================================
-   SIDEBAR
-========================================================= */
-
-.workspace-sidebar {
-    display: flex;
-    flex-direction: column;
-
-    gap: 12px;
-
-    position: sticky;
-
-    top: 20px;
-}
-
-.workspace-sidebar-card {
-    padding: 20px;
-
-    border:
-        1px solid rgba(0, 20, 46, 0.07);
-
-    border-radius: 21px;
-
-    background:
-        rgba(255, 255, 255, 0.72);
-}
-
-.sidebar-eyebrow {
-    display: block;
-
-    margin-bottom: 7px;
-
-    font-family:
-        var(--font-body-bold);
-
-    font-size: 8px;
-
-    letter-spacing: 2px;
-
-    color:
-        var(--color-secondary);
-}
-
-.workspace-sidebar-card h3 {
-    margin: 0;
-
-    font-family:
-        var(--font-body-bold);
-
-    font-size: 14px;
-}
-
-.workspace-sidebar-card p {
-    margin:
-        8px 0 0;
-
-    font-family:
-        var(--font-body);
-
-    font-size: 10px;
-
-    line-height: 1.6;
-
-    opacity: 0.55;
-}
-
-.sidebar-post-types {
-    display: flex;
-    flex-direction: column;
-
-    gap: 5px;
-}
-
-.sidebar-post-types button {
-    min-height: 35px;
-
-    padding: 0 8px;
-
-    border: none;
-    border-radius: 10px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 8px;
-
-    background: transparent;
-
-    color:
-        var(--color-primary);
-
-    font-family:
-        var(--font-body);
-
-    font-size: 9px;
-
-    cursor: pointer;
-
-    text-align: left;
-}
-
-.sidebar-post-types button:hover {
-    background:
-        rgba(0, 20, 46, 0.035);
-}
-
-.sidebar-type-dot {
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(0, 20, 46, 0.25);
-}
-
-.sidebar-type-insight {
-    background:
-        var(--color-secondary);
-}
-
-.sidebar-type-review {
-    background:
-        #a17619;
-}
-
-.sidebar-type-decision {
-    background:
-        #466656;
-}
-
-
-/* =========================================================
-   EMPTY / COMING SOON
+   EMPTY FEED
 ========================================================= */
 
 .workspace-empty-feed,
 .workspace-coming-soon {
     padding: 50px 25px;
 
-    border:
-        1px dashed rgba(0, 20, 46, 0.12);
+    border: 1px dashed rgba(0, 20, 46, 0.12);
 
     border-radius: 22px;
 
@@ -1145,8 +1903,7 @@
 .workspace-empty-feed strong {
     margin-top: 10px;
 
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 12px;
 }
@@ -1154,32 +1911,32 @@
 .workspace-empty-feed span {
     margin-top: 5px;
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 9px;
 
     opacity: 0.45;
 }
 
+
+/* =========================================================
+   COMING SOON
+========================================================= */
+
 .workspace-coming-soon span {
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 8px;
 
     letter-spacing: 2px;
 
-    color:
-        var(--color-secondary);
+    color: var(--color-secondary);
 }
 
 .workspace-coming-soon h2 {
-    margin:
-        8px 0 5px;
+    margin: 8px 0 5px;
 
-    font-family:
-        var(--font-body-bold);
+    font-family: var(--font-body-bold);
 
     font-size: 16px;
 }
@@ -1187,8 +1944,7 @@
 .workspace-coming-soon p {
     margin: 0;
 
-    font-family:
-        var(--font-body);
+    font-family: var(--font-body);
 
     font-size: 10px;
 
@@ -1197,7 +1953,40 @@
 
 
 /* =========================================================
-   RESPONSIVE
+   SAFE BOX-SIZING
+========================================================= */
+
+.workspace-page *,
+.workspace-page *::before,
+.workspace-page *::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   REMOVE GLOBAL DECORATIONS
+========================================================= */
+
+.workspace-page h1::before,
+.workspace-page h1::after,
+.workspace-page h2::before,
+.workspace-page h2::after,
+.workspace-page h3::before,
+.workspace-page h3::after,
+.workspace-eyebrow::before,
+.workspace-eyebrow::after,
+.workspace-expand-header::before,
+.workspace-expand-header::after {
+    content: none !important;
+
+    display: none !important;
+
+    border: none !important;
+}
+
+
+/* =========================================================
+   TABLET
 ========================================================= */
 
 @media (max-width: 1000px) {
@@ -1211,9 +2000,14 @@
         display: grid;
 
         grid-template-columns:
-            repeat(2, 1fr);
+            repeat(2, minmax(0, 1fr));
     }
 }
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
 
 @media (max-width: 800px) {
     .workspace-header {
@@ -1231,19 +2025,18 @@
     }
 
     .feed-toolbar {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .workspace-create-button {
-        grid-column:
-            1 / -1;
+        grid-template-columns: 1fr;
     }
 }
 
-@media (max-width: 600px) {
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
     .workspace-page {
-        padding:
-            28px 18px 60px;
+        padding: 28px 18px 60px;
     }
 
     .workspace-header h1 {
@@ -1251,23 +2044,31 @@
     }
 
     .workspace-header-stats {
+        width: 100%;
+
         overflow-x: auto;
+    }
+
+    .workspace-header-stats>div {
+        min-width: 95px;
     }
 
     .workspace-tabs {
         overflow-x: auto;
+
+        padding-bottom: 10px;
     }
 
     .workspace-tab {
         flex-shrink: 0;
     }
 
-    .feed-toolbar {
-        grid-template-columns: 1fr;
+    .workspace-new-post-area {
+        justify-content: stretch;
     }
 
-    .workspace-create-button {
-        grid-column: auto;
+    .workspace-new-post-button {
+        width: 100%;
     }
 
     .workspace-sidebar {
@@ -1276,10 +2077,34 @@
 
     .post-header,
     .post-body,
-    .post-actions,
-    .post-thread {
+    .post-actions {
         padding-left: 17px;
         padding-right: 17px;
+    }
+
+    .post-actions {
+        flex-wrap: wrap;
+
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .post-open-thread {
+        width: 100%;
+
+        margin-left: 0;
+
+        justify-content: flex-end;
+    }
+
+    .post-options-menu {
+        right: -5px;
+
+        min-width: 185px;
+    }
+
+    .create-post-card {
+        padding: 20px;
     }
 
     .create-post-actions {
@@ -1288,5 +2113,80 @@
 
     .create-post-actions button {
         width: 100%;
+    }
+
+    .thread-drawer {
+        width: 100%;
+    }
+
+    .thread-drawer-header {
+        padding: 0 18px;
+    }
+
+    .thread-drawer-body {
+        padding: 20px 18px;
+    }
+
+    .thread-drawer-form {
+        padding: 13px 15px;
+    }
+
+    .thread-status-area {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .thread-status-area select {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+    .workspace-page {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .workspace-header h1 {
+        font-size: 40px;
+    }
+
+    .workspace-header-stats {
+        gap: 7px;
+    }
+
+    .workspace-header-stats>div {
+        min-width: 90px;
+
+        padding: 13px 10px;
+    }
+
+    .workspace-post-card {
+        border-radius: 19px;
+    }
+
+    .post-pinned-label {
+        border-radius: 19px 19px 0 0;
+    }
+
+    .post-text {
+        font-size: 11px;
+    }
+
+    .workspace-expand-header {
+        min-height: 62px;
+
+        padding: 0 14px;
+    }
+
+    .workspace-expand-content {
+        padding-left: 14px;
+        padding-right: 14px;
     }
 }

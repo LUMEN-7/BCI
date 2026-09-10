@@ -1,10 +1,16 @@
 import {
-  FiFilter,
-  FiPlus,
   FiSearch,
 } from "react-icons/fi";
 
 import PostCard from "../components/PostCard";
+import PostComposer from "../components/PostComposer";
+import ThreadDrawer from "../components/ThreadDrawer";
+import ActivitySidebar from "../components/ActivitySidebar";
+
+import {
+  recentActivities,
+  workspaceMembers,
+} from "../data";
 
 export default function FeedSection({
   posts,
@@ -17,226 +23,295 @@ export default function FeedSection({
   onTypeChange,
 
   onLike,
+
+  onTogglePin,
+  onDelete,
+
+  selectedPost,
+  onOpenThread,
+  onCloseThread,
+
   onComment,
+  onStatusChange,
 
   newPostOpen,
   onOpenNewPost,
 
   newPost,
   onNewPostChange,
+
   onCreatePost,
   onCancelPost,
 }) {
   return (
-    <section className="workspace-feed-layout">
-      <div className="workspace-feed-main">
-        <div className="feed-toolbar">
-          <div className="feed-search">
-            <FiSearch />
+    <>
+      <div className="workspace-feed-layout">
 
-            <input
-              type="text"
-              value={search}
-              placeholder="Buscar no workspace..."
-              onChange={(event) =>
-                onSearchChange(
-                  event.target.value
-                )
-              }
-            />
-          </div>
+        {/* =====================================================
+            CONTEÚDO PRINCIPAL
+        ====================================================== */}
 
-          <select
-            className="feed-filter"
-            value={selectedType}
-            onChange={(event) =>
-              onTypeChange(
-                event.target.value
-              )
-            }
-          >
-            <option value="all">
-              Todos os tipos
-            </option>
+        <section className="workspace-feed-main">
 
-            {Object.entries(
-              postTypes
-            ).map(([key, value]) => (
-              <option
-                value={key}
-                key={key}
-              >
-                {value.label}
-              </option>
-            ))}
-          </select>
+          {/* ===================================================
+              NOVA PUBLICAÇÃO
+          ==================================================== */}
 
-          <button
-            type="button"
-            className="workspace-create-button"
-            onClick={onOpenNewPost}
-          >
-            <FiPlus />
+          <PostComposer
+            onOpen={onOpenNewPost}
+          />
 
-            NOVA PUBLICAÇÃO
-          </button>
-        </div>
+          {/* ===================================================
+              FORMULÁRIO DE NOVA PUBLICAÇÃO
+          ==================================================== */}
 
-        {newPostOpen && (
-          <div className="create-post-card">
-            <div className="create-post-header">
-              <div>
+          {newPostOpen && (
+            <section className="create-post-card">
+
+              <div className="create-post-header">
                 <span>
-                  NOVA PUBLICAÇÃO
+                  WORKSPACE
                 </span>
 
                 <h2>
-                  Compartilhe com a equipe
+                  Nova publicação
                 </h2>
               </div>
-            </div>
 
-            <div className="create-post-form">
-              <label>
-                TIPO DA PUBLICAÇÃO
-              </label>
+              <div className="create-post-form">
 
-              <select
-                name="type"
-                value={newPost.type}
-                onChange={onNewPostChange}
-              >
-                {Object.entries(
-                  postTypes
-                ).map(([key, value]) => (
-                  <option
-                    value={key}
-                    key={key}
-                  >
-                    {value.label}
-                  </option>
-                ))}
-              </select>
+                {/* TIPO */}
 
-              <label>
-                CONTEÚDO
-              </label>
+                <label htmlFor="post-type">
+                  TIPO DA PUBLICAÇÃO
+                </label>
 
-              <textarea
-                name="content"
-                value={newPost.content}
-                placeholder="Compartilhe uma atualização, insight ou decisão..."
-                onChange={onNewPostChange}
-              />
-
-              <label>
-                TAGS
-              </label>
-
-              <input
-                name="tags"
-                type="text"
-                value={newPost.tags}
-                placeholder="Territory, Compass, Motorização..."
-                onChange={onNewPostChange}
-              />
-
-              <span className="create-post-helper">
-                Separe as tags por vírgulas.
-              </span>
-
-              <div className="create-post-actions">
-                <button
-                  type="button"
-                  className="workspace-secondary-button"
-                  onClick={onCancelPost}
+                <select
+                  id="post-type"
+                  name="type"
+                  value={newPost.type}
+                  onChange={onNewPostChange}
                 >
-                  CANCELAR
-                </button>
+                  {Object.entries(
+                    postTypes
+                  ).map(
+                    ([
+                      key,
+                      type,
+                    ]) => (
+                      <option
+                        key={key}
+                        value={key}
+                      >
+                        {type.label}
+                      </option>
+                    )
+                  )}
+                </select>
 
-                <button
-                  type="button"
-                  className="workspace-primary-button"
-                  onClick={onCreatePost}
-                >
-                  PUBLICAR
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+                {/* CONTEÚDO */}
 
-        <div className="workspace-feed">
-          {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              type={postTypes[post.type]}
-              onLike={onLike}
-              onComment={onComment}
-            />
-          ))}
+                <label htmlFor="post-content">
+                  CONTEÚDO
+                </label>
 
-          {posts.length === 0 && (
-            <div className="workspace-empty-feed">
-              <FiFilter />
-
-              <strong>
-                Nenhuma publicação encontrada
-              </strong>
-
-              <span>
-                Tente alterar os filtros ou
-                realizar uma nova busca.
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <aside className="workspace-sidebar">
-        <div className="workspace-sidebar-card">
-          <span className="sidebar-eyebrow">
-            WORKSPACE
-          </span>
-
-          <h3>
-            Inteligência Competitiva
-          </h3>
-
-          <p>
-            Espaço colaborativo para
-            compartilhar análises, decisões
-            e informações da equipe.
-          </p>
-        </div>
-
-        <div className="workspace-sidebar-card">
-          <span className="sidebar-eyebrow">
-            TIPOS DE PUBLICAÇÃO
-          </span>
-
-          <div className="sidebar-post-types">
-            {Object.entries(
-              postTypes
-            ).map(([key, value]) => (
-              <button
-                type="button"
-                key={key}
-                onClick={() =>
-                  onTypeChange(key)
-                }
-              >
-                <span
-                  className={`sidebar-type-dot sidebar-type-${value.className}`}
+                <textarea
+                  id="post-content"
+                  name="content"
+                  value={
+                    newPost.content
+                  }
+                  onChange={
+                    onNewPostChange
+                  }
+                  placeholder="Compartilhe uma atualização, descoberta, análise ou decisão com a equipe..."
                 />
 
-                {value.label}
-              </button>
-            ))}
+                {/* TAGS */}
+
+                <label htmlFor="post-tags">
+                  TAGS
+                </label>
+
+                <input
+                  id="post-tags"
+                  name="tags"
+                  type="text"
+                  value={
+                    newPost.tags
+                  }
+                  onChange={
+                    onNewPostChange
+                  }
+                  placeholder="Ex.: Territory, Compass, Tecnologia"
+                />
+
+                <span className="create-post-helper">
+                  Separe as tags por vírgula.
+                </span>
+
+                {/* BOTÕES */}
+
+                <div className="create-post-actions">
+                  <button
+                    type="button"
+                    className="workspace-secondary-button"
+                    onClick={
+                      onCancelPost
+                    }
+                  >
+                    CANCELAR
+                  </button>
+
+                  <button
+                    type="button"
+                    className="workspace-primary-button"
+                    onClick={
+                      onCreatePost
+                    }
+                  >
+                    PUBLICAR
+                  </button>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ===================================================
+              BUSCA E FILTRO
+          ==================================================== */}
+
+          <div className="feed-toolbar">
+
+            <div className="feed-search">
+              <FiSearch />
+
+              <input
+                type="text"
+                value={search}
+                onChange={(event) =>
+                  onSearchChange(
+                    event.target.value
+                  )
+                }
+                placeholder="Buscar no Workspace..."
+              />
+            </div>
+
+            <select
+              className="feed-filter"
+              value={selectedType}
+              onChange={(event) =>
+                onTypeChange(
+                  event.target.value
+                )
+              }
+            >
+              <option value="all">
+                Todos os tipos
+              </option>
+
+              {Object.entries(
+                postTypes
+              ).map(
+                ([
+                  key,
+                  type,
+                ]) => (
+                  <option
+                    key={key}
+                    value={key}
+                  >
+                    {type.label}
+                  </option>
+                )
+              )}
+            </select>
           </div>
-        </div>
-      </aside>
-    </section>
+
+          {/* ===================================================
+              FEED
+          ==================================================== */}
+
+          <div className="workspace-feed">
+
+            {posts.length > 0 ? (
+              posts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  type={
+                    postTypes[
+                    post.type
+                    ]
+                  }
+                  onLike={
+                    onLike
+                  }
+                  onOpenThread={
+                    onOpenThread
+                  }
+                  onTogglePin={
+                    onTogglePin
+                  }
+                  onDelete={
+                    onDelete
+                  }
+                />
+              ))
+            ) : (
+              <div className="workspace-empty-feed">
+                <strong>
+                  Nenhuma publicação encontrada
+                </strong>
+
+                <span>
+                  Tente alterar os filtros
+                  ou faça uma nova
+                  publicação.
+                </span>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* =====================================================
+            SIDEBAR
+        ====================================================== */}
+
+        <ActivitySidebar
+          activities={
+            recentActivities
+          }
+          members={
+            workspaceMembers
+          }
+        />
+      </div>
+
+      {/* =======================================================
+          THREAD
+      ======================================================== */}
+
+      {selectedPost && (
+        <ThreadDrawer
+          post={selectedPost}
+          type={
+            postTypes[
+            selectedPost.type
+            ]
+          }
+          onClose={
+            onCloseThread
+          }
+          onComment={
+            onComment
+          }
+          onStatusChange={
+            onStatusChange
+          }
+        />
+      )}
+    </>
   );
 }

@@ -5,39 +5,61 @@ import {
 } from "react-icons/fi";
 
 import useWorkspace from "./hooks/useWorkspace";
-
+import Navbar from "../../components/Navbar/Navbar";
 import WorkspaceTabs from "./components/WorkspaceTabs";
 import FeedSection from "./sections/FeedSection";
 
 import "./style.css";
 
 export default function Workspace() {
-  const workspace = useWorkspace();
+  const workspace =
+    useWorkspace();
 
   return (
     <main className="workspace-page">
+
+      <Navbar/>
+      
       <div className="workspace-container">
+
+        {/* =====================================================
+            HEADER
+        ====================================================== */}
+
         <header className="workspace-header">
+
           <div>
             <span className="workspace-eyebrow">
               CENTRAL DA EQUIPE
             </span>
 
-            <h1>WORKSPACE</h1>
+            <h1>
+              WORKSPACE
+            </h1>
 
             <p>
-              Compartilhe análises, registre
-              decisões e acompanhe as
-              atividades da sua equipe.
+              Compartilhe análises,
+              registre decisões e
+              acompanhe as atividades
+              da equipe em um único
+              ambiente colaborativo.
             </p>
           </div>
 
+          {/* ===================================================
+              ESTATÍSTICAS
+          ==================================================== */}
+
           <div className="workspace-header-stats">
+
             <div>
               <FiMessageSquare />
 
               <strong>
-                {workspace.summary.posts}
+                {
+                  workspace
+                    .summary.posts
+                }
               </strong>
 
               <span>
@@ -49,7 +71,10 @@ export default function Workspace() {
               <FiActivity />
 
               <strong>
-                {workspace.summary.insights}
+                {
+                  workspace
+                    .summary.insights
+                }
               </strong>
 
               <span>
@@ -60,7 +85,9 @@ export default function Workspace() {
             <div>
               <FiUsers />
 
-              <strong>5</strong>
+              <strong>
+                5
+              </strong>
 
               <span>
                 Membros
@@ -68,6 +95,10 @@ export default function Workspace() {
             </div>
           </div>
         </header>
+
+        {/* =====================================================
+            TABS
+        ====================================================== */}
 
         <WorkspaceTabs
           activeTab={
@@ -78,79 +109,192 @@ export default function Workspace() {
           }
         />
 
+        {/* =====================================================
+            FEED
+        ====================================================== */}
+
         {workspace.activeTab ===
           "feed" && (
-          <FeedSection
-            posts={
-              workspace.filteredPosts
-            }
-            postTypes={
-              workspace.postTypes
-            }
+            <FeedSection
 
-            search={
-              workspace.search
-            }
-            onSearchChange={
-              workspace.setSearch
-            }
+              /* POSTS */
 
-            selectedType={
-              workspace.selectedType
-            }
-            onTypeChange={
-              workspace.setSelectedType
-            }
+              posts={
+                workspace.filteredPosts
+              }
 
-            onLike={
-              workspace.toggleLike
-            }
-            onComment={
-              workspace.addComment
-            }
+              postTypes={
+                workspace.postTypes
+              }
 
-            newPostOpen={
-              workspace.newPostOpen
-            }
-            onOpenNewPost={() =>
-              workspace.setNewPostOpen(
-                true
-              )
-            }
 
-            newPost={
-              workspace.newPost
-            }
-            onNewPostChange={
-              workspace.handleNewPostChange
-            }
-            onCreatePost={
-              workspace.createPost
-            }
-            onCancelPost={
-              workspace.cancelNewPost
-            }
-          />
-        )}
+              /* BUSCA */
 
-        {workspace.activeTab !==
-          "feed" && (
-          <section className="workspace-coming-soon">
-            <span>
-              EM DESENVOLVIMENTO
-            </span>
+              search={
+                workspace.search
+              }
 
-            <h2>
-              Essa área será adicionada ao
-              Workspace.
-            </h2>
+              onSearchChange={
+                workspace.setSearch
+              }
 
-            <p>
-              Vamos construir essa etapa
-              depois de finalizar o feed.
-            </p>
-          </section>
-        )}
+
+              /* FILTRO */
+
+              selectedType={
+                workspace.selectedType
+              }
+
+              onTypeChange={
+                workspace.setSelectedType
+              }
+
+
+              /* INTERAÇÕES */
+
+              onLike={
+                workspace.toggleLike
+              }
+
+              onTogglePin={
+                workspace.togglePin
+              }
+
+              onDelete={
+                workspace.deletePost
+              }
+
+
+              /* THREAD */
+
+              selectedPost={
+                workspace.selectedPost
+              }
+
+              onOpenThread={
+                workspace.openThread
+              }
+
+              onCloseThread={
+                workspace.closeThread
+              }
+
+              onComment={
+                workspace.addComment
+              }
+
+              onStatusChange={
+                workspace.updatePostStatus
+              }
+
+
+              /* NOVA PUBLICAÇÃO */
+
+              newPostOpen={
+                workspace.newPostOpen
+              }
+
+              onOpenNewPost={
+                workspace.openNewPost
+              }
+
+              newPost={
+                workspace.newPost
+              }
+
+              onNewPostChange={
+                workspace.handleNewPostChange
+              }
+
+              onCreatePost={
+                workspace.createPost
+              }
+
+              onCancelPost={
+                workspace.cancelNewPost
+              }
+            />
+          )}
+
+        {/* =====================================================
+            TAREFAS
+        ====================================================== */}
+
+        {workspace.activeTab ===
+          "tasks" && (
+            <section className="workspace-coming-soon">
+
+              <span>
+                EM DESENVOLVIMENTO
+              </span>
+
+              <h2>
+                Gestão de tarefas
+              </h2>
+
+              <p>
+                Aqui ficará o quadro
+                Kanban com todas as
+                atividades relacionadas
+                às análises competitivas
+                do BCI.
+              </p>
+            </section>
+          )}
+
+        {/* =====================================================
+            MINHAS ATIVIDADES
+        ====================================================== */}
+
+        {workspace.activeTab ===
+          "my-activity" && (
+            <section className="workspace-coming-soon">
+
+              <span>
+                EM DESENVOLVIMENTO
+              </span>
+
+              <h2>
+                Minhas atividades
+              </h2>
+
+              <p>
+                Nesta área o usuário
+                poderá acompanhar
+                tarefas, comentários,
+                menções e publicações
+                relacionadas à sua
+                conta.
+              </p>
+            </section>
+          )}
+
+        {/* =====================================================
+            EQUIPE
+        ====================================================== */}
+
+        {workspace.activeTab ===
+          "team" && (
+            <section className="workspace-coming-soon">
+
+              <span>
+                EM DESENVOLVIMENTO
+              </span>
+
+              <h2>
+                Equipe LUMEN
+              </h2>
+
+              <p>
+                Aqui serão exibidos
+                os membros do projeto,
+                suas funções,
+                disponibilidade e
+                participação dentro
+                do Workspace.
+              </p>
+            </section>
+          )}
       </div>
     </main>
   );

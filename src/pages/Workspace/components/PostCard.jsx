@@ -1,51 +1,155 @@
 import {
+  FiCheck,
   FiExternalLink,
   FiHeart,
   FiMessageCircle,
   FiMoreHorizontal,
-  FiSend,
+  FiPaperclip,
+  FiTrash2,
+  FiUser,
 } from "react-icons/fi";
 
-import { useState } from "react";
+import {
+  BsPinAngle,
+  BsPinAngleFill,
+} from "react-icons/bs";
 
-import CommentItem from "./CommentItem";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 export default function PostCard({
   post,
   type,
+
   onLike,
-  onComment,
+  onOpenThread,
+
+  onTogglePin,
+  onDelete,
+
+  onOpenLinkedContent,
 }) {
-  const [commentsOpen, setCommentsOpen] =
-    useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const [comment, setComment] =
-    useState("");
+  const menuRef = useRef(null);
 
-  function handleSubmitComment(event) {
-    event.preventDefault();
+  const statusLabels = {
+    pending: "Pendente",
+    progress: "Em análise",
+    resolved: "Resolvido",
+  };
 
-    if (!comment.trim()) {
+  // =========================================================
+  // FECHAR MENU AO CLICAR FORA
+  // =========================================================
+
+  useEffect(() => {
+    function handleOutsideClick(event) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setMenuOpen(false);
+      }
+    }
+
+    document.addEventListener(
+      "mousedown",
+      handleOutsideClick
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleOutsideClick
+      );
+    };
+  }, []);
+
+  // =========================================================
+  // FIXAR / DESAFIXAR
+  // =========================================================
+
+  function handlePin() {
+    if (!onTogglePin) {
       return;
     }
 
-    onComment(post.id, comment);
+    onTogglePin(post.id);
 
-    setComment("");
-    setCommentsOpen(true);
+    setMenuOpen(false);
   }
 
+  // =========================================================
+  // EXCLUIR
+  // =========================================================
+
+  function handleDelete() {
+    if (!onDelete) {
+      return;
+    }
+
+    onDelete(post.id);
+
+    setMenuOpen(false);
+  }
+
+  // =========================================================
+  // CONTEÚDO VINCULADO
+  // =========================================================
+
+  function handleLinkedContent() {
+    if (!post.linkedItem) {
+      return;
+    }
+
+    if (onOpenLinkedContent) {
+      onOpenLinkedContent(post.linkedItem);
+    }
+  }
+
+  // =========================================================
+  // RENDER
+  // =========================================================
+
   return (
-    <article className="workspace-post-card">
-      <div className="post-header">
+    <article
+      className={
+        post.pinned
+          ? "workspace-post-card workspace-post-pinned"
+          : "workspace-post-card"
+      }
+    >
+      {/* =====================================================
+          FIXADO
+      ====================================================== */}
+
+      {post.pinned && (
+        <div className="post-pinned-label">
+          <BsPinAngleFill />
+
+          <span>
+            PUBLICAÇÃO FIXADA
+          </span>
+        </div>
+      )}
+
+      {/* =====================================================
+          HEADER
+      ====================================================== */}
+
+      <header className="post-header">
         <div className="post-author-area">
           <div className="post-avatar">
-            {post.author.initials}
+            {post.author?.initials || "?"}
           </div>
 
           <div>
             <strong>
-              {post.author.name}
+              {post.author?.name || "Usuário"}
             </strong>
 
             <span>
@@ -54,27 +158,129 @@ export default function PostCard({
           </div>
         </div>
 
-        <button
-          type="button"
-          className="post-more-button"
-          aria-label="Mais opções"
+        {/* ===================================================
+            MENU
+        ==================================================== */}
+
+        <div
+          className="post-menu-wrapper"
+          ref={menuRef}
         >
-          <FiMoreHorizontal />
-        </button>
-      </div>
+          <button
+            type="button"
+            className="post-more-button"
+            onClick={() =>
+              setMenuOpen(
+                (previous) => !previous
+              )
+            }
+            aria-label="Opções da publicação"
+            aria-expanded={menuOpen}
+          >
+            <FiMoreHorizontal />
+          </button>
+
+          {menuOpen && (
+            <div className="post-options-menu">
+
+              {/* FIXAR / DESAFIXAR */}
+
+              <button
+                type="button"
+                onClick={handlePin}
+              >
+                {post.pinned ? (
+                  <>
+                    <BsPinAngle />
+
+                    <span>
+                      Desafixar publicação
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <BsPinAngleFill />
+
+                    <span>
+                      Fixar publicação
+                    </span>
+                  </>
+                )}
+              </button>
+
+              {/* EXCLUIR */}
+
+              <button
+                type="button"
+                className="post-delete-option"
+                onClick={handleDelete}
+              >
+                <FiTrash2 />
+
+                <span>
+                  Excluir publicação
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* =====================================================
+          BODY
+      ====================================================== */}
 
       <div className="post-body">
-        <span
-          className={`post-type post-type-${type.className}`}
-        >
-          {type.label}
-        </span>
+
+        {/* TIPO + STATUS */}
+
+        <div className="post-meta-row">
+          <span
+            className={`post-type post-type-${type?.className || "update"
+              }`}
+          >
+            {type?.label || "Atualização"}
+          </span>
+
+          {post.status && (
+            <span
+              className={`post-status post-status-${post.status}`}
+            >
+              {post.status === "resolved" && (
+                <FiCheck />
+              )}
+
+              {statusLabels[post.status] ||
+                post.status}
+            </span>
+          )}
+        </div>
+
+        {/* TEXTO */}
 
         <p className="post-text">
           {post.content}
         </p>
 
-        {post.tags.length > 0 && (
+        {/* RESPONSÁVEL */}
+
+        {post.responsible && (
+          <div className="post-responsible">
+            <FiUser />
+
+            <span>
+              Responsável:
+            </span>
+
+            <strong>
+              {post.responsible}
+            </strong>
+          </div>
+        )}
+
+        {/* TAGS */}
+
+        {post.tags?.length > 0 && (
           <div className="post-tags">
             {post.tags.map((tag) => (
               <span key={tag}>
@@ -84,11 +290,18 @@ export default function PostCard({
           </div>
         )}
 
+        {/* ===================================================
+            CONTEÚDO VINCULADO
+        ==================================================== */}
+
         {post.linkedItem && (
           <button
             type="button"
             className="linked-content"
+            onClick={handleLinkedContent}
           >
+            <FiPaperclip />
+
             <div>
               <span>
                 CONTEÚDO VINCULADO
@@ -97,6 +310,12 @@ export default function PostCard({
               <strong>
                 {post.linkedItem.title}
               </strong>
+
+              {post.linkedItem.type && (
+                <small>
+                  {post.linkedItem.type}
+                </small>
+              )}
             </div>
 
             <FiExternalLink />
@@ -104,7 +323,14 @@ export default function PostCard({
         )}
       </div>
 
-      <div className="post-actions">
+      {/* =====================================================
+          ACTIONS
+      ====================================================== */}
+
+      <footer className="post-actions">
+
+        {/* CURTIR */}
+
         <button
           type="button"
           className={
@@ -112,83 +338,53 @@ export default function PostCard({
               ? "post-action post-action-liked"
               : "post-action"
           }
-          onClick={() => onLike(post.id)}
+          onClick={() =>
+            onLike?.(post.id)
+          }
+          aria-label={
+            post.liked
+              ? "Remover curtida"
+              : "Curtir publicação"
+          }
         >
           <FiHeart />
 
           <span>
-            {post.likes}
+            {post.likes || 0}
           </span>
         </button>
+
+        {/* COMENTÁRIOS */}
 
         <button
           type="button"
           className="post-action"
           onClick={() =>
-            setCommentsOpen(
-              (previous) => !previous
-            )
+            onOpenThread?.(post)
           }
+          aria-label="Abrir comentários"
         >
           <FiMessageCircle />
 
           <span>
-            {post.comments.length}
+            {post.comments?.length || 0}
           </span>
         </button>
 
-        <span className="post-action-label">
-          {post.comments.length === 1
-            ? "1 comentário"
-            : `${post.comments.length} comentários`}
-        </span>
-      </div>
+        {/* ABRIR THREAD */}
 
-      {commentsOpen && (
-        <div className="post-thread">
-          {post.comments.length > 0 && (
-            <div className="thread-comments">
-              {post.comments.map(
-                (comment) => (
-                  <CommentItem
-                    key={comment.id}
-                    comment={comment}
-                  />
-                )
-              )}
-            </div>
-          )}
+        <button
+          type="button"
+          className="post-open-thread"
+          onClick={() =>
+            onOpenThread?.(post)
+          }
+        >
+          ABRIR DISCUSSÃO
 
-          <form
-            className="comment-form"
-            onSubmit={handleSubmitComment}
-          >
-            <div className="comment-avatar comment-avatar-small">
-              IR
-            </div>
-
-            <div className="comment-input">
-              <input
-                type="text"
-                placeholder="Escreva uma resposta..."
-                value={comment}
-                onChange={(event) =>
-                  setComment(
-                    event.target.value
-                  )
-                }
-              />
-
-              <button
-                type="submit"
-                aria-label="Enviar comentário"
-              >
-                <FiSend />
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+          <FiExternalLink />
+        </button>
+      </footer>
     </article>
   );
 }
