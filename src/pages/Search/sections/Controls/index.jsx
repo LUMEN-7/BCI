@@ -13,9 +13,11 @@ export default function Controls({
   selectedBrand,
   selectedYear,
   hasFilters,
+  validationError,
   onSearchChange,
   onBrandChange,
   onYearChange,
+  onExecute,
   onClear,
 }) {
   return (
@@ -78,7 +80,17 @@ export default function Controls({
             Limpar filtros
           </button>
         )}
+
+        <button type="button" className="execute-search" onClick={onExecute}>
+          Pesquisar
+        </button>
       </div>
+
+      {validationError && (
+        <p className="search-validation-error" role="alert">
+          {validationError}
+        </p>
+      )}
     </section>
   );
 }
