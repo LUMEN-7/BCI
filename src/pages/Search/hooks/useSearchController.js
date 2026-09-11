@@ -22,6 +22,8 @@ export default function useSearchController() {
     const [cars, setCars] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [isSearchExecuted, setIsSearchExecuted] = useState(false);
+    const [validationError, setValidationError] = useState('');
 
     useEffect(() => {
         async function carregar() {
@@ -46,13 +48,16 @@ export default function useSearchController() {
 
     const results = useMemo(() => {
         const term = search.toLowerCase().trim();
+        
+        if (!isSearchExecuted || !term || !selectedBrand || !selectedYear) return [];
+        
         return cars.filter((car) => {
             const matchesSearch = !term || car.modelo.toLowerCase().includes(term) || car.brand.toLowerCase().includes(term) || car.segment.toLowerCase().includes(term);
-            const matchesBrand = !selectedBrand || car.brand === selectedBrand;
-            const matchesYear = !selectedYear || car.ano === Number(selectedYear);
+            const matchesBrand = car.brand === selectedBrand;
+            const matchesYear = car.ano === Number(selectedYear);
             return matchesSearch && matchesBrand && matchesYear;
         });
-    }, [cars, search, selectedBrand, selectedYear]);
+    }, [cars, search, selectedBrand, selectedYear,isSearchExecuted]);
 
     const hasFilters = Boolean(search.trim() || selectedBrand || selectedYear);
 
@@ -73,15 +78,43 @@ export default function useSearchController() {
         }
     }
 
-    function clearFilters() { setSearch(''); setSelectedBrand(''); setSelectedYear(''); }
-    function handleSearchChange(e) { setSearch(e.target.value); }
-    function handleBrandChange(e) { setSelectedBrand(e.target.value); }
-    function handleYearChange(e) { setSelectedYear(e.target.value); }
+    function clearFilters() { setSearch(''); setSelectedBrand(''); setSelectedYear(''); setIsSearchExecuted(false); setValidationError('') }
+    function handleSearchChange(e) { setSearch(e.target.value); setIsSearchExecuted(false); setValidationError(''); }
+    function handleBrandChange(e) { setSelectedBrand(e.target.value);setIsSearchExecuted(false); setValidationError(''); }
+    function handleYearChange(e) { setSelectedYear(e.target.value);setIsSearchExecuted(false); setValidationError(''); }
     function handleDetails(id) { navigate(`/information/${id}`); }
+
+    function executeSearch() {
+        const missingFields = [];
+
+        if (!search.trim()) {
+            missingFields.push('digite o nome do modelo');
+        }
+        if (!selectedBrand) {
+            missingFields.push('selecione uma marca');
+        }
+        if (!selectedYear) {
+            missingFields.push('selecione um ano');
+        }
+
+        if (missingFields.length > 0) {
+            const lastMissingField = missingFields.pop();
+            const missingFieldsText = missingFields.length > 0
+                ? `${missingFields.join(', ')} e ${lastMissingField}`
+                : lastMissingField;
+
+            setIsSearchExecuted(false);
+            setValidationError(`Para pesquisar, ${missingFieldsText}.`);
+            return;
+        }
+
+        setValidationError('');
+        setIsSearchExecuted(true);
+    }
 
     return {
         brands, years, results, search, selectedBrand, selectedYear, favorites,
-        hasFilters, loading, error,
+        hasFilters, loading, error,validationError,executeSearch,
         handleSearchChange, handleBrandChange, handleYearChange, toggleFavorite, clearFilters, handleDetails,
     };
 }

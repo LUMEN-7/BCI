@@ -29,6 +29,7 @@ export default function useCompareController() {
     const [secondCar, setSecondCar] = useState(null);
     const [activeSlot, setActiveSlot] = useState(initialFirstCar ? 'second' : 'first');
     const [search, setSearch] = useState('');
+    
 
     // Estados da API
     const [cars, setCars] = useState([]);
