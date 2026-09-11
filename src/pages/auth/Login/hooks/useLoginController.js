@@ -14,12 +14,14 @@ export default function useLoginController() {
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({ email: '', password: '' });
     const [authError, setAuthError] = useState('');
+    const [carregandoGoogle, setCarregandoGoogle] = useState(false);
 
     function irParaProximoPasso(resultado) {
         if (resultado.requerDoisFatores) {
             navigate('/verificar-2fa', { state: { tokenDesafio: resultado.tokenDesafio } });
             return;
         }
+        
         navigate('/home');
     }
 
@@ -39,6 +41,8 @@ export default function useLoginController() {
     }
 
     async function handleGoogleLogin() {
+        if (carregandoGoogle) return; // trava disparo duplo
+        setCarregandoGoogle(true);
         setAuthError('');
         try {
             const result = await signInWithPopup(auth, googleProvider);

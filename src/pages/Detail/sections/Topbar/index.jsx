@@ -7,7 +7,7 @@ import {
 } from "react-icons/io5";
 import "./style.css";
 
-export default function Topbar({ favorite, onBack, onHome, onToggleFavorite }) {
+export default function Topbar({ favorite, onBack, onHome, onToggleFavorite, handleExport }) {
   return (
     <header className="compare-detail-topbar">
       <button type="button" className="back-button" onClick={onBack}>
@@ -34,7 +34,7 @@ export default function Topbar({ favorite, onBack, onHome, onToggleFavorite }) {
 		<button
 			type="button"
 			className="export-data-button"
-			// onClick={onExport}
+			onClick={handleExport}
 			aria-label="Exportar dados"
 		>
 			<IoDownloadOutline />

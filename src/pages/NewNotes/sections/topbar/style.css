@@ -1,0 +1,35 @@
+.new-note-topbar {
+	display: flex; align-items: center; justify-content: space-between; margin-bottom: 34px;
+}
+.new-note-back {
+	display: flex; align-items: center; gap: 8px; padding: 10px 17px;
+	border: none; border-radius: 999px; background: rgba(0, 20, 46, 0.055);
+	color: var(--color-primary); font-family: var(--font-body-bold); font-size: 10px;
+	letter-spacing: 0.8px; text-transform: uppercase; cursor: pointer;
+	transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.new-note-back svg { font-size: 17px; }
+.new-note-back:hover { transform: translateY(-2px); background: rgba(0, 20, 46, 0.09); }
+.new-note-actions { display: flex; align-items: center; gap: 12px; }
+.block-counter { font-family: var(--font-body-bold); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #929ca8; }
+.save-note-button {
+	height: 42px; display: inline-flex; align-items: center; justify-content: center;
+	gap: 8px; padding: 0 18px; border: none; border-radius: 999px; background: var(--color-primary);
+	color: var(--color-light-neutral); font-family: var(--font-body-bold); font-size: 10px;
+	letter-spacing: 0.6px; text-transform: uppercase; cursor: pointer;
+	box-shadow: 0 8px 20px rgba(0, 20, 46, 0.13); transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.save-note-button svg { font-size: 15px; }
+.save-note-button:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0, 20, 46, 0.18); }
+
+@media (max-width: 650px) {
+	.new-note-topbar { margin-bottom: 22px; }
+	.new-note-back { padding: 9px 13px; font-size: 9px; }
+	.new-note-back span { display: none; }
+	.block-counter { display: none; }
+	.save-note-button { height: 40px; padding: 0 14px; font-size: 9px; }
+}
+@media (max-width: 400px) {
+	.save-note-button { padding: 0 11px; }
+	.save-note-button svg { font-size: 14px; }
+}

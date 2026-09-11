@@ -2,6 +2,8 @@ import { IoArrowForward, IoStar, IoStarOutline } from "react-icons/io5";
 
 import "./style.css";
 
+
+
 export default function CarGrid({
   cars,
   favorites,
@@ -29,13 +31,13 @@ export default function CarGrid({
           </div>
 
           <div className="car-image-container">
-            <img src={car.image} alt={car.name} className="car-image" />
+            <img src={car.image} alt={car.modelo} className="car-image" />
           </div>
 
           <div className="car-information">
             <div className="car-meta">{car.segment}</div>
-            <h3>{car.name.replace(` ${car.year}`, "")}</h3>
-            <span className="car-year">{car.year}</span>
+            <h3>{car.modelo.replace(` ${car.ano}`, "")}</h3>
+            <span className="car-year">{car.ano}</span>
           </div>
 
           <button

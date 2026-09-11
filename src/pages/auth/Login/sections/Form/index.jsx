@@ -2,30 +2,6 @@ import { IoArrowForward } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import { logoUrl } from "../../data";
 import "./style.css";
-import {
-  GoogleAuthProvider,
-  signInWithPopup
-} from "firebase/auth";
-
-import { auth } from "@/config/firebase";
-
-const googleProvider = new GoogleAuthProvider();
-
-const handleGoogleLogin = async () => {
-  try {
-    const result = await signInWithPopup(
-      auth,
-      googleProvider
-    );
-
-    const user = result.user;
-
-    console.log("Usuário:", user);
-
-  } catch (error) {
-    console.error("Erro no login com Google:", error);
-  }
-};
 
 export default function Form({ controller }) {
   const {
@@ -37,6 +13,7 @@ export default function Form({ controller }) {
     setShowPassword,
     updateField,
     handleLogin,
+    handleGoogleLogin,
     goToRegister,
   } = controller;
 

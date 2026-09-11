@@ -66,10 +66,11 @@ export default function Selection({
 
 function SelectedSlot({ label, car, active, onClick, onRemove }) {
   return (
-    <button
-      type="button"
+  <div // <-- MUDOU DE <button> PARA <div>
       className={`slot-card ${active ? "slot-card-active" : ""} ${car ? "slot-card-filled" : "slot-card-empty"}`}
       onClick={onClick}
+      role="button" // Mantém a acessibilidade para leitores de tela
+      tabIndex={0}
     >
       {car ? (
         <>
@@ -113,6 +114,6 @@ function SelectedSlot({ label, car, active, onClick, onRemove }) {
           <IoAddOutline className="empty-slot-add" />
         </div>
       )}
-    </button>
+    </div>
   );
 }

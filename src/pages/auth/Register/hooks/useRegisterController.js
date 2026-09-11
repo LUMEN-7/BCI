@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { cadastrar } from '@/services/authService';
 
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -19,7 +20,7 @@ export default function useRegisterController() {
         if (file) setPhoto(URL.createObjectURL(file));
     }
 
-    function handleRegister(event) {
+    async function handleRegister(event) {
         event.preventDefault();
         setAuthError('');
         const newErrors = { name: '', email: '', password: '' };
@@ -29,7 +30,7 @@ export default function useRegisterController() {
         setErrors(newErrors);
         if (newErrors.name || newErrors.email || newErrors.password) return;
         try {
-            localStorage.setItem('currentUser', JSON.stringify({ name, email, photo }));
+            await cadastrar(name, email, password, null);
             navigate('/home');
         } catch (error) {
             setAuthError(error.message || 'Não foi possível criar a conta.');

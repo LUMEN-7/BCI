@@ -1,10 +1,10 @@
 import apiFetch from "./api";
 
 
-export async function cadastrar(userName,email, password,confirmPassword) {
-  const resultado = await apiFetch("/User/cadastro", {
+export async function cadastrar(Nome,Email, Password,FotoPerfilUrl) {
+  const resultado = await apiFetch("/user/cadastro", {
     method: "POST",
-    body: JSON.stringify({userName,email, password,confirmPassword }),
+    body: JSON.stringify({Nome,Email, Password, FotoPerfilUrl }),
   });
   return tratarRespostaLogin(resultado);
 }
@@ -39,5 +39,6 @@ function tratarRespostaLogin(resultado) {
     return { requerDoisFatores: true, tokenDesafio: resultado.tokenDesafio };
   }
   localStorage.setItem("accessToken", resultado.accessToken);
+  localStorage.setItem("currentUser", JSON.stringify(resultado.usuario));
   return { requerDoisFatores: false };
 }

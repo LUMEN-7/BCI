@@ -1,7 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getCars, getFavorites, addFavorites, removeFavorite } from '@/services/carsService';
 
-import { cars } from '../data';
+function adaptCar(car) {
+  return {
+    id: car.linhagemId,
+    brand: car.marca,
+    modelo: `${car.modelo} ${car.ano}`,
+    ano: car.ano,
+    image: null, // sem fonte de foto de car ainda — pausado
+    segment: car.categoria?.Fontes?.[0]?.Valor ?? '',
+  };
+}
 
 export default function useSearchController() {
     const navigate = useNavigate();
@@ -9,79 +19,69 @@ export default function useSearchController() {
     const [selectedYear, setSelectedYear] = useState('');
     const [search, setSearch] = useState('');
     const [favorites, setFavorites] = useState([]);
+    const [cars, setCars] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-    const brands = useMemo(
-        () => [...new Set(cars.map((car) => car.brand))],
-        []
-    );
+    useEffect(() => {
+        async function carregar() {
+            setLoading(true);
+            setError('');
+            try {
+                const [carrosResult, favoritosResult] = await Promise.all([getCars(), getFavorites()]);
+                setCars(carrosResult.map(adaptCar));
+                setFavorites(favoritosResult.favoriteCarros?.map((c) => c.linhagemId) ?? []);
+            } catch (err) {
+                setError(err.message || 'Não foi possível carregar os carros.');
+            } finally {
+                setLoading(false);
+            }
+            
+        }
+        carregar();
+    }, []);
 
-    const years = useMemo(
-        () => [...new Set(cars.map((car) => car.year))].sort((a, b) => b - a),
-        []
-    );
+    const brands = useMemo(() => [...new Set(cars.map((car) => car.brand))], [cars]);
+    const years = useMemo(() => [...new Set(cars.map((car) => car.ano))].sort((a, b) => b - a), [cars]);
 
     const results = useMemo(() => {
         const term = search.toLowerCase().trim();
-
         return cars.filter((car) => {
-            const matchesSearch =
-                !term ||
-                car.name.toLowerCase().includes(term) ||
-                car.brand.toLowerCase().includes(term) ||
-                car.segment.toLowerCase().includes(term);
+            const matchesSearch = !term || car.modelo.toLowerCase().includes(term) || car.brand.toLowerCase().includes(term) || car.segment.toLowerCase().includes(term);
             const matchesBrand = !selectedBrand || car.brand === selectedBrand;
-            const matchesYear = !selectedYear || car.year === Number(selectedYear);
-
+            const matchesYear = !selectedYear || car.ano === Number(selectedYear);
             return matchesSearch && matchesBrand && matchesYear;
         });
-    }, [search, selectedBrand, selectedYear]);
+    }, [cars, search, selectedBrand, selectedYear]);
 
     const hasFilters = Boolean(search.trim() || selectedBrand || selectedYear);
 
-    function toggleFavorite(id) {
-        setFavorites((previousFavorites) =>
-            previousFavorites.includes(id)
-                ? previousFavorites.filter((item) => item !== id)
-                : [...previousFavorites, id]
-        );
+    async function toggleFavorite(id) {
+        const jaFavoritado = favorites.includes(id);
+        try {
+            if (jaFavoritado) {
+                await removeFavorite(id);
+                setFavorites((prev) => prev.filter((f) => f !== id));
+            } else {
+                await addFavorites(id);
+                setFavorites((prev) => [...prev, id]);
+            }
+            return { success: true, acao: jaFavoritado ? 'removido' : 'adicionado' };
+        } catch (err) {
+            setError(err.message || 'Não foi possível atualizar os favoritos.');
+            return { success: false };
+        }
     }
 
-    function clearFilters() {
-        setSearch('');
-        setSelectedBrand('');
-        setSelectedYear('');
-    }
-
-    function handleSearchChange(event) {
-        setSearch(event.target.value);
-    }
-
-    function handleBrandChange(event) {
-        setSelectedBrand(event.target.value);
-    }
-
-    function handleYearChange(event) {
-        setSelectedYear(event.target.value);
-    }
-
-    function handleDetails(id) {
-        navigate(`/information/${id}`);
-    }
+    function clearFilters() { setSearch(''); setSelectedBrand(''); setSelectedYear(''); }
+    function handleSearchChange(e) { setSearch(e.target.value); }
+    function handleBrandChange(e) { setSelectedBrand(e.target.value); }
+    function handleYearChange(e) { setSelectedYear(e.target.value); }
+    function handleDetails(id) { navigate(`/information/${id}`); }
 
     return {
-        brands,
-        years,
-        results,
-        search,
-        selectedBrand,
-        selectedYear,
-        favorites,
-        hasFilters,
-        handleSearchChange,
-        handleBrandChange,
-        handleYearChange,
-        toggleFavorite,
-        clearFilters,
-        handleDetails,
+        brands, years, results, search, selectedBrand, selectedYear, favorites,
+        hasFilters, loading, error,
+        handleSearchChange, handleBrandChange, handleYearChange, toggleFavorite, clearFilters, handleDetails,
     };
 }
