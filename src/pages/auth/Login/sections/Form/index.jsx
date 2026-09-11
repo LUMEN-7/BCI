@@ -1,9 +1,9 @@
 import { IoArrowForward } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 import { logoUrl } from "../../data";
 import "./style.css";
 
-export default function Form({ controller }) {
   const {
     email,
     password,
@@ -138,4 +138,4 @@ export default function Form({ controller }) {
       </button>
     </form>
   );
-}
+

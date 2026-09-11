@@ -23,13 +23,18 @@ export default function Selection({
           <span className="section-eyebrow">SUA SELEÇÃO</span>
           <h2>Escolha os modelos</h2>
         </div>
+
         <div className="selection-status">
           <span
             className={`status-dot ${firstCar ? "status-dot-active" : ""}`}
           />
-          <span>{firstCar ? "1" : "0"} de 2 selecionados</span>
+
+          <span>
+            {Number(!!firstCar) + Number(!!secondCar)} de 2 selecionados
+          </span>
         </div>
       </div>
+
       <div className="selected-area">
         <SelectedSlot
           label="Modelo 1"
@@ -38,8 +43,10 @@ export default function Selection({
           onClick={() => setActiveSlot("first")}
           onRemove={() => removeCar("first")}
         />
+
         <div className="vs-wrapper">
           <div className="vs-line" />
+
           <button
             type="button"
             className={`vs-circle ${canCompare ? "vs-circle-ready" : ""}`}
@@ -50,8 +57,10 @@ export default function Selection({
             <span>VS</span>
             <IoSwapHorizontalOutline />
           </button>
+
           <div className="vs-line" />
         </div>
+
         <SelectedSlot
           label="Modelo 2"
           car={secondCar}
@@ -66,53 +75,64 @@ export default function Selection({
 
 function SelectedSlot({ label, car, active, onClick, onRemove }) {
   return (
-  <div // <-- MUDOU DE <button> PARA <div>
-      className={`slot-card ${active ? "slot-card-active" : ""} ${car ? "slot-card-filled" : "slot-card-empty"}`}
-      onClick={onClick}
-      role="button" // Mantém a acessibilidade para leitores de tela
-      tabIndex={0}
+    <div
+      className={`slot-card ${active ? "slot-card-active" : ""
+        } ${car ? "slot-card-filled" : "slot-card-empty"}`}
     >
       {car ? (
         <>
-          <div className="slot-image-wrapper">
-            {car.image ? (
-              <img src={car.image} alt={car.name} />
-            ) : (
-              <IoCarSportOutline />
-            )}
-          </div>
-          <div className="slot-info">
-            <span className="slot-label">{label}</span>
-            <strong>{car.name}</strong>
-            <div className="slot-meta">
-              <span>{car.engine}</span>
-              <span>{car.power}</span>
-              <span>{car.type}</span>
+          <button
+            type="button"
+            className="slot-card-content"
+            onClick={onClick}
+          >
+            <div className="slot-image-wrapper">
+              {car.image ? (
+                <img src={car.image} alt={car.name} />
+              ) : (
+                <IoCarSportOutline />
+              )}
             </div>
-          </div>
+
+            <div className="slot-info">
+              <span className="slot-label">{label}</span>
+
+              <strong>{car.name}</strong>
+
+              <div className="slot-meta">
+                <span>{car.engine}</span>
+                <span>{car.power}</span>
+                <span>{car.type}</span>
+              </div>
+            </div>
+          </button>
+
           <button
             type="button"
             className="remove-button"
-            onClick={(event) => {
-              event.stopPropagation();
-              onRemove();
-            }}
+            onClick={onRemove}
             aria-label={`Remover ${car.name}`}
           >
             <IoCloseOutline />
           </button>
         </>
       ) : (
-        <div className="empty-slot">
+        <button
+          type="button"
+          className="empty-slot"
+          onClick={onClick}
+        >
           <div className="empty-slot-icon">
             <IoCarSportOutline />
           </div>
+
           <div>
             <span>{label}</span>
             <strong>Adicionar modelo</strong>
           </div>
+
           <IoAddOutline className="empty-slot-add" />
-        </div>
+        </button>
       )}
     </div>
   );

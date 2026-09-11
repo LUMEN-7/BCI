@@ -18,9 +18,11 @@ export default function Search() {
     selectedYear,
     favorites,
     hasFilters,
+    validationError,
     handleSearchChange,
     handleBrandChange,
     handleYearChange,
+    executeSearch,
     toggleFavorite,
     clearFilters,
     handleDetails,
@@ -39,9 +41,11 @@ export default function Search() {
           selectedBrand={selectedBrand}
           selectedYear={selectedYear}
           hasFilters={hasFilters}
+          validationError={validationError}
           onSearchChange={handleSearchChange}
           onBrandChange={handleBrandChange}
           onYearChange={handleYearChange}
+          onExecute={executeSearch}
           onClear={clearFilters}
         />
         <ResultsHeader

@@ -1,0 +1,533 @@
+/* =========================================================
+   FLOATING NOTES
+========================================================= */
+
+.floating-notes {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 1000;
+
+    font-family: var(--font-body);
+}
+
+
+/* =========================================================
+   FLOATING BUTTON
+========================================================= */
+
+.floating-notes-button {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(0, 20, 46, 0.08);
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.72);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    color: var(--color-primary);
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 16px rgba(0, 20, 46, 0.12),
+        0 3px 6px rgba(0, 20, 46, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.floating-notes-button svg {
+    width: 22px;
+    height: 22px;
+
+    transition: transform 0.25s ease;
+}
+
+.floating-notes-button:hover {
+    transform: translateY(-2px);
+
+    background: var(--color-primary);
+    color: var(--color-light-neutral);
+
+    box-shadow:
+        0 14px 30px rgba(0, 20, 46, 0.18),
+        0 5px 12px rgba(0, 20, 46, 0.10);
+}
+
+.floating-notes-button:active {
+    transform: scale(0.95);
+}
+
+
+/* =========================================================
+   OPEN BUTTON
+========================================================= */
+
+.floating-notes.is-open .floating-notes-button {
+    background: var(--color-primary);
+    color: var(--color-light-neutral);
+}
+
+.floating-notes.is-open .floating-notes-button svg {
+    transform: rotate(45deg);
+}
+
+
+/* =========================================================
+   NOTES PANEL
+========================================================= */
+
+.notes-panel {
+    position: absolute;
+
+    right: 0;
+    bottom: 66px;
+
+    width: 350px;
+    max-height: calc(100vh - 110px);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.726);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(0, 20, 46, 0.08);
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 45px rgba(0, 20, 46, 0.14),
+        0 5px 15px rgba(0, 20, 46, 0.08);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(10px) scale(0.97);
+
+    transform-origin: bottom right;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+}
+
+
+/* =========================================================
+   PANEL OPEN
+========================================================= */
+
+.floating-notes.is-open .notes-panel {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0) scale(1);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.notes-panel-header {
+    min-height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 16px;
+
+    border-bottom: 1px solid rgba(0, 20, 46, 0.08);
+}
+
+.notes-panel-title {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+.notes-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--color-primary);
+    color: var(--color-light-neutral);
+}
+
+.notes-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.notes-panel-title span {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: var(--color-primary);
+
+    font-family: var(--font-body-bold);
+    font-size: 8px;
+
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+
+    opacity: 0.55;
+}
+
+.notes-panel-title h2 {
+    margin: 0;
+
+    color: var(--color-primary);
+
+    font-family: var(--font-body-bold);
+    font-size: 15px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.notes-close-button {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: var(--color-primary);
+
+    cursor: pointer;
+
+    opacity: 0.55;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.notes-close-button svg {
+    width: 21px;
+    height: 21px;
+}
+
+.notes-close-button:hover {
+    background: rgba(0, 20, 46, 0.06);
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.notes-form {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+
+    padding: 20px;
+
+    overflow-y: auto;
+}
+
+.notes-field {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.notes-field label {
+    color: var(--color-primary);
+
+    font-family: var(--font-body-bold);
+    font-size: 9px;
+
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+
+    opacity: 0.58;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.notes-field input,
+.notes-field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid rgba(0, 20, 46, 0.10);
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.52);
+
+    color: var(--color-primary);
+
+    outline: none;
+
+    font-family: var(--font-body);
+    font-size: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.notes-field input {
+    height: 42px;
+
+    padding: 0 12px;
+}
+
+.notes-field textarea {
+    min-height: 170px;
+
+    padding: 12px;
+
+    resize: none;
+
+    line-height: 1.55;
+}
+
+.notes-field input::placeholder,
+.notes-field textarea::placeholder {
+    color: var(--color-primary);
+
+    opacity: 0.32;
+}
+
+.notes-field input:focus,
+.notes-field textarea:focus {
+    border-color: rgba(0, 20, 46, 0.30);
+
+    background: rgba(255, 255, 255, 0.75);
+
+    box-shadow:
+        0 0 0 3px rgba(0, 20, 46, 0.04);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.notes-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    padding: 13px 20px;
+
+    border-top: 1px solid rgba(0, 20, 46, 0.08);
+}
+
+
+/* =========================================================
+   CANCEL BUTTON
+========================================================= */
+
+.notes-cancel-button {
+    height: 38px;
+
+    padding: 0 14px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: var(--color-primary);
+
+    font-family: var(--font-body-bold);
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    opacity: 0.55;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.notes-cancel-button:hover {
+    background: rgba(0, 20, 46, 0.05);
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   SAVE BUTTON
+========================================================= */
+
+.notes-save-button {
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 15px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: var(--color-primary);
+    color: var(--color-light-neutral);
+
+    font-family: var(--font-body-bold);
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.notes-save-button svg {
+    width: 15px;
+    height: 15px;
+}
+
+.notes-save-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 16px rgba(0, 20, 46, 0.16);
+}
+
+.notes-save-button:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.notes-save-button:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.35;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.notes-form::-webkit-scrollbar {
+    width: 4px;
+}
+
+.notes-form::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.notes-form::-webkit-scrollbar-thumb {
+    background: rgba(0, 20, 46, 0.14);
+
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 899px) {
+
+    .floating-notes {
+        right: 18px;
+        bottom: 18px;
+    }
+
+    .floating-notes-button {
+        width: 48px;
+        height: 48px;
+    }
+
+    .notes-panel {
+        right: 0;
+        bottom: 60px;
+
+        width: min(350px, calc(100vw - 36px));
+
+        max-height: calc(100vh - 90px);
+
+        border-radius: 18px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .floating-notes {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .notes-panel {
+        width: calc(100vw - 28px);
+    }
+
+    .notes-form {
+        padding: 17px;
+    }
+
+    .notes-footer {
+        padding: 12px 17px;
+    }
+}

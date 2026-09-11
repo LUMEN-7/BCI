@@ -1,4 +1,5 @@
 import Navbar from "../../components/Navbar/Navbar";
+import FloatingNotes from "../../components/FloatingNotes/FloatingNotes";
 import Activity from "./sections/Activity";
 import Alerts from "./sections/Alerts";
 import Coverage from "./sections/Coverage";
@@ -35,6 +36,7 @@ export default function Home() {
       <Alerts onReview={handleReviewAlerts} />
       <Activity items={recentActivity} />
       <Footer />
+      <FloatingNotes />
     </main>
   );
 }
