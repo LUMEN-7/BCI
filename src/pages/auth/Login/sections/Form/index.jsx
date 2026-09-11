@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { logoUrl } from "../../data";
 import "./style.css";
 
+
+export default function Form({ controller }) {
   const {
     email,
     password,
@@ -138,4 +140,4 @@ import "./style.css";
       </button>
     </form>
   );
-
+}
