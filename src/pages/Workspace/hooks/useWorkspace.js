@@ -5,10 +5,37 @@ import {
 
 import {
   initialPosts,
+  linkedContents,
   postTypes,
 } from "../data";
 
+
+const initialNewPost = {
+  type: "update",
+
+  content: "",
+
+  tags: "",
+
+  responsible: "",
+
+  status: "",
+
+  linkedType: "",
+
+  linkedItemId: "",
+};
+
+
 export default function useWorkspace() {
+
+  // =========================================================
+  // USUÁRIO ATUAL
+  // =========================================================
+
+  const currentUserName =
+    "Ianny Raquel";
+
 
   // =========================================================
   // POSTS
@@ -31,6 +58,18 @@ export default function useWorkspace() {
     setActiveTab,
   ] = useState(
     "feed"
+  );
+
+
+  // =========================================================
+  // MINHAS ATIVIDADES
+  // =========================================================
+
+  const [
+    myActivitiesView,
+    setMyActivitiesView,
+  ] = useState(
+    "assigned"
   );
 
 
@@ -72,11 +111,9 @@ export default function useWorkspace() {
   const [
     newPost,
     setNewPost,
-  ] = useState({
-    type: "update",
-    content: "",
-    tags: "",
-  });
+  ] = useState(
+    initialNewPost
+  );
 
 
   // =========================================================
@@ -89,6 +126,68 @@ export default function useWorkspace() {
   ] = useState(
     null
   );
+
+
+  // =========================================================
+  // MINHAS PUBLICAÇÕES
+  // =========================================================
+
+  const myPosts =
+    useMemo(() => {
+
+      return posts.filter(
+        (post) =>
+          post.author?.name ===
+          currentUserName
+      );
+
+    }, [
+      posts,
+      currentUserName,
+    ]);
+
+
+  // =========================================================
+  // ATRIBUÍDOS A MIM
+  // =========================================================
+
+  const assignedPosts =
+    useMemo(() => {
+
+      return posts.filter(
+        (post) =>
+          post.responsible ===
+          currentUserName
+      );
+
+    }, [
+      posts,
+      currentUserName,
+    ]);
+
+
+  // =========================================================
+  // CONTEÚDOS VINCULÁVEIS
+  // =========================================================
+
+  const availableLinkedContents =
+    useMemo(() => {
+
+      if (
+        !newPost.linkedType
+      ) {
+        return [];
+      }
+
+      return linkedContents.filter(
+        (item) =>
+          item.type ===
+          newPost.linkedType
+      );
+
+    }, [
+      newPost.linkedType,
+    ]);
 
 
   // =========================================================
@@ -108,20 +207,20 @@ export default function useWorkspace() {
 
           const matchesType =
             selectedType ===
-            "all" ||
+              "all" ||
             post.type ===
-            selectedType;
+              selectedType;
 
           const searchableContent =
             [
-              post.author
-                ?.name || "",
+              post.author?.name ||
+                "",
 
               post.content ||
-              "",
+                "",
 
               post.responsible ||
-              "",
+                "",
 
               ...(post.tags ||
                 []),
@@ -144,6 +243,7 @@ export default function useWorkspace() {
           );
         }
       );
+
     }, [
       posts,
       search,
@@ -201,9 +301,9 @@ export default function useWorkspace() {
           posts.filter(
             (post) =>
               post.type ===
-              "review" &&
+                "review" &&
               post.status !==
-              "resolved"
+                "resolved"
           ).length,
 
         decisions:
@@ -220,7 +320,7 @@ export default function useWorkspace() {
 
 
   // =========================================================
-  // CURTIR / DESCURTIR
+  // CURTIR
   // =========================================================
 
   function toggleLike(
@@ -241,9 +341,8 @@ export default function useWorkspace() {
               return post;
             }
 
-            const
-              newLikedState =
-                !post.liked;
+            const newLikedState =
+              !post.liked;
 
             return {
               ...post,
@@ -254,16 +353,16 @@ export default function useWorkspace() {
               likes:
                 newLikedState
                   ? (
-                    post.likes ||
-                    0
-                  ) + 1
-                  : Math.max(
-                    (
                       post.likes ||
                       0
-                    ) - 1,
-                    0
-                  ),
+                    ) + 1
+                  : Math.max(
+                      (
+                        post.likes ||
+                        0
+                      ) - 1,
+                      0
+                    ),
             };
           }
         )
@@ -272,7 +371,7 @@ export default function useWorkspace() {
 
 
   // =========================================================
-  // ADICIONAR COMENTÁRIO
+  // COMENTAR
   // =========================================================
 
   function addComment(
@@ -292,7 +391,7 @@ export default function useWorkspace() {
         Date.now(),
 
       author:
-        "Ianny Raquel",
+        currentUserName,
 
       initials:
         "IR",
@@ -335,16 +434,14 @@ export default function useWorkspace() {
 
 
   // =========================================================
-  // ABRIR THREAD
+  // THREAD
   // =========================================================
 
   function openThread(
     post
   ) {
 
-    if (
-      !post
-    ) {
+    if (!post) {
       return;
     }
 
@@ -354,9 +451,25 @@ export default function useWorkspace() {
   }
 
 
-  // =========================================================
-  // FECHAR THREAD
-  // =========================================================
+  function openThreadById(
+    postId
+  ) {
+
+    const postExists =
+      posts.some(
+        (post) =>
+          post.id === postId
+      );
+
+    if (!postExists) {
+      return;
+    }
+
+    setSelectedPostId(
+      postId
+    );
+  }
+
 
   function closeThread() {
 
@@ -367,7 +480,7 @@ export default function useWorkspace() {
 
 
   // =========================================================
-  // ALTERAR STATUS
+  // STATUS
   // =========================================================
 
   function updatePostStatus(
@@ -382,11 +495,11 @@ export default function useWorkspace() {
         previousPosts.map(
           (post) =>
             post.id ===
-              postId
+            postId
               ? {
-                ...post,
-                status,
-              }
+                  ...post,
+                  status,
+                }
               : post
         )
     );
@@ -394,7 +507,7 @@ export default function useWorkspace() {
 
 
   // =========================================================
-  // FIXAR / DESAFIXAR
+  // FIXAR
   // =========================================================
 
   function togglePin(
@@ -408,12 +521,12 @@ export default function useWorkspace() {
         previousPosts.map(
           (post) =>
             post.id ===
-              postId
+            postId
               ? {
-                ...post,
-                pinned:
-                  !post.pinned,
-              }
+                  ...post,
+                  pinned:
+                    !post.pinned,
+                }
               : post
         )
     );
@@ -421,7 +534,7 @@ export default function useWorkspace() {
 
 
   // =========================================================
-  // EXCLUIR PUBLICAÇÃO
+  // EXCLUIR
   // =========================================================
 
   function deletePost(
@@ -459,14 +572,14 @@ export default function useWorkspace() {
   ) {
 
     setNewPost({
-      type:
-        type,
+      ...initialNewPost,
 
-      content:
-        "",
+      type,
 
-      tags:
-        "",
+      status:
+        type === "review"
+          ? "pending"
+          : "",
     });
 
     setNewPostOpen(
@@ -476,7 +589,7 @@ export default function useWorkspace() {
 
 
   // =========================================================
-  // ALTERAR DADOS DO FORMULÁRIO
+  // ALTERAR NOVA PUBLICAÇÃO
   // =========================================================
 
   function handleNewPostChange(
@@ -489,10 +602,59 @@ export default function useWorkspace() {
     } =
       event.target;
 
+
+    if (
+      name === "type"
+    ) {
+
+      setNewPost(
+        (previous) => ({
+          ...previous,
+
+          type:
+            value,
+
+          responsible:
+            value === "review"
+              ? previous.responsible
+              : "",
+
+          status:
+            value === "review"
+              ? (
+                  previous.status ||
+                  "pending"
+                )
+              : "",
+        })
+      );
+
+      return;
+    }
+
+
+    if (
+      name === "linkedType"
+    ) {
+
+      setNewPost(
+        (previous) => ({
+          ...previous,
+
+          linkedType:
+            value,
+
+          linkedItemId:
+            "",
+        })
+      );
+
+      return;
+    }
+
+
     setNewPost(
-      (
-        previous
-      ) => ({
+      (previous) => ({
         ...previous,
 
         [name]:
@@ -518,6 +680,7 @@ export default function useWorkspace() {
       return;
     }
 
+
     const normalizedTags =
       newPost.tags
         .split(",")
@@ -529,6 +692,17 @@ export default function useWorkspace() {
           Boolean
         );
 
+
+    const selectedLinkedItem =
+      newPost.linkedItemId
+        ? linkedContents.find(
+            (item) =>
+              item.id ===
+              newPost.linkedItemId
+          ) || null
+        : null;
+
+
     const post = {
 
       id:
@@ -539,7 +713,7 @@ export default function useWorkspace() {
 
       author: {
         name:
-          "Ianny Raquel",
+          currentUserName,
 
         initials:
           "IR",
@@ -555,19 +729,27 @@ export default function useWorkspace() {
         normalizedTags,
 
       responsible:
-        null,
-
-      linkedItem:
-        null,
+        newPost.type ===
+          "review" &&
+        newPost.responsible
+          ? newPost.responsible
+          : null,
 
       status:
         newPost.type ===
           "review"
-          ? "pending"
-          : newPost.type ===
-            "decision"
-            ? "resolved"
-            : null,
+          ? (
+              newPost.status ||
+              "pending"
+            )
+          : null,
+
+      linkedItem:
+        selectedLinkedItem
+          ? {
+              ...selectedLinkedItem,
+            }
+          : null,
 
       pinned:
         false,
@@ -582,21 +764,23 @@ export default function useWorkspace() {
         [],
     };
 
+
     setPosts(
       (
         previousPosts
       ) => [
-          post,
-          ...previousPosts,
-        ]
+        post,
+        ...previousPosts,
+      ]
     );
+
 
     resetNewPost();
   }
 
 
   // =========================================================
-  // CANCELAR PUBLICAÇÃO
+  // CANCELAR / RESETAR
   // =========================================================
 
   function cancelNewPost() {
@@ -605,22 +789,11 @@ export default function useWorkspace() {
   }
 
 
-  // =========================================================
-  // RESETAR FORMULÁRIO
-  // =========================================================
-
   function resetNewPost() {
 
-    setNewPost({
-      type:
-        "update",
-
-      content:
-        "",
-
-      tags:
-        "",
-    });
+    setNewPost(
+      initialNewPost
+    );
 
     setNewPostOpen(
       false
@@ -634,56 +807,59 @@ export default function useWorkspace() {
 
   return {
 
-    // POSTS
     posts,
     filteredPosts,
     postTypes,
 
+    linkedContents,
+    availableLinkedContents,
 
-    // RESUMO
+
     summary,
 
 
-    // TABS
     activeTab,
     setActiveTab,
 
 
-    // BUSCA
+    myActivitiesView,
+    setMyActivitiesView,
+
+    myPosts,
+    assignedPosts,
+
+
     search,
     setSearch,
 
 
-    // FILTRO
     selectedType,
     setSelectedType,
 
 
-    // THREAD
     selectedPost,
+
     openThread,
+    openThreadById,
     closeThread,
 
 
-    // PUBLICAÇÃO
     newPost,
     newPostOpen,
+
     openNewPost,
     handleNewPostChange,
     createPost,
     cancelNewPost,
 
 
-    // INTERAÇÕES
     toggleLike,
     addComment,
 
 
-    // STATUS
     updatePostStatus,
 
 
-    // GERENCIAMENTO
     togglePin,
     deletePost,
   };

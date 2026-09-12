@@ -5,21 +5,24 @@ import {
 } from "react-icons/fi";
 
 import useWorkspace from "./hooks/useWorkspace";
-import Navbar from "../../components/Navbar/Navbar";
+
 import WorkspaceTabs from "./components/WorkspaceTabs";
 import FeedSection from "./sections/FeedSection";
+import MyActivitiesSection from "./sections/MyActivitiesSection";
+import ThreadDrawer from "./components/ThreadDrawer";
 
 import "./style.css";
 
+
 export default function Workspace() {
+
   const workspace =
     useWorkspace();
+
 
   return (
     <main className="workspace-page">
 
-      <Navbar/>
-      
       <div className="workspace-container">
 
         {/* =====================================================
@@ -29,6 +32,7 @@ export default function Workspace() {
         <header className="workspace-header">
 
           <div>
+
             <span className="workspace-eyebrow">
               CENTRAL DA EQUIPE
             </span>
@@ -44,7 +48,9 @@ export default function Workspace() {
               da equipe em um único
               ambiente colaborativo.
             </p>
+
           </div>
+
 
           {/* ===================================================
               ESTATÍSTICAS
@@ -53,6 +59,7 @@ export default function Workspace() {
           <div className="workspace-header-stats">
 
             <div>
+
               <FiMessageSquare />
 
               <strong>
@@ -65,9 +72,12 @@ export default function Workspace() {
               <span>
                 Publicações
               </span>
+
             </div>
 
+
             <div>
+
               <FiActivity />
 
               <strong>
@@ -80,9 +90,12 @@ export default function Workspace() {
               <span>
                 Insights
               </span>
+
             </div>
 
+
             <div>
+
               <FiUsers />
 
               <strong>
@@ -92,22 +105,28 @@ export default function Workspace() {
               <span>
                 Membros
               </span>
+
             </div>
+
           </div>
+
         </header>
 
+
         {/* =====================================================
-            TABS
+            TABS PRINCIPAIS
         ====================================================== */}
 
         <WorkspaceTabs
           activeTab={
             workspace.activeTab
           }
+
           onChange={
             workspace.setActiveTab
           }
         />
+
 
         {/* =====================================================
             FEED
@@ -115,132 +134,106 @@ export default function Workspace() {
 
         {workspace.activeTab ===
           "feed" && (
-            <FeedSection
 
-              /* POSTS */
+          <FeedSection
 
-              posts={
-                workspace.filteredPosts
-              }
+            posts={
+              workspace.filteredPosts
+            }
 
-              postTypes={
-                workspace.postTypes
-              }
-
-
-              /* BUSCA */
-
-              search={
-                workspace.search
-              }
-
-              onSearchChange={
-                workspace.setSearch
-              }
+            postTypes={
+              workspace.postTypes
+            }
 
 
-              /* FILTRO */
+            search={
+              workspace.search
+            }
 
-              selectedType={
-                workspace.selectedType
-              }
-
-              onTypeChange={
-                workspace.setSelectedType
-              }
+            onSearchChange={
+              workspace.setSearch
+            }
 
 
-              /* INTERAÇÕES */
+            selectedType={
+              workspace.selectedType
+            }
 
-              onLike={
-                workspace.toggleLike
-              }
-
-              onTogglePin={
-                workspace.togglePin
-              }
-
-              onDelete={
-                workspace.deletePost
-              }
+            onTypeChange={
+              workspace.setSelectedType
+            }
 
 
-              /* THREAD */
+            onLike={
+              workspace.toggleLike
+            }
 
-              selectedPost={
-                workspace.selectedPost
-              }
+            onTogglePin={
+              workspace.togglePin
+            }
 
-              onOpenThread={
-                workspace.openThread
-              }
-
-              onCloseThread={
-                workspace.closeThread
-              }
-
-              onComment={
-                workspace.addComment
-              }
-
-              onStatusChange={
-                workspace.updatePostStatus
-              }
+            onDelete={
+              workspace.deletePost
+            }
 
 
-              /* NOVA PUBLICAÇÃO */
+            selectedPost={
+              workspace.selectedPost
+            }
 
-              newPostOpen={
-                workspace.newPostOpen
-              }
+            onOpenThread={
+              workspace.openThread
+            }
 
-              onOpenNewPost={
-                workspace.openNewPost
-              }
+            onActivityClick={
+              workspace.openThreadById
+            }
 
-              newPost={
-                workspace.newPost
-              }
+            onCloseThread={
+              workspace.closeThread
+            }
 
-              onNewPostChange={
-                workspace.handleNewPostChange
-              }
+            onComment={
+              workspace.addComment
+            }
 
-              onCreatePost={
-                workspace.createPost
-              }
+            onStatusChange={
+              workspace.updatePostStatus
+            }
 
-              onCancelPost={
-                workspace.cancelNewPost
-              }
-            />
-          )}
 
-        {/* =====================================================
-            TAREFAS
-        ====================================================== */}
+            newPostOpen={
+              workspace.newPostOpen
+            }
 
-        {workspace.activeTab ===
-          "tasks" && (
-            <section className="workspace-coming-soon">
+            onOpenNewPost={
+              workspace.openNewPost
+            }
 
-              <span>
-                EM DESENVOLVIMENTO
-              </span>
+            newPost={
+              workspace.newPost
+            }
 
-              <h2>
-                Gestão de tarefas
-              </h2>
+            onNewPostChange={
+              workspace.handleNewPostChange
+            }
 
-              <p>
-                Aqui ficará o quadro
-                Kanban com todas as
-                atividades relacionadas
-                às análises competitivas
-                do BCI.
-              </p>
-            </section>
-          )}
+            availableLinkedContents={
+              workspace
+                .availableLinkedContents
+            }
+
+            onCreatePost={
+              workspace.createPost
+            }
+
+            onCancelPost={
+              workspace.cancelNewPost
+            }
+
+          />
+        )}
+
 
         {/* =====================================================
             MINHAS ATIVIDADES
@@ -248,54 +241,91 @@ export default function Workspace() {
 
         {workspace.activeTab ===
           "my-activity" && (
-            <section className="workspace-coming-soon">
 
-              <span>
-                EM DESENVOLVIMENTO
-              </span>
+          <MyActivitiesSection
 
-              <h2>
-                Minhas atividades
-              </h2>
+            assignedPosts={
+              workspace.assignedPosts
+            }
 
-              <p>
-                Nesta área o usuário
-                poderá acompanhar
-                tarefas, comentários,
-                menções e publicações
-                relacionadas à sua
-                conta.
-              </p>
-            </section>
-          )}
+            myPosts={
+              workspace.myPosts
+            }
 
-        {/* =====================================================
-            EQUIPE
-        ====================================================== */}
+            postTypes={
+              workspace.postTypes
+            }
 
-        {workspace.activeTab ===
-          "team" && (
-            <section className="workspace-coming-soon">
 
-              <span>
-                EM DESENVOLVIMENTO
-              </span>
+            activeView={
+              workspace
+                .myActivitiesView
+            }
 
-              <h2>
-                Equipe LUMEN
-              </h2>
+            onViewChange={
+              workspace
+                .setMyActivitiesView
+            }
 
-              <p>
-                Aqui serão exibidos
-                os membros do projeto,
-                suas funções,
-                disponibilidade e
-                participação dentro
-                do Workspace.
-              </p>
-            </section>
-          )}
+
+            onLike={
+              workspace.toggleLike
+            }
+
+            onOpenThread={
+              workspace.openThread
+            }
+
+            onTogglePin={
+              workspace.togglePin
+            }
+
+            onDelete={
+              workspace.deletePost
+            }
+
+          />
+        )}
+
       </div>
+
+
+      {/* =====================================================
+          THREAD GLOBAL
+      ====================================================== */}
+
+      {workspace.activeTab ===
+        "my-activity" &&
+        workspace.selectedPost && (
+
+        <ThreadDrawer
+          post={
+            workspace.selectedPost
+          }
+
+          type={
+            workspace.postTypes[
+              workspace
+                .selectedPost
+                .type
+            ]
+          }
+
+          onClose={
+            workspace.closeThread
+          }
+
+          onComment={
+            workspace.addComment
+          }
+
+          onStatusChange={
+            workspace
+              .updatePostStatus
+          }
+        />
+      )}
+
     </main>
   );
 }

@@ -25,6 +25,105 @@ export const postTypes = {
   },
 };
 
+
+/* =========================================================
+   TIPOS DE CONTEÚDO VINCULADO
+========================================================= */
+
+export const linkedContentTypes = {
+  research: {
+    label: "Pesquisa competitiva",
+  },
+
+  comparison: {
+    label: "Comparação",
+  },
+
+  aiAnalysis: {
+    label: "Análise da IA",
+  },
+
+  vehicle: {
+    label: "Veículo / Modelo",
+  },
+};
+
+
+/* =========================================================
+   CONTEÚDOS DISPONÍVEIS NO BCI
+   Mock temporário até integração com API/backend
+========================================================= */
+
+export const linkedContents = [
+  {
+    id: "research-suvs-medios",
+    type: "research",
+    title: "SUVs Médios — Cenário Competitivo",
+    route: "/search",
+  },
+
+  {
+    id: "research-territory-market",
+    type: "research",
+    title: "Posicionamento do Ford Territory",
+    route: "/search",
+  },
+
+  {
+    id: "comparison-territory-compass",
+    type: "comparison",
+    title: "Ford Territory × Jeep Compass",
+    route: "/compare",
+  },
+
+  {
+    id: "comparison-bronco-compass",
+    type: "comparison",
+    title: "Ford Bronco Sport × Jeep Compass",
+    route: "/compare",
+  },
+
+  {
+    id: "analysis-territory-compass",
+    type: "aiAnalysis",
+    title: "Territory × Compass — Análise competitiva da IA",
+    route: "/compare",
+  },
+
+  {
+    id: "analysis-suvs-medium",
+    type: "aiAnalysis",
+    title: "SUVs Médios — Insights competitivos da IA",
+    route: "/search",
+  },
+
+  {
+    id: "vehicle-territory",
+    type: "vehicle",
+    title: "Ford Territory",
+    route: "/detail",
+  },
+
+  {
+    id: "vehicle-bronco",
+    type: "vehicle",
+    title: "Ford Bronco Sport",
+    route: "/detail",
+  },
+
+  {
+    id: "vehicle-compass",
+    type: "vehicle",
+    title: "Jeep Compass",
+    route: "/detail",
+  },
+];
+
+
+/* =========================================================
+   POSTS
+========================================================= */
+
 export const initialPosts = [
   {
     id: 1,
@@ -36,55 +135,64 @@ export const initialPosts = [
       initials: "IR",
     },
 
-    createdAt: "há 20 min",
+    createdAt: "há 5 min",
 
     content:
-      "Atualizei a comparação entre Ford Territory e Jeep Compass. Identifiquei diferenças importantes entre as versões analisadas.",
+      "Comparei o Ford Territory com o Jeep Compass considerando motorização, equipamentos e posicionamento competitivo. A principal diferença está no pacote de tecnologia e na proposta de valor entre as versões intermediárias.",
 
     tags: [
       "Territory",
       "Compass",
+      "SUV",
+      "Comparação",
     ],
 
     linkedItem: {
+      id: "comparison-territory-compass",
       type: "comparison",
-      title: "Territory × Compass",
+      title: "Ford Territory × Jeep Compass",
+      route: "/compare",
     },
 
-    status: null,
     responsible: null,
+
+    status: null,
 
     pinned: true,
 
     likes: 4,
+
     liked: false,
 
     comments: [
       {
-        id: 1,
+        id: 101,
 
-        author: "Ana Laura",
-        initials: "AL",
+        author: "Murilo Cordeiro",
 
-        time: "há 15 min",
+        initials: "MC",
+
+        time: "há 3 min",
 
         content:
-          "Podemos incluir também a versão topo de linha na comparação?",
+          "Acho interessante também verificarmos a diferença de equipamentos entre as versões intermediárias.",
       },
 
       {
-        id: 2,
+        id: 102,
 
-        author: "Ianny Raquel",
-        initials: "IR",
+        author: "Ana Laura",
 
-        time: "há 10 min",
+        initials: "AL",
+
+        time: "há 1 min",
 
         content:
-          "Sim! Vou adicionar essa versão antes da próxima revisão.",
+          "Concordo. Podemos usar essa comparação como base para a análise da próxima reunião.",
       },
     ],
   },
+
 
   {
     id: 2,
@@ -96,43 +204,58 @@ export const initialPosts = [
       initials: "VA",
     },
 
-    createdAt: "há 1h",
+    createdAt: "há 12 min",
 
     content:
-      "O valor de potência registrado para o Compass precisa ser validado antes de utilizarmos o dado na apresentação.",
+      "Os dados de potência do Jeep Compass encontrados em duas fontes estão diferentes. Precisamos validar qual informação será considerada como referência oficial no BCI.",
 
     tags: [
       "Compass",
-      "Motorização",
+      "Potência",
+      "Validação",
     ],
 
     linkedItem: {
+      id: "vehicle-compass",
       type: "vehicle",
       title: "Jeep Compass",
+      route: "/detail",
     },
 
-    status: "pending",
-    responsible: "Murilo Cordeiro",
+    responsible:
+      "Murilo Cordeiro",
 
-    pinned: false,
+    status:
+      "pending",
 
-    likes: 2,
-    liked: false,
+    pinned:
+      false,
+
+    likes:
+      2,
+
+    liked:
+      false,
 
     comments: [
       {
-        id: 1,
+        id: 201,
 
-        author: "Murilo Cordeiro",
-        initials: "MC",
+        author:
+          "Murilo Cordeiro",
 
-        time: "há 45 min",
+        initials:
+          "MC",
+
+        time:
+          "há 8 min",
 
         content:
-          "Vou conferir novamente a fonte utilizada para esse dado.",
+          "Vou revisar as fontes e atualizar os dados assim que confirmar a informação.",
       },
     ],
   },
+
 
   {
     id: 3,
@@ -144,31 +267,43 @@ export const initialPosts = [
       initials: "MC",
     },
 
-    createdAt: "há 3h",
+    createdAt: "há 25 min",
 
     content:
-      "O Territory apresenta uma vantagem interessante em equipamentos de série quando comparado aos concorrentes selecionados.",
+      "O Territory apresenta uma combinação competitiva interessante de equipamentos de série. Isso pode ser um diferencial relevante quando comparado com outros SUVs médios da mesma faixa de preço.",
 
     tags: [
       "Territory",
+      "Tecnologia",
       "Equipamentos",
     ],
 
     linkedItem: {
-      type: "analysis",
-      title: "SUVs Médios 2026",
+      id: "analysis-territory-compass",
+      type: "aiAnalysis",
+      title: "Territory × Compass — Análise competitiva da IA",
+      route: "/compare",
     },
 
-    status: null,
-    responsible: null,
+    responsible:
+      null,
 
-    pinned: false,
+    status:
+      null,
 
-    likes: 7,
-    liked: true,
+    pinned:
+      false,
 
-    comments: [],
+    likes:
+      7,
+
+    liked:
+      true,
+
+    comments:
+      [],
   },
+
 
   {
     id: 4,
@@ -180,94 +315,186 @@ export const initialPosts = [
       initials: "AL",
     },
 
-    createdAt: "ontem",
+    createdAt: "há 1 h",
 
     content:
-      "A equipe decidiu utilizar versões intermediárias como referência principal para a próxima análise competitiva.",
+      "Para as próximas análises competitivas, vamos priorizar versões intermediárias dos veículos. Elas representam melhor o equilíbrio entre preço, equipamentos e volume potencial de mercado.",
 
     tags: [
-      "Metodologia",
-      "Equipe",
+      "Estratégia",
+      "Versões",
+      "Análise",
     ],
 
-    linkedItem: null,
+    linkedItem: {
+      id: "research-suvs-medios",
+      type: "research",
+      title: "SUVs Médios — Cenário Competitivo",
+      route: "/search",
+    },
 
-    status: "resolved",
-    responsible: null,
+    responsible:
+      null,
 
-    pinned: true,
+    status:
+      null,
 
-    likes: 5,
-    liked: false,
+    pinned:
+      true,
 
-    comments: [],
+    likes:
+      5,
+
+    liked:
+      false,
+
+    comments:
+      [],
+  },
+
+
+  {
+    id: 5,
+
+    type: "update",
+
+    author: {
+      name: "Gerônimo Augusto",
+      initials: "GA",
+    },
+
+    createdAt: "há 2 h",
+
+    content:
+      "Os dados da pesquisa de veículos foram atualizados para considerar novas informações de versões e modelos disponíveis para análise.",
+
+    tags: [
+      "Pesquisa",
+      "Dados",
+      "Atualização",
+    ],
+
+    linkedItem: {
+      id: "research-territory-market",
+      type: "research",
+      title: "Posicionamento do Ford Territory",
+      route: "/search",
+    },
+
+    responsible:
+      null,
+
+    status:
+      null,
+
+    pinned:
+      false,
+
+    likes:
+      3,
+
+    liked:
+      false,
+
+    comments:
+      [],
   },
 ];
 
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
 export const workspaceMembers = [
   {
+    id: 1,
     name: "Ana Laura",
     initials: "AL",
   },
 
   {
+    id: 2,
     name: "Ianny Raquel",
     initials: "IR",
   },
 
   {
-    name: "Gerônimo",
-    initials: "GA",
-  },
-
-  {
+    id: 3,
     name: "Murilo Cordeiro",
     initials: "MC",
   },
 
   {
+    id: 4,
     name: "Vitor Augusto",
     initials: "VA",
   },
+
+  {
+    id: 5,
+    name: "Gerônimo Augusto",
+    initials: "GA",
+  },
 ];
+
+
+/* =========================================================
+   RECENT ACTIVITIES
+========================================================= */
 
 export const recentActivities = [
   {
     id: 1,
 
-    initials: "VA",
+    postId: 2,
 
-    user: "Vitor",
+    user:
+      "Vitor Augusto",
+
+    initials:
+      "VA",
 
     action:
       "solicitou revisão de um dado do Compass.",
 
-    time: "há 1h",
+    time:
+      "há 1 h",
   },
 
   {
     id: 2,
 
-    initials: "MC",
+    postId: 3,
 
-    user: "Murilo",
+    user:
+      "Murilo Cordeiro",
+
+    initials:
+      "MC",
 
     action:
       "publicou um novo insight sobre o Territory.",
 
-    time: "há 3h",
+    time:
+      "há 3 h",
   },
 
   {
     id: 3,
 
-    initials: "AL",
+    postId: 4,
 
-    user: "Ana",
+    user:
+      "Ana Laura",
+
+    initials:
+      "AL",
 
     action:
       "registrou uma decisão da equipe.",
 
-    time: "ontem",
+    time:
+      "ontem",
   },
 ];

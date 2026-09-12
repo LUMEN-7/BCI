@@ -1,21 +1,21 @@
-import { FiPlus } from "react-icons/fi";
+import {
+  FiPlus,
+} from "react-icons/fi";
 
 export default function PostComposer({
-    onOpen,
+  onOpen,
 }) {
-    return (
-        <div className="workspace-new-post-area">
-            <button
-                type="button"
-                className="workspace-new-post-button"
-                onClick={() =>
-                    onOpen("update")
-                }
-            >
-                <FiPlus />
+  return (
+    <div className="workspace-new-post-area">
+      <button
+        type="button"
+        className="workspace-new-post-button"
+        onClick={() => onOpen("update")}
+      >
+        <FiPlus />
 
-                NOVA PUBLICAÇÃO
-            </button>
-        </div>
-    );
+        NOVA PUBLICAÇÃO
+      </button>
+    </div>
+  );
 }
