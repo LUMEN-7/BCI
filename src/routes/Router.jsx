@@ -23,8 +23,8 @@ import NewNotes from '../pages/NewNotes/index';
 import Alerts from '../pages/Alerts/index';
 import EditProfile from "../pages/EditProfile/index";
 import ResetPassword from "../pages/ResetPassword";
+import Workspace from "../pages/Workspace";
 // import Insights from '../pages/Insights/index';
-// import Workspace from '../pages/Workspace/index';
 
 function AnimatedRoutes() {
     const location = useLocation();
@@ -102,16 +102,17 @@ function AnimatedRoutes() {
                         path="/alerts"
                         element={<Alerts />}
                     />
-                    {/* 
-                    <Route
-                        path="/Insights"
-                        element={<Insights />}
-                    />
 
                     <Route
                         path="/workspace"
                         element={<Workspace />}
-                    /> */}
+                    />
+
+                    {/* 
+                    <Route
+                        path="/Insights"
+                        element={<Insights />}
+                    />*/}
                 </Routes>
             </PageTransition>
         </AnimatePresence>
