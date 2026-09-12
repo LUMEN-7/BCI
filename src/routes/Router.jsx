@@ -6,8 +6,10 @@ import {
 } from 'react-router-dom';
 
 import { AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
 
 import PageTransition from '../components/PageTransition/PageTransition';
+import { appendNavigationActivity } from '../utils/navigationActivity';
 
 import Login from '../pages/auth/Login/index';
 import Register from '../pages/auth/Register/index';
@@ -25,6 +27,16 @@ import EditProfile from "../pages/EditProfile/index";
 import ResetPassword from "../pages/ResetPassword";
 import Workspace from "../pages/Workspace";
 // import Insights from '../pages/Insights/index';
+
+function NavigationTracker() {
+    const location = useLocation();
+
+    useEffect(() => {
+        appendNavigationActivity(location.pathname, location.state);
+    }, [location.pathname, location.state]);
+
+    return null;
+}
 
 function AnimatedRoutes() {
     const location = useLocation();
@@ -123,6 +135,7 @@ function AnimatedRoutes() {
 export default function Router() {
     return (
         <BrowserRouter>
+            <NavigationTracker />
             <AnimatedRoutes />
         </BrowserRouter>
     );

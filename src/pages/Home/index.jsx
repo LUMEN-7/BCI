@@ -8,7 +8,7 @@ import Hero from "./sections/Hero";
 import Highlights from "./sections/Highlights";
 import Overview from "./sections/Overview";
 import useHomeController from "./hooks/useHomeController";
-import { cars, coverage, highlights, metrics, recentActivity } from "./data";
+import { cars, coverage, highlights, metrics } from "./data";
 import "./style.css";
 
 export default function Home() {
@@ -34,7 +34,7 @@ export default function Home() {
       <Highlights items={highlights} />
       <Coverage items={coverage} />
       <Alerts onReview={handleReviewAlerts} />
-      <Activity items={recentActivity} />
+      <Activity />
       <Footer />
       <FloatingNotes />
     </main>

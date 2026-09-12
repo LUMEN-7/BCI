@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCars, getFavorites, addFavorites, removeFavorite } from '@/services/carsService';
+import { appendNavigationActivity } from '@/utils/navigationActivity';
 
 function adaptCar(car) {
   return {
@@ -82,7 +83,13 @@ export default function useSearchController() {
     function handleSearchChange(e) { setSearch(e.target.value); setIsSearchExecuted(false); setValidationError(''); }
     function handleBrandChange(e) { setSelectedBrand(e.target.value);setIsSearchExecuted(false); setValidationError(''); }
     function handleYearChange(e) { setSelectedYear(e.target.value);setIsSearchExecuted(false); setValidationError(''); }
-    function handleDetails(id) { navigate(`/information/${id}`); }
+    function handleDetails(id) {
+        const selectedCar = cars.find((car) => String(car.id) === String(id));
+        const carName = selectedCar?.modelo || selectedCar?.name || `Carro ${id}`;
+
+        appendNavigationActivity(`/information/${id}`, { car: { name: carName } });
+        navigate(`/information/${id}`, { state: { car: selectedCar } });
+    }
 
     function executeSearch() {
         const missingFields = [];
