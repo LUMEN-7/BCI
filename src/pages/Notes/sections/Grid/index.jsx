@@ -10,7 +10,7 @@ import {
   IoPencilOutline,
   IoTrashOutline,
 } from "react-icons/io5";
-import MarkdownRenderer from "../../../../components/FloatingNotes/MarkdownRenderer";
+import MarkdownRenderer from "../../../../components/FloatingNotes/components/MarkdownRenderer";
 import "./style.css";
 
 export default function NotesGrid({

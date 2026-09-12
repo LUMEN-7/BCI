@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { listarAnotacoes, excluirAnotacao } from '@/services/noteService';
+import { listarAnotacoesCompletas, excluirAnotacaoCompleta } from '@/services/noteService';
 import { getStoredNotes, deleteNote as deleteStoredNote } from '@/utils/notesStorage';
 
 function adaptarAnotacao(anotacao) {
@@ -34,7 +34,7 @@ export default function useNotesController() {
 
 			if (token) {
 				try {
-					const resultado = await listarAnotacoes();
+					const resultado = await listarAnotacoesCompletas();
 					if (Array.isArray(resultado)) {
 						apiNotes = resultado;
 					} else if (resultado && Array.isArray(resultado.data)) {
@@ -102,7 +102,7 @@ export default function useNotesController() {
 		setNotes((current) => current.filter((note) => String(note.id) !== String(id)));
 		deleteStoredNote(id);
 		try {
-			await excluirAnotacao(id);
+			await excluirAnotacaoCompleta(id);
 		} catch {
 			// Prossegue com exclusão local sem quebrar a UI
 		}

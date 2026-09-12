@@ -22,7 +22,6 @@ import Detail from '../pages/Detail/index';
 import Saved from '../pages/Saved/index';
 import Profile from '../pages/Profile/index';
 import Notes from '../pages/Notes/index';
-import NewNotes from '../pages/NewNotes/index';
 import Alerts from '../pages/Alerts/index';
 import EditProfile from "../pages/EditProfile/index";
 import ResetPassword from "../pages/ResetPassword";
@@ -104,11 +103,6 @@ function AnimatedRoutes() {
                     <Route
                         path="/notes"
                         element={<Notes />}
-                    />
-
-                    <Route
-                        path="/addnotes"
-                        element={<NewNotes />}
                     />
 
                     <Route
