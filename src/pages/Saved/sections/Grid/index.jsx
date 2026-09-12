@@ -76,7 +76,6 @@ function SavedCard({
   onCarDetails,
   onComparisonDetails,
 }) {
-  console.log("CARRO SALVO:", item);
   const isCar = activeTab === "cars";
   const imageContent = isCar ? (
     <div className="saved-image" onClick={() => onCarDetails(item.id)}>
