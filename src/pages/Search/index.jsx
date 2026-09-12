@@ -6,12 +6,14 @@ import Header from "./sections/Header";
 import InitialState from "./sections/InitialState";
 import RecentViewed from "./sections/RecentViewed";
 import ResultsHeader from "./sections/ResultsHeader";
+import ScheduleModal from "./sections/ScheduleModal";
 import useSearchController from "./hooks/useSearchController";
 
 import "./style.css";
 
 export default function Search() {
   const {
+    cars,
     brands,
     years,
     results,
@@ -23,6 +25,9 @@ export default function Search() {
     hasFilters,
     validationError,
     activeFilterChips,
+    isScheduleModalOpen,
+    scheduleInitialCar,
+    scheduledCount,
     handleSearchChange,
     handleBrandChange,
     handleYearChange,
@@ -31,6 +36,9 @@ export default function Search() {
     toggleFavorite,
     clearFilters,
     handleDetails,
+    handleOpenSchedule,
+    handleCloseSchedule,
+    handleExecuteScheduledSearch,
   } = useSearchController();
 
   return (
@@ -47,12 +55,14 @@ export default function Search() {
           selectedYear={selectedYear}
           activeFilterChips={activeFilterChips}
           validationError={validationError}
+          scheduledCount={scheduledCount}
           onSearchChange={handleSearchChange}
           onBrandChange={handleBrandChange}
           onYearChange={handleYearChange}
           onRemoveFilter={removeFilter}
           onExecute={executeSearch}
           onClear={clearFilters}
+          onOpenSchedule={() => handleOpenSchedule()}
         />
 
         {hasFilters ? (
@@ -68,6 +78,7 @@ export default function Search() {
                 favorites={favorites}
                 onToggleFavorite={toggleFavorite}
                 onDetails={handleDetails}
+                onSchedule={handleOpenSchedule}
               />
             </>
           ) : (
@@ -79,11 +90,20 @@ export default function Search() {
             favorites={favorites}
             onToggleFavorite={toggleFavorite}
             onDetails={handleDetails}
+            onSchedule={handleOpenSchedule}
           />
         ) : (
           <InitialState />
         )}
       </div>
+
+      <ScheduleModal
+        isOpen={isScheduleModalOpen}
+        onClose={handleCloseSchedule}
+        availableCars={cars.length > 0 ? cars : recentCars}
+        initialSelectedCar={scheduleInitialCar}
+        onExecuteScheduledSearch={handleExecuteScheduledSearch}
+      />
     </main>
   );
 }

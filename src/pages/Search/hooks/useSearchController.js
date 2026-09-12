@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCars, getFavorites, addFavorites, removeFavorite } from '@/services/carsService';
 import { appendNavigationActivity } from '@/utils/navigationActivity';
 import { getRecentViewedCars, appendRecentViewedCar } from '@/utils/recentViewedCars';
+import { getScheduledSearches } from '@/utils/scheduledSearchesStorage';
 
 function adaptCar(car) {
   return {
@@ -27,6 +28,22 @@ export default function useSearchController() {
     const [isSearchExecuted, setIsSearchExecuted] = useState(false);
     const [validationError, setValidationError] = useState('');
     const [recentCars, setRecentCars] = useState(() => getRecentViewedCars(5));
+    const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+    const [scheduleInitialCar, setScheduleInitialCar] = useState(null);
+    const [scheduledCount, setScheduledCount] = useState(() => getScheduledSearches().length);
+
+    const updateScheduledCount = () => {
+        setScheduledCount(getScheduledSearches().length);
+    };
+
+    useEffect(() => {
+        window.addEventListener('scheduled-searches-updated', updateScheduledCount);
+        window.addEventListener('storage', updateScheduledCount);
+        return () => {
+            window.removeEventListener('scheduled-searches-updated', updateScheduledCount);
+            window.removeEventListener('storage', updateScheduledCount);
+        };
+    }, []);
 
     useEffect(() => {
         async function carregar() {
@@ -191,7 +208,30 @@ export default function useSearchController() {
         setIsSearchExecuted(true);
     }
 
+    function handleOpenSchedule(car = null) {
+        setScheduleInitialCar(car);
+        setIsScheduleModalOpen(true);
+    }
+
+    function handleCloseSchedule() {
+        setIsScheduleModalOpen(false);
+        setScheduleInitialCar(null);
+    }
+
+    function handleExecuteScheduledSearch(scheduledItem) {
+        if (!scheduledItem) return;
+        const targetCar = cars.find((c) => String(c.id) === String(scheduledItem.carId));
+        if (targetCar) {
+            setSearch(targetCar.modelo || targetCar.name || '');
+            setIsSearchExecuted(true);
+        } else {
+            setSearch(scheduledItem.carName || '');
+            setIsSearchExecuted(true);
+        }
+    }
+
     return {
+        cars,
         brands,
         years,
         results,
@@ -205,6 +245,9 @@ export default function useSearchController() {
         error,
         validationError,
         activeFilterChips,
+        isScheduleModalOpen,
+        scheduleInitialCar,
+        scheduledCount,
         executeSearch,
         handleSearchChange,
         handleBrandChange,
@@ -213,5 +256,8 @@ export default function useSearchController() {
         toggleFavorite,
         clearFilters,
         handleDetails,
+        handleOpenSchedule,
+        handleCloseSchedule,
+        handleExecuteScheduledSearch,
     };
 }
