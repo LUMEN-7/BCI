@@ -137,21 +137,25 @@ export function useFloatingController() {
     }
   };
 
-  const handleConfirmDelete = async () => {
-    if (!deletingNote) return;
-    try {
-      await excluirAnotacaoCompleta(deletingNote.id);
-      await loadNotes();
-      window.dispatchEvent(new CustomEvent('floating-notes-updated'));
-      showToast('Anotação excluída.');
-      if (expandedNoteId === deletingNote.id) setExpandedNoteId(null);
-      if (editingId === deletingNote.id) setViewMode('LIST');
-    } catch (err) {
-      showToast(err.message || 'Não foi possível excluir.', 'error');
-    } finally {
-      setDeletingNote(null);
-    }
-  };
+    const handleConfirmDelete = async () => {
+        if (!deletingNote) return;
+        const idParaExcluir = deletingNote.id;
+        const notasAnteriores = notes;
+
+        setNotes((current) => current.filter((n) => n.id !== idParaExcluir)); // some da tela na hora do clique
+        setDeletingNote(null);
+        if (expandedNoteId === idParaExcluir) setExpandedNoteId(null);
+        if (editingId === idParaExcluir) setViewMode('LIST');
+
+        try {
+        await excluirAnotacaoCompleta(idParaExcluir);
+        window.dispatchEvent(new CustomEvent('floating-notes-updated'));
+        showToast('Anotação excluída.');
+        } catch (err) {
+        setNotes(notasAnteriores); // desfaz se a API recusar
+        showToast(err.message || 'Não foi possível excluir.', 'error');
+        }
+    };
 
   const applyFormat = (type) => {
     const textarea = textareaRef.current;

@@ -43,8 +43,8 @@ export default function FloatingNotes() {
           actions.setAttachedImages((prev) => [...prev, newImg]);
         }
         
-        const markdownImage = `\n![${file.name}](${imageUrl})\n`;
-        actions.setContent((prev) => prev + markdownImage);
+        // const markdownImage = `\n![${file.name}](${imageUrl})\n`;
+        // actions.setContent((prev) => prev + markdownImage);
       };
       reader.readAsDataURL(file);
     });
@@ -471,6 +471,22 @@ export default function FloatingNotes() {
                       onImageClick={(img) => actions.setPreviewImage(img)}
                     />
 
+                    {state.attachedCars?.length > 0 && (
+                      <div className="note-card-cars-grid">
+                        {state.attachedCars.map((car) => (
+                          <div
+                            key={car.id}
+                            className="note-card-car-item"
+                            onClick={() => actions.handleNavigateCar?.(car.id)}
+                            title="Ver ficha técnica"
+                          >
+                            <IoCarSportOutline />
+                            <span>{car.name || car.model}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
                     {state.attachedImages?.length > 0 && (
                       <div className="note-card-images-grid">
                         {state.attachedImages.map((img) => {
@@ -537,8 +553,8 @@ export default function FloatingNotes() {
           if (actions.setAttachedCars) {
             actions.setAttachedCars((prev) => [...prev, car]);
           }
-          const carTag = `\n:car[${car.name || car.model}]{id="${car.id}"}\n`;
-          actions.setContent((prev) => prev + carTag);
+          // const carTag = `\n:car[${car.name || car.model}]{id="${car.id}"}\n`;
+          // actions.setContent((prev) => prev + carTag);
         }}
       />
 

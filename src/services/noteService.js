@@ -1,8 +1,18 @@
 import apiFetch from "./api";
 
+function limparConteudoEmbutido(content) {
+    return content
+        .replace(/!\[[^\]]*\]\(data:image\/[^)]+\)/g, '')   // remove imagem em base64 embutida no texto
+        .replace(/::car\[[^\]]*\]\{[^}]*\}/g, '')             // remove a diretiva de carro embutida
+        .trim();
+}
+
 function paraBlocosBackend({ content, attachedCars, attachedImages }) {
     const blocos = [];
-    if (content?.trim()) blocos.push({ tipo: "Paragrafo", texto: content });
+    if (content?.trim()) {
+      const textoLimpo = limparConteudoEmbutido(content);
+      if (textoLimpo) blocos.push({ tipo: "Paragrafo", texto: textoLimpo });
+    }
     for (const car of attachedCars ?? []) {
         if (car?.id) blocos.push({ tipo: "CardCarro", linhagemIdReferenciado: Number(car.id) });
     }
