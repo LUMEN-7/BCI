@@ -9,6 +9,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useEffect } from 'react';
 
 import PageTransition from '../components/PageTransition/PageTransition';
+import FloatingNotes from '../components/FloatingNotes/FloatingNotes';
 import { appendNavigationActivity } from '../utils/navigationActivity';
 
 import Login from '../pages/auth/Login/index';
@@ -131,11 +132,21 @@ function AnimatedRoutes() {
     );
 }
 
+function GlobalFloatingNotes() {
+    const location = useLocation();
+    const publicRoutes = ['/', '/register', '/reset-password'];
+    const isPublic = publicRoutes.includes(location.pathname);
+
+    if (isPublic) return null;
+
+    return <FloatingNotes />;
+}
 
 export default function Router() {
     return (
         <BrowserRouter>
             <NavigationTracker />
+            <GlobalFloatingNotes />
             <AnimatedRoutes />
         </BrowserRouter>
     );

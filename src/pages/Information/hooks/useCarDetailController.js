@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {obterCarro, removeFavorite, addFavorites} from '@/services/carsService'; // Ajuste o caminho do seu apiFetch
 import {exportCar} from '@/services/exportService';
+import { appendRecentViewedCar } from '@/utils/recentViewedCars';
 
 // Adaptador: Transforma o JSON complexo do C# no formato exigido pelo Technical e Specs
 function adaptCarToDetail(dto) {
@@ -164,7 +165,11 @@ export default function useCarDetailController() {
                 // Busca o carro pelo ID no backend
                 const dto = await obterCarro(id);
                 console.log(dto)
-                setCar(adaptCarToDetail(dto));
+                const adapted = adaptCarToDetail(dto);
+                setCar(adapted);
+                if (adapted) {
+                    appendRecentViewedCar(adapted);
+                }
                 
                 // Opcional: Você pode fazer um GET em /UsuarioHistorico/modelos 
                 // aqui para verificar se esse carro já está favoritado
