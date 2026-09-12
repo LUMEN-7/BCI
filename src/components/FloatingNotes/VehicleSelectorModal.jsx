@@ -6,7 +6,9 @@ import {
   IoSearchOutline,
 } from 'react-icons/io5';
 import { getFavoriteCars } from '../../utils/savedItemsStorage';
+import { getRecentViewedCars } from '../../utils/recentViewedCars';
 import { getFavorites } from '../../services/carsService';
+import { mockCars } from '../../pages/Compare/data';
 
 export default function VehicleSelectorModal({ isOpen, onClose, onSelectCar }) {
   const [cars, setCars] = useState([]);
@@ -22,7 +24,10 @@ export default function VehicleSelectorModal({ isOpen, onClose, onSelectCar }) {
         // 1. Carrega favoritos do localStorage
         const localFavorites = getFavoriteCars();
 
-        // 2. Tenta complementar com favoritos do backend
+        // 2. Carrega veículos recentemente visualizados
+        const recentCars = getRecentViewedCars(10);
+
+        // 3. Tenta complementar com favoritos do backend
         let apiFavorites = [];
         try {
           const res = await getFavorites();
@@ -32,18 +37,34 @@ export default function VehicleSelectorModal({ isOpen, onClose, onSelectCar }) {
               name: `${c.modelo || c.name || ''} ${c.ano || ''}`.trim(),
               brand: c.marca || c.brand || 'Ford',
               image: c.imagemUrl || c.image || null,
-              type: c.categoria || c.segment || 'Veículo',
+              engine: c.motor || c.engine || '',
+              power: c.potencia || c.power || '',
+              type: c.categoria || c.segment || c.type || 'Veículo',
             }));
           }
         } catch {
           // Utiliza os locais se offline / mock
         }
 
-        // Mescla sem duplicar pelo id
+        // Mescla sem duplicar pelo id (prioridade: favoritos locais, api, recentes, mock fallback)
         const map = new Map();
-        [...localFavorites, ...apiFavorites].forEach((car) => {
-          if (car && car.id && !map.has(String(car.id))) {
-            map.set(String(car.id), car);
+        [...localFavorites, ...apiFavorites, ...recentCars, ...mockCars].forEach((car) => {
+          if (!car) return;
+          const rawId = car.id || car.linhagemId;
+          if (!rawId) return;
+          const id = String(rawId);
+          if (!map.has(id)) {
+            const normalized = {
+              id,
+              name: car.name || car.modelo || `Veículo ${id}`,
+              brand: car.brand || car.marca || 'Ford',
+              image: car.image || car.imagemUrl || null,
+              engine: car.engine || car.specs?.engine?.value || '',
+              power: car.power || car.specs?.power?.value || '',
+              type: car.type || car.segment || car.categoria || car.specs?.type?.value || 'Veículo',
+              year: car.year || car.ano || '',
+            };
+            map.set(id, normalized);
           }
         });
 

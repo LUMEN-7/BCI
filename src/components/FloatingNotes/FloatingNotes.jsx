@@ -5,7 +5,9 @@ import {
   IoArrowBackOutline,
   IoCarSportOutline,
   IoCheckboxOutline,
+  IoChevronBackOutline,
   IoChevronDownOutline,
+  IoChevronForwardOutline,
   IoChevronUpOutline,
   IoCloseOutline,
   IoDocumentTextOutline,
@@ -32,6 +34,7 @@ export default function FloatingNotes() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const textareaRef = useRef(null);
+  const toolbarScrollRef = useRef(null);
 
   // Estados principais
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +62,79 @@ export default function FloatingNotes() {
 
   // Modal de seleção de veículo
   const [isVehicleModalOpen, setIsVehicleModalOpen] = useState(false);
+
+  // Modal de visualização expandida de imagem
+  const [previewImage, setPreviewImage] = useState(null);
+
+  // Toolbar scroll
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  // Funções para toolbar
+  const updateToolbarArrows = () => {
+    const toolbar = toolbarScrollRef.current;
+    if (!toolbar) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = toolbar;
+    const hasLeftScroll = scrollLeft > 2;
+    const hasRightScroll = Math.ceil(scrollLeft + clientWidth) < scrollWidth - 2;
+
+    setCanScrollLeft(hasLeftScroll);
+    setCanScrollRight(hasRightScroll);
+  };
+
+  const scrollToolbar = (direction) => {
+    const toolbar = toolbarScrollRef.current;
+    if (!toolbar) return;
+
+    const amount = 200;
+    toolbar.scrollBy({
+      left: direction === 'left' ? -amount : amount,
+      behavior: 'smooth',
+    });
+
+    // Atualizar setas durante e após animação do scroll
+    setTimeout(updateToolbarArrows, 100);
+    setTimeout(updateToolbarArrows, 300);
+  };
+
+  // Observa scroll, redimensionamento e visibilidade do toolbar
+  useEffect(() => {
+    if (!isOpen || viewMode !== 'EDIT' || activeTab !== 'WRITE') return;
+
+    const toolbar = toolbarScrollRef.current;
+    if (!toolbar) return;
+
+    const handleScroll = () => updateToolbarArrows();
+    const handleResize = () => updateToolbarArrows();
+
+    toolbar.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
+
+    let resizeObserver = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => {
+        updateToolbarArrows();
+      });
+      resizeObserver.observe(toolbar);
+    }
+
+    // Delays para sincronizar com transições CSS do painel
+    const timer1 = setTimeout(updateToolbarArrows, 50);
+    const timer2 = setTimeout(updateToolbarArrows, 150);
+    const timer3 = setTimeout(updateToolbarArrows, 300);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+      toolbar.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, [isOpen, viewMode, activeTab]);
 
   const showToast = (message, type = 'success') => {
     if (toastTimeoutRef.current) {
@@ -90,7 +166,9 @@ export default function FloatingNotes() {
   useEffect(() => {
     function handleKeyDown(e) {
       if (e.key === 'Escape') {
-        if (deletingNote) {
+        if (previewImage) {
+          setPreviewImage(null);
+        } else if (deletingNote) {
           setDeletingNote(null);
         } else if (isVehicleModalOpen) {
           setIsVehicleModalOpen(false);
@@ -102,7 +180,7 @@ export default function FloatingNotes() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isVehicleModalOpen, deletingNote]);
+  }, [isOpen, isVehicleModalOpen, deletingNote, previewImage]);
 
   // Abre editor para nova anotação
   const handleStartNewNote = () => {
@@ -148,8 +226,14 @@ export default function FloatingNotes() {
       images: attachedImages,
     });
 
-    showToast(isEdit ? 'Anotação atualizada com sucesso!' : 'Anotação salva com sucesso!');
+    setNotes(getStoredNotes());
+    setEditingId(null);
+    setTitle('');
+    setContent('');
+    setAttachedCars([]);
+    setAttachedImages([]);
     setViewMode('LIST');
+    showToast(isEdit ? 'Anotação atualizada com sucesso!' : 'Anotação salva com sucesso!');
   };
 
   // Solicita confirmação de exclusão (sem alert)
@@ -250,38 +334,82 @@ export default function FloatingNotes() {
       setAttachedCars((prev) => [...prev, car]);
     }
 
-    const carMarkdown = `\n\n> 🚗 **[${car.name}](/information/${car.id})**\n> ${car.brand || 'Ford'} · ${car.year || ''} ${car.type ? `· ${car.type}` : ''}\n\n`;
+    const carName = car.name || car.modelo || 'Veículo';
+    const carBrand = car.brand || car.marca || 'Ford';
+    const carImg = car.image || car.imagemUrl || '';
+    const carEngine = car.engine || car.specs?.engine?.value || '';
+    const carPower = car.power || car.specs?.power?.value || '';
+    const carType = car.type || car.segment || car.categoria || '';
+
+    // Formata card estruturado que é reconhecido pelo MarkdownRenderer
+    const carMarkdown = `\n\n:::car[${carName}]{\n  id: "${car.id}",\n  brand: "${carBrand}",\n  image: "${carImg}",\n  engine: "${carEngine}",\n  power: "${carPower}",\n  type: "${carType}"\n}\n\n`;
     setContent((prev) => `${prev.trimEnd()}${carMarkdown}`);
-    showToast(`Veículo ${car.name} vinculado.`);
+    showToast(`Veículo ${carName} adicionado à anotação.`);
   };
 
   const handleRemoveCar = (carId) => {
     setAttachedCars((prev) => prev.filter((c) => String(c.id) !== String(carId)));
   };
 
+  // Redimensionamento e compressão de imagem para persistência segura
+  const compressImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 1200;
+          let { width, height } = img;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          resolve(compressedDataUrl);
+        };
+        img.onerror = () => resolve(e.target.result);
+        img.src = e.target.result;
+      };
+      reader.onerror = (err) => reject(err);
+      reader.readAsDataURL(file);
+    });
+  };
+
   // Upload de imagem
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target?.result;
-      if (dataUrl) {
-        const imageObj = {
-          id: `img-${Date.now()}`,
-          name: file.name,
-          url: dataUrl,
-        };
+    const input = e.target;
 
-        setAttachedImages((prev) => [...prev, imageObj]);
-        const imageMarkdown = `\n\n![${file.name}](${dataUrl})\n\n`;
-        setContent((prev) => `${prev.trimEnd()}${imageMarkdown}`);
-        showToast('Imagem adicionada com sucesso!');
-      }
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
+    try {
+      const safeName = (file.name || 'Foto').replace(/[\[\]\(\)]/g, '');
+      const dataUrl = await compressImage(file);
+
+      const imageObj = {
+        id: `img-${Date.now()}`,
+        name: safeName,
+        url: dataUrl,
+      };
+
+      setAttachedImages((prev) => [...prev, imageObj]);
+      showToast('Imagem adicionada com sucesso!');
+    } catch (err) {
+      console.error('Erro ao carregar imagem:', err);
+      showToast('Erro ao carregar a imagem.', 'error');
+    } finally {
+      input.value = '';
+    }
   };
 
   const handleRemoveImage = (imgId) => {
@@ -306,6 +434,26 @@ export default function FloatingNotes() {
           images: attachedImages,
         });
       }
+    }
+  };
+
+  const handleToggleNoteChecklist = (noteId, lineIndex, checked) => {
+    const targetNote = notes.find((n) => String(n.id) === String(noteId));
+    if (!targetNote) return;
+    const lines = (targetNote.content || '').split('\n');
+    if (lines[lineIndex]) {
+      const line = lines[lineIndex];
+      const nextBox = checked ? '- [x] ' : '- [ ] ';
+      lines[lineIndex] = line.replace(/^-\s*\[([ xX])\]\s*/, nextBox);
+      const updatedContent = lines.join('\n');
+      saveNote({
+        id: targetNote.id,
+        title: targetNote.title,
+        content: updatedContent,
+        savedCars: targetNote.savedCars,
+        images: targetNote.images,
+      });
+      setNotes(getStoredNotes());
     }
   };
 
@@ -354,6 +502,15 @@ export default function FloatingNotes() {
                 </div>
 
                 <div className="notes-header-actions">
+                  <button
+                    type="button"
+                    className="notes-new-btn"
+                    onClick={handleStartNewNote}
+                    title="Nova anotação"
+                  >
+                    <IoAddOutline />
+                    <span>Nova</span>
+                  </button>
                   <button
                     type="button"
                     className="notes-close-button"
@@ -418,7 +575,7 @@ export default function FloatingNotes() {
                           {!isExpanded ? (
                             <p className="note-card-snippet">
                               {note.content
-                                ? note.content.replace(/[#*`_>\[\]\(\)]/g, '').slice(0, 95)
+                                ? note.content.replace(/!\[.*?\]\(.*?\)/g, '').replace(/[#*`_>()[\]]/g, '').slice(0, 95)
                                 : 'Nenhum texto informado...'}
                             </p>
                           ) : (
@@ -428,8 +585,27 @@ export default function FloatingNotes() {
                             >
                               <MarkdownRenderer
                                 content={note.content}
+                                onToggleChecklist={(lineIndex, checked) =>
+                                  handleToggleNoteChecklist(note.id, lineIndex, checked)
+                                }
                                 onNavigateCar={handleNavigateCar}
+                                onImageClick={(img) => setPreviewImage(img)}
                               />
+
+                              {note.images?.length > 0 && (
+                                <div className="note-card-images-grid">
+                                  {note.images.map((img) => (
+                                    <div
+                                      key={img.id}
+                                      className="note-card-image-item"
+                                      onClick={() => setPreviewImage(img)}
+                                      title="Clique para expandir"
+                                    >
+                                      <img src={img.url} alt={img.name || 'Imagem'} />
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           )}
 
@@ -545,127 +721,157 @@ export default function FloatingNotes() {
 
                 {activeTab === 'WRITE' ? (
                   <>
-                    {/* BARRA DE FERRAMENTAS REESTRUTURADA E CONFORTÁVEL */}
-                    <div className="notes-toolbar" role="toolbar" aria-label="Ferramentas de formatação">
-                      <div className="toolbar-group" title="Formatação de texto">
-                        <button
-                          type="button"
-                          className="toolbar-btn"
-                          onClick={() => applyFormat('bold')}
-                          title="Negrito (**texto**)"
+                    {/* BARRA DE FERRAMENTAS COM SCROLL */}
+                    <div className="notes-toolbar-wrapper">
+                      <button
+                        type="button"
+                        className={`toolbar-arrow-btn left ${!canScrollLeft ? 'is-disabled' : ''}`}
+                        onClick={() => scrollToolbar('left')}
+                        disabled={!canScrollLeft}
+                        aria-label="Mover barra de ferramentas para esquerda"
+                        title="Mover para esquerda"
+                      >
+                        <IoChevronBackOutline />
+                      </button>
+
+                      <div className="notes-toolbar-viewport">
+                        <div 
+                          className="notes-toolbar" 
+                          ref={toolbarScrollRef} 
+                          role="toolbar"
                         >
-                          <strong>B</strong>
-                        </button>
-                        <button
-                          type="button"
-                          className="toolbar-btn"
-                          onClick={() => applyFormat('italic')}
-                          title="Itálico (*texto*)"
-                        >
-                          <em>I</em>
-                        </button>
-                        <button
-                          type="button"
-                          className="toolbar-btn"
-                          onClick={() => applyFormat('underline')}
-                          title="Sublinhado (<u>texto</u>)"
-                        >
-                          <u>U</u>
-                        </button>
+                          <div className="toolbar-group" title="Formatação de texto">
+                            <button
+                              type="button"
+                              className="toolbar-btn"
+                              onClick={() => applyFormat('bold')}
+                              title="Negrito (**texto**)"
+                            >
+                              <strong>B</strong>
+                            </button>
+                            <button
+                              type="button"
+                              className="toolbar-btn"
+                              onClick={() => applyFormat('italic')}
+                              title="Itálico (*texto*)"
+                            >
+                              <em>I</em>
+                            </button>
+                            <button
+                              type="button"
+                              className="toolbar-btn"
+                              onClick={() => applyFormat('underline')}
+                              title="Sublinhado (<u>texto</u>)"
+                            >
+                              <u>U</u>
+                            </button>
+                          </div>
+
+                          <div className="toolbar-divider" />
+
+                          <div className="toolbar-group" title="Títulos">
+                            <button
+                              type="button"
+                              className="toolbar-btn"
+                              onClick={() => applyFormat('h1')}
+                              title="Título 1 (# )"
+                            >
+                              H1
+                            </button>
+                            <button
+                              type="button"
+                              className="toolbar-btn"
+                              onClick={() => applyFormat('h2')}
+                              title="Título 2 (## )"
+                            >
+                              H2
+                            </button>
+                            <button
+                              type="button"
+                              className="toolbar-btn"
+                              onClick={() => applyFormat('h3')}
+                              title="Título 3 (### )"
+                            >
+                              H3
+                            </button>
+                          </div>
+
+                          <div className="toolbar-divider" />
+
+                          <div className="toolbar-group" title="Listas e Tarefas">
+                            <button
+                              type="button"
+                              className="toolbar-btn"
+                              onClick={() => applyFormat('bullet')}
+                              title="Lista com marcadores (- )"
+                            >
+                              <IoListOutline />
+                              <span className="toolbar-btn-text">Lista</span>
+                            </button>
+                            <button
+                              type="button"
+                              className="toolbar-btn"
+                              onClick={() => applyFormat('number')}
+                              title="Lista numerada (1. )"
+                            >
+                              <span style={{ fontWeight: 'bold' }}>1.</span>
+                              <span className="toolbar-btn-text">Numérica</span>
+                            </button>
+                            <button
+                              type="button"
+                              className="toolbar-btn"
+                              onClick={() => applyFormat('checklist')}
+                              title="Checklist / Tarefa (- [ ] )"
+                            >
+                              <IoCheckboxOutline />
+                              <span className="toolbar-btn-text">Checklist</span>
+                            </button>
+                          </div>
+
+                          <div className="toolbar-divider" />
+
+                          <div className="toolbar-group" title="Inserir conteúdo">
+                            <button
+                              type="button"
+                              className="toolbar-btn toolbar-btn-highlight"
+                              onClick={() => setIsVehicleModalOpen(true)}
+                              title="Inserir veículo salvo"
+                            >
+                              <IoCarSportOutline />
+                              <span>Veículo</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="toolbar-btn toolbar-btn-highlight"
+                              onClick={() => fileInputRef.current?.click()}
+                              title="Adicionar imagem"
+                            >
+                              <IoImageOutline />
+                              <span>Imagem</span>
+                            </button>
+
+                            <input
+                              type="file"
+                              ref={fileInputRef}
+                              style={{ display: 'none' }}
+                              accept="image/*"
+                              onChange={handleImageUpload}
+                            />
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="toolbar-divider" />
-
-                      <div className="toolbar-group" title="Títulos">
-                        <button
-                          type="button"
-                          className="toolbar-btn"
-                          onClick={() => applyFormat('h1')}
-                          title="Título 1 (# )"
-                        >
-                          H1
-                        </button>
-                        <button
-                          type="button"
-                          className="toolbar-btn"
-                          onClick={() => applyFormat('h2')}
-                          title="Título 2 (## )"
-                        >
-                          H2
-                        </button>
-                        <button
-                          type="button"
-                          className="toolbar-btn"
-                          onClick={() => applyFormat('h3')}
-                          title="Título 3 (### )"
-                        >
-                          H3
-                        </button>
-                      </div>
-
-                      <div className="toolbar-divider" />
-
-                      <div className="toolbar-group" title="Listas e Tarefas">
-                        <button
-                          type="button"
-                          className="toolbar-btn"
-                          onClick={() => applyFormat('bullet')}
-                          title="Lista com marcadores (- )"
-                        >
-                          <IoListOutline />
-                          <span className="toolbar-btn-text">Lista</span>
-                        </button>
-                        <button
-                          type="button"
-                          className="toolbar-btn"
-                          onClick={() => applyFormat('number')}
-                          title="Lista numerada (1. )"
-                        >
-                          <span style={{ fontWeight: 'bold' }}>1.</span>
-                          <span className="toolbar-btn-text">Numérica</span>
-                        </button>
-                        <button
-                          type="button"
-                          className="toolbar-btn"
-                          onClick={() => applyFormat('checklist')}
-                          title="Checklist / Tarefa (- [ ] )"
-                        >
-                          <IoCheckboxOutline />
-                          <span className="toolbar-btn-text">Checklist</span>
-                        </button>
-                      </div>
-
-                      <div className="toolbar-divider" />
-
-                      <div className="toolbar-group" title="Inserir conteúdo">
-                        <button
-                          type="button"
-                          className="toolbar-btn toolbar-btn-highlight"
-                          onClick={() => setIsVehicleModalOpen(true)}
-                          title="Inserir veículo salvo"
-                        >
-                          <IoCarSportOutline />
-                          <span>Veículo</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          className="toolbar-btn toolbar-btn-highlight"
-                          onClick={() => fileInputRef.current?.click()}
-                          title="Adicionar imagem"
-                        >
-                          <IoImageOutline />
-                          <span>Imagem</span>
-                        </button>
-
-                        <input
-                          type="file"
-                          ref={fileInputRef}
-                          style={{ display: 'none' }}
-                          accept="image/*"
-                          onChange={handleImageUpload}
-                        />
-                      </div>
+                      <button
+                        type="button"
+                        className={`toolbar-arrow-btn right ${!canScrollRight ? 'is-disabled' : ''}`}
+                        onClick={() => scrollToolbar('right')}
+                        disabled={!canScrollRight}
+                        aria-label="Mover barra de ferramentas para direita"
+                        title="Mover para direita"
+                      >
+                        <IoChevronForwardOutline />
+                      </button>
                     </div>
 
                     {/* ÁREA DE TEXTO */}
@@ -705,19 +911,28 @@ export default function FloatingNotes() {
                         {attachedImages.length > 0 && (
                           <div className="attachment-row">
                             <span className="attachment-label">Imagens anexadas:</span>
-                            <div className="attachment-chips">
+                            <div className="attachment-thumbs-list">
                               {attachedImages.map((img) => (
-                                <span key={img.id} className="attachment-chip">
-                                  <IoImageOutline />
-                                  <span>{img.name || 'Foto'}</span>
+                                <div
+                                  key={img.id}
+                                  className="attachment-thumb-card"
+                                  onClick={() => setPreviewImage(img)}
+                                  title="Clique para expandir"
+                                >
+                                  <img src={img.url} alt={img.name || 'Foto'} />
                                   <button
                                     type="button"
-                                    onClick={() => handleRemoveImage(img.id)}
+                                    className="attachment-thumb-remove"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleRemoveImage(img.id);
+                                    }}
                                     title="Remover imagem"
                                   >
                                     <IoCloseOutline />
                                   </button>
-                                </span>
+                                  <span className="attachment-thumb-name">{img.name || 'Foto'}</span>
+                                </div>
                               ))}
                             </div>
                           </div>
@@ -732,7 +947,23 @@ export default function FloatingNotes() {
                       content={content}
                       onToggleChecklist={handleToggleChecklist}
                       onNavigateCar={handleNavigateCar}
+                      onImageClick={(img) => setPreviewImage(img)}
                     />
+
+                    {attachedImages.length > 0 && (
+                      <div className="note-card-images-grid">
+                        {attachedImages.map((img) => (
+                          <div
+                            key={img.id}
+                            className="note-card-image-item"
+                            onClick={() => setPreviewImage(img)}
+                            title="Clique para expandir"
+                          >
+                            <img src={img.url} alt={img.name || 'Imagem'} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -768,9 +999,6 @@ export default function FloatingNotes() {
           type="button"
           className="floating-notes-button"
           onClick={() => {
-            if (!isOpen) {
-              handleStartNewNote();
-            }
             setIsOpen((prev) => !prev);
           }}
           aria-label={isOpen ? 'Fechar anotações' : 'Abrir anotações'}
@@ -823,6 +1051,34 @@ export default function FloatingNotes() {
         onClose={() => setIsVehicleModalOpen(false)}
         onSelectCar={handleSelectCar}
       />
+
+      {/* LIGHTBOX / MODAL DE VISUALIZAÇÃO EXPANDIDA DE IMAGEM */}
+      {previewImage && (
+        <div
+          className="notes-image-lightbox-backdrop"
+          onClick={() => setPreviewImage(null)}
+          role="dialog"
+          aria-label="Visualização de imagem"
+        >
+          <div
+            className="notes-image-lightbox-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="notes-image-lightbox-close"
+              onClick={() => setPreviewImage(null)}
+              aria-label="Fechar visualização"
+            >
+              <IoCloseOutline />
+            </button>
+            <img src={previewImage.url} alt={previewImage.name || 'Visualização da imagem'} />
+            {previewImage.name && previewImage.name !== 'Foto' && (
+              <span className="notes-image-lightbox-caption">{previewImage.name}</span>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

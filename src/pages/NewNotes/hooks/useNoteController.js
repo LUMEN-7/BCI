@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { criarAnotacao, inserirBloco } from '@/services/noteService';
 import { getFavorites } from '@/services/carsService';
+import { saveNote } from '@/utils/notesStorage';
 
 function createBlock(type) {
     const base = { id: `${Date.now()}-${Math.random()}`, type };
@@ -118,14 +119,55 @@ export default function useNoteController() {
         setSaving(true);
         setError('');
         try {
-            const anotacao = await criarAnotacao({ titulo: cleanTitle, subtitulo: tag.trim() || null });
-            // sequencial de propósito — cada insert entra no fim da lista, então a ordem
-            // do array precisa virar ordem de chamada; Promise.all embaralharia isso
-            for (const block of blocks) {
-                const payload = paraPayloadBackend(block);
-                if (!payload) continue;
-                await inserirBloco(anotacao.id, payload);
-                console.log(anotacao)
+            // Constrói conteúdo Markdown correspondente a partir dos blocos
+            let fullContent = '';
+            blocks.forEach((block) => {
+                if (block.type === 'heading' && block.content) {
+                    fullContent += `\n# ${block.content}\n`;
+                } else if (block.type === 'text' && block.content) {
+                    fullContent += `\n${block.content}\n`;
+                } else if (block.type === 'divider') {
+                    fullContent += `\n---\n`;
+                } else if (block.type === 'image' && block.src) {
+                    fullContent += `\n![${block.alt || 'Imagem'}](${block.src})\n`;
+                } else if (block.type === 'vehicle' && block.vehicleId) {
+                    const car = getVehicle(block.vehicleId);
+                    if (car) {
+                        fullContent += `\n\n> 🚗 **[${car.name}](/information/${car.id})**\n> ${car.brand || ''}\n\n`;
+                    }
+                }
+            });
+
+            // Salva no armazenamento local (localStorage) para persistência imediata e sincronização
+            const savedCarsList = blocks
+                .filter((b) => b.type === 'vehicle' && b.vehicleId)
+                .map((b) => getVehicle(b.vehicleId))
+                .filter(Boolean);
+
+            const imagesList = blocks
+                .filter((b) => b.type === 'image' && b.src)
+                .map((b, i) => ({ id: `img-${Date.now()}-${i}`, name: b.alt || 'Foto', url: b.src }));
+
+            saveNote({
+                title: cleanTitle,
+                content: fullContent.trim(),
+                savedCars: savedCarsList,
+                images: imagesList,
+            });
+
+            // Tenta persistir no backend se disponível
+            const token = localStorage.getItem('accessToken');
+            if (token) {
+                try {
+                    const anotacao = await criarAnotacao({ titulo: cleanTitle, subtitulo: tag.trim() || null });
+                    for (const block of blocks) {
+                        const payload = paraPayloadBackend(block);
+                        if (!payload) continue;
+                        await inserirBloco(anotacao.id, payload);
+                    }
+                } catch (apiErr) {
+                    console.warn('Backend indisponível ao salvar na API, persistido localmente:', apiErr);
+                }
             }
             
             navigate('/notes');

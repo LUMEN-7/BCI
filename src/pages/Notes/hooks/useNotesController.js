@@ -30,24 +30,37 @@ export default function useNotesController() {
 		try {
 			const localNotes = getStoredNotes();
 			let apiNotes = [];
-			try {
-				const resultado = await listarAnotacoes();
-				if (Array.isArray(resultado)) {
-					apiNotes = resultado;
+			const token = localStorage.getItem('accessToken');
+
+			if (token) {
+				try {
+					const resultado = await listarAnotacoes();
+					if (Array.isArray(resultado)) {
+						apiNotes = resultado;
+					} else if (resultado && Array.isArray(resultado.data)) {
+						apiNotes = resultado.data;
+					} else if (resultado && Array.isArray(resultado.anotacoes)) {
+						apiNotes = resultado.anotacoes;
+					}
+				} catch (err) {
+					console.warn('API de anotações não disponível:', err);
 				}
-			} catch {
-				// Usa as notas locais se offline ou erro na API
 			}
 
 			// Mesclar sem duplicar por ID
 			const mergedMap = new Map();
 			localNotes.forEach((note) => {
+				const dateObj = note.updatedAt || note.createdAt;
+				const formattedDate = dateObj
+					? new Date(dateObj).toLocaleDateString('pt-BR')
+					: new Date().toLocaleDateString('pt-BR');
+
 				mergedMap.set(String(note.id), {
 					id: String(note.id),
 					title: note.title || 'Sem título',
 					description: note.content || '',
 					tag: 'Anotação BCI',
-					date: new Date(note.updatedAt || note.createdAt).toLocaleDateString('pt-BR'),
+					date: formattedDate,
 					rawNote: note,
 				});
 			});

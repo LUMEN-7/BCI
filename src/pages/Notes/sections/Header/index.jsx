@@ -1,7 +1,6 @@
-import { IoAddOutline } from "react-icons/io5";
 import "./style.css";
 
-export default function NotesHeader({ onCreate }) {
+export default function NotesHeader() {
   return (
     <header className="notes-header">
       <div className="notes-heading">
@@ -12,10 +11,6 @@ export default function NotesHeader({ onCreate }) {
           simples e visual.
         </p>
       </div>
-      <button type="button" className="new-note-button" onClick={onCreate}>
-        <IoAddOutline />
-        <span>Nova nota</span>
-      </button>
     </header>
   );
 }

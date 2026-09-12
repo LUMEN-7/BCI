@@ -1,13 +1,13 @@
 import { useRef, useState } from "react";
 import {
-  IoAddOutline,
   IoCarSportOutline,
   IoChevronBackOutline,
-  IoChevronDownOutline,
   IoChevronForwardOutline,
-  IoChevronUpOutline,
+  IoCloseOutline,
   IoDocumentTextOutline,
   IoImageOutline,
+  IoOpenOutline,
+  IoPencilOutline,
   IoTrashOutline,
 } from "react-icons/io5";
 import MarkdownRenderer from "../../../../components/FloatingNotes/MarkdownRenderer";
@@ -17,23 +17,59 @@ export default function NotesGrid({
   notes,
   search,
   onDelete,
-  onOpen,
-  onCreate,
 }) {
-  const [expandedNoteId, setExpandedNoteId] = useState(null);
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [isEditingInModal, setIsEditingInModal] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
   const [deletingNote, setDeletingNote] = useState(null);
-  const sliderRef = useRef(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [toastMessage, setToastMessage] = useState("");
 
-  const toggleExpand = (id, e) => {
-    e?.stopPropagation();
-    setExpandedNoteId((prev) => (prev === id ? null : id));
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(""), 3000);
   };
 
-  const slide = (direction) => {
-    if (sliderRef.current) {
-      const scrollAmount = direction === "prev" ? -380 : 380;
-      sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  const handleOpenModal = (note) => {
+    setSelectedNote(note);
+    setIsEditingInModal(false);
+    setEditTitle(note.title || "");
+    setEditContent(note.rawNote?.content || note.description || "");
+  };
+
+  const handleCloseModal = () => {
+    setSelectedNote(null);
+    setIsEditingInModal(false);
+  };
+
+  const handleStartEdit = () => {
+    setIsEditingInModal(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editTitle.trim() && !editContent.trim()) {
+      showToast("Preencha ao menos o título ou conteúdo.");
+      return;
     }
+
+    import("../../../../utils/notesStorage").then(({ saveNote }) => {
+      const updated = saveNote({
+        id: selectedNote.id,
+        title: editTitle.trim() || "Sem título",
+        content: editContent,
+        savedCars: selectedNote.rawNote?.savedCars || [],
+        images: selectedNote.rawNote?.images || [],
+      });
+      setSelectedNote({
+        ...selectedNote,
+        title: updated.title,
+        description: updated.content,
+        rawNote: updated,
+      });
+      setIsEditingInModal(false);
+      showToast("Anotação atualizada com sucesso!");
+    });
   };
 
   const handlePromptDelete = (note, e) => {
@@ -44,10 +80,11 @@ export default function NotesGrid({
   const handleConfirmDelete = () => {
     if (deletingNote) {
       onDelete(deletingNote.id);
-      if (expandedNoteId === deletingNote.id) {
-        setExpandedNoteId(null);
+      if (selectedNote?.id === deletingNote.id) {
+        setSelectedNote(null);
       }
       setDeletingNote(null);
+      showToast("Anotação excluída.");
     }
   };
 
@@ -61,44 +98,29 @@ export default function NotesGrid({
         <p>
           {search
             ? "Tente buscar por outro termo."
-            : "Comece criando sua primeira anotação."}
+            : "Use o botão de Anotações no canto da tela para criar sua primeira nota."}
         </p>
-        {!search && (
-          <button
-            type="button"
-            className="empty-create-button"
-            onClick={onCreate}
-          >
-            <IoAddOutline />
-            Criar primeira nota
-          </button>
-        )}
       </section>
     );
 
   return (
-    <div className="notes-slider-wrapper">
-      {/* Side Arrow Navigation Buttons */}
-      <button
-        type="button"
-        className="notes-side-arrow prev"
-        onClick={() => slide("prev")}
-        aria-label="Anotações anteriores"
-        title="Ver anotações anteriores"
-      >
-        <IoChevronBackOutline />
-      </button>
+    <div className="notes-grid-wrapper">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="notes-page-toast">
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
-      <section className="notes-grid" ref={sliderRef}>
+      <section className="notes-grid">
         {notes.map((note) => {
-          const isExpanded = expandedNoteId === note.id;
           const rawContent = note.rawNote?.content || note.description || "";
 
           return (
             <article
               key={note.id}
-              className={`note-card ${isExpanded ? "is-expanded" : ""}`}
-              onClick={(e) => toggleExpand(note.id, e)}
+              className="note-card"
+              onClick={() => handleOpenModal(note)}
             >
               <div className="note-card-top">
                 <div className="note-icon">
@@ -106,20 +128,6 @@ export default function NotesGrid({
                 </div>
 
                 <div className="note-card-top-actions">
-                  <span className="note-expand-pill">
-                    {isExpanded ? (
-                      <>
-                        <span>Recolher</span>
-                        <IoChevronUpOutline />
-                      </>
-                    ) : (
-                      <>
-                        <span>Expandir</span>
-                        <IoChevronDownOutline />
-                      </>
-                    )}
-                  </span>
-
                   <button
                     type="button"
                     className="delete-note-button"
@@ -140,20 +148,11 @@ export default function NotesGrid({
 
                 <h2>{note.title}</h2>
 
-                {!isExpanded ? (
-                  <p className="note-snippet-text">
-                    {rawContent
-                      ? rawContent.replace(/[#*`_>\[\]\(\)]/g, "").slice(0, 120)
-                      : "Sem conteúdo..."}
-                  </p>
-                ) : (
-                  <div
-                    className="note-expanded-content"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <MarkdownRenderer content={rawContent} />
-                  </div>
-                )}
+                <p className="note-snippet-text">
+                  {rawContent
+                    ? rawContent.replace(/[#*`_>\[\]\(\)]/g, "").slice(0, 120)
+                    : "Sem conteúdo..."}
+                </p>
               </div>
 
               <div className="note-card-bottom-bar">
@@ -175,10 +174,10 @@ export default function NotesGrid({
                 <button
                   type="button"
                   className="note-open-button"
-                  onClick={(e) => toggleExpand(note.id, e)}
+                  onClick={() => handleOpenModal(note)}
                 >
-                  <span>{isExpanded ? "Recolher conteúdo" : "Ver conteúdo completo"}</span>
-                  {isExpanded ? <IoChevronUpOutline /> : <IoChevronDownOutline />}
+                  <span>Abrir anotação</span>
+                  <IoOpenOutline />
                 </button>
               </div>
             </article>
@@ -186,33 +185,155 @@ export default function NotesGrid({
         })}
       </section>
 
-      <button
-        type="button"
-        className="notes-side-arrow next"
-        onClick={() => slide("next")}
-        aria-label="Próximas anotações"
-        title="Ver próximas anotações"
-      >
-        <IoChevronForwardOutline />
-      </button>
+      {/* Modal de Detalhes / Edição / Visualização da Nota */}
+      {selectedNote && (
+        <div className="note-detail-modal-backdrop" onClick={handleCloseModal}>
+          <div
+            className="note-detail-modal"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-labelledby="note-modal-title"
+          >
+            <header className="note-detail-modal-header">
+              <div className="note-detail-modal-title">
+                <div className="note-detail-modal-icon">
+                  <IoDocumentTextOutline />
+                </div>
+                <div>
+                  <span>Anotação</span>
+                  <h3 id="note-modal-title">
+                    {isEditingInModal ? "Editando Nota" : selectedNote.title || "Sem título"}
+                  </h3>
+                </div>
+              </div>
 
-      {/* Confirmation Modal Without Alert */}
+              <div className="note-detail-modal-actions">
+                {!isEditingInModal ? (
+                  <>
+                    <button
+                      type="button"
+                      className="note-modal-btn edit"
+                      onClick={handleStartEdit}
+                      title="Editar anotação"
+                    >
+                      <IoPencilOutline />
+                      <span>Editar</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="note-modal-btn delete"
+                      onClick={(e) => handlePromptDelete(selectedNote, e)}
+                      title="Excluir anotação"
+                    >
+                      <IoTrashOutline />
+                      <span>Excluir</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="note-modal-btn cancel"
+                      onClick={() => setIsEditingInModal(false)}
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="button"
+                      className="note-modal-btn save"
+                      onClick={handleSaveEdit}
+                    >
+                      Salvar
+                    </button>
+                  </>
+                )}
+                <button
+                  type="button"
+                  className="note-detail-modal-close"
+                  onClick={handleCloseModal}
+                  aria-label="Fechar modal"
+                >
+                  <IoCloseOutline />
+                </button>
+              </div>
+            </header>
+
+            <div className="note-detail-modal-body">
+              {isEditingInModal ? (
+                <div className="note-modal-edit-form">
+                  <div className="note-modal-input-group">
+                    <label htmlFor="modal-note-title">Título</label>
+                    <input
+                      id="modal-note-title"
+                      type="text"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      placeholder="Título da anotação..."
+                    />
+                  </div>
+                  <div className="note-modal-input-group flex-1">
+                    <label htmlFor="modal-note-content">Conteúdo (Markdown)</label>
+                    <textarea
+                      id="modal-note-content"
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      placeholder="Escreva sua anotação..."
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="note-detail-rendered-wrapper">
+                  <div className="note-detail-meta-header">
+                    <span className="note-tag">{selectedNote.tag || "Anotação BCI"}</span>
+                    <span className="note-date">{selectedNote.date}</span>
+                  </div>
+                  <h2 className="note-detail-view-title">{selectedNote.title}</h2>
+                  <div className="note-detail-markdown-content">
+                    <MarkdownRenderer
+                      content={selectedNote.rawNote?.content || selectedNote.description}
+                      onImageClick={(img) => setPreviewImage(img)}
+                    />
+
+                    {selectedNote.rawNote?.images?.length > 0 && (
+                      <div className="note-card-images-grid">
+                        {selectedNote.rawNote.images.map((img) => (
+                          <div
+                            key={img.id}
+                            className="note-card-image-item"
+                            onClick={() => setPreviewImage(img)}
+                            title="Clique para expandir"
+                          >
+                            <img src={img.url} alt={img.name || "Imagem"} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Confirmação de Exclusão (Sobreposto a tudo) */}
       {deletingNote && (
         <div
-          className="notes-page-modal-backdrop"
+          className="notes-delete-modal-backdrop"
           onClick={() => setDeletingNote(null)}
         >
           <div
-            className="notes-page-modal"
+            className="notes-delete-modal"
             onClick={(e) => e.stopPropagation()}
             role="alertdialog"
+            aria-labelledby="notes-page-delete-title"
           >
             <div className="delete-modal-icon">
               <IoTrashOutline />
             </div>
-            <h3>Excluir anotação?</h3>
+            <h3 id="notes-page-delete-title">Excluir anotação?</h3>
             <p>
-              Você está prestes a excluir <strong>"{deletingNote.title}"</strong>. Essa ação não poderá ser desfeita.
+              Você está prestes a remover <strong>"{deletingNote.title || 'Sem título'}"</strong>. Essa ação não poderá ser desfeita.
             </p>
             <div className="delete-modal-actions">
               <button
@@ -230,6 +351,34 @@ export default function NotesGrid({
                 Excluir
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* LIGHTBOX / MODAL DE VISUALIZAÇÃO EXPANDIDA DE IMAGEM */}
+      {previewImage && (
+        <div
+          className="notes-image-lightbox-backdrop"
+          onClick={() => setPreviewImage(null)}
+          role="dialog"
+          aria-label="Visualização de imagem"
+        >
+          <div
+            className="notes-image-lightbox-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="notes-image-lightbox-close"
+              onClick={() => setPreviewImage(null)}
+              aria-label="Fechar visualização"
+            >
+              <IoCloseOutline />
+            </button>
+            <img src={previewImage.url} alt={previewImage.name || 'Visualização da imagem'} />
+            {previewImage.name && previewImage.name !== 'Foto' && (
+              <span className="notes-image-lightbox-caption">{previewImage.name}</span>
+            )}
           </div>
         </div>
       )}
