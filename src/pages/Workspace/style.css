@@ -6,13 +6,16 @@
 
 .workspace-page {
   min-height: 100vh;
-  padding: 42px 38px 80px;
+
+  padding: 40px 48px 64px;
+
+  overflow-x: hidden;
 
   background:
     radial-gradient(
-      circle at 88% 0%,
-      rgba(5, 98, 210, 0.05),
-      transparent 30%
+      circle at 85% 0%,
+      rgba(5, 98, 210, 0.07),
+      transparent 28%
     ),
     linear-gradient(
       180deg,
@@ -21,11 +24,13 @@
     );
 
   color: var(--color-primary);
+
+  box-sizing: border-box;
 }
 
 .workspace-container {
   width: 100%;
-  max-width: 1380px;
+  max-width: 1180px;
   margin: 0 auto;
 }
 
@@ -64,7 +69,7 @@
 
   font-family: var(--font-title);
 
-  font-size: clamp(50px, 5vw, 72px);
+  font-size: clamp(64px, 6vw, 88px);
 
   font-weight: 400;
 
@@ -78,7 +83,7 @@
 
   font-family: var(--font-body);
 
-  font-size: 12px;
+  font-size: 14px;
 
   line-height: 1.6;
 
@@ -177,7 +182,7 @@
 
   font-family: var(--font-body-bold);
 
-  font-size: 9px;
+  font-size: 10px;
 
   cursor: pointer;
 
@@ -282,7 +287,7 @@
 
   font-family: var(--font-body);
 
-  font-size: 11px;
+  font-size: 12px;
 
   color: var(--color-primary);
 }
@@ -300,7 +305,7 @@
 
   font-family: var(--font-body);
 
-  font-size: 10px;
+  font-size: 11px;
 
   color: var(--color-primary);
 
@@ -646,7 +651,7 @@
 
   font-family: var(--font-body-bold);
 
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .post-author-area strong,
@@ -657,7 +662,7 @@
 .post-author-area strong {
   font-family: var(--font-body-bold);
 
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .post-author-area span {
@@ -835,7 +840,7 @@
 
   font-family: var(--font-body);
 
-  font-size: 12px;
+  font-size: 13px;
 
   line-height: 1.7;
 
@@ -923,7 +928,7 @@
 .post-tags span {
   font-family: var(--font-body-bold);
 
-  font-size: 9px;
+  font-size: 10px;
 
   color: var(--color-secondary);
 }
@@ -995,7 +1000,7 @@
 .linked-content strong {
   font-family: var(--font-body-bold);
 
-  font-size: 10px;
+  font-size: 11px;
 }
 
 
@@ -1527,7 +1532,7 @@
 .thread-author strong {
   font-family: var(--font-body-bold);
 
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .thread-author span {
@@ -1545,7 +1550,7 @@
 
   font-family: var(--font-body);
 
-  font-size: 12px;
+  font-size: 13px;
 
   line-height: 1.7;
 }
@@ -1705,7 +1710,7 @@
 
   font-family: var(--font-body-bold);
 
-  font-size: 10px;
+  font-size: 11px;
 }
 
 
@@ -1838,7 +1843,7 @@
 
   font-family: var(--font-body-bold);
 
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .thread-empty span {
@@ -2286,7 +2291,7 @@
   font-family:
     var(--font-body-bold);
 
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .my-activities-empty span {
@@ -2374,12 +2379,12 @@
   border: none !important;
 }
 
-
 /* =========================================================
    TABLET
 ========================================================= */
 
 @media (max-width: 1000px) {
+
   .workspace-feed-layout {
     grid-template-columns: 1fr;
   }
@@ -2400,6 +2405,7 @@
 ========================================================= */
 
 @media (max-width: 800px) {
+
   .workspace-header {
     flex-direction: column;
 
@@ -2437,9 +2443,6 @@
 ========================================================= */
 
 @media (max-width: 650px) {
-  .workspace-page {
-    padding: 28px 18px 60px;
-  }
 
   .workspace-header h1 {
     font-size: 48px;
@@ -2554,10 +2557,6 @@
 ========================================================= */
 
 @media (max-width: 420px) {
-  .workspace-page {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
 
   .workspace-header h1 {
     font-size: 40px;
@@ -2596,3 +2595,32 @@
     padding-right: 14px;
   }
 }
+
+/* =========================================================
+   PAGE RESPONSIVE — ALINHADO À TELA BUSCAR
+========================================================= */
+
+@media (max-width: 1100px) {
+  .workspace-page {
+    padding-left: 80px;
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 700px) {
+  .workspace-page {
+    padding: 42px 20px 110px;
+  }
+
+  .workspace-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .workspace-page {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
