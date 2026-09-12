@@ -74,6 +74,7 @@ export default function useDetailController() {
     const [error, setError] = useState('');
     const [favorite, setFavorite] = useState(false);
     const [expandedSection, setExpandedSection] = useState('base'); // Controla o Ficha Técnica
+    const [showSources, setShowSources] = useState(false);
 
     const [firstCar, setFirstCar] = useState(null);
     const [secondCar, setSecondCar] = useState(null);
@@ -149,12 +150,14 @@ export default function useDetailController() {
         favorite,
         handleExport, // renomeado de "Export" — segue o padrão handle* dos outros
         expandedSection,
+        showSources,
         comparisonSummary,
         mathConclusions,
         handleBack: () => navigate(-1),
         handleHome: () => navigate('/home'),
         toggleFavorite,
         toggleSection,
+        toggleSources: () => setShowSources((current) => !current),
     };
 
 }

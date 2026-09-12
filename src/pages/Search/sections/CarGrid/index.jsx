@@ -1,8 +1,6 @@
-import { IoArrowForward, IoStar, IoStarOutline } from "react-icons/io5";
+import { IoArrowForward, IoCarSportOutline, IoStar, IoStarOutline } from "react-icons/io5";
 
 import "./style.css";
-
-
 
 export default function CarGrid({
   cars,
@@ -18,25 +16,32 @@ export default function CarGrid({
             <span className="car-brand">{car.brand}</span>
             <button
               type="button"
-              className={`favorite-button ${favorites.includes(car.id) ? "is-favorite" : ""}`}
+              className={`favorite-button ${favorites.includes(String(car.id)) ? "is-favorite" : ""}`}
               onClick={() => onToggleFavorite(car.id)}
               aria-label={
-                favorites.includes(car.id)
+                favorites.includes(String(car.id))
                   ? "Remover dos favoritos"
                   : "Adicionar aos favoritos"
               }
             >
-              {favorites.includes(car.id) ? <IoStar /> : <IoStarOutline />}
+              {favorites.includes(String(car.id)) ? <IoStar /> : <IoStarOutline />}
             </button>
           </div>
 
           <div className="car-image-container">
-            <img src={car.image} alt={car.modelo} className="car-image" />
+            {car.image ? (
+              <img src={car.image} alt={car.modelo} className="car-image" />
+            ) : (
+              <div className="car-image-fallback">
+                <IoCarSportOutline />
+                <span>Sem foto disponível</span>
+              </div>
+            )}
           </div>
 
           <div className="car-information">
-            <div className="car-meta">{car.segment}</div>
-            <h3>{car.modelo.replace(` ${car.ano}`, "")}</h3>
+            <div className="car-meta">{car.segment || "Veículo"}</div>
+            <h3>{car.modelo?.replace(` ${car.ano}`, "") || car.modelo}</h3>
             <span className="car-year">{car.ano}</span>
           </div>
 

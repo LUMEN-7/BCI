@@ -46,16 +46,20 @@ export default function CompareDetail() {
                 />
                 <Header />
                 <Hero firstCar={controller.firstCar} secondCar={controller.secondCar} />
-                <AiAnalysis
-                    firstCar={controller.firstCar}
-                    secondCar={controller.secondCar}
-                    comparisonSummary={controller.comparisonSummary} // Texto vindo da API!
-                />
                 <Technical
                     firstCar={controller.firstCar}
                     secondCar={controller.secondCar}
                     expandedSection={controller.expandedSection}
+                    showSources={controller.showSources}
                     onToggleSection={controller.toggleSection}
+                    onToggleSources={controller.toggleSources}
+                />
+
+                <AiAnalysis
+                    firstCar={controller.firstCar}
+                    secondCar={controller.secondCar}
+                    comparisonSummary={controller.comparisonSummary}
+                    mathConclusions={controller.mathConclusions}
                 />
                 
                 {/* BÔNUS: Placar de Matemática do C# */}

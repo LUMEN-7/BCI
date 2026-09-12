@@ -86,6 +86,62 @@
 .ai-insight.featured span {
   color: rgba(255, 255, 255, 0.72);
 }
+
+.math-conclusions {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.math-conclusions-header span {
+  font-family: var(--font-body-bold);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.math-conclusions-header h3 {
+  margin: 8px 0 0;
+  font-family: var(--font-title);
+  font-size: 28px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.math-conclusions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.math-conclusion-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 92px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.math-conclusion-item span {
+  font-family: var(--font-body-bold);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.math-conclusion-item strong {
+  font-family: var(--font-body-bold);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #fff;
+}
+
 @media (max-width: 1100px) {
   .ai-insights {
     grid-template-columns: 1fr;

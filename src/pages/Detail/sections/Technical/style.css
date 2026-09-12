@@ -13,6 +13,184 @@
 .technical-heading {
   margin-bottom: 18px;
 }
+.information-legend {
+  margin-bottom: 18px;
+  padding: 20px 22px;
+  border: 1px solid rgba(0, 20, 46, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 8px 24px rgba(0, 20, 46, 0.045);
+}
+.legend-header,
+.legend-title,
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+.legend-header {
+  justify-content: space-between;
+  gap: 20px;
+}
+.legend-title {
+  gap: 11px;
+}
+.legend-title > svg {
+  font-size: 20px;
+  color: var(--color-primary);
+}
+.legend-title div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.legend-title strong {
+  font-family: var(--font-body-bold);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--color-primary);
+}
+.legend-title span {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: #8b96a3;
+}
+.legend-items {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px 18px;
+  margin-top: 17px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(0, 20, 46, 0.07);
+}
+.legend-item {
+  gap: 7px;
+}
+.legend-badge,
+.verified-badge,
+.iaGen-badge,
+.confidence-badge {
+  height: 27px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-family: var(--font-body-bold);
+  font-size: 9px;
+  white-space: nowrap;
+}
+.legend-badge svg,
+.verified-badge svg,
+.iaGen-badge svg {
+  font-size: 13px;
+}
+.legend-description {
+  font-family: var(--font-body);
+  font-size: 9px;
+  color: #929ca8;
+}
+.legend-item.verified .legend-badge,
+.legend-item.ia .legend-badge {
+  background: rgba(0, 20, 46, 0.055);
+  color: #506174;
+}
+.legend-item.high .legend-badge {
+  background: rgba(34, 197, 94, 0.1);
+  color: #15803d;
+}
+.legend-item.medium .legend-badge {
+  background: rgba(245, 158, 11, 0.11);
+  color: #b45309;
+}
+.legend-item.low .legend-badge {
+  background: rgba(239, 68, 68, 0.1);
+  color: #b91c1c;
+}
+.legend-dot,
+.confidence-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.sources-toggle {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid rgba(0, 20, 46, 0.08);
+  border-radius: 999px;
+  background: rgba(0, 20, 46, 0.035);
+  color: var(--color-primary);
+  font-family: var(--font-body-bold);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+.sources-toggle svg {
+  font-size: 14px;
+}
+.sources-panel {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(0, 20, 46, 0.08);
+}
+.sources-panel-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.sources-panel-header h3 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 25px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+.sources-total {
+  font-family: var(--font-body-bold);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #909aa6;
+}
+.sources-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 20px;
+  border-radius: 15px;
+  background: rgba(0, 20, 46, 0.035);
+  border: 1px solid rgba(0, 20, 46, 0.06);
+  text-align: center;
+}
+.sources-empty svg {
+  font-size: 32px;
+  color: #9aa5b2;
+  opacity: 0.6;
+}
+.sources-empty p {
+  margin: 0;
+  font-family: var(--font-body-bold);
+  font-size: 12px;
+  color: var(--color-primary);
+}
+.sources-empty small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #9aa5b2;
+  margin-top: 2px;
+}
 .section-title {
   margin: 0;
   font-family: var(--font-title);
@@ -220,6 +398,28 @@
 @media (max-width: 600px) {
   .section-title {
     font-size: 36px;
+  }
+  .information-legend {
+    padding: 17px;
+    border-radius: 18px;
+  }
+  .legend-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .sources-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+  .legend-items {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .sources-panel-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
   }
   .resources-heading {
     margin-top: 40px;

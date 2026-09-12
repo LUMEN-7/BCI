@@ -1,15 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { listarAnotacoes, excluirAnotacao } from '@/services/noteService';
+import { getStoredNotes, deleteNote as deleteStoredNote } from '@/utils/notesStorage';
 
 function adaptarAnotacao(anotacao) {
-	const primeiroBlocoComTexto = anotacao.blocos.find((b) => b.texto);
+	const primeiroBlocoComTexto = anotacao.blocos?.find((b) => b.texto);
 	return {
-		id: anotacao.id,
-		title: anotacao.titulo,
-		description: primeiroBlocoComTexto?.texto ?? '',
-		tag: anotacao.subtitulo || 'Sem tag',
-		date: new Date(anotacao.atualizadoEm).toLocaleDateString('pt-BR'),
+		id: String(anotacao.id),
+		title: anotacao.titulo || anotacao.title || 'Sem título',
+		description: primeiroBlocoComTexto?.texto ?? anotacao.description ?? anotacao.content ?? '',
+		tag: anotacao.subtitulo || anotacao.tag || 'Sem tag',
+		date: anotacao.atualizadoEm || anotacao.updatedAt
+			? new Date(anotacao.atualizadoEm || anotacao.updatedAt).toLocaleDateString('pt-BR')
+			: new Date().toLocaleDateString('pt-BR'),
+		rawNote: anotacao,
 	};
 }
 
@@ -20,20 +24,58 @@ export default function useNotesController() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
 
-	useEffect(() => {
-		async function carregar() {
-			setLoading(true);
-			setError('');
+	const carregarAnotacoes = async () => {
+		setLoading(true);
+		setError('');
+		try {
+			const localNotes = getStoredNotes();
+			let apiNotes = [];
 			try {
 				const resultado = await listarAnotacoes();
-				setNotes(resultado.map(adaptarAnotacao));
-			} catch (err) {
-				setError(err.message || 'Não foi possível carregar as anotações.');
-			} finally {
-				setLoading(false);
+				if (Array.isArray(resultado)) {
+					apiNotes = resultado;
+				}
+			} catch {
+				// Usa as notas locais se offline ou erro na API
 			}
+
+			// Mesclar sem duplicar por ID
+			const mergedMap = new Map();
+			localNotes.forEach((note) => {
+				mergedMap.set(String(note.id), {
+					id: String(note.id),
+					title: note.title || 'Sem título',
+					description: note.content || '',
+					tag: 'Anotação BCI',
+					date: new Date(note.updatedAt || note.createdAt).toLocaleDateString('pt-BR'),
+					rawNote: note,
+				});
+			});
+
+			apiNotes.forEach((note) => {
+				if (!mergedMap.has(String(note.id))) {
+					mergedMap.set(String(note.id), adaptarAnotacao(note));
+				}
+			});
+
+			setNotes(Array.from(mergedMap.values()));
+		} catch (err) {
+			setError(err.message || 'Não foi possível carregar as anotações.');
+		} finally {
+			setLoading(false);
 		}
-		carregar();
+	};
+
+	useEffect(() => {
+		carregarAnotacoes();
+
+		window.addEventListener('floating-notes-updated', carregarAnotacoes);
+		window.addEventListener('storage', carregarAnotacoes);
+
+		return () => {
+			window.removeEventListener('floating-notes-updated', carregarAnotacoes);
+			window.removeEventListener('storage', carregarAnotacoes);
+		};
 	}, []);
 
 	const filteredNotes = useMemo(() => {
@@ -44,12 +86,12 @@ export default function useNotesController() {
 
 	async function handleDelete(id) {
 		const anterior = notes;
-		setNotes((current) => current.filter((note) => note.id !== id)); // some da tela na hora
+		setNotes((current) => current.filter((note) => String(note.id) !== String(id)));
+		deleteStoredNote(id);
 		try {
 			await excluirAnotacao(id);
-		} catch (err) {
-			setNotes(anterior); // desfaz se a API recusar
-			setError(err.message || 'Não foi possível excluir a anotação.');
+		} catch {
+			// Prossegue com exclusão local sem quebrar a UI
 		}
 	}
 
