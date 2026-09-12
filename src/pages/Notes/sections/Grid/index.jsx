@@ -1,8 +1,5 @@
-import { useRef, useState } from "react";
 import {
   IoCarSportOutline,
-  IoChevronBackOutline,
-  IoChevronForwardOutline,
   IoCloseOutline,
   IoDocumentTextOutline,
   IoImageOutline,
@@ -10,83 +7,32 @@ import {
   IoPencilOutline,
   IoTrashOutline,
 } from "react-icons/io5";
-import MarkdownRenderer from "../../../../components/FloatingNotes/components/MarkdownRenderer";
+import MarkdownRenderer from "@/components/FloatingNotes/components/MarkdownRenderer";
+import useNotesGridController from "../../hooks/useNotesGridController";
 import "./style.css";
 
-export default function NotesGrid({
-  notes,
-  search,
-  onDelete,
-}) {
-  const [selectedNote, setSelectedNote] = useState(null);
-  const [isEditingInModal, setIsEditingInModal] = useState(false);
-  const [editTitle, setEditTitle] = useState("");
-  const [editContent, setEditContent] = useState("");
-  const [deletingNote, setDeletingNote] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
-  const [toastMessage, setToastMessage] = useState("");
-
-  const showToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(""), 3000);
-  };
-
-  const handleOpenModal = (note) => {
-    setSelectedNote(note);
-    setIsEditingInModal(false);
-    setEditTitle(note.title || "");
-    setEditContent(note.rawNote?.content || note.description || "");
-  };
-
-  const handleCloseModal = () => {
-    setSelectedNote(null);
-    setIsEditingInModal(false);
-  };
-
-  const handleStartEdit = () => {
-    setIsEditingInModal(true);
-  };
-
-  const handleSaveEdit = () => {
-    if (!editTitle.trim() && !editContent.trim()) {
-      showToast("Preencha ao menos o título ou conteúdo.");
-      return;
-    }
-
-    import("../../../../utils/notesStorage").then(({ saveNote }) => {
-      const updated = saveNote({
-        id: selectedNote.id,
-        title: editTitle.trim() || "Sem título",
-        content: editContent,
-        savedCars: selectedNote.rawNote?.savedCars || [],
-        images: selectedNote.rawNote?.images || [],
-      });
-      setSelectedNote({
-        ...selectedNote,
-        title: updated.title,
-        description: updated.content,
-        rawNote: updated,
-      });
-      setIsEditingInModal(false);
-      showToast("Anotação atualizada com sucesso!");
-    });
-  };
-
-  const handlePromptDelete = (note, e) => {
-    e?.stopPropagation();
-    setDeletingNote(note);
-  };
-
-  const handleConfirmDelete = () => {
-    if (deletingNote) {
-      onDelete(deletingNote.id);
-      if (selectedNote?.id === deletingNote.id) {
-        setSelectedNote(null);
-      }
-      setDeletingNote(null);
-      showToast("Anotação excluída.");
-    }
-  };
+export default function NotesGrid({ notes, search, onDelete }) {
+  const {
+    selectedNote,
+    isEditingInModal,
+    setIsEditingInModal,
+    editTitle,
+    setEditTitle,
+    editContent,
+    setEditContent,
+    deletingNote,
+    setDeletingNote,
+    previewImage,
+    setPreviewImage,
+    toastMessage,
+    handleOpenModal,
+    handleCloseModal,
+    handleStartEdit,
+    handleSaveEdit,
+    handlePromptDelete,
+    handleConfirmDelete,
+    handleNavigateCar,
+  } = useNotesGridController({ onDelete });
 
   if (!notes.length)
     return (
@@ -291,8 +237,25 @@ export default function NotesGrid({
                   <div className="note-detail-markdown-content">
                     <MarkdownRenderer
                       content={selectedNote.rawNote?.content || selectedNote.description}
+                      onNavigateCar={handleNavigateCar}
                       onImageClick={(img) => setPreviewImage(img)}
                     />
+
+                    {selectedNote.rawNote?.savedCars?.length > 0 && (
+                      <div className="note-card-cars-grid">
+                        {selectedNote.rawNote.savedCars.map((car) => (
+                          <div
+                            key={car.id}
+                            className="note-card-car-item"
+                            onClick={() => handleNavigateCar(car.id)}
+                            title="Ver ficha técnica"
+                          >
+                            <IoCarSportOutline />
+                            <span>{car.name || car.model}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     {selectedNote.rawNote?.images?.length > 0 && (
                       <div className="note-card-images-grid">
@@ -316,7 +279,7 @@ export default function NotesGrid({
         </div>
       )}
 
-      {/* Modal de Confirmação de Exclusão (Sobreposto a tudo) */}
+      {/* Modal de Confirmação de Exclusão */}
       {deletingNote && (
         <div
           className="notes-delete-modal-backdrop"
@@ -355,7 +318,7 @@ export default function NotesGrid({
         </div>
       )}
 
-      {/* LIGHTBOX / MODAL DE VISUALIZAÇÃO EXPANDIDA DE IMAGEM */}
+      {/* LIGHTBOX DE IMAGEM */}
       {previewImage && (
         <div
           className="notes-image-lightbox-backdrop"

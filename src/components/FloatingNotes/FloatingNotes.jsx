@@ -21,6 +21,7 @@ import {
 } from 'react-icons/io5';
 
 import { useFloatingController } from './hooks/useFloatingController';
+import { resizeImage } from '@/utils/imageUtils';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import VehicleSelectorModal from './components/VehicleSelectorModal';
 import './style.css';
@@ -29,27 +30,23 @@ export default function FloatingNotes() {
   const { refs, state, actions } = useFloatingController();
 
   // Handlers para upload e remoção de anexos usando o controlador
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length) return;
+  const handleImageUpload = async (e) => {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
 
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const imageUrl = event.target.result;
-        const newImg = { id: Date.now() + Math.random(), url: imageUrl, name: file.name };
-        
-        if (actions.setAttachedImages) {
-          actions.setAttachedImages((prev) => [...prev, newImg]);
+      for (const file of files) {
+        try {
+          const imageUrl = await resizeImage(file);
+          const newImg = { id: Date.now() + Math.random(), url: imageUrl, name: file.name };
+          if (actions.setAttachedImages) {
+            actions.setAttachedImages((prev) => [...prev, newImg]);
+          }
+        } catch (err) {
+          console.error('Erro ao processar imagem', err);
         }
-        
-        // const markdownImage = `\n![${file.name}](${imageUrl})\n`;
-        // actions.setContent((prev) => prev + markdownImage);
-      };
-      reader.readAsDataURL(file);
-    });
+      }
+      e.target.value = ''; // permite selecionar o mesmo arquivo de novo depois
   };
-
   const handleRemoveCar = (carId) => {
     if (actions.handleRemoveCar) {
       actions.handleRemoveCar(carId);
@@ -153,15 +150,51 @@ export default function FloatingNotes() {
                             <p className="note-card-snippet">
                               {note.content ? note.content.replace(/[#*`_>()[\]]/g, '').slice(0, 95) : 'Nenhum texto informado...'}
                             </p>
-                          ) : (
-                            <div className="note-card-expanded-body" onClick={(e) => e.stopPropagation()}>
-                              <MarkdownRenderer
-                                content={note.content}
-                                onNavigateCar={actions.handleNavigateCar}
-                                onImageClick={(img) => actions.setPreviewImage(img)}
-                              />
-                            </div>
-                          )}
+                          ) :  (
+                                <div className="note-card-expanded-body" onClick={(e) => e.stopPropagation()}>
+                                  <MarkdownRenderer
+                                    content={note.content}
+                                    onNavigateCar={actions.handleNavigateCar}
+                                    onImageClick={(img) => actions.setPreviewImage(img)}
+                                  />
+
+                                  {note.savedCars?.length > 0 && (
+                                    <div className="note-card-cars-grid">
+                                      {note.savedCars.map((car) => (
+                                        <div
+                                          key={car.id}
+                                          className="note-card-car-item"
+                                          onClick={() => actions.handleNavigateCar?.(car.id)}
+                                          title="Ver ficha técnica"
+                                        >
+                                          <IoCarSportOutline />
+                                          <span>{car.name || car.model}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+
+                                  {note.images?.length > 0 && (
+                                    <div className="note-card-images-grid">
+                                      {note.images.map((img) => {
+                                        const imgUrl = typeof img === 'string' ? img : img.url;
+                                        const imgId = typeof img === 'string' ? img : img.id;
+                                        const imgName = typeof img === 'string' ? 'Imagem' : (img.name || 'Imagem');
+                                        return (
+                                          <div
+                                            key={imgId}
+                                            className="note-card-image-item"
+                                            onClick={() => actions.setPreviewImage(img)}
+                                            title="Clique para expandir"
+                                          >
+                                            <img src={imgUrl} alt={imgName} />
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
                         </article>
                       );
                     })}
