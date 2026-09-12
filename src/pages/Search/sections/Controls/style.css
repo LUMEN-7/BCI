@@ -288,6 +288,60 @@
   box-shadow: 0 12px 24px rgba(0, 20, 46, 0.2);
 }
 
+.schedule-search-btn {
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px;
+  border: 1px solid rgba(5, 98, 210, 0.25);
+  border-radius: 999px;
+  background: rgba(5, 98, 210, 0.06);
+  color: #0562d2;
+  font-family: var(--font-body-bold);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(5, 98, 210, 0.06);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.schedule-search-btn svg {
+  font-size: 16px;
+}
+
+.schedule-search-btn:hover {
+  background: #0562d2;
+  color: #ffffff;
+  border-color: #0562d2;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(5, 98, 210, 0.22);
+}
+
+.schedule-badge-pill {
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: #00142e;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.schedule-search-btn:hover .schedule-badge-pill {
+  background: #ffffff;
+  color: #0562d2;
+}
+
 .clear-filters-btn {
   height: 48px;
   display: inline-flex;

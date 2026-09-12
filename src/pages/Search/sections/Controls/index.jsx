@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  IoAlarmOutline,
   IoAlertCircleOutline,
   IoCalendarOutline,
   IoCarOutline,
@@ -121,12 +122,14 @@ export default function Controls({
   selectedYear,
   activeFilterChips = [],
   validationError,
+  scheduledCount = 0,
   onSearchChange,
   onBrandChange,
   onYearChange,
   onRemoveFilter,
   onExecute,
   onClear,
+  onOpenSchedule,
 }) {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -180,6 +183,19 @@ export default function Controls({
         <button type="button" className="execute-search" onClick={onExecute}>
           <IoSearchOutline />
           <span>Pesquisar</span>
+        </button>
+
+        <button
+          type="button"
+          className="schedule-search-btn"
+          onClick={onOpenSchedule}
+          title="Agendar pesquisa para um modelo específico"
+        >
+          <IoAlarmOutline />
+          <span>Agendar Pesquisa</span>
+          {scheduledCount > 0 && (
+            <span className="schedule-badge-pill">{scheduledCount}</span>
+          )}
         </button>
 
         {activeFilterChips.length > 0 && (

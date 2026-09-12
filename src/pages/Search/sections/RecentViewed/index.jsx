@@ -7,6 +7,7 @@ export default function RecentViewed({
   favorites,
   onToggleFavorite,
   onDetails,
+  onSchedule,
 }) {
   if (!cars || cars.length === 0) return null;
 
@@ -33,6 +34,7 @@ export default function RecentViewed({
         favorites={favorites}
         onToggleFavorite={onToggleFavorite}
         onDetails={onDetails}
+        onSchedule={onSchedule}
       />
     </section>
   );

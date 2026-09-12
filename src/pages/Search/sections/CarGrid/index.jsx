@@ -1,4 +1,10 @@
-import { IoArrowForward, IoCarSportOutline, IoStar, IoStarOutline } from "react-icons/io5";
+import {
+  IoAlarmOutline,
+  IoArrowForward,
+  IoCarSportOutline,
+  IoStar,
+  IoStarOutline,
+} from "react-icons/io5";
 
 import "./style.css";
 
@@ -7,6 +13,7 @@ export default function CarGrid({
   favorites,
   onToggleFavorite,
   onDetails,
+  onSchedule,
 }) {
   return (
     <div className="cars-grid">
@@ -14,18 +21,31 @@ export default function CarGrid({
         <article key={car.id} className="car-card">
           <div className="card-top">
             <span className="car-brand">{car.brand}</span>
-            <button
-              type="button"
-              className={`favorite-button ${favorites.includes(String(car.id)) ? "is-favorite" : ""}`}
-              onClick={() => onToggleFavorite(car.id)}
-              aria-label={
-                favorites.includes(String(car.id))
-                  ? "Remover dos favoritos"
-                  : "Adicionar aos favoritos"
-              }
-            >
-              {favorites.includes(String(car.id)) ? <IoStar /> : <IoStarOutline />}
-            </button>
+            <div className="card-top-actions">
+              {onSchedule && (
+                <button
+                  type="button"
+                  className="schedule-card-button"
+                  onClick={() => onSchedule(car)}
+                  title="Agendar pesquisa deste modelo"
+                  aria-label="Agendar pesquisa deste modelo"
+                >
+                  <IoAlarmOutline />
+                </button>
+              )}
+              <button
+                type="button"
+                className={`favorite-button ${favorites.includes(String(car.id)) ? "is-favorite" : ""}`}
+                onClick={() => onToggleFavorite(car.id)}
+                aria-label={
+                  favorites.includes(String(car.id))
+                    ? "Remover dos favoritos"
+                    : "Adicionar aos favoritos"
+                }
+              >
+                {favorites.includes(String(car.id)) ? <IoStar /> : <IoStarOutline />}
+              </button>
+            </div>
           </div>
 
           <div className="car-image-container">
