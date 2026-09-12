@@ -151,7 +151,7 @@ export default function useCarDetailController() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [car, setCar] = useState(null);
-    const [favorite, setFavorite] = useState(false); // Você pode inicializar true se vier do state
+    const [favorites, setFavorites] = useState([]); // Você pode inicializar true se vier do state
     
     // Controles de UI da Ficha Técnica
     const [openSection, setOpenSection] = useState('base');
@@ -164,7 +164,6 @@ export default function useCarDetailController() {
                 setLoading(true);
                 // Busca o carro pelo ID no backend
                 const dto = await obterCarro(id);
-                console.log(dto)
                 const adapted = adaptCarToDetail(dto);
                 setCar(adapted);
                 if (adapted) {
@@ -183,21 +182,23 @@ export default function useCarDetailController() {
         fetchCarDetails();
     }, [id]);
 
+
     async function toggleFavorite() {
-        // Lógica otimista (muda a UI na hora para parecer rápido)
-        const newStatus = !favorite;
-        setFavorite(newStatus);
-        
+        const strId = String(id);
+        const jaFavoritado = favorites.includes(strId);
         try {
-            if (newStatus) {
-                await addFavorites(id);
-            } else {
+            if (jaFavoritado) {
                 await removeFavorite(id);
+                setFavorites((prev) => prev.filter((f) => f !== strId));
+            } else {
+                await addFavorites(id);
+                setFavorites((prev) => [...prev, strId]);
             }
-        } catch (error) {
-            // Se der erro na API, reverte a UI
-            setFavorite(!newStatus);
-            alert("Erro ao favoritar o veículo.");
+            return { success: true, acao: jaFavoritado ? 'removido' : 'adicionado' };
+        } catch (err) {
+            // setError(err.message || 'Não foi possível atualizar os favoritos.');
+            console.log(err)
+            return { success: false };
         }
     }
     
@@ -215,7 +216,7 @@ export default function useCarDetailController() {
         loading,
         error,
         car,
-        favorite,
+        favorites,
         openSection,
         showSources,
         handleBack: () => navigate(-1),

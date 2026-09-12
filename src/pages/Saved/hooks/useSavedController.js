@@ -39,6 +39,7 @@ function adaptarComparacaoSalva(comparacao) {
         id: comparacao.id, 
         result: comparacao.titulo,
         description: `Análise comparativa do tipo ${comparacao.tipo}.`,
+		requestPayload: comparacao.requestPayload,
         
         // Como o backend salva apenas o RequestPayload, colocamos placeholders. 
         // Você pode depois extrair as infos lendo o JSON de comparacao.requestPayload
@@ -57,6 +58,8 @@ export default function useSavedController() {
 	const [savedCars, setSavedCars] = useState([]);
 	const [savedComparisons, setSavedComparisons] = useState([]);
 	const [openCards, setOpenCards] = useState({});
+	const [firstCar, setFirstCar] = useState(null);
+    const [secondCar, setSecondCar] = useState(null);
 	const [readUpdates, setReadUpdates] = useState(getReadUpdates);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
@@ -88,6 +91,19 @@ export default function useSavedController() {
 	const changeTab = (tab) => { setActiveTab(tab); setOpenCards({}); };
 	const markItemAsRead = (item) => setReadUpdates((current) => [...new Set([...current, ...(item.updates?.map((u) => u.id) || [])])]);
 
+	function handleComparisonDetails(comparacaoId) {
+    const comparacao = savedComparisons.find((c) => c.id === comparacaoId);
+    if (!comparacao) return;
+
+    try {
+        const payload = JSON.parse(comparacao.requestPayload ?? '{}');
+        const [primeiro, segundo] = payload.carrosIds ?? [];
+        navigate('/compare/detail', { state: { firstCar: primeiro, secondCar: segundo } });
+    } catch {
+        navigate('/saved');
+    }
+}
+
 	async function deleteItem(id) {
 		const anterior = { cars: savedCars, comparisons: savedComparisons };
 		const item = currentItems.find((i) => i.id === id);
@@ -105,11 +121,10 @@ export default function useSavedController() {
 			setError(err.message || 'Não foi possível remover.');
 		}
 	}
-
 	return {
 		activeTab, savedCars, savedComparisons, currentItems, openCards, loading, error,
 		isUpdateRead, hasUnreadUpdates, getUnreadCount, toggleCard, changeTab, markItemAsRead, deleteItem,
 		handleCarDetails: (id) => navigate(`/information/${id.replace('car-', '')}`),
-		handleComparisonDetails: () => navigate('/compare/detail'),
+		handleComparisonDetails,
 	};
 }

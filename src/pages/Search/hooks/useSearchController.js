@@ -127,7 +127,7 @@ export default function useSearchController() {
             }
             return { success: true, acao: jaFavoritado ? 'removido' : 'adicionado' };
         } catch (err) {
-            setError(err.message || 'Não foi possível atualizar os favoritos.');
+            console.log(err)   
             return { success: false };
         }
     }

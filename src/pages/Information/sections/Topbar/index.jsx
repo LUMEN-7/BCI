@@ -99,7 +99,7 @@ function ExportDialog({ handleExport, onClose }) {
   );
 }
 
-export default function Topbar({ favorite, onBack, onHome, handleExport, onToggleFavorite }) {
+export default function Topbar({ favorites, onBack, onHome, handleExport, onToggleFavorite }) {
   const [isExportOpen, setIsExportOpen] = useState(false);
 
   return (
@@ -118,11 +118,11 @@ export default function Topbar({ favorite, onBack, onHome, handleExport, onToggl
             <IoHomeOutline />
           </button>
           <button
-            className={`favorite-button ${favorite ? "is-favorite" : ""}`}
+            className={`favorite-button ${favorites ? "is-favorite" : ""}`}
             onClick={onToggleFavorite}
             aria-label="Favoritar modelo"
           >
-            {favorite ? <IoStar /> : <IoStarOutline />}
+            {favorites ? <IoStar /> : <IoStarOutline />}
           </button>
           <button
             type="button"

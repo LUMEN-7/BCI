@@ -34,7 +34,7 @@ export default function Information() {
         <main className="information-page">
             <div className="information-container">
                 <Topbar
-                    favorite={controller.favorite}
+                    favorites={controller.favorites}
                     onBack={controller.handleBack}
                     onHome={controller.handleHome}
                     onToggleFavorite={controller.toggleFavorite}

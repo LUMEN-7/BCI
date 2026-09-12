@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect,useRef ,useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {direct} from '@/services/comprationService'; // Ou o seu compareService
+import { salvarComparacao } from '@/services/carsService'
 import {exportCar} from '@/services/exportService';
+import { number } from 'framer-motion';
 
 // 1. Adaptador com Case Sensitivity corrigido para a Comparação
 function adaptCarToComparison(dto) {
@@ -73,13 +75,15 @@ export default function useDetailController() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [favorite, setFavorite] = useState(false);
-    const [expandedSection, setExpandedSection] = useState('base'); // Controla o Ficha Técnica
-    const [showSources, setShowSources] = useState(false);
+    const [salvando, setSalvando] = useState(false);
+    const [expandedSection, setExpandedSection] = useState('base');
 
     const [firstCar, setFirstCar] = useState(null);
     const [secondCar, setSecondCar] = useState(null);
     const [comparisonSummary, setComparisonSummary] = useState('');
     const [mathConclusions, setMathConclusions] = useState({});
+
+    const carrosIdsRef = useRef(null); // payload exato usado pra gerar essa comparação
 
     useEffect(() => {
         async function fetchComparison() {
@@ -93,21 +97,18 @@ export default function useDetailController() {
 
             try {
                 setLoading(true);
+                if(Number.isFinite(car1) && Number.isFinite(car2)){carrosIdsRef.current = [car1, car2]; console.log("dasdadads")}
+                else carrosIdsRef.current = [car1.id, car2.id];
+                console.log(carrosIdsRef.current)
+                const data = await direct(carrosIdsRef.current);
 
-                // Faz o POST para o motor de comparação direta
-                const data = await direct([car1.id, car2.id]);
-
-                // Encontra qual é o carro 1 e o carro 2 na resposta e adapta
                 const adaptado1 = adaptCarToComparison(data.carrosComparados.find(c => c.id === car1.id) || data.carrosComparados[0]);
                 const adaptado2 = adaptCarToComparison(data.carrosComparados.find(c => c.id === car2.id) || data.carrosComparados[1]);
 
                 setFirstCar(adaptado1);
                 setSecondCar(adaptado2);
-                
-                // Injeta o Parecer de IA e as conclusões numéricas
                 setComparisonSummary(data.parecerIA);
-                setMathConclusions(data.conclusoesMatematicas); 
-
+                setMathConclusions(data.conclusoesMatematicas);
             } catch (err) {
                 console.error(err);
                 setError('Não foi possível gerar a comparação no momento.');
@@ -123,21 +124,35 @@ export default function useDetailController() {
         setExpandedSection((current) => current === sectionId ? null : sectionId);
     }
 
-    // Toggle de favoritos simplificado (idealmente bate na API depois)
-    function toggleFavorite() {
-        setFavorite((current) => !current);
+    async function toggleFavorite() {
+        if (favorite || salvando || !carrosIdsRef.current) return; // não existe endpoint de "desfavoritar" comparação ainda — one-way
+
+        setSalvando(true);
+        try {
+            const requestPayload = JSON.stringify({ carrosIds: carrosIdsRef.current });
+            const titulo = `${firstCar?.brand ?? ''} ${firstCar?.name ?? ''} vs ${secondCar?.brand ?? ''} ${secondCar?.name ?? ''}`.trim();
+
+            await salvarComparacao({ titulo, tipo: 'Direta', requestPayload });
+            setFavorite(true);
+        } catch (err) {
+            console.error(err);
+            alert('Erro ao salvar a comparação.');
+        } finally {
+            setSalvando(false);
+        }
     }
-    
-    async function handleExport(formato = 'csv', separador = ',') {
-        
+
+    async function handleExport(formato, separador) {
         if (!firstCar || !secondCar) return;
         try {
-            await exportCar([
-                { linhagemId: Number(firstCar.id) },
-                { linhagemId: Number(secondCar.id) }
-            ], formato, undefined, separador);
-        } catch (error) {
-            console.error(error);
+            await exportCar(
+                [{ linhagemId: Number(firstCar.id) }, { linhagemId: Number(secondCar.id) }],
+                formato,
+                undefined,
+                separador
+            );
+        } catch (err) {
+            console.error(err);
             alert('Erro ao exportar a comparação.');
         }
     }
@@ -148,16 +163,14 @@ export default function useDetailController() {
         firstCar,
         secondCar,
         favorite,
-        handleExport, // renomeado de "Export" — segue o padrão handle* dos outros
+        salvando,
+        handleExport,
         expandedSection,
-        showSources,
         comparisonSummary,
         mathConclusions,
         handleBack: () => navigate(-1),
         handleHome: () => navigate('/home'),
         toggleFavorite,
         toggleSection,
-        toggleSources: () => setShowSources((current) => !current),
     };
-
 }
