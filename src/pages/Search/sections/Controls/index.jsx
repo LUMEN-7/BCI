@@ -75,12 +75,6 @@ export default function Controls({
           <IoChevronDownOutline />
         </div>
 
-        {hasFilters && (
-          <button type="button" className="clear-filters" onClick={onClear}>
-            Limpar filtros
-          </button>
-        )}
-
         <button type="button" className="execute-search" onClick={onExecute}>
           Pesquisar
         </button>

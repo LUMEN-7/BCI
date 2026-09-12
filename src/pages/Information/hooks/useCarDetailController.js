@@ -4,88 +4,128 @@ import {obterCarro, removeFavorite, addFavorites} from '@/services/carsService';
 import {exportCar} from '@/services/exportService';
 
 // Adaptador: Transforma o JSON complexo do C# no formato exigido pelo Technical e Specs
-// Adaptador: Transforma o JSON complexo do C# no formato exigido pelo Technical e Specs
 function adaptCarToDetail(dto) {
     if (!dto) return null;
 
-    // Função auxiliar ajustada para o formato exato do Console.log (Case Sensitive)
+    const rawFontes = dto.fontes || dto.Fontes || dto.sources || dto.Sources || [];
+    const fontesList = Array.isArray(rawFontes) ? rawFontes : [];
+
+    // Função auxiliar ajustada para extrair valor e fonte (sempre retornando o link/URL da fonte)
     const safeExtract = (obj, suffix = '') => {
-        // CUIDADO: Usando as maiúsculas exatas vindas do C# (Fontes, Valor, Fonte)
-        let val = obj?.Fontes?.[0]?.Valor;
-        const sourceUrl = obj?.Fontes?.[0]?.Fonte; // Ex: 'webmotors.com.br'
+        if (!obj) return { value: 'Não informado', source: null };
+
+        const fontesArray = obj?.Fontes || obj?.fontes;
+        const firstFonte = Array.isArray(fontesArray)
+            ? fontesArray[0]
+            : (typeof fontesArray === 'object' && fontesArray !== null ? fontesArray : null);
+
+        let val = firstFonte?.Valor ?? firstFonte?.valor ?? obj?.Valor ?? obj?.valor ?? (typeof obj === 'string' || typeof obj === 'number' ? obj : null);
+        
+        // Pega a fonte que vem do backend (ex: 'carrosnaweb.com.br', 'webmotors.com.br' ou ID)
+        const rawSource = 
+            firstFonte?.Fonte ?? 
+            firstFonte?.fonte ?? 
+            firstFonte?.Url ?? 
+            firstFonte?.url ?? 
+            firstFonte?.Link ?? 
+            firstFonte?.link ?? 
+            firstFonte?.Site ?? 
+            firstFonte?.site ?? 
+            firstFonte?.Nome ?? 
+            firstFonte?.nome ?? 
+            obj?.Fonte ?? 
+            obj?.fonte ?? 
+            obj?.source ?? 
+            null;
 
         // Se o valor for um array (como no caso dos Modos de Condução), junta tudo em uma string
         if (Array.isArray(val)) {
             val = val.join(', ');
         }
 
-        // Tenta achar o ID numérico da fonte cruzando com o catálogo de fontes do próprio carro
-        let sourceId = null;
-        if (sourceUrl && dto.fontes) {
-            const fonteEncontrada = dto.fontes.find(f => f.url === sourceUrl || f.nome === sourceUrl);
+        // Tenta achar o link/URL da fonte cruzando com o catálogo de fontes do próprio carro (evita IDs numéricos)
+        let sourceValue = rawSource ? String(rawSource).trim() : null;
+        if (sourceValue && fontesList.length > 0) {
+            const fonteEncontrada = fontesList.find(f => 
+                String(f.id ?? f.Id ?? '') === sourceValue ||
+                String(f.url ?? f.Url ?? '') === sourceValue ||
+                String(f.link ?? f.Link ?? '') === sourceValue ||
+                String(f.site ?? f.Site ?? '') === sourceValue ||
+                String(f.nome ?? f.Nome ?? '') === sourceValue
+            );
             if (fonteEncontrada) {
-                sourceId = fonteEncontrada.id; 
-            } else {
-                sourceId = sourceUrl; // Fallback caso não ache
+                // Sempre prioriza o link / URL da fonte
+                sourceValue = 
+                    fonteEncontrada.url || 
+                    fonteEncontrada.Url || 
+                    fonteEncontrada.link || 
+                    fonteEncontrada.Link || 
+                    fonteEncontrada.site || 
+                    fonteEncontrada.Site || 
+                    fonteEncontrada.nome || 
+                    fonteEncontrada.Nome || 
+                    sourceValue; 
             }
         }
         
         return {
-            value: val && val !== 'Não informado' ? `${val}${suffix}` : 'Não informado',
-            source: sourceId // Passa o ID correto para o componente SourceTag funcionar
+            value: val !== null && val !== undefined && val !== 'Não informado' ? `${val}${suffix}` : 'Não informado',
+            source: sourceValue // Retorna o link (ex: 'carrosnaweb.com.br')
         };
     };
 
-    const specs = dto.especificacoes?.[0] || {};
-    const consumos = dto.consumos?.[0] || {};
-    const dimensoes = dto.dimensoes?.[0] || {};
-    const extras = dto.extras?.[0] || {};
-    const pneus = dto.pneus?.[0] || {};
+    const specs = dto.especificacoes?.[0] || dto.Especificacoes?.[0] || {};
+    const consumos = dto.consumos?.[0] || dto.Consumos?.[0] || {};
+    const dimensoes = dto.dimensoes?.[0] || dto.Dimensoes?.[0] || {};
+    const extras = dto.extras?.[0] || dto.Extras?.[0] || {};
+    const pneus = dto.pneus?.[0] || dto.Pneus?.[0] || {};
 
     return {
-        id: dto.id,
-        name: `${dto.modelo} ${dto.ano}`,
-        brand: dto.marca,
-        image: dto.imagemUrl || 'https://via.placeholder.com/600x400?text=Sem+Foto',
-        description: 'Dados técnicos detalhados extraídos da base da API Forde.',
+        id: dto.id || dto.Id || dto.linhagemId || dto.LinhagemId,
+        name: `${dto.modelo || dto.Modelo || ''} ${dto.ano || dto.Ano || ''}`.trim(),
+        brand: dto.marca || dto.Marca,
+        image: dto.imagemUrl || dto.ImagemUrl || 'https://via.placeholder.com/600x400?text=Sem+Foto',
+        description: dto.descricao || dto.Descricao || 'Dados técnicos detalhados extraídos da base da API Forde.',
         lastUpdated: 'Hoje',
         updatedAgo: 'Base atualizada',
+        sources: fontesList,
+        fontes: fontesList,
         
         specs: {
-            model: { value: dto.modelo },
-            brand: { value: dto.marca },
-            year: { value: dto.ano.toString() },
+            model: { value: dto.modelo || dto.Modelo },
+            brand: { value: dto.marca || dto.Marca },
+            year: { value: (dto.ano || dto.Ano || '').toString() },
             
-            engine: safeExtract(specs.motor),
-            power: safeExtract(specs.potencia, ' cv'),
-            type: safeExtract(dto.categoria),
-            consumption: safeExtract(consumos.cidade, ' km/l'),
+            engine: safeExtract(specs.motor || specs.Motor),
+            power: safeExtract(specs.potencia || specs.Potencia, ' cv'),
+            type: safeExtract(dto.categoria || dto.Categoria),
+            consumption: safeExtract(consumos.cidade || consumos.Cidade, ' km/l'),
             
-            torque: safeExtract(specs.torque, ' kgfm'),
-            powerRpm: safeExtract(specs.potenciaRpm, ' rpm'),
-            torqueRpm: safeExtract(specs.torqueRpm, ' rpm'),
-            transmission: safeExtract(specs.transmissao),
-            drivetrain: safeExtract(specs.tracao),
+            torque: safeExtract(specs.torque || specs.Torque, ' kgfm'),
+            powerRpm: safeExtract(specs.potenciaRpm || specs.PotenciaRpm, ' rpm'),
+            torqueRpm: safeExtract(specs.torqueRpm || specs.TorqueRpm, ' rpm'),
+            transmission: safeExtract(specs.transmissao || specs.Transmissao),
+            drivetrain: safeExtract(specs.tracao || specs.Tracao),
             
-            cityConsumption: safeExtract(consumos.cidade, ' km/l'),
-            highwayConsumption: safeExtract(consumos.estrada, ' km/l'),
+            cityConsumption: safeExtract(consumos.cidade || consumos.Cidade, ' km/l'),
+            highwayConsumption: safeExtract(consumos.estrada || consumos.Estrada, ' km/l'),
             
-            length: safeExtract(dimensoes.comprimento, ' m'),
-            width: safeExtract(dimensoes.largura, ' m'),
-            height: safeExtract(dimensoes.altura, ' m'),
-            wheelbase: safeExtract(dimensoes.entreEixos, ' m'),
+            length: safeExtract(dimensoes.comprimento || dimensoes.Comprimento, ' m'),
+            width: safeExtract(dimensoes.largura || dimensoes.Largura, ' m'),
+            height: safeExtract(dimensoes.altura || dimensoes.Altura, ' m'),
+            wheelbase: safeExtract(dimensoes.entreEixos || dimensoes.EntreEixos, ' m'),
             
-            tireType: safeExtract(pneus.tipo),
-            rim: safeExtract(pneus.aro, '"'),
-            tireWidth: safeExtract(pneus.largura, ' mm'),
-            tireProfile: safeExtract(pneus.perfil, '%'),
+            tireType: safeExtract(pneus.tipo || pneus.Tipo),
+            rim: safeExtract(pneus.aro || pneus.Aro, '"'),
+            tireWidth: safeExtract(pneus.largura || pneus.Largura, ' mm'),
+            tireProfile: safeExtract(pneus.perfil || pneus.Perfil, '%'),
             
-            tankCapacity: safeExtract(extras.capacidadeTanque, ' L'),
-            fuelType: safeExtract(extras.tipoCombustivel),
-            loadCapacity: safeExtract(extras.capacidadeCarga, ' kg'),
-            towingCapacity: safeExtract(extras.capacidadeReboque, ' kg'),
+            tankCapacity: safeExtract(extras.capacidadeTanque || extras.CapacidadeTanque, ' L'),
+            fuelType: safeExtract(extras.tipoCombustivel || extras.TipoCombustivel),
+            loadCapacity: safeExtract(extras.capacidadeCarga || extras.CapacidadeCarga, ' kg'),
+            towingCapacity: safeExtract(extras.capacidadeReboque || extras.CapacidadeReboque, ' kg'),
             
-            driveModes: safeExtract(dto.modos),
+            driveModes: safeExtract(dto.modos || dto.Modos),
         },
         sections: {
             performance: [],
