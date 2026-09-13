@@ -224,9 +224,13 @@ export default function useSearchController() {
         const targetCar = cars.find((c) => String(c.id) === String(scheduledItem.carId));
         if (targetCar) {
             setSearch(targetCar.modelo || targetCar.name || '');
+            setSelectedBrand(targetCar.brand || '');
+            setSelectedYear(targetCar.ano ? String(targetCar.ano) : '');
             setIsSearchExecuted(true);
         } else {
             setSearch(scheduledItem.carName || '');
+            setSelectedBrand(scheduledItem.carBrand || '');
+            setSelectedYear(scheduledItem.carYear ? String(scheduledItem.carYear) : '');
             setIsSearchExecuted(true);
         }
     }

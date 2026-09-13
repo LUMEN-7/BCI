@@ -1407,7 +1407,7 @@
 .notes-attachments-preview {
   flex: 0 0 auto;
 
-  max-height: 110px;
+  max-height: 190px;
 
   overflow-y: auto;
 
@@ -1436,6 +1436,53 @@
   flex-wrap: wrap;
 
   gap: 6px;
+}
+
+.attached-vehicles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attached-vehicle-card {
+  margin: 0;
+  padding: 8px 10px;
+  min-height: 72px;
+  border-radius: 14px;
+}
+
+.attached-vehicle-card .md-vehicle-card-image {
+  width: 72px;
+  height: 48px;
+  flex-basis: 72px;
+  border-radius: 10px;
+}
+
+.attached-vehicle-card .md-vehicle-card-action {
+  height: 28px;
+  padding: 0 8px;
+  font-size: 9px;
+}
+
+.attached-vehicle-card-remove {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 20, 46, 0.08);
+  color: #7d8793;
+  cursor: pointer;
+}
+
+.attached-vehicle-card-remove:hover {
+  background: rgba(197, 57, 57, 0.1);
+  color: #c53939;
 }
 
 .attachment-thumbs-list {

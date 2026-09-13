@@ -48,9 +48,18 @@ export default function ScheduleModal(props) {
 
               <VehicleSelectorSection
                 selectedCar={state.selectedCar}
+                isUnreleased={state.isUnreleased}
+                unreleasedName={state.unreleasedName}
+                unreleasedBrand={state.unreleasedBrand}
+                unreleasedYear={state.unreleasedYear}
+                brandOptions={state.brandOptions}
                 isCarDropdownOpen={state.isCarDropdownOpen}
                 carSearch={state.carSearch}
                 filteredCars={state.filteredCars}
+                setIsUnreleased={actions.setIsUnreleased}
+                setUnreleasedName={actions.setUnreleasedName}
+                setUnreleasedBrand={actions.setUnreleasedBrand}
+                setUnreleasedYear={actions.setUnreleasedYear}
                 setIsCarDropdownOpen={actions.setIsCarDropdownOpen}
                 setCarSearch={actions.setCarSearch}
                 handleSelectCar={actions.handleSelectCar}

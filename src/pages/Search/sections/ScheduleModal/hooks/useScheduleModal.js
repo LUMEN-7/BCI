@@ -1,6 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getScheduledSearches, saveScheduledSearch, deleteScheduledSearch, toggleScheduledSearchStatus, executarAgendamentoAgora } from '@/services/agendamentoService';
 import { getFavorites } from '@/services/userService';
+import {
+  getScheduledSearches,
+  saveScheduledSearch,
+  deleteScheduledSearch,
+  toggleScheduledSearchStatus,
+} from '@/utils/scheduledSearchesStorage';
 import { getRecentViewedCars } from '@/utils/recentViewedCars';
 
 export const RECURRENCE_OPTIONS = [
@@ -26,6 +32,10 @@ export function useScheduleModal({ isOpen, onClose, initialSelectedCar, onExecut
   const [selectedCarId, setSelectedCarId] = useState('');
   const [carSearch, setCarSearch] = useState('');
   const [isCarDropdownOpen, setIsCarDropdownOpen] = useState(false);
+  const [isUnreleased, setIsUnreleased] = useState(false);
+  const [unreleasedName, setUnreleasedName] = useState('');
+  const [unreleasedBrand, setUnreleasedBrand] = useState('');
+  const [unreleasedYear, setUnreleasedYear] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('09:00');
   const [recurrence, setRecurrence] = useState('once');
@@ -92,7 +102,13 @@ export function useScheduleModal({ isOpen, onClose, initialSelectedCar, onExecut
     e.preventDefault();
     setFormError('');
 
-    if (!selectedCar) return setFormError('Selecione um modelo de veículo para a pesquisa.');
+    if (isUnreleased) {
+      if (!unreleasedName.trim()) return setFormError('Informe o nome do carro não lançado.');
+      if (!unreleasedBrand.trim()) return setFormError('Informe a marca do carro não lançado.');
+      if (!/^\d{4}$/.test(unreleasedYear)) return setFormError('Informe um ano válido com quatro dígitos.');
+    } else if (!selectedCar) {
+      return setFormError('Selecione um modelo de veículo para a pesquisa.');
+    }
     if (!date) return setFormError('Escolha a data da pesquisa.');
     if (!time) return setFormError('Escolha o horário da pesquisa.');
 
@@ -107,6 +123,27 @@ export function useScheduleModal({ isOpen, onClose, initialSelectedCar, onExecut
   }
 
   async function handleDeleteSchedule(id, e) {
+    saveScheduledSearch({
+      carId: selectedCar.id,
+      carName: selectedCar.modelo || selectedCar.name || 'Veículo',
+      carBrand: selectedCar.brand || 'Ford',
+      carImage: selectedCar.image || null,
+      carYear: selectedCar.ano || '',
+      isUnreleased,
+      date,
+      time,
+      recurrence,
+      notes: notes.trim(),
+    });
+
+    setSuccessToast(`Pesquisa agendada para ${selectedCar.modelo || selectedCar.name}!`);
+    setTimeout(() => {
+      setSuccessToast('');
+      setActiveTab('LIST');
+    }, 1200);
+  };
+
+  const handleDeleteSchedule = (id, e) => {
     e.stopPropagation();
     try { await deleteScheduledSearch(id); await refreshScheduledList(); }
     catch (err) { setFormError(err.message || 'Não foi possível excluir.'); }

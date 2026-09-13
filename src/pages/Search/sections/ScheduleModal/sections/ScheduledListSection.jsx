@@ -52,6 +52,10 @@ export function ScheduledListSection({
                     <div>
                       <span className="scheduled-card-brand">{item.carBrand || 'FORD'}</span>
                       <h4>{item.carName}</h4>
+                      {item.carYear && <small className="scheduled-card-year">{item.carYear}</small>}
+                      {item.isUnreleased && (
+                        <small className="scheduled-card-unreleased">Não lançado</small>
+                      )}
                     </div>
 
                     <span className={`scheduled-status-badge ${item.active ? 'active' : 'paused'}`}>

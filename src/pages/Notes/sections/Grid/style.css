@@ -566,6 +566,7 @@
   outline: none;
   resize: none;
 }
+.delete-modal-cancel {
   background: rgba(0, 20, 46, 0.03);
   font-family: var(--font-body-bold);
   font-size: 11px;
@@ -606,6 +607,7 @@
     min-width: 290px;
   }
 }
+.notes-empty-icon {
   align-items: center;
   justify-content: center;
   border-radius: 17px;
