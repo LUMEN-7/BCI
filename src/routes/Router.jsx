@@ -26,7 +26,7 @@ import Alerts from '../pages/Alerts/index';
 import EditProfile from "../pages/EditProfile/index";
 import ResetPassword from "../pages/ResetPassword";
 import Workspace from "../pages/Workspace";
-// import Insights from '../pages/Insights/index';
+import Insights from '../pages/Insights/index';
 
 function NavigationTracker() {
     const location = useLocation();
@@ -115,11 +115,16 @@ function AnimatedRoutes() {
                         element={<Workspace />}
                     />
 
-                    {/* 
                     <Route
-                        path="/Insights"
+                        path="/workspace"
+                        element={<Workspace />}
+                    />
+
+                    
+                    <Route
+                        path="/insights"
                         element={<Insights />}
-                    />*/}
+                    />
                 </Routes>
             </PageTransition>
         </AnimatePresence>
