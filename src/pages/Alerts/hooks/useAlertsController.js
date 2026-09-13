@@ -5,7 +5,7 @@ import {
     marcarComoLida,
     marcarTodasComoLidas,
     excluirNotificacao,
-} from '@/services/notService';
+} from '@/services/notiService';
 
 function formatarData(isoString) {
     return new Date(isoString).toLocaleDateString('pt-BR', {

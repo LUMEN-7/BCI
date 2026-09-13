@@ -7,17 +7,27 @@ import Hero from "./sections/Hero";
 import Highlights from "./sections/Highlights";
 import Overview from "./sections/Overview";
 import useHomeController from "./hooks/useHomeController";
-import { cars, coverage, highlights, metrics } from "./data";
+import useHomeMetrics from "./hooks/useHomeMetrics";
+import { cars, coverage, highlights } from "./data";
 import "./style.css";
 
 export default function Home() {
   const {
-    firstName,
+    firstName,    
     greeting,
     handleSearch,
     handleCompare,
     handleReviewAlerts,
   } = useHomeController();
+
+  const { metrics, loadingMetrics } = useHomeMetrics();
+    if (loadingMetrics) {
+      return (
+          <div className="home-loading">
+              <p>Carregando home...</p>
+          </div>
+      );
+  }
 
   return (
     <main className="home-page">

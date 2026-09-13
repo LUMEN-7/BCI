@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { getFavorites } from '@/services/carsService';
+import { getFavorites } from '@/services/userService';
 import { getRecentViewedCars } from '@/utils/recentViewedCars';
 
 function adaptarCarroApi(c) {

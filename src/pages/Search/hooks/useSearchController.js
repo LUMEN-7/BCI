@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCars, getFavorites, addFavorites, removeFavorite } from '@/services/carsService';
+import { getCars} from '@/services/carsService';
+import {getFavorites, addFavorites, removeFavorite } from "@/services/userService"
 import { appendNavigationActivity } from '@/utils/navigationActivity';
 import { getRecentViewedCars, appendRecentViewedCar } from '@/utils/recentViewedCars';
 import { getScheduledSearches } from '@/utils/scheduledSearchesStorage';

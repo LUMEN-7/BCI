@@ -1,7 +1,7 @@
 import { useEffect,useRef ,useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {direct} from '@/services/comprationService'; // Ou o seu compareService
-import { salvarComparacao } from '@/services/carsService'
+import { salvarComparacao } from '@/services/userService'
 import {exportCar} from '@/services/exportService';
 import { number } from 'framer-motion';
 

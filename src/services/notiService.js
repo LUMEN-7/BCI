@@ -15,3 +15,7 @@ export async function marcarTodasComoLidas() {
 export async function excluirNotificacao(id) {
     return apiFetch(`/Notificacao/${id}`, { method: 'DELETE' });
 }
+
+export async function ativas() {
+    return apiFetch('/Notificacao/Ativas')
+}

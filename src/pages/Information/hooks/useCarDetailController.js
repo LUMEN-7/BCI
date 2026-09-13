@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import {obterCarro, removeFavorite, addFavorites} from '@/services/carsService'; // Ajuste o caminho do seu apiFetch
+import {obterCarro} from '@/services/carsService'; // Ajuste o caminho do seu apiFetch
+import {removeFavorite, addFavorites} from '@/services/userService';
 import {exportCar} from '@/services/exportService';
 import { appendRecentViewedCar } from '@/utils/recentViewedCars';
 

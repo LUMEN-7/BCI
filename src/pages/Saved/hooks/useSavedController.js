@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getFavorites, removeFavorite, getComparacoesSalvas, removerComparacaoSalva } from '@/services/carsService';
+import { getFavorites, removeFavorite, getComparacoesSalvas, removerComparacaoSalva } from '@/services/userService';
 
 const READ_UPDATES_KEY = 'readUpdates';
 
