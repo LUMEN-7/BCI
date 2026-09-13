@@ -22,6 +22,8 @@ import {
 
 import { useFloatingController } from './hooks/useFloatingController';
 import { resizeImage } from '@/utils/imageUtils';
+import { uploadImagemAnotacao } from '@/services/noteService';
+
 import MarkdownRenderer from './components/MarkdownRenderer';
 import VehicleSelectorModal from './components/VehicleSelectorModal';
 import VehicleCard from './components/VehicleCard';
@@ -30,23 +32,32 @@ import './style.css';
 export default function FloatingNotes() {
   const { refs, state, actions } = useFloatingController();
 
-  // Handlers para upload e remoção de anexos usando o controlador
+  async function dataUrlParaBlob(dataUrl) {
+      const resposta = await fetch(dataUrl);
+      return resposta.blob();
+  }
+
   const handleImageUpload = async (e) => {
       const files = Array.from(e.target.files || []);
       if (!files.length) return;
 
       for (const file of files) {
         try {
-          const imageUrl = await resizeImage(file);
-          const newImg = { id: Date.now() + Math.random(), url: imageUrl, name: file.name };
+          const dataUrlRedimensionada = await resizeImage(file);
+          const blob = await dataUrlParaBlob(dataUrlRedimensionada);
+
+          const { url } = await uploadImagemAnotacao(blob, file.name);
+
+          const newImg = { id: Date.now() + Math.random(), url, name: file.name };
           if (actions.setAttachedImages) {
             actions.setAttachedImages((prev) => [...prev, newImg]);
           }
         } catch (err) {
           console.error('Erro ao processar imagem', err);
+          actions.showToast?.('Não foi possível enviar a imagem.', 'error');
         }
       }
-      e.target.value = ''; // permite selecionar o mesmo arquivo de novo depois
+      e.target.value = '';
   };
   const handleRemoveCar = (carId) => {
     if (actions.handleRemoveCar) {

@@ -1,4 +1,5 @@
 import apiFetch from "./api";
+import {apiFetchMultipart} from "./api";
 
 function limparConteudoEmbutido(content) {
     return content
@@ -77,4 +78,10 @@ export async function salvarAnotacaoCompleta({ id, title, content, attachedCars,
 
 export async function excluirAnotacaoCompleta(id) {
     return apiFetch(`/Anotacao/${id}`, { method: "DELETE" });
+}
+
+export async function uploadImagemAnotacao(blob, fileName) {
+    const formData = new FormData();
+    formData.append('arquivo', blob, fileName);
+    return apiFetchMultipart('/Anotacao/imagens', formData);
 }

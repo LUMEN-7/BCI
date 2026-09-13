@@ -3,6 +3,7 @@ import { FiArrowLeft, FiCheck } from "react-icons/fi";
 import useEditProfile from "./hooks/useEditProfile";
 import AvatarSection from "./sections/AvatarSection";
 import PersonalDataSection from "./sections/PersonalDataSection";
+import TwoFactorSection from "./sections/TwoFactorSection"; // import novo
 
 import "./style.css";
 
@@ -48,6 +49,8 @@ export default function EditProfile() {
             errors={controller.errors}
             onChange={controller.handleChange}
           />
+
+           <TwoFactorSection doisFatores={controller.doisFatores} /> {/* seção nova */}
 
           {controller.successMessage && (
             <div className="profile-success-message">

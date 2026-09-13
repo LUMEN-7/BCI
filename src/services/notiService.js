@@ -19,3 +19,4 @@ export async function excluirNotificacao(id) {
 export async function ativas() {
     return apiFetch('/Notificacao/Ativas')
 }
+
