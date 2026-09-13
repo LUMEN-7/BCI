@@ -1,13 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
-import {
-  getScheduledSearches,
-  saveScheduledSearch,
-  deleteScheduledSearch,
-  toggleScheduledSearchStatus,
-} from '@/utils/scheduledSearchesStorage';
-import { mockCars } from '@/pages/Compare/data';
+import { getScheduledSearches, saveScheduledSearch, deleteScheduledSearch, toggleScheduledSearchStatus, executarAgendamentoAgora } from '@/services/agendamentoService';
+import { getFavorites } from '@/services/userService';
 import { getRecentViewedCars } from '@/utils/recentViewedCars';
-import { getFavoriteCars } from '@/utils/savedItemsStorage';
 
 export const RECURRENCE_OPTIONS = [
   { id: 'once', label: 'Uma única vez' },
@@ -16,9 +10,19 @@ export const RECURRENCE_OPTIONS = [
   { id: 'monthly', label: 'Mensalmente' },
 ];
 
-export function useScheduleModal({ isOpen, onClose, availableCars = [], initialSelectedCar, onExecuteScheduledSearch }) {
+function adaptarCarroApi(c) {
+  return { id: String(c.linhagemId ?? c.id), modelo: c.modelo, brand: c.marca ?? 'Ford', image: c.imagemUrl ?? null, ano: c.ano ?? '', segment: c.categoria?.fontes?.[0]?.valor ?? 'Veículo' };
+}
+
+function adaptarCarroRecente(c) {
+  const id = String(c.id ?? c.linhagemId ?? '');
+  return { id, modelo: c.name ?? c.modelo ?? `Veículo ${id}`, brand: c.brand ?? c.marca ?? 'Ford', image: c.image ?? null, ano: c.year ?? c.ano ?? '', segment: c.segment ?? c.type ?? 'Veículo' };
+}
+
+export function useScheduleModal({ isOpen, onClose, initialSelectedCar, onExecuteScheduledSearch }) {
   const [activeTab, setActiveTab] = useState('NEW');
   const [scheduledList, setScheduledList] = useState([]);
+  const [allCars, setAllCars] = useState([]);
   const [selectedCarId, setSelectedCarId] = useState('');
   const [carSearch, setCarSearch] = useState('');
   const [isCarDropdownOpen, setIsCarDropdownOpen] = useState(false);
@@ -29,80 +33,53 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
   const [formError, setFormError] = useState('');
   const [successToast, setSuccessToast] = useState('');
 
-  const allCars = useMemo(() => {
-    const map = new Map();
-    const sourceLists = [availableCars, getFavoriteCars(), getRecentViewedCars(10), mockCars];
-
-    sourceLists.forEach((list) => {
-      if (Array.isArray(list)) {
-        list.forEach((c) => {
-          if (!c) return;
-          const id = String(c.id || c.linhagemId || '');
-          if (id && !map.has(id)) {
-            map.set(id, {
-              id,
-              modelo: c.modelo || c.name || `Veículo ${id}`,
-              brand: c.brand || c.marca || 'Ford',
-              image: c.image || c.imagemUrl || null,
-              ano: c.ano || c.year || '',
-              segment: c.segment || c.categoria || c.type || 'Veículo',
-            });
-          }
-        });
-      }
-    });
-
-    return Array.from(map.values());
-  }, [availableCars]);
-
   const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
 
-  const refreshScheduledList = () => setScheduledList(getScheduledSearches());
+  async function refreshScheduledList() {
+    try {
+      setScheduledList(await getScheduledSearches());
+    } catch (err) {
+      setFormError(err.message || 'Não foi possível carregar os agendamentos.');
+    }
+  }
 
   useEffect(() => {
-    if (isOpen) {
-      refreshScheduledList();
-      if (initialSelectedCar) {
-        setSelectedCarId(String(initialSelectedCar.id));
-        setIsCarDropdownOpen(false);
-      } else if (!selectedCarId && allCars.length > 0) {
-        setSelectedCarId(String(allCars[0].id));
-      }
+    if (!isOpen) return;
 
-      if (!date) {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        setDate(tomorrow.toISOString().split('T')[0]);
+    async function carregar() {
+      refreshScheduledList();
+      try {
+        const favoritosResult = await getFavorites();
+        const favoritos = (favoritosResult.favoriteCarros ?? favoritosResult).map(adaptarCarroApi);
+        const idsFavoritos = new Set(favoritos.map((c) => c.id));
+        const recentes = getRecentViewedCars(10).map(adaptarCarroRecente).filter((c) => c.id && !idsFavoritos.has(c.id));
+        setAllCars([...favoritos, ...recentes]);
+      } catch (err) {
+        setFormError(err.message || 'Não foi possível carregar seus veículos.');
       }
     }
-  }, [isOpen, initialSelectedCar, allCars]);
+    carregar();
 
-  useEffect(() => {
-    window.addEventListener('scheduled-searches-updated', refreshScheduledList);
-    window.addEventListener('storage', refreshScheduledList);
-    return () => {
-      window.removeEventListener('scheduled-searches-updated', refreshScheduledList);
-      window.removeEventListener('storage', refreshScheduledList);
-    };
-  }, []);
+    if (initialSelectedCar) {
+      setSelectedCarId(String(initialSelectedCar.id));
+      setIsCarDropdownOpen(false);
+    }
+    if (!date) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      setDate(tomorrow.toISOString().split('T')[0]);
+    }
+  }, [isOpen, initialSelectedCar]);
 
-  const selectedCar = useMemo(() => {
-    return allCars.find((c) => String(c.id) === String(selectedCarId)) || allCars[0] || null;
-  }, [allCars, selectedCarId]);
+  const selectedCar = useMemo(
+    () => allCars.find((c) => String(c.id) === String(selectedCarId)) || allCars[0] || null,
+    [allCars, selectedCarId]
+  );
 
   const filteredCars = useMemo(() => {
     const term = carSearch.toLowerCase().trim();
     if (!term) return allCars;
-    return allCars.filter((c) => {
-      const name = c.modelo || c.name || '';
-      const brand = c.brand || '';
-      const seg = c.segment || '';
-      return (
-        name.toLowerCase().includes(term) ||
-        brand.toLowerCase().includes(term) ||
-        seg.toLowerCase().includes(term)
-      );
-    });
+    return allCars.filter((c) => [c.modelo, c.brand, c.segment].filter(Boolean).some((v) => v.toLowerCase().includes(term)));
   }, [allCars, carSearch]);
 
   const handleSelectCar = (car) => {
@@ -111,7 +88,7 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
     setFormError('');
   };
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     setFormError('');
 
@@ -119,71 +96,41 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
     if (!date) return setFormError('Escolha a data da pesquisa.');
     if (!time) return setFormError('Escolha o horário da pesquisa.');
 
-    saveScheduledSearch({
-      carId: selectedCar.id,
-      carName: selectedCar.modelo || selectedCar.name || 'Veículo',
-      carBrand: selectedCar.brand || 'Ford',
-      carImage: selectedCar.image || null,
-      date,
-      time,
-      recurrence,
-      notes: notes.trim(),
-    });
+    try {
+      await saveScheduledSearch({ car: selectedCar, date, time, recurrence, notes: notes.trim() });
+      await refreshScheduledList();
+      setSuccessToast(`Pesquisa agendada para ${selectedCar.modelo}!`);
+      setTimeout(() => { setSuccessToast(''); setActiveTab('LIST'); }, 1200);
+    } catch (err) {
+      setFormError(err.message || 'Não foi possível agendar a pesquisa.');
+    }
+  }
 
-    setSuccessToast(`Pesquisa agendada para ${selectedCar.modelo || selectedCar.name}!`);
-    setTimeout(() => {
-      setSuccessToast('');
-      setActiveTab('LIST');
-    }, 1200);
-  };
-
-  const handleDeleteSchedule = (id, e) => {
+  async function handleDeleteSchedule(id, e) {
     e.stopPropagation();
-    deleteScheduledSearch(id);
-    refreshScheduledList();
-  };
+    try { await deleteScheduledSearch(id); await refreshScheduledList(); }
+    catch (err) { setFormError(err.message || 'Não foi possível excluir.'); }
+  }
 
-  const handleToggleStatus = (id, e) => {
+  async function handleToggleStatus(id, e) {
     e.stopPropagation();
-    toggleScheduledSearchStatus(id);
-    refreshScheduledList();
-  };
+    try { await toggleScheduledSearchStatus(id); await refreshScheduledList(); }
+    catch (err) { setFormError(err.message || 'Não foi possível atualizar o status.'); }
+  }
 
-  const handleRunNow = (item, e) => {
+  async function handleRunNow(item, e) {
     e.stopPropagation();
-    onExecuteScheduledSearch?.(item);
-    onClose();
-  };
+    try {
+      const resultado = await executarAgendamentoAgora(item.id);
+      onExecuteScheduledSearch?.(item, resultado.job_id);
+      onClose();
+    } catch (err) {
+      setFormError(err.message || 'Não foi possível executar agora.');
+    }
+  }
 
   return {
-    state: {
-      activeTab,
-      scheduledList,
-      selectedCar,
-      carSearch,
-      isCarDropdownOpen,
-      date,
-      time,
-      recurrence,
-      notes,
-      formError,
-      successToast,
-      todayStr,
-      filteredCars,
-    },
-    actions: {
-      setActiveTab,
-      setCarSearch,
-      setIsCarDropdownOpen,
-      setDate,
-      setTime,
-      setRecurrence,
-      setNotes,
-      handleSelectCar,
-      handleSubmit,
-      handleDeleteSchedule,
-      handleToggleStatus,
-      handleRunNow,
-    },
+    state: { activeTab, scheduledList, selectedCar, carSearch, isCarDropdownOpen, date, time, recurrence, notes, formError, successToast, todayStr, filteredCars },
+    actions: { setActiveTab, setCarSearch, setIsCarDropdownOpen, setDate, setTime, setRecurrence, setNotes, handleSelectCar, handleSubmit, handleDeleteSchedule, handleToggleStatus, handleRunNow },
   };
 }

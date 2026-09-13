@@ -6,6 +6,11 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '@/config/firebase';
 
 const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope('profile');
+googleProvider.addScope('email');
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
 
 export default function useLoginController() {
     const navigate = useNavigate();
