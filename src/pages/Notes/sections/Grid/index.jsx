@@ -8,6 +8,7 @@ import {
   IoTrashOutline,
 } from "react-icons/io5";
 import MarkdownRenderer from "@/components/FloatingNotes/components/MarkdownRenderer";
+import VehicleCard from "@/components/FloatingNotes/components/VehicleCard";
 import useNotesGridController from "../../hooks/useNotesGridController";
 import "./style.css";
 
@@ -244,15 +245,11 @@ export default function NotesGrid({ notes, search, onDelete }) {
                     {selectedNote.rawNote?.savedCars?.length > 0 && (
                       <div className="note-card-cars-grid">
                         {selectedNote.rawNote.savedCars.map((car) => (
-                          <div
+                          <VehicleCard
                             key={car.id}
-                            className="note-card-car-item"
-                            onClick={() => handleNavigateCar(car.id)}
-                            title="Ver ficha técnica"
-                          >
-                            <IoCarSportOutline />
-                            <span>{car.name || car.model}</span>
-                          </div>
+                            car={car}
+                            onNavigate={handleNavigateCar}
+                          />
                         ))}
                       </div>
                     )}

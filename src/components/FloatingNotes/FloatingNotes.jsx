@@ -24,6 +24,7 @@ import { useFloatingController } from './hooks/useFloatingController';
 import { resizeImage } from '@/utils/imageUtils';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import VehicleSelectorModal from './components/VehicleSelectorModal';
+import VehicleCard from './components/VehicleCard';
 import './style.css';
 
 export default function FloatingNotes() {
@@ -161,15 +162,11 @@ export default function FloatingNotes() {
                                   {note.savedCars?.length > 0 && (
                                     <div className="note-card-cars-grid">
                                       {note.savedCars.map((car) => (
-                                        <div
+                                        <VehicleCard
                                           key={car.id}
-                                          className="note-card-car-item"
-                                          onClick={() => actions.handleNavigateCar?.(car.id)}
-                                          title="Ver ficha técnica"
-                                        >
-                                          <IoCarSportOutline />
-                                          <span>{car.name || car.model}</span>
-                                        </div>
+                                          car={car}
+                                          onNavigate={actions.handleNavigateCar}
+                                        />
                                       ))}
                                     </div>
                                   )}
@@ -439,19 +436,14 @@ export default function FloatingNotes() {
                         {state.attachedCars?.length > 0 && (
                           <div className="attachment-row">
                             <span className="attachment-label">Veículos vinculados:</span>
-                            <div className="attachment-chips">
+                            <div className="attached-vehicles-list">
                               {state.attachedCars.map((car) => (
-                                <span key={car.id} className="attachment-chip">
-                                  <IoCarSportOutline />
-                                  <span>{car.name || car.model}</span>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleRemoveCar(car.id)}
-                                    title="Remover anexo"
-                                  >
-                                    <IoCloseOutline />
-                                  </button>
-                                </span>
+                                <VehicleCard
+                                  key={car.id}
+                                  car={car}
+                                  onNavigate={actions.handleNavigateCar}
+                                  onRemove={handleRemoveCar}
+                                />
                               ))}
                             </div>
                           </div>
@@ -507,15 +499,11 @@ export default function FloatingNotes() {
                     {state.attachedCars?.length > 0 && (
                       <div className="note-card-cars-grid">
                         {state.attachedCars.map((car) => (
-                          <div
+                          <VehicleCard
                             key={car.id}
-                            className="note-card-car-item"
-                            onClick={() => actions.handleNavigateCar?.(car.id)}
-                            title="Ver ficha técnica"
-                          >
-                            <IoCarSportOutline />
-                            <span>{car.name || car.model}</span>
-                          </div>
+                            car={car}
+                            onNavigate={actions.handleNavigateCar}
+                          />
                         ))}
                       </div>
                     )}
