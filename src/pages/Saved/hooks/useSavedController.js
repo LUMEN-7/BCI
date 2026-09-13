@@ -22,7 +22,7 @@ function adaptarCarroSalvo(carro) {
     return { 
         id: `car-${carro.id || carro.linhagemId}`, 
         linhagemId: carro.id || carro.linhagemId, 
-        name: `${carro.marca} ${carro.modelo} ${carro.ano}`,
+		name: `${carro.modelo} ${carro.ano}`,
         brand: carro.marca,
         image: carro.imagemUrl || 'https://via.placeholder.com/600x400?text=Sem+Foto',
         
@@ -58,8 +58,6 @@ export default function useSavedController() {
 	const [savedCars, setSavedCars] = useState([]);
 	const [savedComparisons, setSavedComparisons] = useState([]);
 	const [openCards, setOpenCards] = useState({});
-	const [firstCar, setFirstCar] = useState(null);
-    const [secondCar, setSecondCar] = useState(null);
 	const [readUpdates, setReadUpdates] = useState(getReadUpdates);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');

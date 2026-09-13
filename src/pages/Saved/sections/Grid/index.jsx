@@ -1,9 +1,11 @@
+import { useState } from "react";
 import {
   IoArrowForwardOutline,
   IoCarSportOutline,
   IoCheckmarkOutline,
   IoChevronDownOutline,
   IoChevronUpOutline,
+  IoCloseOutline,
   IoGitCompareOutline,
   IoTimeOutline,
   IoTrashOutline,
@@ -13,8 +15,7 @@ import "./style.css";
 
 function UpdateHistory({ item, hasUpdates, isUpdateRead, onMarkRead }) {
   return (
-    item.updates?.length > 0 && (
-      <div className="update-history">
+    <div className="update-history">
         <div className="update-history-header">
           <div className="update-history-title">
             <IoTimeOutline />
@@ -34,32 +35,35 @@ function UpdateHistory({ item, hasUpdates, isUpdateRead, onMarkRead }) {
             </button>
           )}
         </div>
-        <div className="update-history-list">
-          {item.updates.map((update) => {
-            const unread = !isUpdateRead(update.id);
-            return (
-              <div
-                key={update.id}
-                className={`update-item ${unread ? "unread" : ""}`}
-              >
-                <div className="update-timeline">
-                  <span />
-                  <div />
-                </div>
-                <div className="update-content">
-                  <div className="update-meta">
-                    <span>{update.date}</span>
-                    {unread && <small>NOVA</small>}
+        {item.updates?.length > 0 ? (
+          <div className="update-history-list">
+            {item.updates.map((update) => {
+              const unread = !isUpdateRead(update.id);
+              return (
+                <div
+                  key={update.id}
+                  className={`update-item ${unread ? "unread" : ""}`}
+                >
+                  <div className="update-timeline">
+                    <span />
+                    <div />
                   </div>
-                  <strong>{update.title}</strong>
-                  <p>{update.description}</p>
+                  <div className="update-content">
+                    <div className="update-meta">
+                      <span>{update.date}</span>
+                      {unread && <small>NOVA</small>}
+                    </div>
+                    <strong>{update.title}</strong>
+                    <p>{update.description}</p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="update-history-empty">Nenhuma atualização registrada para este item.</p>
+        )}
       </div>
-    )
   );
 }
 
@@ -69,10 +73,9 @@ function SavedCard({
   isOpen,
   hasUpdates,
   unreadCount,
-  isUpdateRead,
   onToggleCard,
+  onHistory,
   onDelete,
-  onMarkRead,
   onCarDetails,
   onComparisonDetails,
 }) {
@@ -122,7 +125,7 @@ function SavedCard({
 
             <h2>
               {isCar
-                ? item.name.split(" ")[0]
+                ? item.name
                 : `${item.firstCar.split(" ")[0]} VS ${item.secondCar.split(" ")[0]}`}
             </h2>
 
@@ -141,6 +144,14 @@ function SavedCard({
                 {unreadCount === 1 ? "atualização" : "atualizações"}
               </div>
             )}
+            <button
+              type="button"
+              className="history-card-button"
+              title="Ver histórico"
+              onClick={() => onHistory(item)}
+            >
+              <IoTimeOutline />
+            </button>
             <button
               type="button"
               className="delete-button"
@@ -168,23 +179,19 @@ function SavedCard({
               )}
             </div>
             <p>{item.description}</p>
-            <UpdateHistory
-              item={item}
-              hasUpdates={hasUpdates}
-              isUpdateRead={isUpdateRead}
-              onMarkRead={onMarkRead}
-            />
           </div>
         )}
-        <button
-          type="button"
-          className="expand-button"
-          onClick={() => onToggleCard(item.id)}
-          aria-label={isOpen ? "Fechar detalhes" : "Abrir detalhes"}
-        >
-          <span>{isOpen ? "Fechar detalhes" : "Ver informações"}</span>
-          {isOpen ? <IoChevronUpOutline /> : <IoChevronDownOutline />}
-        </button>
+        <div className="saved-card-footer-actions">
+          <button
+            type="button"
+            className="expand-button"
+            onClick={() => onToggleCard(item.id)}
+            aria-label={isOpen ? "Fechar detalhes" : "Abrir detalhes"}
+          >
+            <span>{isOpen ? "Fechar detalhes" : "Ver informações"}</span>
+            {isOpen ? <IoChevronUpOutline /> : <IoChevronDownOutline />}
+          </button>
+        </div>
       </div>
     </article>
   );
@@ -203,6 +210,8 @@ export default function SavedGrid({
   onCarDetails,
   onComparisonDetails,
 }) {
+  const [historyItem, setHistoryItem] = useState(null);
+
   return (
     <>
       {items.some(hasUnreadUpdates) && <SavedAttention />}
@@ -232,16 +241,54 @@ export default function SavedGrid({
               isOpen={!!openCards[item.id]}
               hasUpdates={hasUnreadUpdates(item)}
               unreadCount={getUnreadCount(item)}
-              isUpdateRead={isUpdateRead}
               onToggleCard={onToggleCard}
+              onHistory={setHistoryItem}
               onDelete={onDelete}
-              onMarkRead={onMarkRead}
               onCarDetails={onCarDetails}
               onComparisonDetails={onComparisonDetails}
             />
           ))
         )}
       </section>
+      {historyItem && (
+        <div
+          className="saved-history-modal-backdrop"
+          onClick={() => setHistoryItem(null)}
+        >
+          <div
+            className="saved-history-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="saved-history-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header className="saved-history-modal-header">
+              <div>
+                <span className="saved-history-modal-eyebrow">Histórico do salvo</span>
+                <h2 id="saved-history-title">
+                  {activeTab === "cars"
+                    ? historyItem.name
+                    : `${historyItem.firstCar} VS ${historyItem.secondCar}`}
+                </h2>
+              </div>
+              <button
+                type="button"
+                className="saved-history-modal-close"
+                aria-label="Fechar histórico"
+                onClick={() => setHistoryItem(null)}
+              >
+                <IoCloseOutline />
+              </button>
+            </header>
+            <UpdateHistory
+              item={historyItem}
+              hasUpdates={hasUnreadUpdates(historyItem)}
+              isUpdateRead={isUpdateRead}
+              onMarkRead={onMarkRead}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }
