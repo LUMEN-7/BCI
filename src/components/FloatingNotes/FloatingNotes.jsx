@@ -593,15 +593,18 @@ export default function FloatingNotes() {
 
       {/* Modal de Exclusão */}
       {state.deletingNote && (
-        <div className="notes-modal-overlay" onClick={() => actions.setDeletingNote(null)}>
-          <div className="notes-modal-card" onClick={(e) => e.stopPropagation()}>
+        <div className="notes-delete-modal-backdrop" onClick={() => actions.setDeletingNote(null)}>
+          <div className="notes-delete-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="delete-modal-icon">
+              <IoTrashOutline />
+            </div>
             <h3>Excluir Anotação</h3>
             <p>Tem certeza de que deseja excluir "<strong>{state.deletingNote.title || 'Sem título'}</strong>"? Esta ação não pode ser desfeita.</p>
-            <div className="notes-modal-actions">
-              <button type="button" className="btn-cancel" onClick={() => actions.setDeletingNote(null)}>
+            <div className="delete-modal-actions">
+              <button type="button" className="delete-modal-cancel" onClick={() => actions.setDeletingNote(null)}>
                 Cancelar
               </button>
-              <button type="button" className="btn-confirm-delete" onClick={actions.handleConfirmDelete}>
+              <button type="button" className="delete-modal-confirm" onClick={actions.handleConfirmDelete}>
                 Excluir
               </button>
             </div>

@@ -26,7 +26,11 @@ async function apiFetch(path, options = {}) {
   }
 
   if (response.status === 204) return null;
-  return response.json();
+
+  const responseText = await response.text();
+  if (!responseText.trim()) return null;
+
+  return JSON.parse(responseText);
 }
 
 export default apiFetch;

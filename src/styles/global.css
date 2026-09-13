@@ -23,9 +23,9 @@
     --font-title: 'Anton', sans-serif;
     --font-body: 'Titillium Web', sans-serif;
     --font-body-bold: 'Titillium Web', sans-serif;
+}
 
-    html,
-    body {
-        overflow-x: clip;
-    }
+html,
+body {
+    overflow-x: clip;
 }
