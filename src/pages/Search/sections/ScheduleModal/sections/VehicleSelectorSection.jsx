@@ -146,7 +146,6 @@ export function VehicleSelectorSection({
           className="schedule-change-model-link"
           onClick={() => setIsCarDropdownOpen(!isCarDropdownOpen)}
         >
-          {isCarDropdownOpen ? 'Recolher lista' : 'Trocar / Escolher outro modelo'}
         </button>
       </div>
 
