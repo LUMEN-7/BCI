@@ -5,7 +5,6 @@ import {
   deleteScheduledSearch,
   toggleScheduledSearchStatus,
 } from '@/utils/scheduledSearchesStorage';
-import { mockCars } from '@/pages/Compare/data';
 import { getRecentViewedCars } from '@/utils/recentViewedCars';
 import { getFavoriteCars } from '@/utils/savedItemsStorage';
 
@@ -22,6 +21,10 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
   const [selectedCarId, setSelectedCarId] = useState('');
   const [carSearch, setCarSearch] = useState('');
   const [isCarDropdownOpen, setIsCarDropdownOpen] = useState(false);
+  const [isUnreleased, setIsUnreleased] = useState(false);
+  const [unreleasedName, setUnreleasedName] = useState('');
+  const [unreleasedBrand, setUnreleasedBrand] = useState('');
+  const [unreleasedYear, setUnreleasedYear] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('09:00');
   const [recurrence, setRecurrence] = useState('once');
@@ -31,7 +34,7 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
 
   const allCars = useMemo(() => {
     const map = new Map();
-    const sourceLists = [availableCars, getFavoriteCars(), getRecentViewedCars(10), mockCars];
+    const sourceLists = [availableCars, getFavoriteCars(), getRecentViewedCars(10)];
 
     sourceLists.forEach((list) => {
       if (Array.isArray(list)) {
@@ -54,6 +57,10 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
 
     return Array.from(map.values());
   }, [availableCars]);
+
+  const brandOptions = useMemo(() => {
+    return [...new Set(allCars.map((car) => car.brand).filter(Boolean))].sort();
+  }, [allCars]);
 
   const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
 
@@ -87,8 +94,20 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
   }, []);
 
   const selectedCar = useMemo(() => {
+    if (isUnreleased) {
+      return {
+        id: `unreleased-${unreleasedName.trim().toLowerCase().replace(/\s+/g, '-') || 'vehicle'}`,
+        modelo: unreleasedName.trim(),
+        brand: unreleasedBrand.trim(),
+        ano: unreleasedYear,
+        image: null,
+        segment: 'Não lançado',
+        isUnreleased: true,
+      };
+    }
+
     return allCars.find((c) => String(c.id) === String(selectedCarId)) || allCars[0] || null;
-  }, [allCars, selectedCarId]);
+  }, [allCars, selectedCarId, isUnreleased, unreleasedName, unreleasedBrand, unreleasedYear]);
 
   const filteredCars = useMemo(() => {
     const term = carSearch.toLowerCase().trim();
@@ -111,11 +130,26 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
     setFormError('');
   };
 
+  const handleToggleUnreleased = (value) => {
+    setIsUnreleased(value);
+    setIsCarDropdownOpen(false);
+    setFormError('');
+    if (!value && !selectedCarId && allCars.length > 0) {
+      setSelectedCarId(String(allCars[0].id));
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormError('');
 
-    if (!selectedCar) return setFormError('Selecione um modelo de veículo para a pesquisa.');
+    if (isUnreleased) {
+      if (!unreleasedName.trim()) return setFormError('Informe o nome do carro não lançado.');
+      if (!unreleasedBrand.trim()) return setFormError('Informe a marca do carro não lançado.');
+      if (!/^\d{4}$/.test(unreleasedYear)) return setFormError('Informe um ano válido com quatro dígitos.');
+    } else if (!selectedCar) {
+      return setFormError('Selecione um modelo de veículo para a pesquisa.');
+    }
     if (!date) return setFormError('Escolha a data da pesquisa.');
     if (!time) return setFormError('Escolha o horário da pesquisa.');
 
@@ -124,6 +158,8 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
       carName: selectedCar.modelo || selectedCar.name || 'Veículo',
       carBrand: selectedCar.brand || 'Ford',
       carImage: selectedCar.image || null,
+      carYear: selectedCar.ano || '',
+      isUnreleased,
       date,
       time,
       recurrence,
@@ -162,6 +198,10 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
       selectedCar,
       carSearch,
       isCarDropdownOpen,
+      isUnreleased,
+      unreleasedName,
+      unreleasedBrand,
+      unreleasedYear,
       date,
       time,
       recurrence,
@@ -170,11 +210,16 @@ export function useScheduleModal({ isOpen, onClose, availableCars = [], initialS
       successToast,
       todayStr,
       filteredCars,
+      brandOptions,
     },
     actions: {
       setActiveTab,
       setCarSearch,
       setIsCarDropdownOpen,
+      setIsUnreleased: handleToggleUnreleased,
+      setUnreleasedName,
+      setUnreleasedBrand,
+      setUnreleasedYear,
       setDate,
       setTime,
       setRecurrence,

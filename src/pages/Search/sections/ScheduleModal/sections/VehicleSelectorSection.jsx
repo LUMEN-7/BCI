@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   IoCarSportOutline,
   IoSearchOutline,
@@ -10,15 +10,132 @@ import {
 
 export function VehicleSelectorSection({
   selectedCar,
+  isUnreleased,
+  unreleasedName,
+  unreleasedBrand,
+  unreleasedYear,
+  brandOptions,
   isCarDropdownOpen,
   carSearch,
   filteredCars,
+  setIsUnreleased,
+  setUnreleasedName,
+  setUnreleasedBrand,
+  setUnreleasedYear,
   setIsCarDropdownOpen,
   setCarSearch,
   handleSelectCar,
 }) {
+  const [isBrandDropdownOpen, setIsBrandDropdownOpen] = useState(false);
+
   return (
     <div className="schedule-field-group">
+      <div className="schedule-vehicle-mode" role="group" aria-label="Tipo de veículo">
+        <button
+          type="button"
+          className={`schedule-vehicle-mode-btn ${!isUnreleased ? 'is-active' : ''}`}
+          onClick={() => setIsUnreleased(false)}
+        >
+          Do catálogo
+        </button>
+        <button
+          type="button"
+          className={`schedule-vehicle-mode-btn ${isUnreleased ? 'is-active' : ''}`}
+          onClick={() => setIsUnreleased(true)}
+        >
+          Não lançado
+        </button>
+      </div>
+
+      {isUnreleased ? (
+        <div className="schedule-unreleased-fields">
+          <div className="schedule-field-group">
+            <label htmlFor="unreleased-car-name" className="schedule-field-label">
+              <IoCarSportOutline />
+              <span>Nome do carro</span>
+            </label>
+            <div className="schedule-input-wrapper">
+              <input
+                id="unreleased-car-name"
+                type="text"
+                placeholder="Ex: Mustang elétrico"
+                value={unreleasedName}
+                onChange={(e) => setUnreleasedName(e.target.value)}
+                maxLength={100}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="schedule-grid-row">
+            <div className="schedule-field-group">
+              <label htmlFor="unreleased-car-brand" className="schedule-field-label">
+                <span>Marca</span>
+              </label>
+              <div className={`schedule-brand-dropdown ${isBrandDropdownOpen ? 'is-open' : ''}`}>
+                <button
+                  type="button"
+                  className={`schedule-brand-trigger ${unreleasedBrand ? 'has-value' : ''}`}
+                  onClick={() => setIsBrandDropdownOpen((open) => !open)}
+                  aria-expanded={isBrandDropdownOpen}
+                  aria-haspopup="listbox"
+                >
+                  <span>{unreleasedBrand || 'Selecionar marca'}</span>
+                  <IoChevronDownOutline />
+                </button>
+
+                {isBrandDropdownOpen && (
+                  <div className="schedule-brand-menu" role="listbox">
+                    <button
+                      type="button"
+                      className={`schedule-brand-option ${!unreleasedBrand ? 'is-selected' : ''}`}
+                      onClick={() => {
+                        setUnreleasedBrand('');
+                        setIsBrandDropdownOpen(false);
+                      }}
+                    >
+                      Selecionar marca
+                    </button>
+                    {brandOptions.map((brand) => (
+                      <button
+                        type="button"
+                        key={brand}
+                        className={`schedule-brand-option ${unreleasedBrand === brand ? 'is-selected' : ''}`}
+                        onClick={() => {
+                          setUnreleasedBrand(brand);
+                          setIsBrandDropdownOpen(false);
+                        }}
+                      >
+                        <span>{brand}</span>
+                        {unreleasedBrand === brand && <IoCheckmarkOutline />}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="schedule-field-group">
+              <label htmlFor="unreleased-car-year" className="schedule-field-label">
+                <span>Ano</span>
+              </label>
+              <div className="schedule-input-wrapper">
+                <input
+                  id="unreleased-car-year"
+                  type="number"
+                  placeholder="Ex: 2027"
+                  min="1886"
+                  max="2100"
+                  value={unreleasedYear}
+                  onChange={(e) => setUnreleasedYear(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
       <div className="schedule-field-header">
         <label className="schedule-field-label">
           <IoCarSportOutline />
@@ -142,6 +259,8 @@ export function VehicleSelectorSection({
           </div>
         )}
       </div>
+        </>
+      )}
     </div>
   );
 }
