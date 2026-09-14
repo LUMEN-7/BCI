@@ -108,7 +108,7 @@ export default function useSearchController() {
 
             const matchesBrand =
                 !selectedBrand ||
-                car.brand.toLowerCase() === selectedBrand.toLowerCase();
+                car.brand.toLowerCase() === selectedBrand.trim().toLowerCase();
 
             const matchesYear =
                 !selectedYear ||
@@ -180,7 +180,7 @@ export default function useSearchController() {
         const val = typeof yearOrEvent === 'string' || typeof yearOrEvent === 'number'
             ? String(yearOrEvent)
             : (yearOrEvent?.target?.value ?? '');
-        setSelectedYear(val);
+        setSelectedYear(val.replace(/\D/g, '').slice(0, 4));
         setValidationError('');
     }
 
@@ -199,10 +199,23 @@ export default function useSearchController() {
     }
 
     function executeSearch() {
+        if (!selectedBrand.trim()) {
+            setValidationError('Digite uma marca para realizar a pesquisa.');
+            return;
+        }
+
         if (!search.trim() && !selectedBrand && !selectedYear) {
             setIsSearchExecuted(false);
-            setValidationError('Digite um termo de pesquisa ou selecione um filtro para começar.');
+            setValidationError('Digite um termo de pesquisa ou informe uma marca ou ano para começar.');
             return;
+        }
+
+        if (selectedYear) {
+            const year = Number(selectedYear);
+            if (!Number.isInteger(year) || year < 1950 || year > 2050) {
+                setValidationError('Digite um ano válido.');
+                return;
+            }
         }
 
         setValidationError('');

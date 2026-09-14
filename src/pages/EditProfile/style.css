@@ -685,6 +685,256 @@
 
 
 /* =========================================================
+   AUTENTICAÇÃO EM DUAS ETAPAS
+========================================================= */
+
+.two-factor-section {
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(5, 98, 210, 0.045), transparent 42%),
+    rgba(255, 255, 255, 0.78);
+}
+
+.two-factor-heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.two-factor-heading .section-heading {
+  margin-bottom: 0;
+}
+
+.two-factor-heading-icon,
+.two-factor-status-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 98, 210, 0.1);
+  color: var(--color-secondary);
+}
+
+.two-factor-heading-icon svg,
+.two-factor-status-icon svg {
+  font-size: 21px;
+}
+
+.two-factor-badge {
+  min-height: 28px;
+  padding: 0 11px;
+  border: 1px solid rgba(0, 20, 46, 0.1);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  background: rgba(0, 20, 46, 0.035);
+  color: rgba(0, 20, 46, 0.58);
+  font-family: var(--font-body-bold);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.two-factor-badge.is-active {
+  border-color: rgba(19, 137, 91, 0.2);
+  background: rgba(19, 137, 91, 0.08);
+  color: #08714a;
+}
+
+.two-factor-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.two-factor-status {
+  min-height: 82px;
+  padding: 16px 18px;
+  border: 1px solid rgba(0, 20, 46, 0.08);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(0, 20, 46, 0.025);
+}
+
+.two-factor-status > div:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.two-factor-status strong,
+.two-factor-step strong {
+  display: block;
+  color: var(--color-primary);
+  font-family: var(--font-body-bold);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.two-factor-status span,
+.two-factor-step span:not(.two-factor-step-number) {
+  display: block;
+  margin-top: 3px;
+  color: rgba(0, 20, 46, 0.58);
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.two-factor-active {
+  border-color: rgba(19, 137, 91, 0.2);
+  background: rgba(19, 137, 91, 0.055);
+}
+
+.two-factor-active .two-factor-status-icon {
+  background: #dff4ea;
+  color: #08714a;
+}
+
+.two-factor-setup {
+  padding: 20px;
+  border: 1px solid rgba(5, 98, 210, 0.14);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.two-factor-steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+}
+
+.two-factor-step {
+  position: relative;
+  min-height: 210px;
+  padding: 3px 0 0 38px;
+}
+
+.two-factor-step-number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--color-secondary);
+  font-family: var(--font-title);
+  font-size: 21px;
+  line-height: 1;
+}
+
+.two-factor-qr {
+  width: 184px;
+  height: 184px;
+  margin: 22px auto 0;
+  padding: 8px;
+  border: 1px solid rgba(0, 20, 46, 0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.two-factor-code-step {
+  display: flex;
+  flex-direction: column;
+}
+
+.two-factor-code-step label {
+  margin-top: auto;
+  margin-bottom: 8px;
+  color: rgba(0, 20, 46, 0.62);
+  font-family: var(--font-body-bold);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.two-factor-code-step input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid rgba(0, 20, 46, 0.12);
+  border-radius: 13px;
+  outline: none;
+  background: rgba(0, 20, 46, 0.025);
+  color: var(--color-primary);
+  font-family: var(--font-body-bold);
+  font-size: 22px;
+  letter-spacing: 5px;
+  text-align: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.two-factor-code-step input:focus {
+  border-color: rgba(5, 98, 210, 0.48);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(5, 98, 210, 0.08);
+}
+
+.two-factor-code-step input::placeholder {
+  color: rgba(0, 20, 46, 0.2);
+}
+
+.two-factor-manual-key {
+  margin-top: 20px;
+  padding: 11px 13px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: rgba(0, 20, 46, 0.04);
+  color: rgba(0, 20, 46, 0.58);
+  font-family: var(--font-body);
+  font-size: 11px;
+}
+
+.two-factor-manual-key > svg {
+  color: var(--color-secondary);
+  font-size: 15px;
+}
+
+.two-factor-key {
+  padding: 4px 7px;
+  border-radius: 5px;
+  background: rgba(0, 20, 46, 0.08);
+  color: var(--color-primary);
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  overflow-wrap: anywhere;
+}
+
+.two-factor-confirm-form {
+  margin-top: 16px;
+}
+
+.two-factor-confirm-form .field-error {
+  margin: 0 0 9px;
+}
+
+.two-factor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.two-factor-section .button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+
+/* =========================================================
    TABLET
 ========================================================= */
 
@@ -710,6 +960,18 @@
 
   .profile-form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .two-factor-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .two-factor-step {
+    min-height: 0;
+  }
+
+  .two-factor-code-step label {
+    margin-top: 28px;
   }
 }
 
@@ -827,6 +1089,37 @@
     width: 100%;
 
     justify-content: center;
+  }
+
+  .two-factor-heading {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .two-factor-badge {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .two-factor-status {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .two-factor-status .button {
+    width: 100%;
+    margin-left: 56px;
+  }
+
+  .two-factor-setup {
+    padding: 16px;
+  }
+
+  .two-factor-actions {
+    flex-direction: column-reverse;
+  }
+
+  .two-factor-actions .button {
+    width: 100%;
   }
 }
 

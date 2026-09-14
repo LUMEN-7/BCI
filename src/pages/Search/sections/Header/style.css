@@ -21,6 +21,7 @@
 }
 .compare-header p {
   margin: 18px 0 0;
+  margin-bottom: 28px;
   max-width: 600px;
   font-family: var(--font-body);
   font-size: 15px;
