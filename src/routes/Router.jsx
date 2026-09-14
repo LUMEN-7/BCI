@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 
 import PageTransition from '../components/PageTransition/PageTransition';
 import FloatingNotes from '../components/FloatingNotes/FloatingNotes';
+import ProtectedRoute from './ProtectedRoute';
 import { appendNavigationActivity } from '../utils/navigationActivity';
 
 import Login from '../pages/auth/Login/index';
@@ -57,42 +58,74 @@ function AnimatedRoutes() {
 
                     <Route
                         path="/home"
-                        element={<Home />}
+                        element={
+                            <ProtectedRoute>
+                                <Home />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/search"
-                        element={<Search />}
+                        element={
+                            <ProtectedRoute>
+                                <Search />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/compare"
-                        element={<Compare />}
+                        element={
+                            <ProtectedRoute>
+                                <Compare />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/information/:id"
-                        element={<Information />}
+                        element={
+                            <ProtectedRoute>
+                                <Information />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/compare/detail"
-                        element={<Detail />}
+                        element={
+                            <ProtectedRoute>
+                                <Detail />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/saved"
-                        element={<Saved />}
+                        element={
+                            <ProtectedRoute>
+                                <Saved />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/profile"
-                        element={<Profile />}
+                        element={
+                            <ProtectedRoute>
+                                <Profile />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/edit-profile"
-                        element={<EditProfile />}
+                        element={
+                            <ProtectedRoute>
+                                <EditProfile />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
@@ -102,28 +135,38 @@ function AnimatedRoutes() {
 
                     <Route
                         path="/notes"
-                        element={<Notes />}
+                        element={
+                            <ProtectedRoute>
+                                <Notes />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/alerts"
-                        element={<Alerts />}
+                        element={
+                            <ProtectedRoute>
+                                <Alerts />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/workspace"
-                        element={<Workspace />}
+                        element={
+                            <ProtectedRoute>
+                                <Workspace />
+                            </ProtectedRoute>
+                        }
                     />
 
-                    <Route
-                        path="/workspace"
-                        element={<Workspace />}
-                    />
-
-                    
                     <Route
                         path="/insights"
-                        element={<Insights />}
+                        element={
+                            <ProtectedRoute>
+                                <Insights />
+                            </ProtectedRoute>
+                        }
                     />
                 </Routes>
             </PageTransition>
