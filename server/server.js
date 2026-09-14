@@ -1,744 +1,379 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import crypto from "crypto";
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 3001;
 
-const PORT = 3001;
-
+// Tempo limite máximo para chamadas à API do DeepSeek (25 segundos)
+const DEEPSEEK_TIMEOUT_MS = 25000;
 
 // =========================================================
-// PARSE DO JSON DA IA
+// PARSE SEGURO DO JSON DA IA
 // =========================================================
+
+
 
 function parseAiJson(content) {
-    const normalized = String(content || '')
-        .replace(/^```(?:json)?\s*/i, '')
-        .replace(/\s*```$/i, '')
-        .trim();
+  const normalized = String(content || "")
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
 
-    try {
-        return JSON.parse(normalized);
-    } catch {
-        const firstBrace = normalized.indexOf('{');
-        const lastBrace = normalized.lastIndexOf('}');
+  try {
+    return JSON.parse(normalized);
+  } catch {
+    const firstBrace = normalized.indexOf("{");
+    const lastBrace = normalized.lastIndexOf("}");
 
-        if (firstBrace === -1 || lastBrace <= firstBrace) {
-            throw new Error(
-                'Nenhum objeto JSON encontrado na resposta da IA.'
-            );
-        }
-
-        return JSON.parse(
-            normalized.slice(firstBrace, lastBrace + 1)
-        );
+    if (firstBrace === -1 || lastBrace <= firstBrace) {
+      throw new Error("Nenhum objeto JSON encontrado na resposta da IA.");
     }
+
+    return JSON.parse(normalized.slice(firstBrace, lastBrace + 1));
+  }
 }
 
+// =========================================================
+// CLIENTE GENÉRICO DE REQUISIÇÃO PARA DEEPSEEK COM TRACKING & TIMEOUT
+// =========================================================
+
+async function callDeepSeek(systemPrompt, userPrompt, requestId = "SYS", maxTokens = 2500) {
+  if (!process.env.DEEPSEEK_API_KEY) {
+    throw new Error("DEEPSEEK_API_KEY_MISSING");
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), DEEPSEEK_TIMEOUT_MS);
+  const startTime = Date.now();
+
+  console.log(`[REQ:${requestId}] [DeepSeek] 🚀 Iniciando requisição para a API...`);
+
+  try {
+    const response = await fetch("https://api.deepseek.com/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: "deepseek-chat",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+      }),
+    });
+
+    clearTimeout(timeoutId);
+    const duration = Date.now() - startTime;
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(
+        `[REQ:${requestId}] [DeepSeek ERRO HTTP ${response.status}] (${duration}ms):`,
+        errorText
+      );
+      throw new Error(`DEEPSEEK_ERROR_${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+
+    // <<< AQUI — antes de tentar ler data.choices, confere se veio um erro disfarçado de 200
+    if (data?.error) {
+      console.error(
+        `[REQ:${requestId}] [DeepSeek ERRO NO CORPO] (${duration}ms):`,
+        data.error.message
+      );
+
+      if (data.error.message?.includes("900-second timeout")) {
+        throw new Error("DEEPSEEK_OVERLOADED");
+      }
+
+      throw new Error(`DEEPSEEK_ERROR_BODY: ${data.error.message || "Erro desconhecido"}`);
+    }
+
+    console.log(
+      `[REQ:${requestId}] [DeepSeek SUCESSO] (${duration}ms) | Tokens:`,
+      data?.usage || "Não informado"
+    );
+
+    const rawContent = data?.choices?.[0]?.message?.content;
+    const content = Array.isArray(rawContent)
+      ? rawContent.map((part) => part?.text || "").join("")
+      : rawContent;
+
+    if (!content) {
+      console.error(
+        `[REQ:${requestId}] [DeepSeek RESPOSTA VAZIA] Conteúdo veio nulo/vazio. Dump da resposta original:`,
+        JSON.stringify(data, null, 2)
+      );
+      throw new Error("EMPTY_AI_RESPONSE");
+    }
+
+    return parseAiJson(content);
+  } catch (err) {
+    clearTimeout(timeoutId);
+    const duration = Date.now() - startTime;
+
+    if (err.name === "AbortError") {
+      console.error(
+        `[REQ:${requestId}] [DeepSeek TIMEOUT] Requisição excedeu o tempo máximo de ${DEEPSEEK_TIMEOUT_MS}ms (${duration}ms).`
+      );
+      throw new Error("DEEPSEEK_TIMEOUT");
+    }
+
+    throw err;
+  }
+}
 
 // =========================================================
-// MIDDLEWARE
+// MIDDLEWARES DE MONITORAMENTO E REGISTRO DE REQUISIÇÕES
 // =========================================================
 
-app.use(
-    cors({
-        origin: "http://localhost:5173",
-    })
-);
-
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
+app.use((req, res, next) => {
+  res.setTimeout(28000, () => {
+    if (!res.headersSent) {
+      console.error(`[REQ:${req.id}] Timeout do servidor Express atingido.`);
+      res.status(504).json({ error: "Tempo limite do servidor excedido." });
+    }
+  });
+  next();
+});
+// Logger de requisições com geração de ID único por chamada
+app.use((req, res, next) => {
+  req.id = crypto.randomUUID().slice(0, 8);
+  const start = Date.now();
 
+  console.log(`\n---> [REQ:${req.id}] ${req.method} ${req.path}`);
+
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    console.log(
+      `<--- [REQ:${req.id}] ${req.method} ${req.path} STATUS:${res.statusCode} (${duration}ms)`
+    );
+  });
+
+  next();
+});
 
 // =========================================================
 // HEALTH CHECK
 // =========================================================
 
 app.get("/", (req, res) => {
-    res.json({
-        status: "online",
-        service: "BCI AI Server",
-        message: "Servidor da análise de IA do BCI está funcionando."
-    });
+  res.json({
+    status: "online",
+    service: "BCI AI Server",
+    message: "Servidor da análise de IA do BCI está funcionando.",
+  });
 });
 
-
 // =========================================================
-// ANÁLISE DE IA
+// 1. ANÁLISE INDIVIDUAL DO VEÍCULO
 // =========================================================
 
 app.post("/api/ai/analyze", async (req, res) => {
-
-    try {
-
-        const { vehicle } = req.body;
-
-
-        // -----------------------------------------------------
-        // VALIDAÇÃO
-        // -----------------------------------------------------
-
-        if (!vehicle) {
-            return res.status(400).json({
-                error: "Nenhum veículo foi enviado para análise."
-            });
-        }
-
-
-        if (!process.env.DEEPSEEK_API_KEY) {
-
-            console.error(
-                "DEEPSEEK_API_KEY não encontrada no arquivo .env"
-            );
-
-            return res.status(500).json({
-                error: "Chave da API do DeepSeek não configurada."
-            });
-        }
-
-
-        // -----------------------------------------------------
-        // PROMPT DO SISTEMA
-        // -----------------------------------------------------
-
-        const systemPrompt = `
-Você é o motor de análise inteligente do BCI
-(Beyond Compare Intelligence).
-
-O BCI é uma plataforma de análise de veículos criada para
-auxiliar profissionais na interpretação de modelos automotivos.
-
-Sua função é analisar o MODELO DO VEÍCULO e produzir um
-parecer contextual sobre sua proposta, posicionamento,
-perfil de utilização, experiência de uso, vantagens,
-limitações e adequação a diferentes perfis.
-
-A ficha técnica fornecida pelo BCI deve ser utilizada como
-CONTEXTO para compreender o veículo.
-
-A ficha NÃO deve ser simplesmente transformada em uma lista
-de especificações apresentada como análise.
-
-
-==========================================================
-DIFERENÇA ENTRE FICHA E ANÁLISE
-==========================================================
-
-A FICHA TÉCNICA responde:
-
-"O que o veículo possui?"
-
-Exemplos:
-
-- 488 cv
-- motor V8
-- câmbio automático
-- 383 litros de porta-malas
-- 4 lugares
-
-A ANÁLISE DA IA deve responder:
-
-"O que essas características significam para o modelo?"
-
-Exemplos:
-
-- Forte vocação esportiva
-- Experiência de condução voltada para desempenho
-- Menor praticidade para determinados perfis
-- Adequação para usuários que valorizam performance
-- Posicionamento voltado para determinado público
-
-
-==========================================================
-OBJETIVO PRINCIPAL
-==========================================================
-
-Analise o veículo como um PRODUTO AUTOMOTIVO.
-
-Não apenas como um conjunto de especificações.
-
-Utilize os dados técnicos para compreender:
-
-- proposta do modelo;
-- categoria;
-- segmento;
-- posicionamento;
-- perfil de usuário;
-- vocação;
-- experiência de condução;
-- praticidade;
-- versatilidade;
-- conforto;
-- tecnologia;
-- segurança;
-- desempenho;
-- possíveis limitações;
-- cenários de utilização.
-
-
-==========================================================
-USO DA FICHA TÉCNICA
-==========================================================
-
-A ficha técnica é uma fonte de evidência para a análise.
-
-Você PODE utilizar características técnicas para chegar
-a uma conclusão sobre o modelo.
-
-Por exemplo:
-
-DADO:
-Motor de alta potência.
-
-ANÁLISE:
-"Forte vocação para desempenho e condução esportiva."
-
-DADO:
-Espaço interno reduzido.
-
-ANÁLISE:
-"Menor adequação para usuários que priorizam espaço
-e praticidade."
-
-DADO:
-Diversos recursos tecnológicos.
-
-ANÁLISE:
-"Boa integração de tecnologia e conectividade."
-
-DADO:
-Grande capacidade de carga.
-
-ANÁLISE:
-"Boa versatilidade para usuários que precisam transportar
-bagagens ou objetos."
-
-NÃO simplesmente repita o dado.
-
-
-==========================================================
-REGRAS DE CONFIABILIDADE
-==========================================================
-
-Utilize os dados fornecidos pelo BCI como principal fonte
-para compreender o veículo.
-
-Você pode utilizar conhecimento geral sobre o modelo para
-entender sua proposta, categoria, posicionamento e
-concorrentes.
-
-NÃO invente informações específicas.
-
-NÃO invente:
-
-- números;
-- preços;
-- equipamentos;
-- versões;
-- tecnologias;
-- capacidades;
-- avaliações;
-- estatísticas;
-- dados de vendas;
-- dados de mercado;
-- especificações não fornecidas.
-
-Se não tiver segurança sobre uma informação específica,
-não utilize essa informação.
-
-Não transforme a ausência de informação em uma característica
-negativa.
-
-Não crie um ponto fraco apenas para preencher a lista.
-
-
-==========================================================
-PONTOS FORTES
-==========================================================
-
-Retorne de 2 a 4 pontos fortes.
-
-Os pontos fortes devem representar VANTAGENS DO MODELO
-como produto.
-
-Eles devem ser interpretações e não simplesmente dados
-copiados da ficha técnica.
-
-EVITE:
-
-"Possui 488 cv."
-
-"Possui motor V8."
-
-"Possui câmbio automático."
-
-"Possui porta-malas de 383 litros."
-
-Essas informações pertencem à ficha técnica.
-
-PREFIRA:
-
-"Forte vocação esportiva e foco em desempenho."
-
-"Experiência de condução voltada para entusiastas."
-
-"Posicionamento marcante dentro do segmento."
-
-"Boa combinação entre desempenho e tecnologia."
-
-"Boa adequação para usuários que valorizam dirigibilidade."
-
-Você pode mencionar uma característica técnica quando ela
-for utilizada para sustentar uma conclusão sobre o modelo.
-
-
-==========================================================
-PONTOS FRACOS
-==========================================================
-
-Retorne de 1 a 3 pontos fracos quando houver informações
-suficientes.
-
-Os pontos fracos devem representar LIMITAÇÕES DO MODELO
-como produto ou da sua proposta.
-
-Considere:
-
-- praticidade;
-- versatilidade;
-- espaço;
-- conforto;
-- perfil de utilização;
-- adequação para famílias;
-- adequação para uso urbano;
-- adequação para uso profissional;
-- limitações naturais da categoria;
-- características que restringem determinados perfis
-  de usuários.
-
-EVITE:
-
-"Possui apenas 383 litros."
-
-"O carro tem 4 lugares."
-
-"Consome X km/l."
-
-Esses são dados técnicos.
-
-PREFIRA:
-
-"A proposta esportiva reduz a praticidade para usuários
-que priorizam espaço e versatilidade."
-
-"A configuração do modelo limita sua adequação para famílias
-que precisam de maior capacidade de passageiros."
-
-"O foco em desempenho pode torná-lo menos adequado para
-usuários que priorizam economia."
-
-IMPORTANTE:
-
-Só faça essas interpretações quando os dados fornecidos
-darem suporte à conclusão.
-
-
-==========================================================
-MELHOR USO
-==========================================================
-
-Retorne UMA única frase.
-
-A frase deve explicar para qual perfil de usuário ou cenário
-o modelo é mais adequado.
-
-Não simplesmente descreva a ficha técnica.
-
-Considere:
-
-- proposta;
-- segmento;
-- perfil de usuário;
-- vocação;
-- experiência de uso;
-- desempenho;
-- praticidade;
-- conforto;
-- tecnologia;
-- segurança;
-- versatilidade.
-
-Exemplos:
-
-"Indicado para usuários que priorizam desempenho,
-dirigibilidade e experiência esportiva."
-
-"Mais adequado para famílias que valorizam espaço,
-conforto e versatilidade no uso diário."
-
-"Indicado para usuários que buscam um veículo versátil
-para uso urbano e viagens."
-
-"Mais adequado para quem procura robustez, capacidade
-e versatilidade em diferentes condições de uso."
-
-
-==========================================================
-CONCORRENTES SEMELHANTES
-==========================================================
-
-Retorne de 2 a 4 veículos reais.
-
-Os concorrentes devem ser modelos que possam disputar
-o mesmo público ou oferecer uma proposta semelhante.
-
-Considere principalmente:
-
-- categoria;
-- segmento;
-- proposta;
-- posicionamento;
-- público-alvo;
-- faixa de mercado;
-- experiência oferecida;
-- finalidade do veículo.
-
-Não escolha concorrentes simplesmente porque possuem
-números parecidos.
-
-Por exemplo:
-
-Um esportivo deve ter como concorrentes outros esportivos
-com proposta semelhante.
-
-Um SUV familiar deve ter como concorrentes outros SUVs
-voltados para público semelhante.
-
-Uma picape deve ter como concorrentes outras picapes
-que disputem público semelhante.
-
-Não misture categorias completamente diferentes.
-
-
-==========================================================
-EQUILÍBRIO DA ANÁLISE
-==========================================================
-
-A análise deve ser equilibrada.
-
-Não seja excessivamente positivo.
-
-Não seja excessivamente negativo.
-
-Não faça propaganda.
-
-Não utilize linguagem publicitária como:
-
-- "o melhor do mercado";
-- "revolucionário";
-- "inigualável";
-- "perfeito";
-- "impressionante";
-- "sem concorrentes".
-
-Utilize linguagem analítica e profissional.
-
-
-==========================================================
-REGRA MAIS IMPORTANTE
-==========================================================
-
-A IA deve analisar o MODELO, e não apenas a FICHA.
-
-A ficha técnica fornece os FATOS.
-
-A IA deve interpretar o que esses fatos significam para:
-
-- o posicionamento do modelo;
-- a experiência de uso;
-- o público;
-- a proposta;
-- as vantagens;
-- as limitações;
-- os cenários de utilização.
-
-
-==========================================================
-IDIOMA
-==========================================================
-
-Responda sempre em português do Brasil.
-
-
-==========================================================
-FORMATO DA RESPOSTA
-==========================================================
-
-Retorne SOMENTE um JSON válido.
-
-Não escreva nenhuma explicação antes ou depois do JSON.
-
-Use EXATAMENTE esta estrutura:
-
+  try {
+    const { vehicle } = req.body;
+
+    if (!vehicle) {
+      return res.status(400).json({
+        error: "Nenhum veículo foi enviado para análise.",
+      });
+    }
+
+    const systemPrompt = `
+Você é o motor de análise inteligente do BCI (Beyond Compare Intelligence).
+Sua função é analisar o MODELO DO VEÍCULO e produzir um parecer contextual sobre vantagens, limitações e concorrência.
+
+FORMATO ESPERADO:
+Retorne SOMENTE um JSON válido:
 {
-    "pontosFortes": [
-        "Ponto forte 1",
-        "Ponto forte 2",
-        "Ponto forte 3"
-    ],
-    "pontosFracos": [
-        "Ponto fraco 1",
-        "Ponto fraco 2"
-    ],
+    "pontosFortes": ["Ponto forte 1", "Ponto forte 2"],
+    "pontosFracos": ["Ponto fraco 1", "Ponto fraco 2"],
     "melhorUso": "Descrição objetiva do melhor cenário de utilização.",
-    "concorrentesSemelhantes": [
-        "Concorrente 1",
-        "Concorrente 2",
-        "Concorrente 3"
-    ]
+    "concorrentesSemelhantes": ["Concorrente 1", "Concorrente 2"]
 }
-
-Não adicione outros campos.
 `;
 
+    const userPrompt = `Analise o MODELO do veículo abaixo:\n${JSON.stringify(vehicle, null, 2)}`;
+    const analysis = await callDeepSeek(systemPrompt, userPrompt, req.id);
 
-        // -----------------------------------------------------
-        // PROMPT DO VEÍCULO
-        // -----------------------------------------------------
+    return res.json({
+      pontosFortes: Array.isArray(analysis.pontosFortes) ? analysis.pontosFortes : [],
+      pontosFracos: Array.isArray(analysis.pontosFracos) ? analysis.pontosFracos : [],
+      melhorUso: typeof analysis.melhorUso === "string" ? analysis.melhorUso : "",
+      concorrentesSemelhantes: Array.isArray(analysis.concorrentesSemelhantes) ? analysis.concorrentesSemelhantes : [],
+    });
+  } catch (error) {
+    if (res.headersSent) return; // <- idem no catch
 
-        const userPrompt = `
-Analise o MODELO do veículo abaixo.
-
-Os dados fornecidos representam a ficha técnica e as
-características cadastradas no BCI.
-
-Utilize essas informações para identificar corretamente
-e compreender o veículo.
-
-IMPORTANTE:
-
-Não transforme simplesmente os dados técnicos em pontos
-fortes ou pontos fracos.
-
-O objetivo é produzir uma análise contextual do MODELO.
-
-Analise principalmente:
-
-- proposta do veículo;
-- posicionamento;
-- categoria;
-- segmento;
-- perfil de usuário;
-- vocação;
-- experiência de uso;
-- praticidade;
-- versatilidade;
-- desempenho;
-- conforto;
-- tecnologia;
-- segurança;
-- limitações;
-- melhor cenário de utilização;
-- concorrentes semelhantes.
-
-A ficha técnica deve funcionar como EVIDÊNCIA para suas
-conclusões.
-
-Pergunte a si mesmo:
-
-"O que essas características significam para este modelo
-e para quem ele foi desenvolvido?"
-
-DADOS DO VEÍCULO:
-
-${JSON.stringify(vehicle, null, 2)}
-
-Gere a análise no formato JSON solicitado.
-
-Retorne somente o JSON.
-`;
-
-
-        // -----------------------------------------------------
-        // DEEPSEEK API
-        // -----------------------------------------------------
-
-        const response = await fetch(
-            "https://api.deepseek.com/chat/completions",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${process.env.DEEPSEEK_API_KEY}`
-                },
-
-                body: JSON.stringify({
-
-                    model: "deepseek-chat",
-
-                    messages: [
-                        {
-                            role: "system",
-                            content: systemPrompt
-                        },
-                        {
-                            role: "user",
-                            content: userPrompt
-                        }
-                    ],
-
-                    response_format: {
-                        type: "json_object"
-                    },
-
-                    max_tokens: 2000
-                })
-            }
-        );
-
-
-        // -----------------------------------------------------
-        // ERRO DA API
-        // -----------------------------------------------------
-
-        if (!response.ok) {
-
-            const errorText = await response.text();
-
-            console.error(
-                "Erro retornado pelo DeepSeek:",
-                errorText
-            );
-
-            return res.status(response.status).json({
-                error: "Erro ao consultar a API do DeepSeek.",
-                details: errorText
-            });
+        console.error(`[REQ:${req.id}] Erro na rota /api/ai/analyze:`, error.message);
+        if (error.message === "DEEPSEEK_TIMEOUT") {
+        return res.status(504).json({ error: "A análise da IA demorou muito para responder (Timeout)." });
         }
-
-
-        // -----------------------------------------------------
-        // RESPOSTA
-        // -----------------------------------------------------
-
-        const data = await response.json();
-
-        const message = data?.choices?.[0]?.message;
-
-        const rawContent = message?.content;
-
-        const content = Array.isArray(rawContent)
-            ? rawContent
-                .map((part) => part?.text || '')
-                .join('')
-            : rawContent;
-
-
-        if (!content) {
-
-            console.error(
-                "Resposta do DeepSeek sem conteúdo:",
-                data
-            );
-
-            return res.status(500).json({
-                error: "A IA não retornou uma análise."
-            });
+        if (error.message === "DEEPSEEK_API_KEY_MISSING") {
+        return res.status(500).json({ error: "Chave da API do DeepSeek não configurada no servidor." });
         }
-
-
-        // -----------------------------------------------------
-        // CONVERTE JSON DA IA
-        // -----------------------------------------------------
-
-        let analysis;
-
-        try {
-
-            analysis = parseAiJson(content);
-
-        } catch (parseError) {
-
-            console.error(
-                "Erro ao interpretar JSON da IA:",
-                content
-            );
-
-            return res.status(500).json({
-                error: "A IA retornou uma resposta inválida."
-            });
-        }
-
-
-        // -----------------------------------------------------
-        // NORMALIZAÇÃO
-        // -----------------------------------------------------
-
-        const result = {
-
-            pontosFortes:
-                Array.isArray(analysis.pontosFortes)
-                    ? analysis.pontosFortes
-                    : [],
-
-            pontosFracos:
-                Array.isArray(analysis.pontosFracos)
-                    ? analysis.pontosFracos
-                    : [],
-
-            melhorUso:
-                typeof analysis.melhorUso === "string"
-                    ? analysis.melhorUso
-                    : "",
-
-            concorrentesSemelhantes:
-                Array.isArray(analysis.concorrentesSemelhantes)
-                    ? analysis.concorrentesSemelhantes
-                    : []
-        };
-
-
-        // -----------------------------------------------------
-        // RETORNA PARA O REACT
-        // -----------------------------------------------------
-
-        return res.json(result);
-
-    } catch (error) {
-
-        console.error(
-            "Erro interno no servidor:",
-            error
-        );
-
-        return res.status(500).json({
-            error: "Erro interno ao gerar análise da IA."
-        });
+        return res.status(500).json({ error: "Não foi possível gerar a análise da IA." });
     }
 });
 
+// =========================================================
+// 2. COMPARAÇÃO ENTRE VEÍCULOS
+// =========================================================
+
+app.post("/api/ai/compare", async (req, res) => {
+  try {
+    const { firstCar, secondCar, mathConclusions } = req.body;
+
+    if (!firstCar || !secondCar) {
+      return res.status(400).json({ error: "Dados dos dois veículos são obrigatórios." });
+    }
+
+    const systemPrompt = `
+Você é o motor comparativo avançado do BCI (Beyond Compare Intelligence).
+Compare dois veículos e entregue um parecer objetivo, neutro e focado em usabilidade.
+
+FORMATO ESPERADO:
+Retorne SOMENTE um JSON válido:
+{
+    "parecerIA": "Resumo comparativo e veredito geral.",
+    "recomendacao": "Indicação por perfil de uso.",
+    "conclusoesMatematicas": {}
+}
+`;
+
+    const userPrompt = `
+VEÍCULO 1: ${JSON.stringify(firstCar, null, 2)}
+VEÍCULO 2: ${JSON.stringify(secondCar, null, 2)}
+DADOS C#: ${JSON.stringify(mathConclusions || {}, null, 2)}
+`;
+
+    const result = await callDeepSeek(systemPrompt, userPrompt, req.id);
+
+    return res.json({
+      parecerIA: result.parecerIA || result.summary || "Não foi possível gerar o parecer.",
+      recomendacao: result.recomendacao || "Análise indisponível.",
+      conclusoesMatematicas: result.conclusoesMatematicas || mathConclusions || {},
+    });
+  } catch (error) {
+    if (res.headersSent) return; // <- idem no catch
+    console.error(`[REQ:${req.id}] Erro na rota /api/ai/compare:`, error.message);
+
+    if (error.message === "DEEPSEEK_TIMEOUT") {
+      return res.status(504).json({ error: "A comparação da IA excedeu o tempo limite." });
+    }
+    return res.status(500).json({ error: "Não foi possível gerar o parecer comparativo." });
+  }
+});
 
 // =========================================================
-// START SERVER
+// 3. ENRIQUECIMENTO DE ESPECIFICAÇÕES E SEÇÕES
 // =========================================================
+
+app.post("/api/ai/enrich-features", async (req, res) => {
+  try {
+    const { vehicle, missingFields = [] } = req.body;
+
+    if (!vehicle) {
+      return res.status(400).json({ error: "Dados do veículo são obrigatórios." });
+    }
+
+    const camposFaltantesTexto = missingFields.length
+      ? missingFields.join(", ")
+      : "nenhum — todas as especificações já estão preenchidas, gere apenas as seções";
+
+    const systemPrompt = `
+Você é o especialista automotivo do BCI.
+
+Sua tarefa tem DUAS partes, e a primeira é opcional:
+
+1) PREENCHER ESPECIFICAÇÕES FALTANTES (campo "specs" da resposta)
+Você receberá a lista exata de campos que estão faltando no campo "camposFaltantes" do prompt do usuário.
+Preencha SOMENTE esses campos específicos, usando conhecimento confiável sobre o modelo exato (marca, modelo, ano).
+NÃO inclua no JSON de retorno nenhum campo que não esteja nessa lista — mesmo que você saiba o valor,
+ele já está preenchido no sistema e não deve ser sobrescrito.
+Se não tiver certeza sobre um campo da lista, simplesmente OMITA esse campo do objeto "specs" (não adivinhe, não invente).
+
+2) SEÇÕES DE RECURSOS (campo "secoes" da resposta) — SEMPRE gere, mesmo que a parte 1 não tenha nada a fazer
+Gere as 4 seções abaixo, com 2 a 5 itens cada, específicos do modelo:
+- performance
+- seguranca
+- tecnologia
+- conforto
+
+FORMATO ESPERADO — retorne SOMENTE este JSON:
+{
+    "specs": {
+        "campoQueEstavaFaltando": "valor preenchido"
+    },
+    "secoes": {
+        "performance": ["Item 1", "Item 2"],
+        "seguranca": ["Item 1", "Item 2"],
+        "tecnologia": ["Item 1", "Item 2"],
+        "conforto": ["Item 1", "Item 2"]
+    }
+}
+
+Não adicione campos fora dessa estrutura.
+`;
+
+    const userPrompt = `
+Campos faltantes que precisam ser preenchidos: ${camposFaltantesTexto}
+
+Dados atuais do veículo (contexto — NÃO reescreva nem repita os campos que já estão preenchidos aqui):
+${JSON.stringify(vehicle, null, 2)}
+`;
+
+    const enriched = await callDeepSeek(systemPrompt, userPrompt, req.id, 3500);
+
+    if (res.headersSent) return;
+
+    return res.json({
+      specs: enriched.specs || {},
+      secoes: {
+        performance: Array.isArray(enriched.secoes?.performance) ? enriched.secoes.performance : [],
+        seguranca: Array.isArray(enriched.secoes?.seguranca) ? enriched.secoes.seguranca : [],
+        tecnologia: Array.isArray(enriched.secoes?.tecnologia) ? enriched.secoes.tecnologia : [],
+        conforto: Array.isArray(enriched.secoes?.conforto) ? enriched.secoes.conforto : [],
+      },
+    });
+  } catch (error) {
+    if (res.headersSent) return;
+
+    console.error(`[REQ:${req.id}] Erro na rota /api/ai/enrich-features:`, error.message);
+    if (error.message === "DEEPSEEK_TIMEOUT") {
+      return res.status(504).json({ error: "O preenchimento de dados excedeu o tempo limite." });
+    }
+    if (error.message === "DEEPSEEK_OVERLOADED") {
+      return res.status(503).json({ error: "A IA está sobrecarregada no momento. Tente novamente em instantes." });
+    }
+    return res.status(500).json({ error: "Não foi possível preencher os dados via IA." });
+  }
+});
+// =========================================================
+// INICIALIZAÇÃO
+// =========================================================
+
 
 app.listen(PORT, () => {
-
-    console.log("");
-    console.log("========================================");
-    console.log("       BCI AI SERVER");
-    console.log("========================================");
-    console.log("");
-    console.log(`Servidor: http://localhost:${PORT}`);
-    console.log("");
-    console.log("Endpoint:");
-    console.log(
-        `POST http://localhost:${PORT}/api/ai/analyze`
-    );
-    console.log("");
-    console.log("========================================");
-    console.log("");
-
+  console.log("");
+  console.log("========================================");
+  console.log("   BCI AI SERVER (Tracking & Timeout)");
+  console.log("========================================");
+  console.log(`Servidor rodando em: http://localhost:${PORT}`);
+  console.log("");
+  console.log("Logs de monitoramento ativos.");
+  console.log("========================================");
+  console.log("");
 });

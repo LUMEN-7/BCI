@@ -1,3 +1,4 @@
+import React from "react";
 import {
   IoCheckmarkCircleOutline,
   IoChevronDown,
@@ -11,6 +12,7 @@ import {
 } from "react-icons/io5";
 
 import { sources } from "../../data";
+import { useTechnical } from "../../hooks/useTechnicalController";
 import "./style.css";
 
 const legendItems = [
@@ -83,7 +85,6 @@ function getSourceDetails(sourceId, car) {
     }
   }
 
-  // 1. Objeto de fonte vindo de fontes estáticas em data.js
   if (!sourceObj && sources && sources[sourceId]) {
     sourceObj = sources[sourceId];
   }
@@ -215,7 +216,7 @@ function Accordion({
 }) {
   return (
     <div className={`accordion ${open ? "is-open" : ""}`}>
-      <button className="accordion-trigger" onClick={onClick}>
+      <button type="button" className="accordion-trigger" onClick={onClick}>
         <span className="accordion-title">{title}</span>
         <span className="accordion-badges">
           {verified && (
@@ -238,23 +239,45 @@ function Accordion({
           {open ? <IoChevronUp /> : <IoChevronDown />}
         </span>
       </button>
+
       {open && (
         <div className="accordion-content">
           <div className="technical-list">
-            {items.map((item, index) => (
-              <div
-                className="technical-row"
-                key={`${item.label || item.value}-${index}`}
-              >
-                <div className="technical-value">
-                  <span className="technical-label">
-                    {item.label || item.value}
-                  </span>
-                  {item.label && <strong>{item.value}</strong>}
+            {items?.map((item, index) => {
+              const isUninformed =
+                !item.value ||
+                item.value === "Não informado" ||
+                item.value === "N/A";
+
+              return (
+                <div
+                  className="technical-row"
+                  key={`${item.label || item.value}-${index}`}
+                >
+                  <div className="technical-value">
+                    <span className="technical-label">
+                      {item.label || item.value}
+                    </span>
+                    {item.label && (
+                      <strong>{isUninformed ? "Não informado" : item.value}</strong>
+                    )}
+                  </div>
+
+                  {/* Exibe o selo de IA se a especificação estiver como não informada */}
+                  {isUninformed ? (
+                    <span
+                      className="source-tag source-tag-ia"
+                      title="Dado gerado ou estimado por IA"
+                    >
+                      <IoHardwareChipOutline />
+                      <span>IA</span>
+                    </span>
+                  ) : (
+                    item.source && <SourceTag sourceId={item.source} car={car} />
+                  )}
                 </div>
-                {item.source && <SourceTag sourceId={item.source} car={car} />}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -362,7 +385,7 @@ function SourcesPanel({ car }) {
 
   if (car?.specs) {
     Object.values(car.specs).forEach(
-      (item) => item?.source && usedSourceIds.add(item.source),
+      (item) => item?.source && usedSourceIds.add(item.source)
     );
   }
 
@@ -452,75 +475,6 @@ function SourcesPanel({ car }) {
   );
 }
 
-const baseGroups = (specs) => [
-  {
-    key: "base",
-    title: "Dados Base",
-    items: [
-      ["Modelo", "model"],
-      ["Marca", "brand"],
-      ["Ano", "year"],
-      ["Modos de Condução", "driveModes"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    confidence: 97,
-  },
-  {
-    key: "specs",
-    title: "Especificações",
-    items: [
-      ["Potência", "power"],
-      ["Torque", "torque"],
-      ["Potência RPM", "powerRpm"],
-      ["Torque RPM", "torqueRpm"],
-      ["Transmissão", "transmission"],
-      ["Tração", "drivetrain"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    confidence: 80,
-  },
-  {
-    key: "consumption",
-    title: "Consumos",
-    items: [
-      ["Cidade", "cityConsumption"],
-      ["Estrada", "highwayConsumption"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    iaGen: true,
-  },
-  {
-    key: "dimensions",
-    title: "Dimensões",
-    items: [
-      ["Comprimento", "length"],
-      ["Largura", "width"],
-      ["Altura", "height"],
-      ["Entre-Eixos", "wheelbase"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    confidence: 87,
-  },
-  {
-    key: "tires",
-    title: "Pneus",
-    items: [
-      ["Tipo", "tireType"],
-      ["Aro", "rim"],
-      ["Largura", "tireWidth"],
-      ["Perfil", "tireProfile"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    verified: true,
-  },
-  {
-    key: "extras",
-    title: "Extras",
-    items: [
-      ["Capacidade do Tanque", "tankCapacity"],
-      ["Tipo de Combustível", "fuelType"],
-      ["Capacidade de Carga", "loadCapacity"],
-      ["Capacidade de Reboque", "towingCapacity"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    confidence: 81,
-  },
-];
-
 export default function Technical({
   car,
   openSection,
@@ -528,39 +482,14 @@ export default function Technical({
   onToggleSection,
   onToggleSources,
 }) {
+  const { groups } = useTechnical(car);
+
   const handleToggleSources = (e) => {
     e.preventDefault();
     e.stopPropagation();
     onToggleSources();
   };
 
-  const groups = [
-    ...baseGroups(car.specs),
-    {
-      key: "performance",
-      title: "Performance",
-      items: car.sections.performance,
-      verified: true,
-    },
-    {
-      key: "security",
-      title: "Segurança",
-      items: car.sections.security,
-      confidence: 95,
-    },
-    {
-      key: "technology",
-      title: "Tecnologia",
-      items: car.sections.technology,
-      verified: true,
-    },
-    {
-      key: "comfort",
-      title: "Conforto",
-      items: car.sections.comfort,
-      confidence: 67,
-    },
-  ];
   return (
     <section className="technical-section">
       <div className="technical-heading">
@@ -574,8 +503,8 @@ export default function Technical({
           </div>
           <div>
             <span>Última atualização</span>
-            <strong>{car.lastUpdated}</strong>
-            <small>{car.updatedAgo}</small>
+            <strong>{car?.lastUpdated || "Hoje"}</strong>
+            <small>{car?.updatedAgo || "Base atualizada"}</small>
           </div>
         </div>
       </div>

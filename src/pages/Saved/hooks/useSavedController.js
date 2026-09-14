@@ -11,7 +11,7 @@ function adaptarCarroSalvo(carro) {
         name: `${carro.modelo} ${carro.ano}`,
         brand: carro.marca,
         image: carro.imagemUrl || 'https://via.placeholder.com/600x400?text=Sem+Foto',
-        engine: specs.transmissao?.Fontes?.[0]?.Valor ?? 'N/D', // ver nota abaixo sobre esse campo
+        engine: specs.motor?.Fontes?.[0]?.Valor ?? 'N/D', // ver nota abaixo sobre esse campo
         power: specs.potencia?.Fontes?.[0]?.Valor ? `${specs.potencia.Fontes[0].Valor} cv` : 'N/D',
         type: carro.categoria?.Fontes?.[0]?.Valor ?? 'Veículo',
         description: 'Veículo favoritado. Acompanhe especificações e fique de olho nas atualizações do mercado automotivo.',

@@ -1,0 +1,564 @@
+{
+    "id": 34,
+    "modelo": "Corolla",
+    "marca": "toyota",
+    "ano": 2026,
+    "excluido": false,
+    "imagemUrl": "https://cdn.motor1.com/images/mgl/E6Ym23/s1/novo-toyota-corolla-2026-chines.webp",
+    "linhagemId": 34,
+    "especificacoes": [
+        {
+            "potencia": {
+                "Confianca": 0.4,
+                "Conflito": true,
+                "Fontes": [
+                    {
+                        "Valor": 169,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 137,
+                        "Confianca": 0.6,
+                        "Fonte": "quatrorodas.abril.com.br"
+                    },
+                    {
+                        "Valor": 175,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 175,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 177,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "torque": {
+                "Confianca": 0.85,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 209,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 209,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 209,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 210,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "potenciaRpm": {
+                "Confianca": 0.85,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 6600,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 6600,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 6600,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 6600,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "torqueRpm": {
+                "Confianca": 0.85,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 4400,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 4400,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 4400,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 4400,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "transmissao": {
+                "Confianca": 0.55,
+                "Conflito": true,
+                "Fontes": [
+                    {
+                        "Valor": "CVT 10-speed",
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": "CVT 10-speed",
+                        "Confianca": 0.6,
+                        "Fonte": "quatrorodas.abril.com.br"
+                    },
+                    {
+                        "Valor": "CVT",
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": "CVT (10 velocidades)",
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": "CVT Direct Shift (10 marchas simuladas)",
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "tracao": {
+                "Confianca": 0.82,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": "FWD",
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": "FWD",
+                        "Confianca": 0.6,
+                        "Fonte": "quatrorodas.abril.com.br"
+                    },
+                    {
+                        "Valor": "FWD",
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": "FWD",
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": "FWD",
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            }
+        }
+    ],
+    "consumos": [
+        {
+            "cidade": {
+                "Confianca": 0.4,
+                "Conflito": true,
+                "Fontes": [
+                    {
+                        "Valor": 11.6,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 24.2,
+                        "Confianca": 0.6,
+                        "Fonte": "quatrorodas.abril.com.br"
+                    },
+                    {
+                        "Valor": 8.0,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 11.9,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 12.0,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "estrada": {
+                "Confianca": 0.4,
+                "Conflito": true,
+                "Fontes": [
+                    {
+                        "Valor": 14.6,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 10.0,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 14.5,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 14.4,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            }
+        }
+    ],
+    "pneus": [
+        {
+            "tipo": {
+                "Confianca": 0.6,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": "215/50 R17",
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    }
+                ]
+            },
+            "aro": {
+                "Confianca": 0.6,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 17,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    }
+                ]
+            },
+            "largura": {
+                "Confianca": 0.6,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 215,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    }
+                ]
+            },
+            "perfil": {
+                "Confianca": 0.6,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 50,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    }
+                ]
+            }
+        }
+    ],
+    "dimensoes": [
+        {
+            "comprimento": {
+                "Confianca": 0.85,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 4460,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 4630,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 4630,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "largura": {
+                "Confianca": 0.85,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 1780,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 1825,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 1780,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 1780,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "altura": {
+                "Confianca": 0.4,
+                "Conflito": true,
+                "Fontes": [
+                    {
+                        "Valor": 1455,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 1620,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 1455,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 1455,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "entreEixos": {
+                "Confianca": 0.85,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 2700,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 2750,
+                        "Confianca": 0.6,
+                        "Fonte": "quatrorodas.abril.com.br"
+                    },
+                    {
+                        "Valor": 2640,
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": 2700,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 2700,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            }
+        }
+    ],
+    "extras": [
+        {
+            "capacidadeTanque": {
+                "Confianca": 0.85,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 50,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": 50,
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": 50,
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "tipoCombustivel": {
+                "Confianca": 0.55,
+                "Conflito": true,
+                "Fontes": [
+                    {
+                        "Valor": "flex",
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    },
+                    {
+                        "Valor": "híbrido",
+                        "Confianca": 0.6,
+                        "Fonte": "quatrorodas.abril.com.br"
+                    },
+                    {
+                        "Valor": "flex",
+                        "Confianca": 0.6,
+                        "Fonte": "webmotors.com.br"
+                    },
+                    {
+                        "Valor": "flex",
+                        "Confianca": 0.6,
+                        "Fonte": "nonamarcha.com.br"
+                    },
+                    {
+                        "Valor": "flex",
+                        "Confianca": 0.6,
+                        "Fonte": "consultadeplaca.net"
+                    }
+                ]
+            },
+            "capacidadeCarga": {
+                "Confianca": 0,
+                "Conflito": false,
+                "Fontes": []
+            },
+            "capacidadeReboque": {
+                "Confianca": 0.6,
+                "Conflito": false,
+                "Fontes": [
+                    {
+                        "Valor": 700,
+                        "Confianca": 0.6,
+                        "Fonte": "carrosnaweb.com.br"
+                    }
+                ]
+            }
+        }
+    ],
+    "modos": {
+        "Confianca": 0,
+        "Conflito": false,
+        "Fontes": []
+    },
+    "categoria": {
+        "Confianca": 0.92,
+        "Conflito": true,
+        "Fontes": [
+            {
+                "Valor": "Sedan",
+                "Confianca": 0.6,
+                "Fonte": "carrosnaweb.com.br"
+            },
+            {
+                "Valor": "Sedan",
+                "Confianca": 0.6,
+                "Fonte": "quatrorodas.abril.com.br"
+            },
+            {
+                "Valor": "SUV",
+                "Confianca": 0.6,
+                "Fonte": "webmotors.com.br"
+            },
+            {
+                "Valor": "Sedan",
+                "Confianca": 0.9,
+                "Fonte": "toyota.com.br"
+            },
+            {
+                "Valor": "Sedan",
+                "Confianca": 0.6,
+                "Fonte": "nonamarcha.com.br"
+            },
+            {
+                "Valor": "Sedan",
+                "Confianca": 0.6,
+                "Fonte": "consultadeplaca.net"
+            }
+        ]
+    },
+    "fontes": [
+        {
+            "id": 3,
+            "nome": "Carrosnaweb",
+            "url": "carrosnaweb.com.br",
+            "confiabilidade": 0.9325,
+            "excluido": false,
+            "dataAdicao": "2026-08-22T16:21:09.617567Z"
+        },
+        {
+            "id": 4,
+            "nome": "Quatrorodas",
+            "url": "quatrorodas.abril.com.br",
+            "confiabilidade": 0.99,
+            "excluido": false,
+            "dataAdicao": "2026-08-22T16:21:09.617568Z"
+        },
+        {
+            "id": 7,
+            "nome": "Webmotors",
+            "url": "webmotors.com.br",
+            "confiabilidade": 0.5,
+            "excluido": false,
+            "dataAdicao": "2026-08-22T16:21:09.617569Z"
+        },
+        {
+            "id": 19,
+            "nome": "Consultadeplaca",
+            "url": "consultadeplaca.net",
+            "confiabilidade": 0.6,
+            "excluido": false,
+            "dataAdicao": "2026-09-10T18:26:12.06648Z"
+        },
+        {
+            "id": 20,
+            "nome": "Nonamarcha",
+            "url": "nonamarcha.com.br",
+            "confiabilidade": 0.6,
+            "excluido": false,
+            "dataAdicao": "2026-09-10T18:26:12.06648Z"
+        },
+        {
+            "id": 22,
+            "nome": "Toyota",
+            "url": "toyota.com.br",
+            "confiabilidade": 0.9,
+            "excluido": false,
+            "dataAdicao": "2026-09-10T18:26:12.06648Z"
+        }
+    ]
+}
