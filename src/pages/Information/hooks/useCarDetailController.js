@@ -98,7 +98,7 @@ function adaptCarToDetail(dto) {
             brand: { value: dto.marca || dto.Marca },
             year: { value: (dto.ano || dto.Ano || '').toString() },
             
-            engine: safeExtract(specs.motor || specs.Motor),
+            engine: safeExtract(specs.transmissao || specs.Transmissao),
             power: safeExtract(specs.potencia || specs.Potencia, ' cv'),
             type: safeExtract(dto.categoria || dto.Categoria),
             consumption: safeExtract(consumos.cidade || consumos.Cidade, ' km/l'),

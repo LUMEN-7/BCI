@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCars} from '@/services/carsService';
+import { getCars, iniciarBusca, getJobStatus} from '@/services/carsService';
 import {getFavorites, addFavorites, removeFavorite } from "@/services/userService"
 import { appendNavigationActivity } from '@/utils/navigationActivity';
 import { getRecentViewedCars, appendRecentViewedCar } from '@/utils/recentViewedCars';
@@ -32,6 +32,8 @@ export default function useSearchController() {
     const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
     const [scheduleInitialCar, setScheduleInitialCar] = useState(null);
     const [scheduledCount, setScheduledCount] = useState(() => getScheduledSearches().length);
+    const [jobId, setJobId] = useState(null);
+    const [jobStatus, setJobStatus] = useState(null)
 
     const updateScheduledCount = () => {
         setScheduledCount(getScheduledSearches().length);
@@ -198,7 +200,7 @@ export default function useSearchController() {
         navigate(`/information/${id}`, { state: { car: selectedCar } });
     }
 
-    function executeSearch() {
+    async function executeSearch() {
         if (!search.trim() && !selectedBrand && !selectedYear) {
             setIsSearchExecuted(false);
             setValidationError('Digite um termo de pesquisa ou selecione um filtro para começar.');
@@ -206,8 +208,33 @@ export default function useSearchController() {
         }
 
         setValidationError('');
+        const response = await iniciarBusca({ model: search.trim(), brand: selectedBrand, year: selectedYear });
+        setJobId(response.job_id);
+        setJobStatus('pending');
         setIsSearchExecuted(true);
     }
+    useEffect(() => {
+        if (!jobId || jobStatus === 'done' || jobStatus === 'error') return;
+
+        const interval = setInterval(async () => {
+            try {
+                const status = await getJobStatus(jobId);
+                setJobStatus(status.status);
+
+                if (status.status === 'done' && status.carro) {
+                    setCars((prev) => {
+                        const existe = prev.some((c) => c.id === String(status.carro.id));
+                        return existe ? prev : [adaptCar(status.carro), ...prev];
+                    });
+                    localStorage.removeItem('jobId');
+                }
+            } catch {
+                setJobStatus('error');
+            }
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [jobId, jobStatus]);
 
     function handleOpenSchedule(car = null) {
         setScheduleInitialCar(car);

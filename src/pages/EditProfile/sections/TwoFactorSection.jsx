@@ -1,5 +1,5 @@
 import { FiLock, FiShield } from "react-icons/fi";
-import {QRCodeSVG } from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 
 export default function TwoFactorSection({ doisFatores }) {
   const { ativo, qrCodeUri, chaveManual, codigo, erro, carregando, setCodigo, iniciar, confirmar, desativar, cancelar } = doisFatores;
@@ -22,18 +22,26 @@ export default function TwoFactorSection({ doisFatores }) {
         </div>
       ) : qrCodeUri ? (
         <div className="two-factor-setup">
-          <div className="two-factor-qr"><QRCodeSVG  value={qrCodeUri} size={180} /></div>
+          <div className="two-factor-qr"><QRCodeSVG value={qrCodeUri} size={180} /></div>
           <p>Escaneie o QR Code com seu app autenticador, ou digite a chave manualmente:</p>
           <code className="two-factor-key">{chaveManual}</code>
 
-          <form onSubmit={confirmar} className="two-factor-confirm-form">
-            <input type="text" inputMode="numeric" maxLength={6} placeholder="Código de 6 dígitos" value={codigo} onChange={(e) => setCodigo(e.target.value)} />
+          <div className="two-factor-confirm-form">
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={6}
+              placeholder="Código de 6 dígitos"
+              value={codigo}
+              onChange={(e) => setCodigo(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter' && codigo.length === 6) confirmar(); }}
+            />
             {erro && <span className="field-error">{erro}</span>}
             <div className="two-factor-actions">
               <button type="button" className="button button-secondary" onClick={cancelar}>Cancelar</button>
-              <button type="submit" className="button button-primary" disabled={carregando || codigo.length !== 6}>Confirmar</button>
+              <button type="button" className="button button-primary" onClick={confirmar} disabled={carregando || codigo.length !== 6}>Confirmar</button>
             </div>
-          </form>
+          </div>
         </div>
       ) : (
         <div className="two-factor-status">

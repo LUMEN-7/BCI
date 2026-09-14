@@ -14,7 +14,6 @@ function formatarData(isoString) {
 }
 
 function adaptNotification(dto) {
-    console.log(dto)
     return {
         id: dto.id,
         read: dto.lida,
