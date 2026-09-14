@@ -200,7 +200,7 @@ export default function useSearchController() {
         navigate(`/information/${id}`, { state: { car: selectedCar } });
     }
 
-    function executeSearch() {
+    async function executeSearch() {
         if (!selectedBrand.trim()) {
             setValidationError('Digite uma marca para realizar a pesquisa.');
             return;
