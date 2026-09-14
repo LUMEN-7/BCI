@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { listarNotificacoes } from '@/services/notiService';
 
 import {
     IoSearchOutline,
@@ -28,7 +29,7 @@ const navigationItems = [
     { icon: IoDocumentTextOutline, label: 'Anotações', path: '/notes' },
 ];
 
-function NavItems({ navigate }) {
+function NavItems({ navigate, hasUnreadAlerts }) {
     return navigationItems.map(({ icon: Icon, label, path, alert }) => (
         <button
             className={`nav-item ${alert ? 'nav-alerts' : ''}`}
@@ -38,7 +39,7 @@ function NavItems({ navigate }) {
         >
             <Icon />
             <span>{label}</span>
-            {alert && <span className="alert-indicator" />}
+            {alert && hasUnreadAlerts && <span className="alert-indicator" />}
         </button>
     ));
 }
@@ -46,6 +47,26 @@ function NavItems({ navigate }) {
 export default function Navbar() {
     const navigate = useNavigate();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [hasUnreadAlerts, setHasUnreadAlerts] = useState(false);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        listarNotificacoes()
+            .then((notifications) => {
+                if (!isMounted) return;
+                setHasUnreadAlerts(
+                    Array.isArray(notifications) && notifications.some((notification) => !notification.lida)
+                );
+            })
+            .catch(() => {
+                if (isMounted) setHasUnreadAlerts(false);
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     return (
         <>
@@ -61,7 +82,7 @@ export default function Navbar() {
 
                 <div className="mobile-menu">
                     <div className="navbar-main">
-                        <NavItems navigate={navigate} />
+                        <NavItems navigate={navigate} hasUnreadAlerts={hasUnreadAlerts} />
                     </div>
 
                     <div className="navbar-bottom">
@@ -79,7 +100,7 @@ export default function Navbar() {
 
             <aside className="home-navbar">
                 <div className="navbar-main">
-                    <NavItems navigate={navigate} />
+                    <NavItems navigate={navigate} hasUnreadAlerts={hasUnreadAlerts} />
                 </div>
 
                 <div className="navbar-bottom">

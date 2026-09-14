@@ -1,11 +1,8 @@
-import { useEffect, useRef, useState } from "react";
 import {
   IoAlarmOutline,
   IoAlertCircleOutline,
   IoCalendarOutline,
   IoCarOutline,
-  IoCheckmarkOutline,
-  IoChevronDownOutline,
   IoCloseCircle,
   IoCloseOutline,
   IoRefreshOutline,
@@ -14,110 +11,8 @@ import {
 
 import "./style.css";
 
-function CustomDropdown({
-  label,
-  placeholder,
-  value,
-  options,
-  onChange,
-  icon: Icon,
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    }
-
-    function handleKeyDown(event) {
-      if (event.key === "Escape") {
-        setIsOpen(false);
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("keydown", handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen]);
-
-  const displayValue = value || placeholder;
-  const isSelected = Boolean(value);
-
-  return (
-    <div className={`custom-dropdown ${isOpen ? "is-open" : ""}`} ref={dropdownRef}>
-      <button
-        type="button"
-        className={`dropdown-trigger ${isSelected ? "has-value" : ""}`}
-        onClick={() => setIsOpen((prev) => !prev)}
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
-      >
-        <span className="dropdown-trigger-icon">
-          {Icon ? <Icon /> : <IoCarOutline />}
-        </span>
-        <span className="dropdown-trigger-text">
-          <span className="dropdown-trigger-label">{label}:</span>
-          <strong className="dropdown-trigger-value">{displayValue}</strong>
-        </span>
-        <IoChevronDownOutline className="dropdown-arrow" />
-      </button>
-
-      {isOpen && (
-        <div className="dropdown-menu" role="listbox">
-          <div className="dropdown-header">
-            <span>Selecionar {label}</span>
-          </div>
-          <div className="dropdown-options">
-            <button
-              type="button"
-              className={`dropdown-option ${!value ? "is-selected" : ""}`}
-              onClick={() => {
-                onChange("");
-                setIsOpen(false);
-              }}
-            >
-              <span>{placeholder}</span>
-              {!value && <IoCheckmarkOutline className="option-check" />}
-            </button>
-
-            {options.map((option) => {
-              const optionStr = String(option);
-              const isCurrent = String(value) === optionStr;
-              return (
-                <button
-                  key={optionStr}
-                  type="button"
-                  className={`dropdown-option ${isCurrent ? "is-selected" : ""}`}
-                  onClick={() => {
-                    onChange(optionStr);
-                    setIsOpen(false);
-                  }}
-                >
-                  <span>{optionStr}</span>
-                  {isCurrent && <IoCheckmarkOutline className="option-check" />}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
 export default function Controls({
   search,
-  brands,
-  years,
   selectedBrand,
   selectedYear,
   activeFilterChips = [],
@@ -162,23 +57,39 @@ export default function Controls({
       </div>
 
       <div className="filter-row">
-        <CustomDropdown
-          label="Marca"
-          placeholder="Todas as marcas"
-          value={selectedBrand}
-          options={brands}
-          onChange={onBrandChange}
-          icon={IoCarOutline}
-        />
+        <label className="text-filter-field">
+          <IoCarOutline />
+          <span className="text-filter-content">
+            <span className="text-filter-label">Marca</span>
+            <input
+              type="text"
+              value={selectedBrand}
+              onChange={onBrandChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Digite uma marca"
+              autoComplete="off"
+              aria-label="Digite uma marca válida"
+            />
+          </span>
+        </label>
 
-        <CustomDropdown
-          label="Ano"
-          placeholder="Todos os anos"
-          value={selectedYear}
-          options={years}
-          onChange={onYearChange}
-          icon={IoCalendarOutline}
-        />
+        <label className="text-filter-field">
+          <IoCalendarOutline />
+          <span className="text-filter-content">
+            <span className="text-filter-label">Ano</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={4}
+              value={selectedYear}
+              onChange={onYearChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Digite um ano"
+              autoComplete="off"
+              aria-label="Digite um ano válido"
+            />
+          </span>
+        </label>
 
         <button type="button" className="execute-search" onClick={onExecute}>
           <IoSearchOutline />
