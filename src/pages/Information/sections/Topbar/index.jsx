@@ -43,7 +43,7 @@ function ExportDialog({ handleExport, onClose }) {
         </div>
 
         <div className="export-format-options">
-          {["csv", "xls", "json", "xml"].map((option) => (
+          {["csv", "xlsx", "json", "xml"].map((option) => (
             <label
               className={`export-format-option ${format === option ? "is-selected" : ""}`}
               key={option}
