@@ -23,7 +23,10 @@ export default function EditProfile() {
 
         <header className="edit-profile-header">
           <div>
-            <span className="page-eyebrow">PERFIL</span>
+            <span className="page-eyebrow">
+              PERFIL
+            </span>
+
             <h1>EDITAR PERFIL</h1>
           </div>
 
@@ -49,13 +52,6 @@ export default function EditProfile() {
             onChange={controller.handleChange}
           />
 
-          {controller.successMessage && (
-            <div className="profile-success-message">
-              <FiCheck />
-              {controller.successMessage}
-            </div>
-          )}
-
           <div className="edit-profile-actions">
             <button
               type="button"
@@ -65,7 +61,11 @@ export default function EditProfile() {
               CANCELAR
             </button>
 
-            <button type="submit" className="button button-save">
+            <button
+              type="submit"
+              className="button button-save"
+              disabled={!controller.hasChanges}
+            >
               <FiCheck />
               SALVAR ALTERAÇÕES
             </button>

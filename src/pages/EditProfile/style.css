@@ -561,6 +561,59 @@
   opacity: 0.5;
 }
 
+.edit-profile-page .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-profile-page .form-group label {
+  margin-bottom: 2px;
+}
+
+.edit-profile-page .input-wrapper {
+  width: 100%;
+}
+
+.edit-profile-page .field-error {
+  display: block;
+
+  margin: 0;
+  margin-top: 4px;
+
+  padding: 0;
+
+  position: static;
+
+  font-family: var(--font-body-bold);
+  font-size: 11px;
+  line-height: 1.4;
+
+  color: #d64545;
+}
+
+.edit-profile-page .input-wrapper-error {
+  border-color: #d64545;
+}
+
+.edit-profile-page .input-wrapper-error:focus-within {
+  border-color: #d64545;
+
+  box-shadow:
+    0 0 0 3px rgba(214, 69, 69, 0.08);
+}
+
+.edit-profile-page .field-helper {
+  display: block;
+
+  margin-top: 4px;
+
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.4;
+
+  color: rgba(0, 20, 46, 0.55);
+}
 
 /* =========================================================
    BOTÕES
@@ -681,6 +734,14 @@
 
 .button-save {
   min-width: 180px;
+}
+
+.button-save:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  transform: none;
 }
 
 

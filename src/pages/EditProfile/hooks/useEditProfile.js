@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function getCurrentUser() {
@@ -13,14 +13,15 @@ export default function useEditProfile() {
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
 
-  const [formData, setFormData] = useState({
+  const initialData = {
     name: currentUser?.name || "",
     email: currentUser?.email || "",
     photo: currentUser?.photo || null,
-  });
+  };
+
+  const [formData, setFormData] = useState(initialData);
 
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -34,8 +35,6 @@ export default function useEditProfile() {
       ...previous,
       [name]: "",
     }));
-
-    setSuccessMessage("");
   }
 
   function handlePhotoChange(event) {
@@ -43,7 +42,11 @@ export default function useEditProfile() {
 
     if (!file) return;
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
 
     if (!allowedTypes.includes(file.type)) {
       setErrors((previous) => ({
@@ -77,8 +80,6 @@ export default function useEditProfile() {
         ...previous,
         photo: "",
       }));
-
-      setSuccessMessage("");
     };
 
     reader.readAsDataURL(file);
@@ -94,15 +95,17 @@ export default function useEditProfile() {
       ...previous,
       photo: "",
     }));
-
-    setSuccessMessage("");
   }
 
   function validateForm() {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-        newErrors.name = "Informe seu nome.";
+    const trimmedName = formData.name.trim();
+
+    if (!trimmedName) {
+      newErrors.name = "Informe seu nome.";
+    } else if (trimmedName.length < 3) {
+      newErrors.name = "O nome deve ter pelo menos 3 letras.";
     }
 
     setErrors(newErrors);
@@ -110,21 +113,43 @@ export default function useEditProfile() {
     return Object.keys(newErrors).length === 0;
   }
 
+  const hasChanges = useMemo(() => {
+    return (
+      formData.name.trim() !== initialData.name.trim() ||
+      formData.photo !== initialData.photo
+    );
+  }, [
+    formData.name,
+    formData.photo,
+    initialData.name,
+    initialData.photo,
+  ]);
+
   function handleSubmit(event) {
     event.preventDefault();
+
+    if (!hasChanges) return;
 
     if (!validateForm()) return;
 
     const updatedUser = {
-        ...currentUser,
-        name: formData.name.trim(),
-        email: currentUser?.email,
-        photo: formData.photo,
+      ...currentUser,
+      name: formData.name.trim(),
+      email: currentUser?.email,
+      photo: formData.photo,
     };
 
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+    localStorage.setItem(
+      "currentUser",
+      JSON.stringify(updatedUser)
+    );
 
-    setSuccessMessage("Perfil atualizado com sucesso.");
+    navigate("/profile", {
+      state: {
+        successMessage:
+          "Informações alteradas com sucesso.",
+      },
+    });
   }
 
   function handleCancel() {
@@ -138,7 +163,7 @@ export default function useEditProfile() {
   return {
     formData,
     errors,
-    successMessage,
+    hasChanges,
     handleChange,
     handlePhotoChange,
     handleRemovePhoto,

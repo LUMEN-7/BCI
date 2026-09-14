@@ -19,7 +19,7 @@ export default function useLoginController() {
         try {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (!currentUser) { setAuthError('Nenhum usuário cadastrado.'); return; }
-            navigate('/home');
+            navigate('/loading');
         } catch (error) {
             setAuthError(error.message || 'Não foi possível entrar.');
         }

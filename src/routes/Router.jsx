@@ -8,6 +8,7 @@ import {
 import { AnimatePresence } from 'framer-motion';
 
 import PageTransition from '../components/PageTransition/PageTransition';
+import GlobalErrorBoundary from '../components/GlobalErrorBoundary';
 
 import Login from '../pages/auth/Login/index';
 import Register from '../pages/auth/Register/index';
@@ -24,7 +25,10 @@ import Alerts from '../pages/Alerts/index';
 import EditProfile from "../pages/EditProfile/index";
 import ResetPassword from "../pages/ResetPassword";
 import Workspace from "../pages/Workspace";
+import Loading from "../pages/Loading";
+import Error from "../pages/Error";
 // import Insights from '../pages/Insights/index';
+
 
 function AnimatedRoutes() {
     const location = useLocation();
@@ -33,6 +37,7 @@ function AnimatedRoutes() {
         <AnimatePresence mode="wait">
             <PageTransition key={location.pathname}>
                 <Routes location={location}>
+
                     <Route
                         path="/"
                         element={<Login />}
@@ -108,11 +113,33 @@ function AnimatedRoutes() {
                         element={<Workspace />}
                     />
 
+                    <Route
+                        path="/loading"
+                        element={<Loading />}
+                    />
+
+                    {/* ERRO GLOBAL ENVIADO PELO SISTEMA */}
+                    <Route
+                        path="/error"
+                        element={<Error />}
+                    />
+
+                    {/* QUALQUER ROTA QUE NÃO EXISTE = 404 */}
+                    <Route
+                        path="*"
+                        element={
+                            <Error
+                                statusCode={404}
+                            />
+                        }
+                    />
+
                     {/* 
                     <Route
                         path="/Insights"
                         element={<Insights />}
-                    />*/}
+                    />
+                    */}
                 </Routes>
             </PageTransition>
         </AnimatePresence>
@@ -123,7 +150,9 @@ function AnimatedRoutes() {
 export default function Router() {
     return (
         <BrowserRouter>
-            <AnimatedRoutes />
+            <GlobalErrorBoundary>
+                <AnimatedRoutes />
+            </GlobalErrorBoundary>
         </BrowserRouter>
     );
 }

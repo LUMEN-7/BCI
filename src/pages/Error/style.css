@@ -1,0 +1,775 @@
+@import "../../styles/global.css";
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.error-page {
+  min-height: 100vh;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  padding: 40px 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #00142e 0%,
+      #001a3a 45%,
+      #002550 100%
+    );
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   MOVING BACKGROUND
+========================================================= */
+
+.error-page::before {
+  content: "";
+
+  position: absolute;
+
+  width: 720px;
+  height: 720px;
+
+  top: -280px;
+  left: -180px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(99, 176, 255, 0.8) 0%,
+      rgba(5, 98, 210, 0.5) 30%,
+      rgba(5, 98, 210, 0.12) 58%,
+      transparent 72%
+    );
+
+  filter: blur(55px);
+
+  animation:
+    errorBlobOne 8s ease-in-out infinite alternate;
+
+  pointer-events: none;
+}
+
+.error-page::after {
+  content: "";
+
+  position: absolute;
+
+  width: 680px;
+  height: 680px;
+
+  right: -230px;
+  bottom: -280px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(157, 205, 255, 0.62) 0%,
+      rgba(50, 137, 240, 0.38) 32%,
+      rgba(5, 98, 210, 0.12) 58%,
+      transparent 74%
+    );
+
+  filter: blur(65px);
+
+  animation:
+    errorBlobTwo 10s ease-in-out infinite alternate;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   EXTRA MOVING LIGHT
+========================================================= */
+
+.error-background-glow {
+  position: absolute;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+.error-background-glow-one {
+  width: 520px;
+  height: 170px;
+
+  top: 36%;
+  left: -150px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(63, 152, 255, 0.42),
+      rgba(185, 220, 255, 0.22),
+      transparent
+    );
+
+  filter: blur(45px);
+
+  transform: rotate(-18deg);
+
+  animation:
+    errorLightSweep 7s ease-in-out infinite;
+}
+
+.error-background-glow-two {
+  width: 430px;
+  height: 430px;
+
+  top: 22%;
+  right: 8%;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(70, 158, 255, 0.22),
+      transparent 68%
+    );
+
+  filter: blur(35px);
+
+  animation:
+    errorFloatingGlow 6s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   GLASS CARD
+========================================================= */
+
+.error-content {
+  position: relative;
+  z-index: 2;
+
+  width: min(680px, 100%);
+
+  padding: 58px 50px 54px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.18);
+
+  border-radius: 28px;
+
+  /*
+    Importante:
+    o card precisa ser transparente o suficiente
+    para o degradê animado aparecer através dele.
+  */
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.105),
+      rgba(255, 255, 255, 0.035)
+    );
+
+  -webkit-backdrop-filter:
+    blur(22px) saturate(145%);
+
+  backdrop-filter:
+    blur(22px) saturate(145%);
+
+  box-shadow:
+    0 35px 90px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+
+  animation:
+    errorContentEnter 0.7s ease forwards;
+}
+
+
+/* brilho do vidro */
+
+.error-content::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      125deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      transparent 28%,
+      transparent 72%,
+      rgba(255, 255, 255, 0.025) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.error-label {
+  margin-bottom: 22px;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size: 9px;
+
+  letter-spacing: 4px;
+
+  color:
+    rgba(255, 255, 255, 0.42);
+}
+
+
+/* =========================================================
+   404
+========================================================= */
+
+.error-code-wrapper {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 0;
+
+  overflow: visible;
+}
+
+.error-code-wrapper h1 {
+  margin: 0;
+
+  font-family:
+    var(--font-title),
+    "Anton",
+    sans-serif;
+
+  font-size:
+    clamp(120px, 17vw, 210px);
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  letter-spacing: 7px;
+}
+
+.error-code-base {
+  color:
+    rgba(255, 255, 255, 0.06);
+
+  -webkit-text-stroke:
+    1px rgba(255, 255, 255, 0.16);
+}
+
+.error-code-fill {
+  position: absolute;
+
+  inset: 12px 0;
+
+  color: transparent;
+
+  background:
+    linear-gradient(
+      120deg,
+      #edf6ff 0%,
+      #cfe5ff 25%,
+      #8bc1ff 55%,
+      #4696f3 78%,
+      #0562d2 100%
+    );
+
+  -webkit-background-clip:
+    text;
+
+  background-clip:
+    text;
+
+  filter:
+    drop-shadow(
+      0 12px 26px
+      rgba(5, 98, 210, 0.2)
+    );
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.error-brand-name {
+  margin: 18px 0 0;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size: 10px;
+
+  letter-spacing: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.68);
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.error-message {
+  margin-top: 42px;
+}
+
+.error-message h2 {
+  margin: 0;
+
+  font-family:
+    var(--font-title),
+    "Anton",
+    sans-serif;
+
+  font-size:
+    clamp(28px, 4vw, 30px);
+
+  font-weight: 400;
+
+  line-height: 1.16;
+
+  color: #ffffff;
+}
+
+.error-message p {
+  max-width: 470px;
+
+  margin: 14px auto 0;
+
+  font-family:
+    var(--font-body);
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  color:
+    rgba(255, 255, 255, 0.54);
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.error-actions {
+  margin-top: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+}
+
+.error-button {
+  min-height: 46px;
+
+  padding: 0 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  border-radius: 10px;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size: 10px;
+
+  letter-spacing: 1.4px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.error-button svg {
+  font-size: 16px;
+}
+
+.error-button:hover {
+  transform:
+    translateY(-2px);
+}
+
+.error-button-primary {
+  border:
+    1px solid rgba(78, 158, 255, 0.75);
+
+  background:
+    linear-gradient(
+      135deg,
+      #0562d2,
+      #237fe9
+    );
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 10px 28px
+    rgba(5, 98, 210, 0.25);
+}
+
+.error-button-primary:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #0b6ee6,
+      #328cff
+    );
+}
+
+.error-button-secondary {
+  border:
+    1px solid rgba(255, 255, 255, 0.16);
+
+  background:
+    rgba(255, 255, 255, 0.065);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+
+  backdrop-filter:
+    blur(12px);
+
+  color:
+    rgba(255, 255, 255, 0.82);
+}
+
+.error-button-secondary:hover {
+  background:
+    rgba(255, 255, 255, 0.11);
+}
+
+/* =========================================================
+   ERROR DETAILS
+========================================================= */
+
+.error-technical-message {
+  width: 100%;
+  max-width: 430px;
+
+  margin: 22px auto 0;
+  padding: 12px 16px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  text-align:
+    left;
+}
+
+.error-technical-message span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size: 7px;
+
+  letter-spacing: 2px;
+
+  color:
+    rgba(255, 255, 255, 0.32);
+}
+
+.error-technical-message p {
+  margin: 0;
+
+  overflow-wrap: anywhere;
+
+  font-family:
+    var(--font-body);
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+  color:
+    rgba(255, 255, 255, 0.48);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.error-footer {
+  position: absolute;
+
+  bottom: 30px;
+  left: 50%;
+
+  z-index: 3;
+
+  transform:
+    translateX(-50%);
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  white-space: nowrap;
+}
+
+.error-footer span {
+  font-family:
+    var(--font-body-bold);
+
+  font-size: 7px;
+
+  letter-spacing: 2px;
+
+  color:
+    rgba(255, 255, 255, 0.24);
+}
+
+.error-footer div {
+  width: 30px;
+  height: 1px;
+
+  background:
+    rgba(255, 255, 255, 0.14);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes errorBlobOne {
+  0% {
+    transform:
+      translate(0, 0)
+      scale(1);
+  }
+
+  100% {
+    transform:
+      translate(360px, 220px)
+      scale(1.15);
+  }
+}
+
+@keyframes errorBlobTwo {
+  0% {
+    transform:
+      translate(0, 0)
+      scale(1);
+  }
+
+  100% {
+    transform:
+      translate(-330px, -190px)
+      scale(1.12);
+  }
+}
+
+@keyframes errorLightSweep {
+  0% {
+    transform:
+      translateX(-120px)
+      rotate(-18deg);
+
+    opacity: 0.3;
+  }
+
+  50% {
+    transform:
+      translateX(620px)
+      rotate(-18deg);
+
+    opacity: 0.75;
+  }
+
+  100% {
+    transform:
+      translateX(1200px)
+      rotate(-18deg);
+
+    opacity: 0.15;
+  }
+}
+
+@keyframes errorFloatingGlow {
+  from {
+    transform:
+      translate(-20px, -20px)
+      scale(0.95);
+  }
+
+  to {
+    transform:
+      translate(80px, 70px)
+      scale(1.1);
+  }
+}
+
+@keyframes errorContentEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(16px)
+      scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .error-page {
+    padding:
+      24px 18px 70px;
+  }
+
+  .error-content {
+    padding:
+      42px 22px 38px;
+
+    border-radius:
+      22px;
+  }
+
+  .error-label {
+    font-size:
+      7px;
+
+    letter-spacing:
+      3px;
+  }
+
+  .error-code-wrapper h1 {
+    font-size:
+      clamp(95px, 35vw, 140px);
+
+    letter-spacing:
+      4px;
+  }
+
+  .error-brand-name {
+    font-size:
+      8px;
+
+    letter-spacing:
+      3px;
+  }
+
+  .error-message {
+    margin-top:
+      32px;
+  }
+
+  .error-message h2 {
+    font-size:
+      28px;
+  }
+
+  .error-message p {
+    font-size:
+      12px;
+  }
+
+  .error-actions {
+    width:
+      100%;
+
+    flex-direction:
+      column;
+  }
+
+  .error-button {
+    width:
+      100%;
+  }
+
+  .error-page::before,
+  .error-page::after {
+    width:
+      430px;
+
+    height:
+      430px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .error-page::before,
+  .error-page::after,
+  .error-background-glow,
+  .error-content {
+    animation:
+      none;
+  }
+}

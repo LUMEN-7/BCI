@@ -30,7 +30,7 @@ export default function useRegisterController() {
         if (newErrors.name || newErrors.email || newErrors.password) return;
         try {
             localStorage.setItem('currentUser', JSON.stringify({ name, email, photo }));
-            navigate('/home');
+            navigate('/loading');
         } catch (error) {
             setAuthError(error.message || 'Não foi possível criar a conta.');
         }
