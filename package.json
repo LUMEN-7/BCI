@@ -12,6 +12,9 @@
   "dependencies": {
     "@fontsource/anton": "^5.2.7",
     "@fontsource/titillium-web": "^5.2.8",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "firebase": "^12.18.0",
     "framer-motion": "^13.2.0",
     "lucide-react": "^1.45.0",

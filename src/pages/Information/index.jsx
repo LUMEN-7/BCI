@@ -61,6 +61,8 @@ export default function Information() {
                 
                 <AiAnalysis 
                     analysis={controller.car.analysis} 
+                    loading={controller.analysisLoading}
+                    error={controller.analysisError}
                 />
             </div>
         </main>

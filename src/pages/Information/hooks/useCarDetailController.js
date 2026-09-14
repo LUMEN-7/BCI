@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {obterCarro} from '@/services/carsService'; // Ajuste o caminho do seu apiFetch
 import {removeFavorite, addFavorites} from '@/services/userService';
 import {exportCar} from '@/services/exportService';
+import { analisarVeiculo } from '@/services/aiService';
 import { appendRecentViewedCar } from '@/utils/recentViewedCars';
 
 // Adaptador: Transforma o JSON complexo do C# no formato exigido pelo Technical e Specs
@@ -136,10 +137,10 @@ function adaptCarToDetail(dto) {
             comfort: [],
         },
         analysis: {
-            strengths: ['Análise de IA individual em desenvolvimento.'],
-            weaknesses: ['-'],
-            bestUse: 'Consulte os dados técnicos numéricos acima.',
-            competitors: ['-']
+            strengths: [],
+            weaknesses: [],
+            bestUse: '',
+            competitors: []
         }
     };
 }
@@ -152,6 +153,8 @@ export default function useCarDetailController() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [car, setCar] = useState(null);
+    const [analysisLoading, setAnalysisLoading] = useState(false);
+    const [analysisError, setAnalysisError] = useState('');
     const [favorites, setFavorites] = useState([]); // Você pode inicializar true se vier do state
     
     // Controles de UI da Ficha Técnica
@@ -159,28 +162,56 @@ export default function useCarDetailController() {
     const [showSources, setShowSources] = useState(false);
 
     useEffect(() => {
+        let isCurrentRequest = true;
+
         async function fetchCarDetails() {
             if (!id) return;
             try {
                 setLoading(true);
                 // Busca o carro pelo ID no backend
                 const dto = await obterCarro(id);
+                if (!isCurrentRequest) return;
                 const adapted = adaptCarToDetail(dto);
                 setCar(adapted);
                 if (adapted) {
                     appendRecentViewedCar(adapted);
+                    setAnalysisLoading(true);
+                    setAnalysisError('');
+                    try {
+                        const analysis = await analisarVeiculo({
+                            nome: adapted.name,
+                            marca: adapted.brand,
+                            ano: adapted.specs.year.value,
+                            dados: dto,
+                        });
+                        if (!isCurrentRequest) return;
+                        setCar((currentCar) => currentCar
+                            ? { ...currentCar, analysis }
+                            : currentCar);
+                    } catch (analysisErr) {
+                        if (!isCurrentRequest) return;
+                        console.error(analysisErr);
+                        setAnalysisError(analysisErr.message || 'Não foi possível gerar a análise da IA.');
+                    } finally {
+                        if (isCurrentRequest) setAnalysisLoading(false);
+                    }
                 }
                 
                 // Opcional: Você pode fazer um GET em /UsuarioHistorico/modelos 
                 // aqui para verificar se esse carro já está favoritado
             } catch (err) {
+                if (!isCurrentRequest) return;
                 console.error(err);
                 setError('Não foi possível carregar os detalhes do veículo.');
             } finally {
-                setLoading(false);
+                if (isCurrentRequest) setLoading(false);
             }
         }
         fetchCarDetails();
+
+        return () => {
+            isCurrentRequest = false;
+        };
     }, [id]);
 
 
@@ -217,6 +248,8 @@ export default function useCarDetailController() {
         loading,
         error,
         car,
+        analysisLoading,
+        analysisError,
         favorites,
         openSection,
         showSources,
