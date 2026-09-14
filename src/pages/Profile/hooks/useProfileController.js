@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { profileMenuItems } from '../data';
+import {logout} from '@/services/userService'
 
 function getCurrentUser() {
 	try {
@@ -13,16 +14,19 @@ export default function useProfileController() {
 	const navigate = useNavigate();
 	const currentUser = getCurrentUser();
 
+	async function logoutUser(params) {
+			localStorage.removeItem('currentUser');
+			await logout();
+			navigate('/');
+	}
+
 	return {
-		displayName: currentUser?.name?.trim() || 'Usuário',
+		displayName: currentUser?.nomeExibicao?.trim() || currentUser?.userName || 'Usuário',
 		displayEmail: currentUser?.email || 'Sem e-mail',
-		profilePhoto: currentUser?.photo || null,
+		profilePhoto: currentUser?.fotoPerfilUrl || null,
 		menuItems: profileMenuItems,
 		handleBack: () => navigate('/home'),
 		handleMenuNavigate: (route) => navigate(route),
-		handleLogout: () => {
-			localStorage.removeItem('currentUser');
-			navigate('/');
-		},
+		handleLogout: () => {logoutUser()},
 	};
 }

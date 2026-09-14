@@ -4,15 +4,15 @@ import {
     FiLock,
 } from "react-icons/fi";
 
-import useResetPassword from "./hooks/useResetPassword";
+import useForgotPassword from "./hooks/useResetPassword";
 
 import VerificationSection from "./sections/VerificationSection";
 import NewPasswordSection from "./sections/NewPasswordSection";
 
 import "./style.css";
 
-export default function ResetPassword() {
-    const controller = useResetPassword();
+export default function ForgotPassword() {
+    const controller = useForgotPassword();
 
     return (
         <main className="reset-password-page">
@@ -23,34 +23,30 @@ export default function ResetPassword() {
                     onClick={controller.handleBack}
                 >
                     <FiArrowLeft />
-
                     VOLTAR
                 </button>
 
                 <header className="reset-password-header">
                     <div>
-                        <span className="reset-page-eyebrow">
-                            SEGURANÇA
-                        </span>
-
-                        <h1>REDEFINIR SENHA</h1>
+                        <span className="reset-page-eyebrow">SEGURANÇA</span>
+                        <h1>ESQUECI MINHA SENHA</h1>
                     </div>
 
                     <p>
                         Confirme sua identidade e defina uma nova senha
-                        para proteger sua conta.
+                        para recuperar o acesso à sua conta.
                     </p>
                 </header>
 
                 <form onSubmit={controller.handleSubmit}>
                     <VerificationSection
                         email={controller.email}
-                        verificationCode={
-                            controller.verificationCode
-                        }
+                        verificationCode={controller.verificationCode}
                         codeSent={controller.codeSent}
                         codeVerified={controller.codeVerified}
                         error={controller.errors.code}
+                        emailError={controller.errors.email}
+                        onEmailChange={controller.handleEmailChange}
                         onSendCode={controller.handleSendCode}
                         onCodeChange={controller.handleCodeChange}
                         onVerifyCode={controller.handleVerifyCode}
@@ -59,35 +55,20 @@ export default function ResetPassword() {
                     {controller.codeVerified && (
                         <NewPasswordSection
                             newPassword={controller.newPassword}
-                            confirmPassword={
-                                controller.confirmPassword
-                            }
-                            showNewPassword={
-                                controller.showNewPassword
-                            }
-                            showConfirmPassword={
-                                controller.showConfirmPassword
-                            }
+                            confirmPassword={controller.confirmPassword}
+                            showNewPassword={controller.showNewPassword}
+                            showConfirmPassword={controller.showConfirmPassword}
                             errors={controller.errors}
-                            onNewPasswordChange={
-                                controller.handleNewPasswordChange
-                            }
-                            onConfirmPasswordChange={
-                                controller.handleConfirmPasswordChange
-                            }
-                            onToggleNewPassword={
-                                controller.toggleNewPasswordVisibility
-                            }
-                            onToggleConfirmPassword={
-                                controller.toggleConfirmPasswordVisibility
-                            }
+                            onNewPasswordChange={controller.handleNewPasswordChange}
+                            onConfirmPasswordChange={controller.handleConfirmPasswordChange}
+                            onToggleNewPassword={controller.toggleNewPasswordVisibility}
+                            onToggleConfirmPassword={controller.toggleConfirmPasswordVisibility}
                         />
                     )}
 
                     {controller.successMessage && (
                         <div className="reset-password-success-message">
                             <FiCheck />
-
                             {controller.successMessage}
                         </div>
                     )}
@@ -105,10 +86,10 @@ export default function ResetPassword() {
                             <button
                                 type="submit"
                                 className="reset-button reset-button-save"
+                                disabled={controller.submitting}
                             >
                                 <FiLock />
-
-                                ALTERAR SENHA
+                                {controller.submitting ? "REDEFININDO..." : "REDEFINIR SENHA"}
                             </button>
                         </div>
                     )}

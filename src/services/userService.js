@@ -70,3 +70,6 @@ export async function desativarDoisFatores() {
   return apiFetch("/User/2fa/desativar", { method: "POST" });
 }
 
+export async function logout() {
+  return apiFetch("/User/logout", { method: "POST" });
+}
