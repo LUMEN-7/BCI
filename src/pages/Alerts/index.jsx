@@ -7,7 +7,35 @@ import List from "./sections/List";
 import useAlertsController from "./hooks/useAlertsController";
 
 export default function Alerts() {
-  const controller = useAlertsController();
+ const {
+        loading,
+        error,
+        alerts,
+        activeFilter,
+        filteredAlerts,
+        unreadCount,
+        setActiveFilter,
+        markAllAsRead,
+        markAsRead,
+        deleteAlert,
+        handleAlertClick,
+    } = useAlertsController();
+
+    if (loading) {
+        return (
+            <div className="alerts-loading">
+                <p>Carregando notificações...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="alerts-error">
+                <p>{error}</p>
+            </div>
+        );
+    }
 
   return (
     <main className="alerts-page">
@@ -15,22 +43,22 @@ export default function Alerts() {
 
       <section className="alerts-container">
         <Header
-          unreadCount={controller.unreadCount}
-          onMarkAllAsRead={controller.markAllAsRead}
+          unreadCount={unreadCount}
+          onMarkAllAsRead={markAllAsRead}
         />
-        <Summary unreadCount={controller.unreadCount} />
+        <Summary unreadCount={unreadCount} />
         <Toolbar
-          activeFilter={controller.activeFilter}
-          alertCount={controller.alerts.length}
-          unreadCount={controller.unreadCount}
-          onFilterChange={controller.setActiveFilter}
+          activeFilter={activeFilter}
+          alertCount={alerts.length}
+          unreadCount={unreadCount}
+          onFilterChange={setActiveFilter}
         />
         <List
-          alerts={controller.filteredAlerts}
-          activeFilter={controller.activeFilter}
-          onAlertClick={controller.handleAlertClick}
-          onMarkAsRead={controller.markAsRead}
-          onDelete={controller.deleteAlert}
+          alerts={filteredAlerts}
+          activeFilter={activeFilter}
+          onAlertClick={handleAlertClick}
+          onMarkAsRead={markAsRead}
+          onDelete={deleteAlert}
         />
       </section>
     </main>

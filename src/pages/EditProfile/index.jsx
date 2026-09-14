@@ -3,6 +3,7 @@ import { FiArrowLeft, FiCheck } from "react-icons/fi";
 import useEditProfile from "./hooks/useEditProfile";
 import AvatarSection from "./sections/AvatarSection";
 import PersonalDataSection from "./sections/PersonalDataSection";
+import TwoFactorSection from "./sections/TwoFactorSection"; // import novo
 
 import "./style.css";
 
@@ -52,6 +53,18 @@ export default function EditProfile() {
             onChange={controller.handleChange}
           />
 
+<<<<<<< HEAD
+=======
+           <TwoFactorSection doisFatores={controller.doisFatores} /> {/* seção nova */}
+
+          {controller.successMessage && (
+            <div className="profile-success-message">
+              <FiCheck />
+              {controller.successMessage}
+            </div>
+          )}
+
+>>>>>>> ai-analysis
           <div className="edit-profile-actions">
             <button
               type="button"
