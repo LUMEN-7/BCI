@@ -678,6 +678,8 @@
 .reset-button {
     min-height: 43px;
 
+    margin-top: 20px;
+
     padding: 0 18px;
 
     border: none;
