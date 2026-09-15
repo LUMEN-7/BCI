@@ -1,44 +1,146 @@
 import {
   IoArrowBack,
+  IoClose,
   IoHomeOutline,
   IoStar,
   IoStarOutline,
   IoDownloadOutline,
 } from "react-icons/io5";
+import { useState } from "react";
 import "./style.css";
 
-export default function Topbar({ favorite, onBack, onHome, onToggleFavorite }) {
+function ExportDialog({ handleExport, onClose }) {
+  const [format, setFormat] = useState("csv");
+  const [separator, setSeparator] = useState(",");
+
+  async function handleConfirm() {
+    await handleExport(format, separator);
+    onClose();
+  }
+
   return (
-    <header className="information-topbar">
-      <button className="back-button" onClick={onBack}>
-        <IoArrowBack />
-        Voltar
-      </button>
-      <div className="topbar-actions">
-        <button
-          className="home-button"
-          onClick={onHome}
-          aria-label="Ir para home"
-        >
-          <IoHomeOutline />
+    <div className="export-dialog-backdrop" role="presentation" onMouseDown={onClose}>
+      <section
+        className="export-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="export-dialog-title"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <div className="export-dialog-header">
+          <div>
+            <span className="export-dialog-eyebrow">Exportação</span>
+            <h2 id="export-dialog-title">Escolha o formato dos dados</h2>
+          </div>
+          <button
+            type="button"
+            className="export-dialog-close"
+            onClick={onClose}
+            aria-label="Fechar exportação"
+          >
+            <IoClose />
+          </button>
+        </div>
+
+        <div className="export-format-options">
+          {["csv", "xlsx", "json", "xml"].map((option) => (
+            <label
+              className={`export-format-option ${format === option ? "is-selected" : ""}`}
+              key={option}
+            >
+              <input
+                type="radio"
+                name="export-format"
+                value={option}
+                checked={format === option}
+                onChange={(event) => setFormat(event.target.value)}
+              />
+              <strong>{option.toUpperCase()}</strong>
+            </label>
+          ))}
+        </div>
+
+        {format === "csv" && (
+          <fieldset className="csv-separator-options">
+            <legend>Separador do CSV</legend>
+            <label>
+              <input
+                type="radio"
+                name="csv-separator"
+                value=","
+                checked={separator === ","}
+                onChange={() => setSeparator(",")}
+              />
+              Vírgula (,)
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="csv-separator"
+                value=";"
+                checked={separator === ";"}
+                onChange={() => setSeparator(";")}
+              />
+              Ponto e vírgula (;)
+            </label>
+          </fieldset>
+        )}
+
+        <div className="export-dialog-actions">
+          <button type="button" className="export-dialog-cancel" onClick={onClose}>
+            Cancelar
+          </button>
+          <button type="button" className="export-dialog-confirm" onClick={handleConfirm}>
+            Baixar arquivo
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export default function Topbar({ favorites, onBack, onHome, handleExport, onToggleFavorite }) {
+  const [isExportOpen, setIsExportOpen] = useState(false);
+
+  return (
+    <>
+      <header className="information-topbar">
+        <button className="back-button" onClick={onBack}>
+          <IoArrowBack />
+          Voltar
         </button>
-        <button
-          className={`favorite-button ${favorite ? "is-favorite" : ""}`}
-          onClick={onToggleFavorite}
-          aria-label="Favoritar modelo"
-        >
-          {favorite ? <IoStar /> : <IoStarOutline />}
-        </button>
-        <button
-          type="button"
-          className="export-data-button"
-          // onClick={onExport}
-          aria-label="Exportar dados"
-        >
-          <IoDownloadOutline />
-          <span>Exportar dados</span>
-        </button>
-      </div>
-    </header>
+        <div className="topbar-actions">
+          <button
+            className="home-button"
+            onClick={onHome}
+            aria-label="Ir para home"
+          >
+            <IoHomeOutline />
+          </button>
+          <button
+            className={`favorite-button ${favorites ? "is-favorite" : ""}`}
+            onClick={onToggleFavorite}
+            aria-label="Favoritar modelo"
+          >
+            {favorites ? <IoStar /> : <IoStarOutline />}
+          </button>
+          <button
+            type="button"
+            className="export-data-button"
+            onClick={() => setIsExportOpen(true)}
+            aria-label="Exportar dados"
+          >
+            <IoDownloadOutline />
+            <span>Exportar dados</span>
+          </button>
+        </div>
+      </header>
+      {isExportOpen && (
+        <ExportDialog
+          handleExport={handleExport}
+          onClose={() => setIsExportOpen(false)}
+        />
+      )}
+    </>
   );
 }

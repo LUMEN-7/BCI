@@ -1,3 +1,4 @@
+import React from "react";
 import {
   IoCheckmarkCircleOutline,
   IoChevronDown,
@@ -5,10 +6,13 @@ import {
   IoDocumentTextOutline,
   IoHardwareChipOutline,
   IoInformationCircleOutline,
+  IoLinkOutline,
+  IoOpenOutline,
   IoTimeOutline,
 } from "react-icons/io5";
 
 import { sources } from "../../data";
+import { useTechnical } from "../../hooks/useTechnicalController";
 import "./style.css";
 
 const legendItems = [
@@ -18,6 +22,126 @@ const legendItems = [
   ["low", "Baixa confiança", "Abaixo de 60%"],
   ["ia", "IA", "Análise gerada por IA"],
 ];
+
+function formatSourceName(str) {
+  if (!str) return "Fonte Externa";
+  const strVal = String(str).trim();
+  const clean = strVal.replace(/^https?:\/\//i, "").replace(/^www\./i, "").split("/")[0];
+
+  const known = {
+    "webmotors.com.br": "Webmotors",
+    "webmotors": "Webmotors",
+    "icarros.com.br": "iCarros",
+    "icarros": "iCarros",
+    "kbb.com.br": "KBB Brasil",
+    "kbb": "KBB Brasil",
+    "carrosnaweb.com.br": "Carros na Web",
+    "carrosnaweb": "Carros na Web",
+    "quatrorodas.abril.com.br": "Quatro Rodas",
+    "quatrorodas": "Quatro Rodas",
+    "autoesporte.globo.com": "Autoesporte",
+    "autoesporte": "Autoesporte",
+    "mobiauto.com.br": "Mobiauto",
+    "mobiauto": "Mobiauto",
+    "fipe.org.br": "Tabela Fipe",
+    "fipe": "Tabela Fipe",
+    "manufacturer": "Fabricante",
+    "technicaldatabase": "Base técnica",
+    "internalanalysis": "Análise Lumen",
+  };
+
+  const lower = clean.toLowerCase();
+  if (known[lower]) return known[lower];
+
+  if (clean.includes(".")) {
+    const parts = clean.split(".");
+    return parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+  }
+  return clean.charAt(0).toUpperCase() + clean.slice(1);
+}
+
+function getSourceDetails(sourceId, car) {
+  if (!sourceId) return null;
+
+  const rawSources = car?.sources || car?.fontes;
+  let sourceObj = typeof sourceId === "object" ? sourceId : null;
+
+  if (!sourceObj && rawSources) {
+    if (Array.isArray(rawSources)) {
+      const found = rawSources.find(
+        (s) =>
+          String(s?.id ?? s?.Id ?? "") === String(sourceId) ||
+          String(s?.url ?? s?.Url ?? "") === String(sourceId) ||
+          String(s?.link ?? s?.Link ?? "") === String(sourceId) ||
+          String(s?.site ?? s?.Site ?? "") === String(sourceId) ||
+          String(s?.nome ?? s?.Nome ?? "") === String(sourceId) ||
+          String(s?.name ?? s?.Name ?? "") === String(sourceId)
+      );
+      if (found) {
+        sourceObj = found;
+      }
+    } else if (typeof rawSources === "object" && rawSources[sourceId]) {
+      sourceObj = rawSources[sourceId];
+    }
+  }
+
+  if (!sourceObj && sources && sources[sourceId]) {
+    sourceObj = sources[sourceId];
+  }
+
+  let rawUrl =
+    sourceObj?.url ||
+    sourceObj?.Url ||
+    sourceObj?.link ||
+    sourceObj?.Link ||
+    sourceObj?.site ||
+    sourceObj?.Site ||
+    (typeof sourceId === "string" ? sourceId : null);
+
+  const isUrl = Boolean(
+    rawUrl &&
+      typeof rawUrl === "string" &&
+      !/^\d+$/.test(rawUrl.trim()) &&
+      (rawUrl.includes(".") || rawUrl.startsWith("http"))
+  );
+
+  const cleanDisplayLink = isUrl
+    ? rawUrl.replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/$/, "")
+    : null;
+
+  let rawName =
+    cleanDisplayLink ||
+    sourceObj?.name ||
+    sourceObj?.Nome ||
+    sourceObj?.nome ||
+    formatSourceName(rawUrl || sourceId);
+
+  if (/^\d+$/.test(String(rawName).trim())) {
+    rawName = `Fonte ${rawName}`;
+  }
+
+  const displayName = cleanDisplayLink || rawName;
+
+  const href = isUrl
+    ? rawUrl.startsWith("http://") || rawUrl.startsWith("https://")
+      ? rawUrl
+      : `https://${cleanDisplayLink}`
+    : null;
+
+  return {
+    id: sourceObj?.id || sourceObj?.Id || sourceId,
+    name: displayName,
+    displayLink: displayName,
+    href,
+    type: sourceObj?.type || sourceObj?.tipo || sourceObj?.Tipo || (isUrl ? "Portal automotivo" : "Fonte de dados"),
+    description:
+      sourceObj?.description ||
+      sourceObj?.descricao ||
+      sourceObj?.Descricao ||
+      (isUrl ? `Dados técnicos extraídos de ${displayName}.` : `Informações técnicas validadas.`),
+    url: href,
+  };
+}
 
 function LegendItem({ type, label, description }) {
   return (
@@ -33,14 +157,34 @@ function LegendItem({ type, label, description }) {
   );
 }
 
-function SourceTag({ sourceId }) {
-  const source = sources[sourceId];
-  return source ? (
-    <span className="source-tag">
+function SourceTag({ sourceId, car }) {
+  const source = getSourceDetails(sourceId, car);
+  if (!source) return null;
+
+  const displayLabel = source.displayLink || source.name;
+
+  if (source.href) {
+    return (
+      <a
+        href={source.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="source-tag source-tag-link"
+        title={`Abrir fonte: ${source.href}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <IoLinkOutline />
+        <span>{displayLabel}</span>
+      </a>
+    );
+  }
+
+  return (
+    <span className="source-tag" title={source.description || source.name}>
       <IoDocumentTextOutline />
-      {source.name}
+      <span>{displayLabel}</span>
     </span>
-  ) : null;
+  );
 }
 
 function ConfidenceBadge({ confidence }) {
@@ -68,10 +212,11 @@ function Accordion({
   verified,
   iaGen,
   confidence,
+  car,
 }) {
   return (
     <div className={`accordion ${open ? "is-open" : ""}`}>
-      <button className="accordion-trigger" onClick={onClick}>
+      <button type="button" className="accordion-trigger" onClick={onClick}>
         <span className="accordion-title">{title}</span>
         <span className="accordion-badges">
           {verified && (
@@ -94,23 +239,45 @@ function Accordion({
           {open ? <IoChevronUp /> : <IoChevronDown />}
         </span>
       </button>
+
       {open && (
         <div className="accordion-content">
           <div className="technical-list">
-            {items.map((item, index) => (
-              <div
-                className="technical-row"
-                key={`${item.label || item.value}-${index}`}
-              >
-                <div className="technical-value">
-                  <span className="technical-label">
-                    {item.label || item.value}
-                  </span>
-                  {item.label && <strong>{item.value}</strong>}
+            {items?.map((item, index) => {
+              const isUninformed =
+                !item.value ||
+                item.value === "Não informado" ||
+                item.value === "N/A";
+
+              return (
+                <div
+                  className="technical-row"
+                  key={`${item.label || item.value}-${index}`}
+                >
+                  <div className="technical-value">
+                    <span className="technical-label">
+                      {item.label || item.value}
+                    </span>
+                    {item.label && (
+                      <strong>{isUninformed ? "Não informado" : item.value}</strong>
+                    )}
+                  </div>
+
+                  {/* Exibe o selo de IA se a especificação estiver como não informada */}
+                  {isUninformed ? (
+                    <span
+                      className="source-tag source-tag-ia"
+                      title="Dado gerado ou estimado por IA"
+                    >
+                      <IoHardwareChipOutline />
+                      <span>IA</span>
+                    </span>
+                  ) : (
+                    item.source && <SourceTag sourceId={item.source} car={car} />
+                  )}
                 </div>
-                {item.source && <SourceTag sourceId={item.source} />}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -118,47 +285,140 @@ function Accordion({
   );
 }
 
-function getSourceUsage(car, sourceId) {
+function getSourceUsage(car, source) {
+  const sourceName = typeof source === "object" ? source.name : source;
+  const sourceId = typeof source === "object" ? source.id : source;
+  const sourceLink = typeof source === "object" ? source.displayLink : null;
+
+  const matchesSource = (item) => {
+    if (!item?.source) return false;
+    if (item.source === sourceId || item.source === sourceName || item.source === sourceLink) return true;
+    const details = getSourceDetails(item.source, car);
+    return details?.name === sourceName || details?.id === sourceId || details?.displayLink === sourceLink;
+  };
+
   const usage = [];
-  if (
-    [car.specs.engine, car.specs.power, car.specs.type].some(
-      (item) => item.source === sourceId,
+  if (car?.specs) {
+    if (
+      [
+        car.specs.engine,
+        car.specs.power,
+        car.specs.type,
+        car.specs.model,
+        car.specs.brand,
+        car.specs.year,
+      ].some(matchesSource)
     )
-  )
-    usage.push("dados principais");
-  if (
-    [car.specs.cityConsumption, car.specs.highwayConsumption].some(
-      (item) => item.source === sourceId,
+      usage.push("dados principais");
+
+    if (
+      [
+        car.specs.cityConsumption,
+        car.specs.highwayConsumption,
+        car.specs.consumption,
+      ].some(matchesSource)
     )
-  )
-    usage.push("consumos");
-  if (
-    [car.specs.length, car.specs.width, car.specs.height].some(
-      (item) => item.source === sourceId,
+      usage.push("consumos");
+
+    if (
+      [
+        car.specs.length,
+        car.specs.width,
+        car.specs.height,
+        car.specs.wheelbase,
+      ].some(matchesSource)
     )
-  )
-    usage.push("dimensões");
-  Object.entries(car.sections).forEach(([key, items]) => {
-    if (items.some((item) => item.source === sourceId))
-      usage.push(
-        key === "security"
-          ? "segurança"
-          : key === "technology"
-            ? "tecnologia"
-            : key,
-      );
-  });
-  return usage.length ? usage.join(" · ") : "informações técnicas";
+      usage.push("dimensões");
+
+    if (
+      [
+        car.specs.tireType,
+        car.specs.rim,
+        car.specs.tireWidth,
+        car.specs.tireProfile,
+      ].some(matchesSource)
+    )
+      usage.push("pneus");
+
+    if (
+      [
+        car.specs.tankCapacity,
+        car.specs.fuelType,
+        car.specs.loadCapacity,
+        car.specs.towingCapacity,
+      ].some(matchesSource)
+    )
+      usage.push("capacidades e extras");
+
+    if (
+      [
+        car.specs.torque,
+        car.specs.powerRpm,
+        car.specs.torqueRpm,
+        car.specs.transmission,
+        car.specs.drivetrain,
+        car.specs.driveModes,
+      ].some(matchesSource)
+    )
+      usage.push("transmissão e performance");
+  }
+
+  if (car?.sections) {
+    Object.entries(car.sections).forEach(([key, items]) => {
+      if (Array.isArray(items) && items.some(matchesSource)) {
+        const labelMap = {
+          security: "segurança",
+          technology: "tecnologia",
+          performance: "performance",
+          comfort: "conforto",
+        };
+        usage.push(labelMap[key] || key);
+      }
+    });
+  }
+
+  return usage.length ? usage.join(" · ") : "especificações técnicas";
 }
 
 function SourcesPanel({ car }) {
-  const usedSources = new Set();
-  Object.values(car.specs).forEach(
-    (item) => item?.source && usedSources.add(item.source),
-  );
-  Object.values(car.sections)
-    .flat()
-    .forEach((item) => item?.source && usedSources.add(item.source));
+  const usedSourceIds = new Set();
+
+  if (car?.specs) {
+    Object.values(car.specs).forEach(
+      (item) => item?.source && usedSourceIds.add(item.source)
+    );
+  }
+
+  if (car?.sections) {
+    Object.values(car.sections)
+      .flat()
+      .forEach((item) => item?.source && usedSourceIds.add(item.source));
+  }
+
+  const rawSources = car?.sources || car?.fontes;
+  if (rawSources) {
+    if (Array.isArray(rawSources)) {
+      rawSources.forEach((s) => {
+        if (s) usedSourceIds.add(s.url || s.Url || s.nome || s.Nome || s.name || s.id || s.Id || s);
+      });
+    } else if (typeof rawSources === "object") {
+      Object.keys(rawSources).forEach((k) => usedSourceIds.add(k));
+    }
+  }
+
+  const sourcesMap = new Map();
+  usedSourceIds.forEach((sourceId) => {
+    const details = getSourceDetails(sourceId, car);
+    if (details) {
+      const key = String(details.href || details.displayLink || details.name || details.id || sourceId);
+      if (!sourcesMap.has(key)) {
+        sourcesMap.set(key, details);
+      }
+    }
+  });
+
+  const validSources = Array.from(sourcesMap.values());
+
   return (
     <div className="sources-panel">
       <div className="sources-panel-header">
@@ -166,103 +426,54 @@ function SourcesPanel({ car }) {
           <span className="section-eyebrow">Rastreabilidade</span>
           <h3>Fontes dos dados</h3>
         </div>
-        <span className="sources-total">{usedSources.size} fontes</span>
+        <span className="sources-total">
+          {validSources.length} {validSources.length === 1 ? "fonte" : "fontes"}
+        </span>
       </div>
       <div className="sources-list">
-        {Array.from(usedSources).map((sourceId) => {
-          const source = sources[sourceId];
-          return (
-            <div className="source-card" key={sourceId}>
+        {validSources.length === 0 ? (
+          <div className="sources-empty">
+            <IoDocumentTextOutline />
+            <p>Nenhuma fonte disponível no momento</p>
+            <small>Os dados técnicos serão rastreados quando forem carregados.</small>
+          </div>
+        ) : (
+          validSources.map((source) => (
+            <div className="source-card" key={source.id || source.displayLink || source.name}>
               <div className="source-icon">
-                <IoDocumentTextOutline />
+                {source.href ? <IoLinkOutline /> : <IoDocumentTextOutline />}
               </div>
               <div className="source-content">
                 <div className="source-title-row">
-                  <strong>{source.name}</strong>
-                  <span>{source.type}</span>
+                  {source.href ? (
+                    <a
+                      href={source.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="source-card-link"
+                      title={`Acessar ${source.href}`}
+                    >
+                      <strong>{source.displayLink}</strong>
+                      <IoOpenOutline className="source-open-icon" />
+                    </a>
+                  ) : (
+                    <strong>{source.name}</strong>
+                  )}
+                  <span className="source-type-badge">{source.type}</span>
                 </div>
                 <p>{source.description}</p>
                 <div className="source-items">
                   <span>Utilizada em:</span>
-                  <strong>{getSourceUsage(car, sourceId)}</strong>
+                  <strong>{getSourceUsage(car, source)}</strong>
                 </div>
               </div>
             </div>
-          );
-        })}
+          ))
+        )}
       </div>
     </div>
   );
 }
-
-const baseGroups = (specs) => [
-  {
-    key: "base",
-    title: "Dados Base",
-    items: [
-      ["Modelo", "model"],
-      ["Marca", "brand"],
-      ["Ano", "year"],
-      ["Modos de Condução", "driveModes"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    confidence: 97,
-  },
-  {
-    key: "specs",
-    title: "Especificações",
-    items: [
-      ["Potência", "power"],
-      ["Torque", "torque"],
-      ["Potência RPM", "powerRpm"],
-      ["Torque RPM", "torqueRpm"],
-      ["Transmissão", "transmission"],
-      ["Tração", "drivetrain"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    confidence: 80,
-  },
-  {
-    key: "consumption",
-    title: "Consumos",
-    items: [
-      ["Cidade", "cityConsumption"],
-      ["Estrada", "highwayConsumption"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    iaGen: true,
-  },
-  {
-    key: "dimensions",
-    title: "Dimensões",
-    items: [
-      ["Comprimento", "length"],
-      ["Largura", "width"],
-      ["Altura", "height"],
-      ["Entre-Eixos", "wheelbase"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    confidence: 87,
-  },
-  {
-    key: "tires",
-    title: "Pneus",
-    items: [
-      ["Tipo", "tireType"],
-      ["Aro", "rim"],
-      ["Largura", "tireWidth"],
-      ["Perfil", "tireProfile"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    verified: true,
-  },
-  {
-    key: "extras",
-    title: "Extras",
-    items: [
-      ["Capacidade do Tanque", "tankCapacity"],
-      ["Tipo de Combustível", "fuelType"],
-      ["Capacidade de Carga", "loadCapacity"],
-      ["Capacidade de Reboque", "towingCapacity"],
-    ].map(([label, key]) => ({ label, ...specs[key] })),
-    confidence: 81,
-  },
-];
 
 export default function Technical({
   car,
@@ -271,33 +482,14 @@ export default function Technical({
   onToggleSection,
   onToggleSources,
 }) {
-  const groups = [
-    ...baseGroups(car.specs),
-    {
-      key: "performance",
-      title: "Performance",
-      items: car.sections.performance,
-      verified: true,
-    },
-    {
-      key: "security",
-      title: "Segurança",
-      items: car.sections.security,
-      confidence: 95,
-    },
-    {
-      key: "technology",
-      title: "Tecnologia",
-      items: car.sections.technology,
-      verified: true,
-    },
-    {
-      key: "comfort",
-      title: "Conforto",
-      items: car.sections.comfort,
-      confidence: 67,
-    },
-  ];
+  const { groups } = useTechnical(car);
+
+  const handleToggleSources = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onToggleSources();
+  };
+
   return (
     <section className="technical-section">
       <div className="technical-heading">
@@ -311,8 +503,8 @@ export default function Technical({
           </div>
           <div>
             <span>Última atualização</span>
-            <strong>{car.lastUpdated}</strong>
-            <small>{car.updatedAgo}</small>
+            <strong>{car?.lastUpdated || "Hoje"}</strong>
+            <small>{car?.updatedAgo || "Base atualizada"}</small>
           </div>
         </div>
       </div>
@@ -325,7 +517,7 @@ export default function Technical({
               <span>Entenda como cada informação foi validada.</span>
             </div>
           </div>
-          <button className="sources-toggle" onClick={onToggleSources}>
+          <button type="button" className="sources-toggle" onClick={handleToggleSources}>
             <IoDocumentTextOutline />
             {showSources ? "Ocultar fontes" : "Ver fontes dos dados"}
           </button>
@@ -348,6 +540,7 @@ export default function Technical({
           <Accordion
             key={key}
             {...group}
+            car={car}
             open={openSection === key}
             onClick={() => onToggleSection(key)}
           />
@@ -361,6 +554,7 @@ export default function Technical({
           <Accordion
             key={key}
             {...group}
+            car={car}
             open={openSection === key}
             onClick={() => onToggleSection(key)}
           />

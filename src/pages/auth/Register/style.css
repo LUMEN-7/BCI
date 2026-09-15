@@ -14,7 +14,7 @@
 }
 .register-container {
   width: min(1100px, 100%);
-  height: min(760px, calc(100vh - 64px));
+  height: min(680px, calc(100svh - 80px));
   background: var(--color-surface);
   border-radius: 28px;
   overflow: hidden;
@@ -26,7 +26,7 @@
     padding: 24px;
   }
   .register-container {
-    height: calc(100vh - 48px);
+    height: calc(100svh - 80px);
   }
 }
 @media (max-width: 700px) {

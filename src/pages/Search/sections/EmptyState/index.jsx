@@ -1,4 +1,4 @@
-import { IoArrowForward, IoSearchOutline } from "react-icons/io5";
+import { IoArrowForward, IoRefreshOutline, IoSearchOutline } from "react-icons/io5";
 
 import "./style.css";
 
@@ -9,15 +9,16 @@ export default function EmptyState({ onClear }) {
         <IoSearchOutline />
       </div>
       <span className="section-label">NENHUM RESULTADO</span>
-      <h2>NENHUM MODELO ENCONTRADO.</h2>
+      <h2>NENHUM MODELO ENCONTRADO</h2>
       <p>
-        Não encontramos veículos para os filtros selecionados. Tente alterar sua
-        pesquisa.
+        Tente alterar os termos da busca ou remover alguns filtros.
       </p>
-      <button type="button" className="empty-button" onClick={onClear}>
-        LIMPAR FILTROS
-        <IoArrowForward />
-      </button>
+      {onClear && (
+        <button type="button" className="empty-button" onClick={onClear}>
+          <span>LIMPAR FILTROS</span>
+          <IoRefreshOutline />
+        </button>
+      )}
     </section>
   );
 }

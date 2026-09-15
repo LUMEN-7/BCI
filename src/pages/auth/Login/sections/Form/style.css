@@ -400,8 +400,6 @@
 .login-divider span {
   flex-shrink: 0;
 
-  background: var(--color-surface);
-
   padding: 0 2px;
 }
 

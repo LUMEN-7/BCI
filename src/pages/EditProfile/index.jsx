@@ -53,8 +53,6 @@ export default function EditProfile() {
             onChange={controller.handleChange}
           />
 
-<<<<<<< HEAD
-=======
            <TwoFactorSection doisFatores={controller.doisFatores} /> {/* seção nova */}
 
           {controller.successMessage && (
@@ -64,7 +62,7 @@ export default function EditProfile() {
             </div>
           )}
 
->>>>>>> ai-analysis
+
           <div className="edit-profile-actions">
             <button
               type="button"

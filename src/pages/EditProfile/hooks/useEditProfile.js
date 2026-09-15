@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { atualizarPerfil, uploadFotoPerfil, removerFotoPerfil, iniciarDoisFatores, confirmarDoisFatores, desativarDoisFatores } from "@/services/userService";
 
@@ -10,30 +10,6 @@ export default function useEditProfile() {
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
 
-<<<<<<< HEAD
-  const initialData = {
-    name: currentUser?.name || "",
-    email: currentUser?.email || "",
-    photo: currentUser?.photo || null,
-  };
-
-  const [formData, setFormData] = useState(initialData);
-
-  const [errors, setErrors] = useState({});
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setFormData((previous) => ({
-      ...previous,
-      [name]: value,
-    }));
-
-    setErrors((previous) => ({
-      ...previous,
-      [name]: "",
-    }));
-=======
   const [formData, setFormData] = useState({
     name: currentUser?.nomeExibicao || currentUser?.userName || "",
     email: currentUser?.email || "",
@@ -61,24 +37,15 @@ export default function useEditProfile() {
     setFormData((p) => ({ ...p, [name]: value }));
     setErrors((p) => ({ ...p, [name]: "" }));
     setSuccessMessage("");
->>>>>>> ai-analysis
   }
 
   async function handlePhotoChange(event) {
     const file = event.target.files?.[0];
     if (!file) return;
 
-<<<<<<< HEAD
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-    ];
-=======
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
     if (!allowedTypes.includes(file.type)) return setErrors((p) => ({ ...p, photo: "Selecione uma imagem JPG, PNG ou WEBP." }));
     if (file.size > 2 * 1024 * 1024) return setErrors((p) => ({ ...p, photo: "A imagem deve ter no máximo 2 MB." }));
->>>>>>> ai-analysis
 
     setUploadingPhoto(true);
     setErrors((p) => ({ ...p, photo: "" }));
@@ -93,47 +60,6 @@ export default function useEditProfile() {
       setUploadingPhoto(false);
       event.target.value = "";
     }
-<<<<<<< HEAD
-
-    const maxSize = 2 * 1024 * 1024;
-
-    if (file.size > maxSize) {
-      setErrors((previous) => ({
-        ...previous,
-        photo: "A imagem deve ter no máximo 2 MB.",
-      }));
-
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setFormData((previous) => ({
-        ...previous,
-        photo: reader.result,
-      }));
-
-      setErrors((previous) => ({
-        ...previous,
-        photo: "",
-      }));
-    };
-
-    reader.readAsDataURL(file);
-  }
-
-  function handleRemovePhoto() {
-    setFormData((previous) => ({
-      ...previous,
-      photo: null,
-    }));
-
-    setErrors((previous) => ({
-      ...previous,
-      photo: "",
-    }));
-=======
   }
 
   async function handleRemovePhoto() {
@@ -147,67 +73,15 @@ export default function useEditProfile() {
     } finally {
       setUploadingPhoto(false);
     }
->>>>>>> ai-analysis
   }
 
   function validateForm() {
     const newErrors = {};
-<<<<<<< HEAD
-
-    const trimmedName = formData.name.trim();
-
-    if (!trimmedName) {
-      newErrors.name = "Informe seu nome.";
-    } else if (trimmedName.length < 3) {
-      newErrors.name = "O nome deve ter pelo menos 3 letras.";
-    }
-
-=======
     if (!formData.name.trim()) newErrors.name = "Informe seu nome.";
->>>>>>> ai-analysis
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
 
-<<<<<<< HEAD
-  const hasChanges = useMemo(() => {
-    return (
-      formData.name.trim() !== initialData.name.trim() ||
-      formData.photo !== initialData.photo
-    );
-  }, [
-    formData.name,
-    formData.photo,
-    initialData.name,
-    initialData.photo,
-  ]);
-
-  function handleSubmit(event) {
-    event.preventDefault();
-
-    if (!hasChanges) return;
-
-    if (!validateForm()) return;
-
-    const updatedUser = {
-      ...currentUser,
-      name: formData.name.trim(),
-      email: currentUser?.email,
-      photo: formData.photo,
-    };
-
-    localStorage.setItem(
-      "currentUser",
-      JSON.stringify(updatedUser)
-    );
-
-    navigate("/profile", {
-      state: {
-        successMessage:
-          "Informações alteradas com sucesso.",
-      },
-    });
-=======
   async function handleSubmit(event) {
     event.preventDefault();
     if (!validateForm()) return;
@@ -223,7 +97,6 @@ export default function useEditProfile() {
     } finally {
       setSaving(false);
     }
->>>>>>> ai-analysis
   }
 
   async function handleIniciarDoisFatores() {
@@ -282,17 +155,6 @@ export default function useEditProfile() {
   }
 
   return {
-<<<<<<< HEAD
-    formData,
-    errors,
-    hasChanges,
-    handleChange,
-    handlePhotoChange,
-    handleRemovePhoto,
-    handleSubmit,
-    handleCancel,
-    handleBack,
-=======
     formData, errors, successMessage, saving, uploadingPhoto,
     handleChange, handlePhotoChange, handleRemovePhoto, handleSubmit,
     handleCancel: () => navigate("/profile"),
@@ -305,6 +167,5 @@ export default function useEditProfile() {
       desativar: handleDesativarDoisFatores,
       cancelar: handleCancelarDoisFatores,
     },
->>>>>>> ai-analysis
   };
 }

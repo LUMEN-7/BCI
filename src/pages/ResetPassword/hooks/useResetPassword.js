@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import apiFetch from "@/services/api"; // ajuste o caminho conforme sua estrutura
 
 function getCurrentUser() {
     try {
@@ -11,12 +12,11 @@ function getCurrentUser() {
 
 export default function useResetPassword() {
     const navigate = useNavigate();
-
     const currentUser = getCurrentUser();
 
-    const [verificationCode, setVerificationCode] = useState("");
-    const [generatedCode, setGeneratedCode] = useState("");
+    const email = currentUser?.email || "";
 
+    const [verificationCode, setVerificationCode] = useState("");
     const [codeSent, setCodeSent] = useState(false);
     const [codeVerified, setCodeVerified] = useState(false);
 
@@ -28,75 +28,48 @@ export default function useResetPassword() {
 
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState("");
+    const [sendingCode, setSendingCode] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
-    const email = currentUser?.email || "";
-
-    function generateCode() {
-        return Math.floor(100000 + Math.random() * 900000).toString();
-    }
-
-    function handleSendCode() {
-        const code = generateCode();
-
-        setGeneratedCode(code);
-        setCodeSent(true);
-        setCodeVerified(false);
-        setVerificationCode("");
+    async function handleSendCode() {
+        setSendingCode(true);
+        setErrors((p) => ({ ...p, code: "" }));
         setSuccessMessage("");
 
-        setErrors((previous) => ({
-            ...previous,
-            code: "",
-        }));
-
-        console.log("Código de verificação BCI:", code);
+        try {
+            await apiFetch("/User/esqueci-senha", {
+                method: "POST",
+                body: JSON.stringify({ email }),
+            });
+            setCodeSent(true);
+            setCodeVerified(false);
+            setVerificationCode("");
+        } catch (err) {
+            setErrors((p) => ({ ...p, code: err.message || "Não foi possível enviar o código." }));
+        } finally {
+            setSendingCode(false);
+        }
     }
 
     function handleCodeChange(event) {
         const value = event.target.value.replace(/\D/g, "").slice(0, 6);
-
         setVerificationCode(value);
-
-        setErrors((previous) => ({
-            ...previous,
-            code: "",
-        }));
+        setErrors((p) => ({ ...p, code: "" }));
     }
 
+    // Igual no ForgotPassword: o back só valida o código junto da senha nova,
+    // então isso aqui só confere o formato (6 dígitos) pra liberar a próxima etapa.
     function handleVerifyCode() {
         if (!verificationCode) {
-            setErrors((previous) => ({
-                ...previous,
-                code: "Informe o código de verificação.",
-            }));
-
+            setErrors((p) => ({ ...p, code: "Informe o código de verificação." }));
             return;
         }
-
         if (verificationCode.length !== 6) {
-            setErrors((previous) => ({
-                ...previous,
-                code: "O código deve conter 6 números.",
-            }));
-
+            setErrors((p) => ({ ...p, code: "O código deve conter 6 números." }));
             return;
         }
-
-        if (verificationCode !== generatedCode) {
-            setErrors((previous) => ({
-                ...previous,
-                code: "Código inválido. Verifique e tente novamente.",
-            }));
-
-            return;
-        }
-
         setCodeVerified(true);
-
-        setErrors((previous) => ({
-            ...previous,
-            code: "",
-        }));
+        setErrors((p) => ({ ...p, code: "" }));
     }
 
     function validatePassword() {
@@ -104,17 +77,12 @@ export default function useResetPassword() {
 
         if (!newPassword) {
             passwordErrors.newPassword = "Digite sua nova senha.";
-        } else {
-            if (newPassword.length < 8) {
-                passwordErrors.newPassword =
-                    "A senha deve possuir pelo menos 8 caracteres.";
-            } else if (!/[A-Z]/.test(newPassword)) {
-                passwordErrors.newPassword =
-                    "A senha deve possuir pelo menos uma letra maiúscula.";
-            } else if (!/[0-9]/.test(newPassword)) {
-                passwordErrors.newPassword =
-                    "A senha deve possuir pelo menos um número.";
-            }
+        } else if (newPassword.length < 8) {
+            passwordErrors.newPassword = "A senha deve possuir pelo menos 8 caracteres.";
+        } else if (!/[A-Z]/.test(newPassword)) {
+            passwordErrors.newPassword = "A senha deve possuir pelo menos uma letra maiúscula.";
+        } else if (!/[0-9]/.test(newPassword)) {
+            passwordErrors.newPassword = "A senha deve possuir pelo menos um número.";
         }
 
         if (!confirmPassword) {
@@ -123,57 +91,58 @@ export default function useResetPassword() {
             passwordErrors.confirmPassword = "As senhas não coincidem.";
         }
 
-        setErrors((previous) => ({
-            ...previous,
-            ...passwordErrors,
-        }));
-
+        setErrors((p) => ({ ...p, ...passwordErrors }));
         return Object.keys(passwordErrors).length === 0;
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
 
         if (!codeVerified) {
-            setErrors((previous) => ({
-                ...previous,
-                code: "Valide o código antes de alterar sua senha.",
-            }));
-
+            setErrors((p) => ({ ...p, code: "Valide o código antes de alterar sua senha." }));
             return;
         }
-
         if (!validatePassword()) return;
 
-        const updatedUser = {
-            ...currentUser,
-            password: newPassword,
-        };
+        setSubmitting(true);
+        setSuccessMessage("");
 
-        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+        try {
+            await apiFetch("/User/redefinir-senha", {
+                method: "POST",
+                body: JSON.stringify({
+                    email,
+                    codigo: verificationCode,
+                    senhaNova: newPassword,
+                }),
+            });
 
-        setSuccessMessage("Senha alterada com sucesso.");
-
-        setNewPassword("");
-        setConfirmPassword("");
+            setSuccessMessage("Senha alterada com sucesso.");
+            setNewPassword("");
+            setConfirmPassword("");
+        } catch (err) {
+            setErrors((p) => ({ ...p, code: err.message || "Código inválido ou expirado." }));
+        } finally {
+            setSubmitting(false);
+        }
     }
 
     function handleNewPasswordChange(event) {
         setNewPassword(event.target.value);
-
-        setErrors((previous) => ({
-            ...previous,
-            newPassword: "",
-        }));
+        setErrors((p) => ({ ...p, newPassword: "" }));
     }
 
     function handleConfirmPasswordChange(event) {
         setConfirmPassword(event.target.value);
+        setErrors((p) => ({ ...p, confirmPassword: "" }));
+    }
 
-        setErrors((previous) => ({
-            ...previous,
-            confirmPassword: "",
-        }));
+    function toggleNewPasswordVisibility() {
+        setShowNewPassword((p) => !p);
+    }
+
+    function toggleConfirmPasswordVisibility() {
+        setShowConfirmPassword((p) => !p);
     }
 
     function handleBack() {
@@ -184,40 +153,26 @@ export default function useResetPassword() {
         navigate("/profile");
     }
 
-    function toggleNewPasswordVisibility() {
-        setShowNewPassword((previous) => !previous);
-    }
-
-    function toggleConfirmPasswordVisibility() {
-        setShowConfirmPassword((previous) => !previous);
-    }
-
     return {
         email,
-
         verificationCode,
         codeSent,
         codeVerified,
-
         newPassword,
         confirmPassword,
-
         showNewPassword,
         showConfirmPassword,
-
         errors,
         successMessage,
-
+        sendingCode,
+        submitting,
         handleSendCode,
         handleCodeChange,
         handleVerifyCode,
-
         handleNewPasswordChange,
         handleConfirmPasswordChange,
-
         toggleNewPasswordVisibility,
         toggleConfirmPasswordVisibility,
-
         handleSubmit,
         handleBack,
         handleCancel,

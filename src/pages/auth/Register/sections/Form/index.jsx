@@ -255,7 +255,7 @@ export default function Form({ controller }) {
             className="primary-button"
             disabled={passwordMismatch}
           >
-            <span>Cadastrar</span>
+            <span>CADASTRAR</span>
 
             <IoArrowForward />
           </button>

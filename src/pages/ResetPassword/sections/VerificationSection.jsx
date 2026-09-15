@@ -11,6 +11,8 @@ export default function VerificationSection({
     codeSent,
     codeVerified,
     error,
+    emailError,
+    onEmailChange,
     onSendCode,
     onCodeChange,
     onVerifyCode,
@@ -19,26 +21,53 @@ export default function VerificationSection({
         <section className="reset-password-card">
             <div className="reset-section-heading">
                 <div className="reset-section-title">
-
                     <h2>Confirme sua identidade</h2>
                 </div>
 
                 <p>
-                    Enviaremos um código de segurança para confirmar que esta conta
-                    pertence a você.
+                    Informe o e-mail da sua conta para receber um código de
+                    segurança.
                 </p>
             </div>
 
-            <div className="verification-email-box">
-                <div className="verification-email-icon">
-                    <FiMail />
-                </div>
+            {!codeSent && (
+                <div className="verification-code-area">
+                    <label htmlFor="email">E-MAIL</label>
 
-                <div>
-                    <span>CÓDIGO ENVIADO PARA</span>
-                    <strong>{email || "E-mail não encontrado"}</strong>
+                    <div
+                        className={`verification-code-input ${emailError ? "verification-code-input-error" : ""
+                            }`}
+                    >
+                        <FiMail />
+
+                        <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={onEmailChange}
+                            placeholder="seuemail@exemplo.com"
+                            autoComplete="email"
+                        />
+                    </div>
+
+                    {emailError && (
+                        <span className="reset-field-error">{emailError}</span>
+                    )}
                 </div>
-            </div>
+            )}
+
+            {codeSent && (
+                <div className="verification-email-box">
+                    <div className="verification-email-icon">
+                        <FiMail />
+                    </div>
+
+                    <div>
+                        <span>CÓDIGO ENVIADO PARA</span>
+                        <strong>{email}</strong>
+                    </div>
+                </div>
+            )}
 
             {!codeSent && (
                 <button
@@ -48,7 +77,6 @@ export default function VerificationSection({
                     disabled={!email}
                 >
                     <FiShield />
-
                     ENVIAR CÓDIGO DE VERIFICAÇÃO
                 </button>
             )}
@@ -82,9 +110,7 @@ export default function VerificationSection({
                         </div>
 
                         {error && (
-                            <span className="reset-field-error">
-                                {error}
-                            </span>
+                            <span className="reset-field-error">{error}</span>
                         )}
                     </div>
 
@@ -96,7 +122,6 @@ export default function VerificationSection({
                                 onClick={onVerifyCode}
                             >
                                 <FiCheckCircle />
-
                                 VERIFICAR CÓDIGO
                             </button>
                         )}
@@ -108,7 +133,6 @@ export default function VerificationSection({
                                 onClick={onSendCode}
                             >
                                 <FiRefreshCw />
-
                                 REENVIAR CÓDIGO
                             </button>
                         )}
@@ -117,7 +141,6 @@ export default function VerificationSection({
                     {codeVerified && (
                         <div className="verification-success">
                             <FiCheckCircle />
-
                             <div>
                                 <strong>Identidade confirmada</strong>
                                 <span>

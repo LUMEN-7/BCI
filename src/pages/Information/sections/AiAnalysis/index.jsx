@@ -13,7 +13,7 @@ function AnalysisCard({ title, items }) {
   );
 }
 
-export default function AiAnalysis({ analysis }) {
+export default function AiAnalysis({ analysis, loading, error }) {
   return (
     <section className="ai-analysis-section">
       <div className="ai-analysis-header">
@@ -24,18 +24,31 @@ export default function AiAnalysis({ analysis }) {
           posicionamento do modelo.
         </p>
       </div>
-      <div className="ai-analysis-grid">
-        <AnalysisCard title="Pontos fortes" items={analysis.strengths} />
-        <AnalysisCard title="Pontos fracos" items={analysis.weaknesses} />
-        <div className="ai-analysis-card featured">
-          <h3>Melhor uso</h3>
-          <p>{analysis.bestUse}</p>
+      {loading ? (
+        <div className="ai-analysis-feedback" role="status">
+          <span className="ai-analysis-spinner" />
+          <strong>Gerando análise personalizada...</strong>
+          <p>A IA está interpretando os dados técnicos deste veículo.</p>
         </div>
-        <AnalysisCard
-          title="Concorrentes semelhantes"
-          items={analysis.competitors}
-        />
-      </div>
+      ) : error ? (
+        <div className="ai-analysis-feedback is-error" role="alert">
+          <strong>Análise indisponível</strong>
+          <p>{error}</p>
+        </div>
+      ) : (
+        <div className="ai-analysis-grid">
+          <AnalysisCard title="Pontos fortes" items={analysis.strengths} />
+          <AnalysisCard title="Pontos fracos" items={analysis.weaknesses} />
+          <div className="ai-analysis-card featured">
+            <h3>Melhor uso</h3>
+            <p>{analysis.bestUse}</p>
+          </div>
+          <AnalysisCard
+            title="Concorrentes semelhantes"
+            items={analysis.competitors}
+          />
+        </div>
+      )}
     </section>
   );
 }

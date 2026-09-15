@@ -12,9 +12,27 @@ export function validateLogin(email, password) {
         errors.email = 'E-mail inválido.';
     }
 
-    if (password.trim().length < 6) {
-        errors.password = 'A senha deve ter pelo menos 6 caracteres.';
+    const errosSenha = validarSenha(password);
+    if (errosSenha.length > 0) {
+        errors.password = errosSenha.join(' ');
     }
 
     return errors;
+}
+
+function validarSenha(password) {
+    const erros = [];
+
+    if (password.length < 6)
+        erros.push('A senha deve ter pelo menos 6 caracteres.');
+    if (!/[0-9]/.test(password))
+        erros.push('A senha deve conter ao menos um número.');
+    if (!/[a-z]/.test(password))
+        erros.push('A senha deve conter ao menos uma letra minúscula.');
+    if (!/[A-Z]/.test(password))
+        erros.push('A senha deve conter ao menos uma letra maiúscula.');
+    if (!/[^a-zA-Z0-9]/.test(password))
+        erros.push('A senha deve conter ao menos um caractere especial (ex: !@#$%).');
+
+    return erros;
 }

@@ -6,9 +6,16 @@ import {
 } from 'react-router-dom';
 
 import { AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
 
 import PageTransition from '../components/PageTransition/PageTransition';
+<<<<<<< HEAD
 import GlobalErrorBoundary from '../components/GlobalErrorBoundary';
+=======
+import FloatingNotes from '../components/FloatingNotes/FloatingNotes';
+import ProtectedRoute from './ProtectedRoute';
+import { appendNavigationActivity } from '../utils/navigationActivity';
+>>>>>>> main
 
 import Login from '../pages/auth/Login/index';
 import Register from '../pages/auth/Register/index';
@@ -20,14 +27,27 @@ import Detail from '../pages/Detail/index';
 import Saved from '../pages/Saved/index';
 import Profile from '../pages/Profile/index';
 import Notes from '../pages/Notes/index';
-import NewNotes from '../pages/NewNotes/index';
 import Alerts from '../pages/Alerts/index';
 import EditProfile from "../pages/EditProfile/index";
 import ResetPassword from "../pages/ResetPassword";
 import Workspace from "../pages/Workspace";
+<<<<<<< HEAD
 import Loading from "../pages/Loading";
 import Error from "../pages/Error";
 // import Insights from '../pages/Insights/index';
+=======
+import Insights from '../pages/Insights/index';
+
+function NavigationTracker() {
+    const location = useLocation();
+
+    useEffect(() => {
+        appendNavigationActivity(location.pathname, location.state);
+    }, [location.pathname, location.state]);
+
+    return null;
+}
+>>>>>>> main
 
 
 function AnimatedRoutes() {
@@ -50,42 +70,74 @@ function AnimatedRoutes() {
 
                     <Route
                         path="/home"
-                        element={<Home />}
+                        element={
+                            <ProtectedRoute>
+                                <Home />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/search"
-                        element={<Search />}
+                        element={
+                            <ProtectedRoute>
+                                <Search />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/compare"
-                        element={<Compare />}
+                        element={
+                            <ProtectedRoute>
+                                <Compare />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/information/:id"
-                        element={<Information />}
+                        element={
+                            <ProtectedRoute>
+                                <Information />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/compare/detail"
-                        element={<Detail />}
+                        element={
+                            <ProtectedRoute>
+                                <Detail />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/saved"
-                        element={<Saved />}
+                        element={
+                            <ProtectedRoute>
+                                <Saved />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/profile"
-                        element={<Profile />}
+                        element={
+                            <ProtectedRoute>
+                                <Profile />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/edit-profile"
-                        element={<EditProfile />}
+                        element={
+                            <ProtectedRoute>
+                                <EditProfile />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
@@ -95,24 +147,32 @@ function AnimatedRoutes() {
 
                     <Route
                         path="/notes"
-                        element={<Notes />}
-                    />
-
-                    <Route
-                        path="/addnotes"
-                        element={<NewNotes />}
+                        element={
+                            <ProtectedRoute>
+                                <Notes />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/alerts"
-                        element={<Alerts />}
+                        element={
+                            <ProtectedRoute>
+                                <Alerts />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route
                         path="/workspace"
-                        element={<Workspace />}
+                        element={
+                            <ProtectedRoute>
+                                <Workspace />
+                            </ProtectedRoute>
+                        }
                     />
 
+<<<<<<< HEAD
                     <Route
                         path="/loading"
                         element={<Loading />}
@@ -140,19 +200,44 @@ function AnimatedRoutes() {
                         element={<Insights />}
                     />
                     */}
+=======
+                    <Route
+                        path="/insights"
+                        element={
+                            <ProtectedRoute>
+                                <Insights />
+                            </ProtectedRoute>
+                        }
+                    />
+>>>>>>> main
                 </Routes>
             </PageTransition>
         </AnimatePresence>
     );
 }
 
+function GlobalFloatingNotes() {
+    const location = useLocation();
+    const publicRoutes = ['/', '/register', '/reset-password'];
+    const isPublic = publicRoutes.includes(location.pathname);
+
+    if (isPublic) return null;
+
+    return <FloatingNotes />;
+}
 
 export default function Router() {
     return (
         <BrowserRouter>
+<<<<<<< HEAD
             <GlobalErrorBoundary>
                 <AnimatedRoutes />
             </GlobalErrorBoundary>
+=======
+            <NavigationTracker />
+            <GlobalFloatingNotes />
+            <AnimatedRoutes />
+>>>>>>> main
         </BrowserRouter>
     );
 }

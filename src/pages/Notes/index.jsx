@@ -12,7 +12,7 @@ export default function Notes() {
     <main className="notes-page">
       <Navbar />
       <section className="notes-container">
-        <NotesHeader onCreate={controller.handleCreate} />
+        <NotesHeader />
         <NotesToolbar
           search={controller.search}
           onSearch={controller.setSearch}
@@ -21,8 +21,6 @@ export default function Notes() {
           notes={controller.filteredNotes}
           search={controller.search}
           onDelete={controller.handleDelete}
-          onOpen={controller.handleOpen}
-          onCreate={controller.handleCreate}
         />
       </section>
     </main>
