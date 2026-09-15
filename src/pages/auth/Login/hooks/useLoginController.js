@@ -38,14 +38,8 @@ export default function useLoginController() {
         if (newErrors.email || newErrors.password) return;
 
         try {
-<<<<<<< HEAD
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (!currentUser) { setAuthError('Nenhum usuário cadastrado.'); return; }
-            navigate('/loading');
-=======
             const resultado = await login(email, password);
             irParaProximoPasso(resultado);
->>>>>>> main
         } catch (error) {
             setAuthError(error.message || 'Não foi possível entrar.');
         }

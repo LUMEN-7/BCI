@@ -9,13 +9,10 @@ import { AnimatePresence } from 'framer-motion';
 import { useEffect } from 'react';
 
 import PageTransition from '../components/PageTransition/PageTransition';
-<<<<<<< HEAD
 import GlobalErrorBoundary from '../components/GlobalErrorBoundary';
-=======
 import FloatingNotes from '../components/FloatingNotes/FloatingNotes';
 import ProtectedRoute from './ProtectedRoute';
 import { appendNavigationActivity } from '../utils/navigationActivity';
->>>>>>> main
 
 import Login from '../pages/auth/Login/index';
 import Register from '../pages/auth/Register/index';
@@ -31,11 +28,9 @@ import Alerts from '../pages/Alerts/index';
 import EditProfile from "../pages/EditProfile/index";
 import ResetPassword from "../pages/ResetPassword";
 import Workspace from "../pages/Workspace";
-<<<<<<< HEAD
 import Loading from "../pages/Loading";
 import Error from "../pages/Error";
 // import Insights from '../pages/Insights/index';
-=======
 import Insights from '../pages/Insights/index';
 
 function NavigationTracker() {
@@ -47,7 +42,6 @@ function NavigationTracker() {
 
     return null;
 }
->>>>>>> main
 
 
 function AnimatedRoutes() {
@@ -172,7 +166,6 @@ function AnimatedRoutes() {
                         }
                     />
 
-<<<<<<< HEAD
                     <Route
                         path="/loading"
                         element={<Loading />}
@@ -200,7 +193,6 @@ function AnimatedRoutes() {
                         element={<Insights />}
                     />
                     */}
-=======
                     <Route
                         path="/insights"
                         element={
@@ -209,7 +201,6 @@ function AnimatedRoutes() {
                             </ProtectedRoute>
                         }
                     />
->>>>>>> main
                 </Routes>
             </PageTransition>
         </AnimatePresence>
@@ -229,15 +220,12 @@ function GlobalFloatingNotes() {
 export default function Router() {
     return (
         <BrowserRouter>
-<<<<<<< HEAD
             <GlobalErrorBoundary>
                 <AnimatedRoutes />
             </GlobalErrorBoundary>
-=======
             <NavigationTracker />
             <GlobalFloatingNotes />
             <AnimatedRoutes />
->>>>>>> main
         </BrowserRouter>
     );
 }
