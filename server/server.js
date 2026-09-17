@@ -126,7 +126,7 @@ async function callDeepSeek(systemPrompt, userPrompt, requestId = "SYS", maxToke
       console.error(
         `[REQ:${requestId}] [DeepSeek TIMEOUT] Requisição excedeu o tempo máximo de ${DEEPSEEK_TIMEOUT_MS}ms (${duration}ms).`
       );
-      throw new Error("DEEPSEEK_TIMEOUT");
+      throw new Error("DEEPSEEK_TIMEOUT", { cause: err });
     }
 
     throw err;

@@ -46,7 +46,10 @@ export default function useAlertsController() {
         }
     }, []);
 
-    useEffect(() => { carregarAlertas(); }, [carregarAlertas]);
+    useEffect(() => {
+        const timer = setTimeout(carregarAlertas, 0);
+        return () => clearTimeout(timer);
+    }, [carregarAlertas]);
 
     const unreadCount = alerts.filter((alert) => !alert.read).length;
     const filteredAlerts = useMemo(

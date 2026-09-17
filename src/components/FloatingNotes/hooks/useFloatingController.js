@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { listarAnotacoesCompletas, salvarAnotacaoCompleta, excluirAnotacaoCompleta } from '@/services/noteService';
 
@@ -67,7 +67,13 @@ export function useFloatingController() {
     };
   }, [isOpen, viewMode, activeTab]);
 
-  async function loadNotes() {
+  const showToast = useCallback((message, type = 'success') => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    setToast({ message, type });
+    toastTimeoutRef.current = setTimeout(() => setToast(null), 3200);
+  }, []);
+
+  const loadNotes = useCallback(async () => {
     setLoadingNotes(true);
     try {
       setNotes(await listarAnotacoesCompletas());
@@ -76,19 +82,16 @@ export function useFloatingController() {
     } finally {
       setLoadingNotes(false);
     }
-  }
+  }, [showToast]);
 
   useEffect(() => {
-    loadNotes();
+    const timer = setTimeout(loadNotes, 0);
     window.addEventListener('floating-notes-updated', loadNotes);
-    return () => window.removeEventListener('floating-notes-updated', loadNotes);
-  }, []);
-
-  const showToast = (message, type = 'success') => {
-    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-    setToast({ message, type });
-    toastTimeoutRef.current = setTimeout(() => setToast(null), 3200);
-  };
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('floating-notes-updated', loadNotes);
+    };
+  }, [loadNotes]);
 
   const handleStartNewNote = () => {
     setEditingId(null);
@@ -201,7 +204,7 @@ export function useFloatingController() {
   });
 
   return {
-    refs: { fileInputRef, textareaRef, toolbarScrollRef },
+    fileInputRef, textareaRef, toolbarScrollRef,
     state: {
       isOpen, viewMode, activeTab, searchFilter, expandedNoteId,
       editingId, title, content, attachedCars, attachedImages,

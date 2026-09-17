@@ -38,8 +38,8 @@ export function saveNote({ id, title, content, savedCars = [], images = [] }) {
   const notes = readStorage();
   const now = new Date().toISOString();
 
-  let updatedNotes = [];
-  let noteResult = null;
+  let updatedNotes;
+  let noteResult;
 
   if (id) {
     // Atualização de anotação existente

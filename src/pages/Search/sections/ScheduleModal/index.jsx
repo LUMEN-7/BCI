@@ -1,4 +1,3 @@
-import React from 'react';
 import { IoAlarmOutline, IoCheckmarkCircleOutline } from 'react-icons/io5';
 import { useScheduleModal, RECURRENCE_OPTIONS } from './hooks/useScheduleModal';
 import { HeaderSection } from './sections/HeaderSection';

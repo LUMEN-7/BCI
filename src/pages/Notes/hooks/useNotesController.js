@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { listarAnotacoesCompletas, excluirAnotacaoCompleta } from '@/services/noteService';
 import { getStoredNotes, deleteNote as deleteStoredNote } from '@/utils/notesStorage';
@@ -24,7 +24,7 @@ export default function useNotesController() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
 
-	const carregarAnotacoes = async () => {
+	const carregarAnotacoes = useCallback(async () => {
 		setLoading(true);
 		setError('');
 		try {
@@ -77,19 +77,20 @@ export default function useNotesController() {
 		} finally {
 			setLoading(false);
 		}
-	};
+	}, []);
 
 	useEffect(() => {
-		carregarAnotacoes();
+		const timer = setTimeout(carregarAnotacoes, 0);
 
 		window.addEventListener('floating-notes-updated', carregarAnotacoes);
 		window.addEventListener('storage', carregarAnotacoes);
 
 		return () => {
+			clearTimeout(timer);
 			window.removeEventListener('floating-notes-updated', carregarAnotacoes);
 			window.removeEventListener('storage', carregarAnotacoes);
 		};
-	}, []);
+	}, [carregarAnotacoes]);
 
 	const filteredNotes = useMemo(() => {
 		const term = search.toLowerCase().trim();
@@ -98,7 +99,6 @@ export default function useNotesController() {
 	}, [search, notes]);
 
 	async function handleDelete(id) {
-		const anterior = notes;
 		setNotes((current) => current.filter((note) => String(note.id) !== String(id)));
 		deleteStoredNote(id);
 		try {

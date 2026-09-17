@@ -97,7 +97,7 @@ export default function NotesGrid({ notes, search, onDelete }) {
 
                 <p className="note-snippet-text">
                   {rawContent
-                    ? rawContent.replace(/[#*`_>\[\]\(\)]/g, "").slice(0, 120)
+                    ? rawContent.replace(/#|\*|`|_|>|\[|\]|\(|\)/g, "").slice(0, 120)
                     : "Sem conteúdo..."}
                 </p>
               </div>

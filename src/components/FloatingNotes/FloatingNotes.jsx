@@ -22,6 +22,7 @@ import {
 
 import { useFloatingController } from './hooks/useFloatingController';
 import { resizeImage } from '@/utils/imageUtils';
+import { getNoteImage } from '@/utils/noteAttachments';
 import { uploadImagemAnotacao } from '@/services/noteService';
 
 import MarkdownRenderer from './components/MarkdownRenderer';
@@ -30,7 +31,7 @@ import VehicleCard from './components/VehicleCard';
 import './style.css';
 
 export default function FloatingNotes() {
-  const { refs, state, actions } = useFloatingController();
+  const { fileInputRef, textareaRef, toolbarScrollRef, state, actions } = useFloatingController();
 
   async function dataUrlParaBlob(dataUrl) {
       const resposta = await fetch(dataUrl);
@@ -185,9 +186,7 @@ export default function FloatingNotes() {
                                   {note.images?.length > 0 && (
                                     <div className="note-card-images-grid">
                                       {note.images.map((img) => {
-                                        const imgUrl = typeof img === 'string' ? img : img.url;
-                                        const imgId = typeof img === 'string' ? img : img.id;
-                                        const imgName = typeof img === 'string' ? 'Imagem' : (img.name || 'Imagem');
+                                        const { id: imgId, url: imgUrl, name: imgName } = getNoteImage(img);
                                         return (
                                           <div
                                             key={imgId}
@@ -294,7 +293,7 @@ export default function FloatingNotes() {
                       <div className="notes-toolbar-viewport">
                         <div 
                           className="notes-toolbar" 
-                          ref={refs.toolbarScrollRef} 
+                          ref={toolbarScrollRef} 
                           role="toolbar"
                         >
                           <div className="toolbar-group" title="Formatação de texto">
@@ -401,7 +400,7 @@ export default function FloatingNotes() {
                             <button
                               type="button"
                               className="toolbar-btn toolbar-btn-highlight"
-                              onClick={() => refs.fileInputRef.current?.click()}
+                              onClick={() => fileInputRef.current?.click()}
                               title="Adicionar imagem"
                             >
                               <IoImageOutline />
@@ -410,7 +409,7 @@ export default function FloatingNotes() {
 
                             <input
                               type="file"
-                              ref={refs.fileInputRef}
+                              ref={fileInputRef}
                               style={{ display: 'none' }}
                               accept="image/*"
                               onChange={handleImageUpload}
@@ -434,7 +433,7 @@ export default function FloatingNotes() {
                     {/* ÁREA DE TEXTO */}
                     <div className="notes-textarea-container">
                       <textarea
-                        ref={refs.textareaRef}
+                        ref={textareaRef}
                         placeholder="Escreva sua anotação aqui em Markdown..."
                         value={state.content}
                         onChange={(e) => actions.setContent(e.target.value)}
@@ -465,9 +464,7 @@ export default function FloatingNotes() {
                             <span className="attachment-label">Imagens anexadas:</span>
                             <div className="attachment-thumbs-list">
                               {state.attachedImages.map((img) => {
-                                const imgUrl = typeof img === 'string' ? img : img.url;
-                                const imgId = typeof img === 'string' ? img : img.id;
-                                const imgName = typeof img === 'string' ? 'Foto' : (img.name || 'Foto');
+                                const { id: imgId, url: imgUrl, name: imgName } = getNoteImage(img, 'Foto');
                                 return (
                                   <div
                                     key={imgId}
@@ -522,9 +519,7 @@ export default function FloatingNotes() {
                     {state.attachedImages?.length > 0 && (
                       <div className="note-card-images-grid">
                         {state.attachedImages.map((img) => {
-                          const imgUrl = typeof img === 'string' ? img : img.url;
-                          const imgId = typeof img === 'string' ? img : img.id;
-                          const imgName = typeof img === 'string' ? 'Imagem' : (img.name || 'Imagem');
+                          const { id: imgId, url: imgUrl, name: imgName } = getNoteImage(img);
                           return (
                             <div
                               key={imgId}
@@ -622,7 +617,7 @@ export default function FloatingNotes() {
             >
               <IoCloseOutline />
             </button>
-            <img src={state.previewImage} alt="Visualização expandida" />
+            <img src={getNoteImage(state.previewImage).url} alt="Visualização expandida" />
           </div>
         </div>
       )}

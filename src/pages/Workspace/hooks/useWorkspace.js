@@ -1,5 +1,6 @@
 import {
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -28,6 +29,9 @@ const initialNewPost = {
 
 
 export default function useWorkspace() {
+
+  // IDs locais não dependem do relógio, evitando colisões em renderizações repetidas.
+  const nextPostIdRef = useRef(10000);
 
   // =========================================================
   // USUÁRIO ATUAL
@@ -388,7 +392,7 @@ export default function useWorkspace() {
 
     const newComment = {
       id:
-        Date.now(),
+        nextPostIdRef.current++,
 
       author:
         currentUserName,
@@ -706,7 +710,7 @@ export default function useWorkspace() {
     const post = {
 
       id:
-        Date.now(),
+        nextPostIdRef.current++,
 
       type:
         newPost.type,

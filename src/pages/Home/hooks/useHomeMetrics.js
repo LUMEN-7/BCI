@@ -2,12 +2,6 @@ import { useEffect, useState } from 'react';
 import {modelosSalvos, salvas, essaSemana} from "@/services/userService"
 import {ativas} from "@/services/notiService"
 
-function contarNaUltimaSemana(itens, campoData) {
-    const umaSemanaAtras = new Date();
-    umaSemanaAtras.setDate(umaSemanaAtras.getDate() - 7);
-    return itens.filter((item) => new Date(item[campoData]) >= umaSemanaAtras).length;
-}
-
 export default function useHomeMetrics() {
     const [metrics, setMetrics] = useState([
         { value: '--', label: 'MODELOS\nMONITORADOS' },

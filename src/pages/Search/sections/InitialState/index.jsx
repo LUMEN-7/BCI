@@ -1,5 +1,4 @@
 import {
-  IoCalendarOutline,
   IoCarSportOutline,
   IoCompassOutline,
   IoFilterOutline,
@@ -8,7 +7,7 @@ import {
 
 import "./style.css";
 
-export default function InitialState({ onSelectSuggestion }) {
+export default function InitialState() {
   return (
     <section className="search-initial-state">
       <div className="initial-state-card">

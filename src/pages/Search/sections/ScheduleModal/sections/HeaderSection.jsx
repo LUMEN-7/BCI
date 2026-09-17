@@ -1,4 +1,3 @@
-import React from 'react';
 import { IoAlarmOutline, IoCloseOutline } from 'react-icons/io5';
 
 export function HeaderSection({ activeTab, scheduledListCount, setActiveTab, onClose }) {
