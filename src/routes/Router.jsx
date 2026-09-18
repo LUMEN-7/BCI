@@ -32,6 +32,7 @@ const Workspace = lazy(() => import('../pages/Workspace'));
 const Insights = lazy(() => import('../pages/Insights/index'));
 const Loading = lazy(() => import('../pages/Loading/index'));
 const Error = lazy(() => import('../pages/Error/index'));
+const Welcome = lazy(() => import('../pages/Welcome/index'));
 
 function NavigationTracker() {
     const location = useLocation();
@@ -61,6 +62,15 @@ function AnimatedRoutes() {
                     <Route
                         path="/register"
                         element={<Register />}
+                    />
+
+                    <Route
+                        path="/welcome"
+                        element={
+                            <ProtectedRoute>
+                                <Welcome />
+                            </ProtectedRoute>
+                        }
                     />
 
                     <Route

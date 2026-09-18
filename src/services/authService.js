@@ -42,5 +42,5 @@ function tratarRespostaLogin(resultado) {
   localStorage.setItem("accessToken", resultado.accessToken);
   localStorage.setItem("currentUser", JSON.stringify(resultado.usuario));
   removeLegacySharedUserData();
-  return { requerDoisFatores: false };
+  return { requerDoisFatores: false, usuario: resultado.usuario };
 }
