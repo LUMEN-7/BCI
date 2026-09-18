@@ -2,10 +2,11 @@
 // Funciona offline / via localStorage e emite eventos de sincronização em tempo real.
 
 export const SCHEDULED_SEARCHES_KEY = 'lumen-scheduled-searches';
+import { getUserScopedItem, setUserScopedItem } from './userScopedStorage';
 
 function readStorage() {
   try {
-    const raw = localStorage.getItem(SCHEDULED_SEARCHES_KEY);
+    const raw = getUserScopedItem(SCHEDULED_SEARCHES_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
@@ -16,7 +17,7 @@ function readStorage() {
 
 function writeStorage(searches) {
   try {
-    localStorage.setItem(SCHEDULED_SEARCHES_KEY, JSON.stringify(searches));
+    setUserScopedItem(SCHEDULED_SEARCHES_KEY, JSON.stringify(searches));
     window.dispatchEvent(new CustomEvent('scheduled-searches-updated', { detail: searches }));
   } catch (error) {
     console.error('Erro ao salvar pesquisas agendadas no localStorage:', error);

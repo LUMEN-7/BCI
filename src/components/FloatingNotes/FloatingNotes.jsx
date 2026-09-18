@@ -22,12 +22,11 @@ import {
 
 import { useFloatingController } from './hooks/useFloatingController';
 import { resizeImage } from '@/utils/imageUtils';
-import { getNoteImage } from '@/utils/noteAttachments';
 import { uploadImagemAnotacao } from '@/services/noteService';
 
 import MarkdownRenderer from './components/MarkdownRenderer';
 import VehicleSelectorModal from './components/VehicleSelectorModal';
-import VehicleCard from './components/VehicleCard';
+import NoteAttachments from './components/NoteAttachments';
 import './style.css';
 
 export default function FloatingNotes() {
@@ -171,35 +170,12 @@ export default function FloatingNotes() {
                                     onImageClick={(img) => actions.setPreviewImage(img)}
                                   />
 
-                                  {note.savedCars?.length > 0 && (
-                                    <div className="note-card-cars-grid">
-                                      {note.savedCars.map((car) => (
-                                        <VehicleCard
-                                          key={car.id}
-                                          car={car}
-                                          onNavigate={actions.handleNavigateCar}
-                                        />
-                                      ))}
-                                    </div>
-                                  )}
-
-                                  {note.images?.length > 0 && (
-                                    <div className="note-card-images-grid">
-                                      {note.images.map((img) => {
-                                        const { id: imgId, url: imgUrl, name: imgName } = getNoteImage(img);
-                                        return (
-                                          <div
-                                            key={imgId}
-                                            className="note-card-image-item"
-                                            onClick={() => actions.setPreviewImage(img)}
-                                            title="Clique para expandir"
-                                          >
-                                            <img src={imgUrl} alt={imgName} />
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  )}
+                                  <NoteAttachments
+                                    cars={note.savedCars}
+                                    images={note.images}
+                                    onNavigateCar={actions.handleNavigateCar}
+                                    onPreviewImage={actions.setPreviewImage}
+                                  />
                                 </div>
                               )}
                         </article>
@@ -441,58 +417,15 @@ export default function FloatingNotes() {
                     </div>
 
                     {/* VEÍCULOS E IMAGENS ANEXADOS */}
-                    {((state.attachedCars?.length > 0) || (state.attachedImages?.length > 0)) && (
-                      <div className="notes-attachments-preview">
-                        {state.attachedCars?.length > 0 && (
-                          <div className="attachment-row">
-                            <span className="attachment-label">Veículos vinculados:</span>
-                            <div className="attached-vehicles-list">
-                              {state.attachedCars.map((car) => (
-                                <VehicleCard
-                                  key={car.id}
-                                  car={car}
-                                  onNavigate={actions.handleNavigateCar}
-                                  onRemove={handleRemoveCar}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {state.attachedImages?.length > 0 && (
-                          <div className="attachment-row">
-                            <span className="attachment-label">Imagens anexadas:</span>
-                            <div className="attachment-thumbs-list">
-                              {state.attachedImages.map((img) => {
-                                const { id: imgId, url: imgUrl, name: imgName } = getNoteImage(img, 'Foto');
-                                return (
-                                  <div
-                                    key={imgId}
-                                    className="attachment-thumb-card"
-                                    onClick={() => actions.setPreviewImage(img)}
-                                    title="Clique para expandir"
-                                  >
-                                    <img src={imgUrl} alt={imgName} />
-                                    <button
-                                      type="button"
-                                      className="attachment-thumb-remove"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleRemoveImage(imgId);
-                                      }}
-                                      title="Remover imagem"
-                                    >
-                                      <IoCloseOutline />
-                                    </button>
-                                    <span className="attachment-thumb-name">{imgName}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                    <NoteAttachments
+                      editable
+                      cars={state.attachedCars}
+                      images={state.attachedImages}
+                      onNavigateCar={actions.handleNavigateCar}
+                      onPreviewImage={actions.setPreviewImage}
+                      onRemoveCar={handleRemoveCar}
+                      onRemoveImage={handleRemoveImage}
+                    />
                   </>
                 ) : (
                   /* MODO VISUALIZAÇÃO / PREVIEW INTERATIVO */
@@ -504,35 +437,12 @@ export default function FloatingNotes() {
                       onImageClick={(img) => actions.setPreviewImage(img)}
                     />
 
-                    {state.attachedCars?.length > 0 && (
-                      <div className="note-card-cars-grid">
-                        {state.attachedCars.map((car) => (
-                          <VehicleCard
-                            key={car.id}
-                            car={car}
-                            onNavigate={actions.handleNavigateCar}
-                          />
-                        ))}
-                      </div>
-                    )}
-
-                    {state.attachedImages?.length > 0 && (
-                      <div className="note-card-images-grid">
-                        {state.attachedImages.map((img) => {
-                          const { id: imgId, url: imgUrl, name: imgName } = getNoteImage(img);
-                          return (
-                            <div
-                              key={imgId}
-                              className="note-card-image-item"
-                              onClick={() => actions.setPreviewImage(img)}
-                              title="Clique para expandir"
-                            >
-                              <img src={imgUrl} alt={imgName} />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
+                    <NoteAttachments
+                      cars={state.attachedCars}
+                      images={state.attachedImages}
+                      onNavigateCar={actions.handleNavigateCar}
+                      onPreviewImage={actions.setPreviewImage}
+                    />
                   </div>
                 )}
               </div>
@@ -617,7 +527,7 @@ export default function FloatingNotes() {
             >
               <IoCloseOutline />
             </button>
-            <img src={getNoteImage(state.previewImage).url} alt="Visualização expandida" />
+            <img src={state.previewImage?.url || state.previewImage} alt="Visualização expandida" />
           </div>
         </div>
       )}

@@ -2,10 +2,11 @@
 // Funciona offline / via localStorage e emite eventos para sincronização em tempo real entre componentes.
 
 export const NOTES_STORAGE_KEY = 'lumen-floating-notes';
+import { getUserScopedItem, setUserScopedItem } from './userScopedStorage';
 
 function readStorage() {
   try {
-    const raw = localStorage.getItem(NOTES_STORAGE_KEY);
+    const raw = getUserScopedItem(NOTES_STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
@@ -16,7 +17,7 @@ function readStorage() {
 
 function writeStorage(notes) {
   try {
-    localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+    setUserScopedItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
     window.dispatchEvent(new CustomEvent('floating-notes-updated', { detail: notes }));
   } catch (error) {
     console.error('Erro ao salvar anotações no localStorage:', error);
