@@ -165,10 +165,10 @@ function AnimatedRoutes() {
                         }
                     />
 
-                    <Route
+                    {/* <Route
                         path="/loading"
                         element={<Loading />}
-                    />
+                    /> */}
 
                     {/* ERRO GLOBAL ENVIADO PELO SISTEMA */}
                     <Route
