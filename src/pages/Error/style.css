@@ -14,7 +14,7 @@
 
   overflow: hidden;
 
-  padding: 40px 24px;
+  padding: 2.5rem 1.5rem;
 
   background:
     linear-gradient(
@@ -37,11 +37,11 @@
 
   position: absolute;
 
-  width: 720px;
-  height: 720px;
+  width: 45rem;
+  height: 45rem;
 
-  top: -280px;
-  left: -180px;
+  top: -17.5rem;
+  left: -11.25rem;
 
   border-radius: 50%;
 
@@ -54,7 +54,7 @@
       transparent 72%
     );
 
-  filter: blur(55px);
+  filter: blur(3.4375rem);
 
   animation:
     errorBlobOne 8s ease-in-out infinite alternate;
@@ -67,11 +67,11 @@
 
   position: absolute;
 
-  width: 680px;
-  height: 680px;
+  width: 42.5rem;
+  height: 42.5rem;
 
-  right: -230px;
-  bottom: -280px;
+  right: -14.375rem;
+  bottom: -17.5rem;
 
   border-radius: 50%;
 
@@ -84,7 +84,7 @@
       transparent 74%
     );
 
-  filter: blur(65px);
+  filter: blur(4.0625rem);
 
   animation:
     errorBlobTwo 10s ease-in-out infinite alternate;
@@ -106,13 +106,13 @@
 }
 
 .error-background-glow-one {
-  width: 520px;
-  height: 170px;
+  width: 32.5rem;
+  height: 10.625rem;
 
   top: 36%;
-  left: -150px;
+  left: -9.375rem;
 
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 
   background:
     linear-gradient(
@@ -123,7 +123,7 @@
       transparent
     );
 
-  filter: blur(45px);
+  filter: blur(2.8125rem);
 
   transform: rotate(-18deg);
 
@@ -132,8 +132,8 @@
 }
 
 .error-background-glow-two {
-  width: 430px;
-  height: 430px;
+  width: 26.875rem;
+  height: 26.875rem;
 
   top: 22%;
   right: 8%;
@@ -147,7 +147,7 @@
       transparent 68%
     );
 
-  filter: blur(35px);
+  filter: blur(2.1875rem);
 
   animation:
     errorFloatingGlow 6s ease-in-out infinite alternate;
@@ -162,9 +162,9 @@
   position: relative;
   z-index: 2;
 
-  width: min(680px, 100%);
+  width: min(42.5rem, 100%);
 
-  padding: 58px 50px 54px;
+  padding: 3.625rem 3.125rem 3.375rem;
 
   display: flex;
   flex-direction: column;
@@ -173,9 +173,9 @@
   text-align: center;
 
   border:
-    1px solid rgba(255, 255, 255, 0.18);
+    0.0625rem solid rgba(255, 255, 255, 0.18);
 
-  border-radius: 28px;
+  border-radius: 1.75rem;
 
   /*
     Importante:
@@ -190,15 +190,15 @@
     );
 
   -webkit-backdrop-filter:
-    blur(22px) saturate(145%);
+    blur(1.375rem) saturate(145%);
 
   backdrop-filter:
-    blur(22px) saturate(145%);
+    blur(1.375rem) saturate(145%);
 
   box-shadow:
-    0 35px 90px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+    0 2.1875rem 5.625rem rgba(0, 0, 0, 0.3),
+    inset 0 0.0625rem 0 rgba(255, 255, 255, 0.18),
+    inset 0 -0.0625rem 0 rgba(255, 255, 255, 0.04);
 
   animation:
     errorContentEnter 0.7s ease forwards;
@@ -234,14 +234,14 @@
 ========================================================= */
 
 .error-label {
-  margin-bottom: 22px;
+  margin-bottom: 1.375rem;
 
   font-family:
     var(--font-body-bold);
 
-  font-size: 9px;
+  font-size: 0.5625rem;
 
-  letter-spacing: 4px;
+  letter-spacing: 0.25rem;
 
   color:
     rgba(255, 255, 255, 0.42);
@@ -259,7 +259,7 @@
   align-items: center;
   justify-content: center;
 
-  padding: 12px 0;
+  padding: 0.75rem 0;
 
   overflow: visible;
 }
@@ -273,13 +273,13 @@
     sans-serif;
 
   font-size:
-    clamp(120px, 17vw, 210px);
+    clamp(7.5rem, 17vw, 13.125rem);
 
   font-weight: 400;
 
   line-height: 1;
 
-  letter-spacing: 7px;
+  letter-spacing: 0.4375rem;
 }
 
 .error-code-base {
@@ -287,13 +287,13 @@
     rgba(255, 255, 255, 0.06);
 
   -webkit-text-stroke:
-    1px rgba(255, 255, 255, 0.16);
+    0.0625rem rgba(255, 255, 255, 0.16);
 }
 
 .error-code-fill {
   position: absolute;
 
-  inset: 12px 0;
+  inset: 0.75rem 0;
 
   color: transparent;
 
@@ -315,7 +315,7 @@
 
   filter:
     drop-shadow(
-      0 12px 26px
+      0 0.75rem 1.625rem
       rgba(5, 98, 210, 0.2)
     );
 }
@@ -326,14 +326,14 @@
 ========================================================= */
 
 .error-brand-name {
-  margin: 18px 0 0;
+  margin: 1.125rem 0 0;
 
   font-family:
     var(--font-body-bold);
 
-  font-size: 10px;
+  font-size: 0.625rem;
 
-  letter-spacing: 5px;
+  letter-spacing: 0.3125rem;
 
   color:
     rgba(255, 255, 255, 0.68);
@@ -345,7 +345,7 @@
 ========================================================= */
 
 .error-message {
-  margin-top: 42px;
+  margin-top: 2.625rem;
 }
 
 .error-message h2 {
@@ -357,7 +357,7 @@
     sans-serif;
 
   font-size:
-    clamp(28px, 4vw, 30px);
+    clamp(1.75rem, 4vw, 1.875rem);
 
   font-weight: 400;
 
@@ -367,14 +367,14 @@
 }
 
 .error-message p {
-  max-width: 470px;
+  max-width: 29.375rem;
 
-  margin: 14px auto 0;
+  margin: 0.875rem auto 0;
 
   font-family:
     var(--font-body);
 
-  font-size: 14px;
+  font-size: 0.875rem;
 
   line-height: 1.6;
 
@@ -388,7 +388,7 @@
 ========================================================= */
 
 .error-actions {
-  margin-top: 34px;
+  margin-top: 2.125rem;
 
   display: flex;
   align-items: center;
@@ -396,28 +396,28 @@
 
   flex-wrap: wrap;
 
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .error-button {
-  min-height: 46px;
+  min-height: 2.875rem;
 
-  padding: 0 20px;
+  padding: 0 1.25rem;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  gap: 9px;
+  gap: 0.5625rem;
 
-  border-radius: 10px;
+  border-radius: 0.625rem;
 
   font-family:
     var(--font-body-bold);
 
-  font-size: 10px;
+  font-size: 0.625rem;
 
-  letter-spacing: 1.4px;
+  letter-spacing: 0.0875rem;
 
   cursor: pointer;
 
@@ -429,17 +429,17 @@
 }
 
 .error-button svg {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .error-button:hover {
   transform:
-    translateY(-2px);
+    translateY(-0.125rem);
 }
 
 .error-button-primary {
   border:
-    1px solid rgba(78, 158, 255, 0.75);
+    0.0625rem solid rgba(78, 158, 255, 0.75);
 
   background:
     linear-gradient(
@@ -452,7 +452,7 @@
     #ffffff;
 
   box-shadow:
-    0 10px 28px
+    0 0.625rem 1.75rem
     rgba(5, 98, 210, 0.25);
 }
 
@@ -467,16 +467,16 @@
 
 .error-button-secondary {
   border:
-    1px solid rgba(255, 255, 255, 0.16);
+    0.0625rem solid rgba(255, 255, 255, 0.16);
 
   background:
     rgba(255, 255, 255, 0.065);
 
   -webkit-backdrop-filter:
-    blur(12px);
+    blur(0.75rem);
 
   backdrop-filter:
-    blur(12px);
+    blur(0.75rem);
 
   color:
     rgba(255, 255, 255, 0.82);
@@ -493,16 +493,16 @@
 
 .error-technical-message {
   width: 100%;
-  max-width: 430px;
+  max-width: 26.875rem;
 
-  margin: 22px auto 0;
-  padding: 12px 16px;
+  margin: 1.375rem auto 0;
+  padding: 0.75rem 1rem;
 
   border:
-    1px solid rgba(255, 255, 255, 0.08);
+    0.0625rem solid rgba(255, 255, 255, 0.08);
 
   border-radius:
-    10px;
+    0.625rem;
 
   background:
     rgba(255, 255, 255, 0.045);
@@ -514,14 +514,14 @@
 .error-technical-message span {
   display: block;
 
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
 
   font-family:
     var(--font-body-bold);
 
-  font-size: 7px;
+  font-size: 0.4375rem;
 
-  letter-spacing: 2px;
+  letter-spacing: 0.125rem;
 
   color:
     rgba(255, 255, 255, 0.32);
@@ -535,7 +535,7 @@
   font-family:
     var(--font-body);
 
-  font-size: 11px;
+  font-size: 0.6875rem;
 
   line-height: 1.5;
 
@@ -551,7 +551,7 @@
 .error-footer {
   position: absolute;
 
-  bottom: 30px;
+  bottom: 1.875rem;
   left: 50%;
 
   z-index: 3;
@@ -562,7 +562,7 @@
   display: flex;
   align-items: center;
 
-  gap: 12px;
+  gap: 0.75rem;
 
   white-space: nowrap;
 }
@@ -571,17 +571,17 @@
   font-family:
     var(--font-body-bold);
 
-  font-size: 7px;
+  font-size: 0.4375rem;
 
-  letter-spacing: 2px;
+  letter-spacing: 0.125rem;
 
   color:
     rgba(255, 255, 255, 0.24);
 }
 
 .error-footer div {
-  width: 30px;
-  height: 1px;
+  width: 1.875rem;
+  height: 0.0625rem;
 
   background:
     rgba(255, 255, 255, 0.14);
@@ -601,7 +601,7 @@
 
   100% {
     transform:
-      translate(360px, 220px)
+      translate(22.5rem, 13.75rem)
       scale(1.15);
   }
 }
@@ -615,7 +615,7 @@
 
   100% {
     transform:
-      translate(-330px, -190px)
+      translate(-20.625rem, -11.875rem)
       scale(1.12);
   }
 }
@@ -623,7 +623,7 @@
 @keyframes errorLightSweep {
   0% {
     transform:
-      translateX(-120px)
+      translateX(-7.5rem)
       rotate(-18deg);
 
     opacity: 0.3;
@@ -631,7 +631,7 @@
 
   50% {
     transform:
-      translateX(620px)
+      translateX(38.75rem)
       rotate(-18deg);
 
     opacity: 0.75;
@@ -639,7 +639,7 @@
 
   100% {
     transform:
-      translateX(1200px)
+      translateX(75rem)
       rotate(-18deg);
 
     opacity: 0.15;
@@ -649,13 +649,13 @@
 @keyframes errorFloatingGlow {
   from {
     transform:
-      translate(-20px, -20px)
+      translate(-1.25rem, -1.25rem)
       scale(0.95);
   }
 
   to {
     transform:
-      translate(80px, 70px)
+      translate(5rem, 4.375rem)
       scale(1.1);
   }
 }
@@ -665,7 +665,7 @@
     opacity: 0;
 
     transform:
-      translateY(16px)
+      translateY(1rem)
       scale(0.99);
   }
 
@@ -683,57 +683,57 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .error-page {
     padding:
-      24px 18px 70px;
+      1.5rem 1.125rem 4.375rem;
   }
 
   .error-content {
     padding:
-      42px 22px 38px;
+      2.625rem 1.375rem 2.375rem;
 
     border-radius:
-      22px;
+      1.375rem;
   }
 
   .error-label {
     font-size:
-      7px;
+      0.4375rem;
 
     letter-spacing:
-      3px;
+      0.1875rem;
   }
 
   .error-code-wrapper h1 {
     font-size:
-      clamp(95px, 35vw, 140px);
+      clamp(5.9375rem, 35vw, 8.75rem);
 
     letter-spacing:
-      4px;
+      0.25rem;
   }
 
   .error-brand-name {
     font-size:
-      8px;
+      0.5rem;
 
     letter-spacing:
-      3px;
+      0.1875rem;
   }
 
   .error-message {
     margin-top:
-      32px;
+      2rem;
   }
 
   .error-message h2 {
     font-size:
-      28px;
+      1.75rem;
   }
 
   .error-message p {
     font-size:
-      12px;
+      0.75rem;
   }
 
   .error-actions {
@@ -752,10 +752,10 @@
   .error-page::before,
   .error-page::after {
     width:
-      430px;
+      26.875rem;
 
     height:
-      430px;
+      26.875rem;
   }
 }
 

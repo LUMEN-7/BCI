@@ -1,25 +1,25 @@
 .section-eyebrow {
   display: block;
-  margin-bottom: 9px;
+  margin-bottom: 0.5625rem;
   font-family: var(--font-body-bold);
-  font-size: 9px;
-  letter-spacing: 3px;
+  font-size: 0.5625rem;
+  letter-spacing: 0.1875rem;
   text-transform: uppercase;
   color: #9aa5b2;
 }
 .technical-section {
-  margin-top: 8px;
+  margin-top: 0.5rem;
 }
 .technical-heading {
-  margin-bottom: 18px;
+  margin-bottom: 1.125rem;
 }
 .information-legend {
-  margin-bottom: 18px;
-  padding: 20px 22px;
-  border: 1px solid rgba(0, 20, 46, 0.08);
-  border-radius: 22px;
+  margin-bottom: 1.125rem;
+  padding: 1.25rem 1.375rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.08);
+  border-radius: 1.375rem;
   background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 8px 24px rgba(0, 20, 46, 0.045);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 20, 46, 0.045);
 }
 .legend-header,
 .legend-title,
@@ -29,66 +29,66 @@
 }
 .legend-header {
   justify-content: space-between;
-  gap: 20px;
+  gap: 1.25rem;
 }
 .legend-title {
-  gap: 11px;
+  gap: 0.6875rem;
 }
 .legend-title > svg {
-  font-size: 20px;
+  font-size: 1.25rem;
   color: var(--color-primary);
 }
 .legend-title div {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 0.1875rem;
 }
 .legend-title strong {
   font-family: var(--font-body-bold);
-  font-size: 11px;
+  font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.05rem;
   color: var(--color-primary);
 }
 .legend-title span {
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #8b96a3;
 }
 .legend-items {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 9px 18px;
-  margin-top: 17px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(0, 20, 46, 0.07);
+  gap: 0.5625rem 1.125rem;
+  margin-top: 1.0625rem;
+  padding-top: 0.9375rem;
+  border-top: 0.0625rem solid rgba(0, 20, 46, 0.07);
 }
 .legend-item {
-  gap: 7px;
+  gap: 0.4375rem;
 }
 .legend-badge,
 .verified-badge,
 .iaGen-badge,
 .confidence-badge {
-  height: 27px;
+  height: 1.6875rem;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 0 9px;
-  border-radius: 999px;
+  gap: 0.3125rem;
+  padding: 0 0.5625rem;
+  border-radius: 62.4375rem;
   font-family: var(--font-body-bold);
-  font-size: 9px;
+  font-size: 0.5625rem;
   white-space: nowrap;
 }
 .legend-badge svg,
 .verified-badge svg,
 .iaGen-badge svg {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .legend-description {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: #929ca8;
 }
 .legend-item.verified .legend-badge,
@@ -110,54 +110,54 @@
 }
 .legend-dot,
 .confidence-dot {
-  width: 6px;
-  height: 6px;
+  width: 0.375rem;
+  height: 0.375rem;
   border-radius: 50%;
   background: currentColor;
 }
 .sources-toggle {
-  height: 34px;
+  height: 2.125rem;
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 0 12px;
-  border: 1px solid rgba(0, 20, 46, 0.08);
-  border-radius: 999px;
+  gap: 0.4375rem;
+  padding: 0 0.75rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.08);
+  border-radius: 62.4375rem;
   background: rgba(0, 20, 46, 0.035);
   color: var(--color-primary);
   font-family: var(--font-body-bold);
-  font-size: 9px;
+  font-size: 0.5625rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.03125rem;
   cursor: pointer;
 }
 .sources-toggle svg {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .sources-panel {
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(0, 20, 46, 0.08);
+  margin-top: 1.125rem;
+  padding-top: 1.125rem;
+  border-top: 0.0625rem solid rgba(0, 20, 46, 0.08);
 }
 .sources-panel-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 0.875rem;
 }
 .sources-panel-header h3 {
   margin: 0;
   font-family: var(--font-title);
-  font-size: 25px;
+  font-size: 1.5625rem;
   line-height: 1;
   text-transform: uppercase;
   color: var(--color-primary);
 }
 .sources-total {
   font-family: var(--font-body-bold);
-  font-size: 9px;
+  font-size: 0.5625rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.0625rem;
   color: #909aa6;
 }
 .sources-empty {
@@ -166,63 +166,63 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 40px 20px;
-  border-radius: 15px;
+  gap: 0.5rem;
+  padding: 2.5rem 1.25rem;
+  border-radius: 0.9375rem;
   background: rgba(0, 20, 46, 0.035);
-  border: 1px solid rgba(0, 20, 46, 0.06);
+  border: 0.0625rem solid rgba(0, 20, 46, 0.06);
   text-align: center;
 }
 .sources-empty svg {
-  font-size: 32px;
+  font-size: 2rem;
   color: #9aa5b2;
   opacity: 0.6;
 }
 .sources-empty p {
   margin: 0;
   font-family: var(--font-body-bold);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-primary);
 }
 .sources-empty small {
   display: block;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #9aa5b2;
-  margin-top: 2px;
+  margin-top: 0.125rem;
 }
 .section-title {
   margin: 0;
   font-family: var(--font-title);
-  font-size: 44px;
+  font-size: 2.75rem;
   font-weight: 500;
   line-height: 0.92;
   text-transform: uppercase;
   color: var(--color-primary);
 }
 .resources-heading {
-  margin-top: 52px;
-  margin-bottom: 18px;
+  margin-top: 3.25rem;
+  margin-bottom: 1.125rem;
 }
 .accordion-group {
-  padding: 0 20px;
-  border: 1px solid rgba(0, 20, 46, 0.07);
-  border-radius: 22px;
+  padding: 0 1.25rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.07);
+  border-radius: 1.375rem;
   background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 9px 28px rgba(0, 20, 46, 0.045);
+  box-shadow: 0 0.5625rem 1.75rem rgba(0, 20, 46, 0.045);
 }
 .accordion {
-  border-bottom: 1px solid rgba(0, 20, 46, 0.07);
+  border-bottom: 0.0625rem solid rgba(0, 20, 46, 0.07);
 }
 .accordion:last-child {
   border-bottom: none;
 }
 .accordion-trigger {
   width: 100%;
-  min-height: 72px;
+  min-height: 4.5rem;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
   padding: 0;
   border: none;
   background: transparent;
@@ -234,30 +234,30 @@
   flex: 1;
   min-width: 0;
   font-family: var(--font-body-bold);
-  font-size: 12px;
-  letter-spacing: 0.8px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05rem;
   text-transform: uppercase;
 }
 .verified-badge {
-  height: 25px;
+  height: 1.5625rem;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 0 9px;
-  border: 1px solid rgba(34, 197, 94, 0.14);
-  border-radius: 999px;
+  gap: 0.3125rem;
+  padding: 0 0.5625rem;
+  border: 0.0625rem solid rgba(34, 197, 94, 0.14);
+  border-radius: 62.4375rem;
   background: rgba(34, 197, 94, 0.08);
   color: #15803d;
   font-family: var(--font-body-bold);
-  font-size: 8px;
+  font-size: 0.5rem;
   white-space: nowrap;
 }
 .verified-badge svg {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .accordion-arrow {
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -265,7 +265,7 @@
   border-radius: 50%;
   background: rgba(0, 20, 46, 0.055);
   color: var(--color-primary);
-  font-size: 16px;
+  font-size: 1rem;
   transition:
     background-color 0.2s ease,
     transform 0.2s ease;
@@ -278,23 +278,23 @@
   color: #ffffff;
 }
 .accordion-content {
-  padding: 0 0 20px;
+  padding: 0 0 1.25rem;
 }
 .technical-list {
   display: flex;
   flex-direction: column;
-  border-radius: 14px;
+  border-radius: 0.875rem;
   overflow: hidden;
   background: rgba(0, 20, 46, 0.025);
 }
 .technical-row {
   display: grid;
-  grid-template-columns: 150px 1fr 1fr;
-  gap: 20px;
-  min-height: 58px;
+  grid-template-columns: 9.375rem 1fr 1fr;
+  gap: 1.25rem;
+  min-height: 3.625rem;
   align-items: center;
-  padding: 10px 14px;
-  border-bottom: 1px solid rgba(0, 20, 46, 0.055);
+  padding: 0.625rem 0.875rem;
+  border-bottom: 0.0625rem solid rgba(0, 20, 46, 0.055);
 }
 .technical-row:last-child {
   border-bottom: none;
@@ -304,19 +304,19 @@
 }
 .technical-label {
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #8994a1;
 }
 .technical-car-value {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 0.1875rem;
   min-width: 0;
 }
 .technical-car-value span {
   font-family: var(--font-body);
-  font-size: 8px;
-  letter-spacing: 1px;
+  font-size: 0.5rem;
+  letter-spacing: 0.0625rem;
   text-transform: uppercase;
   color: #9aa5b2;
   overflow: hidden;
@@ -325,83 +325,83 @@
 }
 .technical-car-value strong {
   font-family: var(--font-body-bold);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-primary);
 }
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 0.75rem;
 }
 .feature-card {
-  min-height: 150px;
-  padding: 20px;
-  border-radius: 18px;
+  min-height: 9.375rem;
+  padding: 1.25rem;
+  border-radius: 1.125rem;
   background: rgba(0, 20, 46, 0.035);
-  border: 1px solid rgba(0, 20, 46, 0.055);
+  border: 0.0625rem solid rgba(0, 20, 46, 0.055);
   transition:
     transform 0.2s ease,
     background-color 0.2s ease;
 }
 .feature-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
   background: rgba(0, 20, 46, 0.05);
 }
 .feature-card-header {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-bottom: 14px;
+  gap: 0.25rem;
+  margin-bottom: 0.875rem;
 }
 .feature-card-header span {
   font-family: var(--font-body-bold);
-  font-size: 8px;
-  letter-spacing: 2px;
+  font-size: 0.5rem;
+  letter-spacing: 0.125rem;
   text-transform: uppercase;
   color: #9aa5b2;
 }
 .feature-card-header strong {
   font-family: var(--font-body-bold);
-  font-size: 13px;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   color: var(--color-primary);
 }
 .feature-card ul {
   margin: 0;
-  padding-left: 17px;
+  padding-left: 1.0625rem;
 }
 .feature-card li {
-  margin-bottom: 7px;
+  margin-bottom: 0.4375rem;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.55;
   color: #7e8996;
 }
 .feature-card li:last-child {
   margin-bottom: 0;
 }
-@media (max-width: 1100px) {
+@media (max-width: 68.75rem) {
   .technical-row {
-    grid-template-columns: 120px 1fr 1fr;
+    grid-template-columns: 7.5rem 1fr 1fr;
   }
 }
-@media (max-width: 850px) {
+@media (max-width: 53.125rem) {
   .feature-grid {
     grid-template-columns: 1fr;
   }
   .technical-row {
     grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 14px;
+    gap: 0.625rem;
+    padding: 0.875rem;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .section-title {
-    font-size: 36px;
+    font-size: 2.25rem;
   }
   .information-legend {
-    padding: 17px;
-    border-radius: 18px;
+    padding: 1.0625rem;
+    border-radius: 1.125rem;
   }
   .legend-header {
     align-items: flex-start;
@@ -414,60 +414,60 @@
   .legend-items {
     align-items: flex-start;
     flex-direction: column;
-    gap: 9px;
+    gap: 0.5625rem;
   }
   .sources-panel-header {
     align-items: flex-start;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5rem;
   }
   .resources-heading {
-    margin-top: 40px;
+    margin-top: 2.5rem;
   }
   .accordion-group {
-    padding: 0 14px;
-    border-radius: 18px;
+    padding: 0 0.875rem;
+    border-radius: 1.125rem;
   }
   .accordion-trigger {
-    min-height: 68px;
-    gap: 7px;
+    min-height: 4.25rem;
+    gap: 0.4375rem;
   }
   .accordion-title {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .verified-badge {
-    height: 22px;
-    padding: 0 7px;
-    font-size: 7px;
+    height: 1.375rem;
+    padding: 0 0.4375rem;
+    font-size: 0.4375rem;
   }
   .verified-badge svg {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .accordion-arrow {
-    width: 29px;
-    height: 29px;
-    font-size: 14px;
+    width: 1.8125rem;
+    height: 1.8125rem;
+    font-size: 0.875rem;
   }
   .technical-list {
-    border-radius: 12px;
+    border-radius: 0.75rem;
   }
   .technical-car-value span {
-    font-size: 7px;
+    font-size: 0.4375rem;
   }
   .technical-car-value strong {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .feature-card {
-    padding: 16px;
-    border-radius: 16px;
+    padding: 1rem;
+    border-radius: 1rem;
   }
 }
-@media (max-width: 400px) {
+@media (max-width: 25rem) {
   .section-title {
-    font-size: 32px;
+    font-size: 2rem;
   }
   .accordion-group {
-    padding: 0 11px;
+    padding: 0 0.6875rem;
   }
   .verified-badge {
     display: none;

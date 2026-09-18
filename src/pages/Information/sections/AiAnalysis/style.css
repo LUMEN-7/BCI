@@ -1,66 +1,66 @@
 .ai-analysis-section {
-  margin-top: 60px;
-  padding: 36px;
-  border-radius: 30px;
+  margin-top: 3.75rem;
+  padding: 2.25rem;
+  border-radius: 1.875rem;
   background: linear-gradient(
     135deg,
     rgba(0, 20, 46, 0.97),
     rgba(0, 38, 84, 0.94)
   );
   color: var(--color-light-neutral);
-  box-shadow: 0 20px 50px rgba(0, 20, 46, 0.12);
+  box-shadow: 0 1.25rem 3.125rem rgba(0, 20, 46, 0.12);
 }
 .ai-analysis-header span {
   font-family: var(--font-body-bold);
-  font-size: 10px;
-  letter-spacing: 2px;
+  font-size: 0.625rem;
+  letter-spacing: 0.125rem;
   text-transform: uppercase;
   color: var(--color-secondary);
 }
 .ai-analysis-header h2 {
-  margin: 8px 0 0;
+  margin: 0.5rem 0 0;
   font-family: var(--font-title);
-  font-size: 38px;
+  font-size: 2.375rem;
   font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
 }
 .ai-analysis-header p {
-  max-width: 620px;
-  margin-top: 10px;
+  max-width: 38.75rem;
+  margin-top: 0.625rem;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.6;
   opacity: 0.7;
 }
 .ai-analysis-grid {
-  margin-top: 28px;
+  margin-top: 1.75rem;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 1rem;
 }
 .ai-analysis-feedback {
-  min-height: 150px;
-  margin-top: 28px;
-  padding: 26px;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  border-radius: 20px;
+  min-height: 9.375rem;
+  margin-top: 1.75rem;
+  padding: 1.625rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.11);
+  border-radius: 1.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0.5rem;
   text-align: center;
   background: rgba(255, 255, 255, 0.055);
 }
 .ai-analysis-feedback strong {
   font-family: var(--font-body-bold);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .ai-analysis-feedback p {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 0.75rem;
   opacity: 0.7;
 }
 .ai-analysis-feedback.is-error {
@@ -69,10 +69,10 @@
   border-color: rgba(217, 107, 85, 0.35);
 }
 .ai-analysis-spinner {
-  width: 28px;
-  height: 28px;
-  margin-bottom: 5px;
-  border: 3px solid rgba(255, 255, 255, 0.18);
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-bottom: 0.3125rem;
+  border: 0.1875rem solid rgba(255, 255, 255, 0.18);
   border-top-color: var(--color-secondary);
   border-radius: 50%;
   animation: aiAnalysisSpin 0.8s linear infinite;
@@ -81,40 +81,40 @@
   to { transform: rotate(360deg); }
 }
 .ai-analysis-card {
-  padding: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  border-radius: 20px;
+  padding: 1.375rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.11);
+  border-radius: 1.25rem;
   background: rgba(255, 255, 255, 0.055);
   transition:
     transform 0.2s ease,
     background-color 0.2s ease;
 }
 .ai-analysis-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-0.1875rem);
   background: rgba(255, 255, 255, 0.08);
 }
 .ai-analysis-card h3 {
-  margin: 0 0 13px;
+  margin: 0 0 0.8125rem;
   font-family: var(--font-body-bold);
-  font-size: 12px;
-  letter-spacing: 1px;
+  font-size: 0.75rem;
+  letter-spacing: 0.0625rem;
   text-transform: uppercase;
 }
 .ai-analysis-card ul {
   margin: 0;
-  padding-left: 17px;
+  padding-left: 1.0625rem;
 }
 .ai-analysis-card li {
-  margin-bottom: 7px;
+  margin-bottom: 0.4375rem;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.5;
   opacity: 0.82;
 }
 .ai-analysis-card p {
   margin: 0;
   font-family: var(--font-body-bold);
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.4;
 }
 .ai-analysis-card.featured {
@@ -125,25 +125,25 @@
 .ai-analysis-card.featured:hover {
   background: var(--color-secondary);
 }
-@media (max-width: 850px) {
+@media (max-width: 53.125rem) {
   .ai-analysis-grid {
     grid-template-columns: 1fr;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .ai-analysis-section {
-    margin-top: 42px;
-    padding: 24px 18px;
-    border-radius: 23px;
+    margin-top: 2.625rem;
+    padding: 1.5rem 1.125rem;
+    border-radius: 1.4375rem;
   }
   .ai-analysis-header h2 {
-    font-size: 30px;
+    font-size: 1.875rem;
   }
   .ai-analysis-grid {
-    gap: 11px;
+    gap: 0.6875rem;
   }
   .ai-analysis-card {
-    padding: 18px;
-    border-radius: 17px;
+    padding: 1.125rem;
+    border-radius: 1.0625rem;
   }
 }

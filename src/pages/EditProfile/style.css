@@ -6,7 +6,7 @@
 
 .edit-profile-page {
   min-height: 100vh;
-  padding: 20px 38px 70px;
+  padding: 1.25rem 2.375rem 4.375rem;
 
   background:
     radial-gradient(
@@ -25,7 +25,7 @@
 
 .edit-profile-container {
   width: 100%;
-  max-width: 1180px;
+  max-width: 73.75rem;
   margin: 0 auto;
 }
 
@@ -35,24 +35,24 @@
 ========================================================= */
 
 .edit-profile-back {
-  min-height: 38px;
-  padding: 0 18px;
-  margin-bottom: 58px;
+  min-height: 2.375rem;
+  padding: 0 1.125rem;
+  margin-bottom: 3.625rem;
 
   border: none;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 0.5625rem;
 
   background: rgba(0, 20, 46, 0.055);
   color: var(--color-primary);
 
   font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.4px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.025rem;
 
   cursor: pointer;
 
@@ -63,11 +63,11 @@
 
 .edit-profile-back:hover {
   background: rgba(0, 20, 46, 0.09);
-  transform: translateX(-2px);
+  transform: translateX(-0.125rem);
 }
 
 .edit-profile-back svg {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 
@@ -76,22 +76,22 @@
 ========================================================= */
 
 .edit-profile-header {
-  margin-bottom: 28px;
+  margin-bottom: 1.75rem;
 
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 40px;
+  gap: 2.5rem;
 }
 
 .page-eyebrow {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: 0.4375rem;
 
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 4px;
+  letter-spacing: 0.25rem;
   text-transform: uppercase;
 
   color: rgba(0, 20, 46, 0.48);
@@ -101,7 +101,7 @@
   margin: 0;
 
   font-family: var(--font-title);
-  font-size: clamp(46px, 5vw, 68px);
+  font-size: clamp(2.875rem, 5vw, 4.25rem);
   font-weight: 400;
   line-height: 0.95;
 
@@ -109,13 +109,13 @@
 }
 
 .edit-profile-header > p {
-  max-width: 355px;
-  margin: 0 0 4px;
+  max-width: 22.1875rem;
+  margin: 0 0 0.25rem;
 
   text-align: right;
 
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.6;
 
   color: var(--color-dark-grey);
@@ -128,19 +128,19 @@
 ========================================================= */
 
 .edit-profile-card {
-  margin-bottom: 20px;
-  padding: 34px 32px;
+  margin-bottom: 1.25rem;
+  padding: 2.125rem 2rem;
 
-  border: 1px solid rgba(0, 20, 46, 0.08);
-  border-radius: 30px;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.08);
+  border-radius: 1.875rem;
 
   background: rgba(255, 255, 255, 0.74);
 
   box-shadow:
-    0 20px 55px rgba(0, 20, 46, 0.055),
-    0 2px 8px rgba(0, 20, 46, 0.025);
+    0 1.25rem 3.4375rem rgba(0, 20, 46, 0.055),
+    0 0.125rem 0.5rem rgba(0, 20, 46, 0.025);
 
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(0.75rem);
 }
 
 
@@ -152,7 +152,7 @@
 .section-heading {
   width: 100%;
 
-  margin: 0 0 28px;
+  margin: 0 0 1.75rem;
   padding: 0;
 
   display: block;
@@ -179,7 +179,7 @@
   align-items: center;
   justify-content: flex-start;
 
-  gap: 18px;
+  gap: 1.125rem;
 
   border: none !important;
   border-top: none !important;
@@ -216,11 +216,11 @@
   background: transparent !important;
 
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   line-height: 1;
 
-  letter-spacing: 3.8px;
+  letter-spacing: 0.2375rem;
   text-transform: uppercase;
 
   color: rgba(0, 20, 46, 0.5);
@@ -257,7 +257,7 @@
   background: transparent !important;
 
   font-family: var(--font-body-bold);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
   line-height: 1;
 
@@ -281,15 +281,15 @@
   display: block;
 
   width: 100%;
-  max-width: 560px;
+  max-width: 35rem;
 
-  margin: 10px 0 0;
+  margin: 0.625rem 0 0;
   padding: 0;
 
   border: none !important;
 
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.55;
 
   text-align: left;
@@ -306,12 +306,12 @@
 .avatar-content {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 1.875rem;
 }
 
 .avatar-preview {
-  width: 128px;
-  height: 128px;
+  width: 8rem;
+  height: 8rem;
   flex-shrink: 0;
 
   border-radius: 50%;
@@ -326,8 +326,8 @@
   color: #ffffff;
 
   box-shadow:
-    0 18px 38px rgba(0, 20, 46, 0.12),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+    0 1.125rem 2.375rem rgba(0, 20, 46, 0.12),
+    inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.07);
 }
 
 .avatar-preview img {
@@ -337,7 +337,7 @@
 }
 
 .avatar-preview svg {
-  font-size: 50px;
+  font-size: 3.125rem;
   stroke-width: 1.4;
 }
 
@@ -350,7 +350,7 @@
   display: block;
 
   font-family: var(--font-title);
-  font-size: 36px;
+  font-size: 2.25rem;
   font-weight: 400;
   line-height: 1;
 
@@ -362,10 +362,10 @@
 .avatar-info > span:not(.field-error) {
   display: block;
 
-  margin-top: 8px;
+  margin-top: 0.5rem;
 
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 0.75rem;
 
   color: var(--color-dark-grey);
   opacity: 0.62;
@@ -376,17 +376,17 @@
   align-items: center;
   flex-wrap: wrap;
 
-  gap: 10px;
-  margin-top: 22px;
+  gap: 0.625rem;
+  margin-top: 1.375rem;
 }
 
 .avatar-info small {
   display: block;
 
-  margin-top: 10px;
+  margin-top: 0.625rem;
 
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 0.625rem;
   line-height: 1.5;
 
   color: var(--color-dark-grey);
@@ -409,7 +409,7 @@
 .profile-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 .form-group {
@@ -419,12 +419,12 @@
 .form-group label {
   display: block;
 
-  margin-bottom: 9px;
+  margin-bottom: 0.5625rem;
 
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.09375rem;
   text-transform: uppercase;
 
   color: var(--color-primary);
@@ -432,16 +432,16 @@
 
 .input-wrapper {
   width: 100%;
-  min-height: 56px;
+  min-height: 3.5rem;
 
-  padding: 0 17px;
+  padding: 0 1.0625rem;
 
-  border: 1px solid rgba(0, 20, 46, 0.1);
-  border-radius: 16px;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.1);
+  border-radius: 1rem;
 
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
 
   box-sizing: border-box;
 
@@ -459,14 +459,14 @@
   background: #ffffff;
 
   box-shadow:
-    0 0 0 4px rgba(5, 98, 210, 0.05),
-    0 8px 24px rgba(0, 20, 46, 0.035);
+    0 0 0 0.25rem rgba(5, 98, 210, 0.05),
+    0 0.5rem 1.5rem rgba(0, 20, 46, 0.035);
 }
 
 .input-wrapper > svg {
   flex-shrink: 0;
 
-  font-size: 17px;
+  font-size: 1.0625rem;
 
   color: var(--color-primary);
   opacity: 0.52;
@@ -481,7 +481,7 @@
   background: transparent;
 
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 0.8125rem;
 
   color: var(--color-primary);
 }
@@ -520,7 +520,7 @@
 
   flex-shrink: 0;
 
-  font-size: 15px !important;
+  font-size: 0.9375rem !important;
 
   opacity: 0.4 !important;
 }
@@ -539,10 +539,10 @@
 .field-error {
   display: block;
 
-  margin-top: 7px;
+  margin-top: 0.4375rem;
 
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 0.625rem;
 
   color: #b52b2b;
 }
@@ -550,10 +550,10 @@
 .field-helper {
   display: block;
 
-  margin-top: 8px;
+  margin-top: 0.5rem;
 
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 0.625rem;
   line-height: 1.5;
 
   color: var(--color-dark-grey);
@@ -564,11 +564,11 @@
 .edit-profile-page .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .edit-profile-page .form-group label {
-  margin-bottom: 2px;
+  margin-bottom: 0.125rem;
 }
 
 .edit-profile-page .input-wrapper {
@@ -579,14 +579,14 @@
   display: block;
 
   margin: 0;
-  margin-top: 4px;
+  margin-top: 0.25rem;
 
   padding: 0;
 
   position: static;
 
   font-family: var(--font-body-bold);
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.4;
 
   color: #d64545;
@@ -600,16 +600,16 @@
   border-color: #d64545;
 
   box-shadow:
-    0 0 0 3px rgba(214, 69, 69, 0.08);
+    0 0 0 0.1875rem rgba(214, 69, 69, 0.08);
 }
 
 .edit-profile-page .field-helper {
   display: block;
 
-  margin-top: 4px;
+  margin-top: 0.25rem;
 
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.4;
 
   color: rgba(0, 20, 46, 0.55);
@@ -620,22 +620,22 @@
 ========================================================= */
 
 .button {
-  min-height: 43px;
+  min-height: 2.6875rem;
 
-  padding: 0 18px;
+  padding: 0 1.125rem;
 
   border: none;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0.5rem;
 
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.0375rem;
 
   cursor: pointer;
 
@@ -647,11 +647,11 @@
 }
 
 .button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
 }
 
 .button svg {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .button-primary,
@@ -664,13 +664,13 @@
 .button-primary:hover,
 .button-save:hover {
   box-shadow:
-    0 10px 25px rgba(0, 20, 46, 0.18);
+    0 0.625rem 1.5625rem rgba(0, 20, 46, 0.18);
 }
 
 .button-secondary,
 .button-cancel {
   border:
-    1px solid rgba(0, 20, 46, 0.1);
+    0.0625rem solid rgba(0, 20, 46, 0.1);
 
   background:
     rgba(0, 20, 46, 0.04);
@@ -693,17 +693,17 @@
 .profile-success-message {
   width: fit-content;
 
-  margin: 22px 0 0 auto;
-  padding: 10px 14px;
+  margin: 1.375rem 0 0 auto;
+  padding: 0.625rem 0.875rem;
 
   border:
-    1px solid rgba(5, 98, 210, 0.15);
+    0.0625rem solid rgba(5, 98, 210, 0.15);
 
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 0.4375rem;
 
   background:
     rgba(5, 98, 210, 0.05);
@@ -714,7 +714,7 @@
   font-family:
     var(--font-body-bold);
 
-  font-size: 10px;
+  font-size: 0.625rem;
 }
 
 
@@ -723,17 +723,17 @@
 ========================================================= */
 
 .edit-profile-actions {
-  margin-top: 24px;
+  margin-top: 1.5rem;
 
   display: flex;
   justify-content: flex-end;
   align-items: center;
 
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .button-save {
-  min-width: 180px;
+  min-width: 11.25rem;
 }
 
 .button-save:disabled {
@@ -760,8 +760,8 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
 }
 
 .two-factor-heading .section-heading {
@@ -770,10 +770,10 @@
 
 .two-factor-heading-icon,
 .two-factor-status-icon {
-  width: 42px;
-  height: 42px;
+  width: 2.625rem;
+  height: 2.625rem;
   flex-shrink: 0;
-  border-radius: 13px;
+  border-radius: 0.8125rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -783,22 +783,22 @@
 
 .two-factor-heading-icon svg,
 .two-factor-status-icon svg {
-  font-size: 21px;
+  font-size: 1.3125rem;
 }
 
 .two-factor-badge {
-  min-height: 28px;
-  padding: 0 11px;
-  border: 1px solid rgba(0, 20, 46, 0.1);
-  border-radius: 999px;
+  min-height: 1.75rem;
+  padding: 0 0.6875rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.1);
+  border-radius: 62.4375rem;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 0.4375rem;
   white-space: nowrap;
   background: rgba(0, 20, 46, 0.035);
   color: rgba(0, 20, 46, 0.58);
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
 }
 
@@ -809,20 +809,20 @@
 }
 
 .two-factor-badge-dot {
-  width: 6px;
-  height: 6px;
+  width: 0.375rem;
+  height: 0.375rem;
   border-radius: 50%;
   background: currentColor;
 }
 
 .two-factor-status {
-  min-height: 82px;
-  padding: 16px 18px;
-  border: 1px solid rgba(0, 20, 46, 0.08);
-  border-radius: 18px;
+  min-height: 5.125rem;
+  padding: 1rem 1.125rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.08);
+  border-radius: 1.125rem;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 0.875rem;
   background: rgba(0, 20, 46, 0.025);
 }
 
@@ -836,17 +836,17 @@
   display: block;
   color: var(--color-primary);
   font-family: var(--font-body-bold);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
 }
 
 .two-factor-status span,
 .two-factor-step span:not(.two-factor-step-number) {
   display: block;
-  margin-top: 3px;
+  margin-top: 0.1875rem;
   color: rgba(0, 20, 46, 0.58);
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.45;
 }
 
@@ -861,22 +861,22 @@
 }
 
 .two-factor-setup {
-  padding: 20px;
-  border: 1px solid rgba(5, 98, 210, 0.14);
-  border-radius: 20px;
+  padding: 1.25rem;
+  border: 0.0625rem solid rgba(5, 98, 210, 0.14);
+  border-radius: 1.25rem;
   background: rgba(255, 255, 255, 0.72);
 }
 
 .two-factor-steps {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 .two-factor-step {
   position: relative;
-  min-height: 210px;
-  padding: 3px 0 0 38px;
+  min-height: 13.125rem;
+  padding: 0.1875rem 0 0 2.375rem;
 }
 
 .two-factor-step-number {
@@ -885,17 +885,17 @@
   left: 0;
   color: var(--color-secondary);
   font-family: var(--font-title);
-  font-size: 21px;
+  font-size: 1.3125rem;
   line-height: 1;
 }
 
 .two-factor-qr {
-  width: 184px;
-  height: 184px;
-  margin: 22px auto 0;
-  padding: 8px;
-  border: 1px solid rgba(0, 20, 46, 0.1);
-  border-radius: 14px;
+  width: 11.5rem;
+  height: 11.5rem;
+  margin: 1.375rem auto 0;
+  padding: 0.5rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.1);
+  border-radius: 0.875rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -909,27 +909,27 @@
 
 .two-factor-code-step label {
   margin-top: auto;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
   color: rgba(0, 20, 46, 0.62);
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.05rem;
   text-transform: uppercase;
 }
 
 .two-factor-code-step input {
   width: 100%;
   box-sizing: border-box;
-  padding: 12px 14px;
-  border: 1px solid rgba(0, 20, 46, 0.12);
-  border-radius: 13px;
+  padding: 0.75rem 0.875rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.12);
+  border-radius: 0.8125rem;
   outline: none;
   background: rgba(0, 20, 46, 0.025);
   color: var(--color-primary);
   font-family: var(--font-body-bold);
-  font-size: 22px;
-  letter-spacing: 5px;
+  font-size: 1.375rem;
+  letter-spacing: 0.3125rem;
   text-align: center;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
@@ -937,7 +937,7 @@
 .two-factor-code-step input:focus {
   border-color: rgba(5, 98, 210, 0.48);
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(5, 98, 210, 0.08);
+  box-shadow: 0 0 0 0.25rem rgba(5, 98, 210, 0.08);
 }
 
 .two-factor-code-step input::placeholder {
@@ -945,47 +945,47 @@
 }
 
 .two-factor-manual-key {
-  margin-top: 20px;
-  padding: 11px 13px;
-  border-radius: 12px;
+  margin-top: 1.25rem;
+  padding: 0.6875rem 0.8125rem;
+  border-radius: 0.75rem;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5rem;
   background: rgba(0, 20, 46, 0.04);
   color: rgba(0, 20, 46, 0.58);
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .two-factor-manual-key > svg {
   color: var(--color-secondary);
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .two-factor-key {
-  padding: 4px 7px;
-  border-radius: 5px;
+  padding: 0.25rem 0.4375rem;
+  border-radius: 0.3125rem;
   background: rgba(0, 20, 46, 0.08);
   color: var(--color-primary);
   font-family: monospace;
-  font-size: 11px;
-  letter-spacing: 1px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.0625rem;
   overflow-wrap: anywhere;
 }
 
 .two-factor-confirm-form {
-  margin-top: 16px;
+  margin-top: 1rem;
 }
 
 .two-factor-confirm-form .field-error {
-  margin: 0 0 9px;
+  margin: 0 0 0.5625rem;
 }
 
 .two-factor-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .two-factor-section .button:disabled {
@@ -1010,8 +1010,8 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
 }
 
 .two-factor-heading .section-heading {
@@ -1020,10 +1020,10 @@
 
 .two-factor-heading-icon,
 .two-factor-status-icon {
-  width: 42px;
-  height: 42px;
+  width: 2.625rem;
+  height: 2.625rem;
   flex-shrink: 0;
-  border-radius: 13px;
+  border-radius: 0.8125rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1033,22 +1033,22 @@
 
 .two-factor-heading-icon svg,
 .two-factor-status-icon svg {
-  font-size: 21px;
+  font-size: 1.3125rem;
 }
 
 .two-factor-badge {
-  min-height: 28px;
-  padding: 0 11px;
-  border: 1px solid rgba(0, 20, 46, 0.1);
-  border-radius: 999px;
+  min-height: 1.75rem;
+  padding: 0 0.6875rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.1);
+  border-radius: 62.4375rem;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 0.4375rem;
   white-space: nowrap;
   background: rgba(0, 20, 46, 0.035);
   color: rgba(0, 20, 46, 0.58);
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
 }
 
@@ -1059,20 +1059,20 @@
 }
 
 .two-factor-badge-dot {
-  width: 6px;
-  height: 6px;
+  width: 0.375rem;
+  height: 0.375rem;
   border-radius: 50%;
   background: currentColor;
 }
 
 .two-factor-status {
-  min-height: 82px;
-  padding: 16px 18px;
-  border: 1px solid rgba(0, 20, 46, 0.08);
-  border-radius: 18px;
+  min-height: 5.125rem;
+  padding: 1rem 1.125rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.08);
+  border-radius: 1.125rem;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 0.875rem;
   background: rgba(0, 20, 46, 0.025);
 }
 
@@ -1086,17 +1086,17 @@
   display: block;
   color: var(--color-primary);
   font-family: var(--font-body-bold);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
 }
 
 .two-factor-status span,
 .two-factor-step span:not(.two-factor-step-number) {
   display: block;
-  margin-top: 3px;
+  margin-top: 0.1875rem;
   color: rgba(0, 20, 46, 0.58);
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.45;
 }
 
@@ -1111,22 +1111,22 @@
 }
 
 .two-factor-setup {
-  padding: 20px;
-  border: 1px solid rgba(5, 98, 210, 0.14);
-  border-radius: 20px;
+  padding: 1.25rem;
+  border: 0.0625rem solid rgba(5, 98, 210, 0.14);
+  border-radius: 1.25rem;
   background: rgba(255, 255, 255, 0.72);
 }
 
 .two-factor-steps {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 .two-factor-step {
   position: relative;
-  min-height: 210px;
-  padding: 3px 0 0 38px;
+  min-height: 13.125rem;
+  padding: 0.1875rem 0 0 2.375rem;
 }
 
 .two-factor-step-number {
@@ -1135,17 +1135,17 @@
   left: 0;
   color: var(--color-secondary);
   font-family: var(--font-title);
-  font-size: 21px;
+  font-size: 1.3125rem;
   line-height: 1;
 }
 
 .two-factor-qr {
-  width: 184px;
-  height: 184px;
-  margin: 22px auto 0;
-  padding: 8px;
-  border: 1px solid rgba(0, 20, 46, 0.1);
-  border-radius: 14px;
+  width: 11.5rem;
+  height: 11.5rem;
+  margin: 1.375rem auto 0;
+  padding: 0.5rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.1);
+  border-radius: 0.875rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1159,27 +1159,27 @@
 
 .two-factor-code-step label {
   margin-top: auto;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
   color: rgba(0, 20, 46, 0.62);
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.05rem;
   text-transform: uppercase;
 }
 
 .two-factor-code-step input {
   width: 100%;
   box-sizing: border-box;
-  padding: 12px 14px;
-  border: 1px solid rgba(0, 20, 46, 0.12);
-  border-radius: 13px;
+  padding: 0.75rem 0.875rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.12);
+  border-radius: 0.8125rem;
   outline: none;
   background: rgba(0, 20, 46, 0.025);
   color: var(--color-primary);
   font-family: var(--font-body-bold);
-  font-size: 22px;
-  letter-spacing: 5px;
+  font-size: 1.375rem;
+  letter-spacing: 0.3125rem;
   text-align: center;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
@@ -1187,7 +1187,7 @@
 .two-factor-code-step input:focus {
   border-color: rgba(5, 98, 210, 0.48);
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(5, 98, 210, 0.08);
+  box-shadow: 0 0 0 0.25rem rgba(5, 98, 210, 0.08);
 }
 
 .two-factor-code-step input::placeholder {
@@ -1195,47 +1195,47 @@
 }
 
 .two-factor-manual-key {
-  margin-top: 20px;
-  padding: 11px 13px;
-  border-radius: 12px;
+  margin-top: 1.25rem;
+  padding: 0.6875rem 0.8125rem;
+  border-radius: 0.75rem;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5rem;
   background: rgba(0, 20, 46, 0.04);
   color: rgba(0, 20, 46, 0.58);
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .two-factor-manual-key > svg {
   color: var(--color-secondary);
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .two-factor-key {
-  padding: 4px 7px;
-  border-radius: 5px;
+  padding: 0.25rem 0.4375rem;
+  border-radius: 0.3125rem;
   background: rgba(0, 20, 46, 0.08);
   color: var(--color-primary);
   font-family: monospace;
-  font-size: 11px;
-  letter-spacing: 1px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.0625rem;
   overflow-wrap: anywhere;
 }
 
 .two-factor-confirm-form {
-  margin-top: 16px;
+  margin-top: 1rem;
 }
 
 .two-factor-confirm-form .field-error {
-  margin: 0 0 9px;
+  margin: 0 0 0.5625rem;
 }
 
 .two-factor-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .two-factor-section .button:disabled {
@@ -1249,22 +1249,22 @@
    TABLET
 ========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
 
   .edit-profile-page {
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .edit-profile-header {
     align-items: flex-start;
     flex-direction: column;
 
-    gap: 14px;
+    gap: 0.875rem;
   }
 
   .edit-profile-header > p {
-    max-width: 480px;
+    max-width: 30rem;
 
     text-align: left;
   }
@@ -1282,7 +1282,7 @@
   }
 
   .two-factor-code-step label {
-    margin-top: 28px;
+    margin-top: 1.75rem;
   }
 }
 
@@ -1291,48 +1291,48 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 43.75rem) {
 
   .edit-profile-page {
     padding:
-      26px 22px 70px;
+      1.625rem 1.375rem 4.375rem;
   }
 
   .edit-profile-back {
-    margin-bottom: 42px;
+    margin-bottom: 2.625rem;
   }
 
   .edit-profile-header {
-    margin-bottom: 22px;
+    margin-bottom: 1.375rem;
   }
 
   .edit-profile-header h1 {
-    font-size: 48px;
+    font-size: 3rem;
   }
 
   .edit-profile-card {
-    padding: 26px 22px;
+    padding: 1.625rem 1.375rem;
 
-    border-radius: 25px;
+    border-radius: 1.5625rem;
   }
 
   .section-heading-title {
-    gap: 13px;
+    gap: 0.8125rem;
   }
 
   .avatar-content {
     align-items: flex-start;
 
-    gap: 22px;
+    gap: 1.375rem;
   }
 
   .avatar-preview {
-    width: 105px;
-    height: 105px;
+    width: 6.5625rem;
+    height: 6.5625rem;
   }
 
   .avatar-info > strong {
-    font-size: 29px;
+    font-size: 1.8125rem;
   }
 }
 
@@ -1341,21 +1341,21 @@
    MOBILE PEQUENO
 ========================================================= */
 
-@media (max-width: 520px) {
+@media (max-width: 32.5rem) {
 
   .edit-profile-page {
     padding:
-      22px 16px 60px;
+      1.375rem 1rem 3.75rem;
   }
 
   .edit-profile-header h1 {
-    font-size: 42px;
+    font-size: 2.625rem;
   }
 
   .edit-profile-card {
-    padding: 22px 18px;
+    padding: 1.375rem 1.125rem;
 
-    border-radius: 22px;
+    border-radius: 1.375rem;
   }
 
   .section-heading-title {
@@ -1364,11 +1364,11 @@
     flex-direction: column;
     align-items: flex-start;
 
-    gap: 7px;
+    gap: 0.4375rem;
   }
 
   .section-heading h2 {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
 
   .avatar-content {
@@ -1376,8 +1376,8 @@
   }
 
   .avatar-preview {
-    width: 96px;
-    height: 96px;
+    width: 6rem;
+    height: 6rem;
   }
 
   .avatar-actions {
@@ -1418,11 +1418,11 @@
 
   .two-factor-status .button {
     width: 100%;
-    margin-left: 56px;
+    margin-left: 3.5rem;
   }
 
   .two-factor-setup {
-    padding: 16px;
+    padding: 1rem;
   }
 
   .two-factor-actions {
@@ -1439,14 +1439,14 @@
    TELAS MUITO PEQUENAS
 ========================================================= */
 
-@media (max-width: 380px) {
+@media (max-width: 23.75rem) {
 
   .edit-profile-page {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 
   .edit-profile-header h1 {
-    font-size: 38px;
+    font-size: 2.375rem;
   }
 }

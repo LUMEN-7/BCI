@@ -12,7 +12,7 @@
   width: 2rem;
   height: 2rem;
   margin: 0 auto;
-  border: 3px solid #d7d7d7;
+  border: 0.1875rem solid #d7d7d7;
   border-top-color: #1c1c1c;
   border-radius: 50%;
   animation: page-loader-spin 700ms linear infinite;

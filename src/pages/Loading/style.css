@@ -14,7 +14,7 @@
 
   overflow: hidden;
 
-  padding: 40px 24px;
+  padding: 2.5rem 1.5rem;
 
   background:
     linear-gradient(
@@ -37,11 +37,11 @@
 
   position: absolute;
 
-  width: 720px;
-  height: 720px;
+  width: 45rem;
+  height: 45rem;
 
-  top: -280px;
-  left: -180px;
+  top: -17.5rem;
+  left: -11.25rem;
 
   border-radius: 50%;
 
@@ -54,7 +54,7 @@
       transparent 72%
     );
 
-  filter: blur(55px);
+  filter: blur(3.4375rem);
 
   animation:
     loadingBlobOne 8s ease-in-out infinite alternate;
@@ -67,11 +67,11 @@
 
   position: absolute;
 
-  width: 680px;
-  height: 680px;
+  width: 42.5rem;
+  height: 42.5rem;
 
-  right: -230px;
-  bottom: -280px;
+  right: -14.375rem;
+  bottom: -17.5rem;
 
   border-radius: 50%;
 
@@ -84,7 +84,7 @@
       transparent 74%
     );
 
-  filter: blur(65px);
+  filter: blur(4.0625rem);
 
   animation:
     loadingBlobTwo 10s ease-in-out infinite alternate;
@@ -106,13 +106,13 @@
 }
 
 .loading-background-glow-one {
-  width: 520px;
-  height: 170px;
+  width: 32.5rem;
+  height: 10.625rem;
 
   top: 36%;
-  left: -150px;
+  left: -9.375rem;
 
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 
   background:
     linear-gradient(
@@ -123,7 +123,7 @@
       transparent
     );
 
-  filter: blur(45px);
+  filter: blur(2.8125rem);
 
   transform: rotate(-18deg);
 
@@ -132,8 +132,8 @@
 }
 
 .loading-background-glow-two {
-  width: 430px;
-  height: 430px;
+  width: 26.875rem;
+  height: 26.875rem;
 
   top: 22%;
   right: 8%;
@@ -147,7 +147,7 @@
       transparent 68%
     );
 
-  filter: blur(35px);
+  filter: blur(2.1875rem);
 
   animation:
     loadingFloatingGlow 6s ease-in-out infinite alternate;
@@ -162,7 +162,7 @@
   position: relative;
   z-index: 2;
 
-  width: min(620px, 100%);
+  width: min(38.75rem, 100%);
 
   display: flex;
   flex-direction: column;
@@ -195,13 +195,13 @@
     sans-serif;
 
   font-size:
-    clamp(120px, 16vw, 190px);
+    clamp(7.5rem, 16vw, 11.875rem);
 
   font-weight: 400;
 
   line-height: 1;
 
-  letter-spacing: 6px;
+  letter-spacing: 0.375rem;
 }
 
 .loading-logo-base {
@@ -209,7 +209,7 @@
     rgba(255, 255, 255, 0.08);
 
   -webkit-text-stroke:
-    1px rgba(255, 255, 255, 0.18);
+    0.0625rem rgba(255, 255, 255, 0.18);
 }
 
 .loading-logo-fill {
@@ -243,14 +243,14 @@
 ========================================================= */
 
 .loading-brand-name {
-  margin: 20px 0 0;
+  margin: 1.25rem 0 0;
 
   font-family:
     var(--font-body-bold);
 
-  font-size: 10px;
+  font-size: 0.625rem;
 
-  letter-spacing: 5px;
+  letter-spacing: 0.3125rem;
 
   color:
     rgba(255, 255, 255, 0.68);
@@ -262,9 +262,9 @@
 ========================================================= */
 
 .loading-status {
-  width: min(460px, 100%);
+  width: min(28.75rem, 100%);
 
-  margin-top: 50px;
+  margin-top: 3.125rem;
 }
 
 .loading-progress-info {
@@ -272,18 +272,18 @@
   align-items: center;
   justify-content: space-between;
 
-  gap: 20px;
+  gap: 1.25rem;
 
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .loading-progress-info span {
   font-family:
     var(--font-body-bold);
 
-  font-size: 11px;
+  font-size: 0.6875rem;
 
-  letter-spacing: 1px;
+  letter-spacing: 0.0625rem;
 
   color:
     rgba(255, 255, 255, 0.7);
@@ -293,7 +293,7 @@
   font-family:
     var(--font-body-bold);
 
-  font-size: 11px;
+  font-size: 0.6875rem;
 
   color: #ffffff;
 }
@@ -305,11 +305,11 @@
 
 .loading-progress {
   width: 100%;
-  height: 5px;
+  height: 0.3125rem;
 
   overflow: hidden;
 
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 
   background:
     rgba(255, 255, 255, 0.1);
@@ -331,7 +331,7 @@
     );
 
   box-shadow:
-    0 0 16px
+    0 0 1rem
     rgba(5, 98, 210, 0.5);
 
   transition:
@@ -344,12 +344,12 @@
 ========================================================= */
 
 .loading-message {
-  margin-top: 18px;
+  margin-top: 1.125rem;
 
   font-family:
     var(--font-body);
 
-  font-size: 12px;
+  font-size: 0.75rem;
 
   color:
     rgba(255, 255, 255, 0.48);
@@ -378,7 +378,7 @@
 .loading-footer {
   position: absolute;
 
-  bottom: 30px;
+  bottom: 1.875rem;
   left: 50%;
 
   z-index: 3;
@@ -389,7 +389,7 @@
   display: flex;
   align-items: center;
 
-  gap: 12px;
+  gap: 0.75rem;
 
   white-space: nowrap;
 }
@@ -398,17 +398,17 @@
   font-family:
     var(--font-body-bold);
 
-  font-size: 7px;
+  font-size: 0.4375rem;
 
-  letter-spacing: 2px;
+  letter-spacing: 0.125rem;
 
   color:
     rgba(255, 255, 255, 0.24);
 }
 
 .loading-footer div {
-  width: 30px;
-  height: 1px;
+  width: 1.875rem;
+  height: 0.0625rem;
 
   background:
     rgba(255, 255, 255, 0.14);
@@ -428,7 +428,7 @@
 
   100% {
     transform:
-      translate(360px, 220px)
+      translate(22.5rem, 13.75rem)
       scale(1.15);
   }
 }
@@ -442,7 +442,7 @@
 
   100% {
     transform:
-      translate(-330px, -190px)
+      translate(-20.625rem, -11.875rem)
       scale(1.12);
   }
 }
@@ -450,7 +450,7 @@
 @keyframes loadingLightSweep {
   0% {
     transform:
-      translateX(-120px)
+      translateX(-7.5rem)
       rotate(-18deg);
 
     opacity: 0.3;
@@ -458,7 +458,7 @@
 
   50% {
     transform:
-      translateX(620px)
+      translateX(38.75rem)
       rotate(-18deg);
 
     opacity: 0.75;
@@ -466,7 +466,7 @@
 
   100% {
     transform:
-      translateX(1200px)
+      translateX(75rem)
       rotate(-18deg);
 
     opacity: 0.15;
@@ -476,13 +476,13 @@
 @keyframes loadingFloatingGlow {
   from {
     transform:
-      translate(-20px, -20px)
+      translate(-1.25rem, -1.25rem)
       scale(0.95);
   }
 
   to {
     transform:
-      translate(80px, 70px)
+      translate(5rem, 4.375rem)
       scale(1.1);
   }
 }
@@ -518,7 +518,7 @@
     opacity: 1;
 
     transform:
-      translateY(-2px);
+      translateY(-0.125rem);
   }
 }
 
@@ -527,46 +527,46 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .loading-page {
     padding:
-      24px 18px 70px;
+      1.5rem 1.125rem 4.375rem;
   }
 
   .loading-logo-wrapper h1 {
     font-size:
-      clamp(100px, 34vw, 150px);
+      clamp(6.25rem, 34vw, 9.375rem);
 
     letter-spacing:
-      4px;
+      0.25rem;
   }
 
   .loading-brand-name {
     font-size:
-      8px;
+      0.5rem;
 
     letter-spacing:
-      3px;
+      0.1875rem;
   }
 
   .loading-status {
     margin-top:
-      40px;
+      2.5rem;
   }
 
   .loading-progress-info span,
   .loading-progress-info strong {
     font-size:
-      10px;
+      0.625rem;
   }
 
   .loading-page::before,
   .loading-page::after {
     width:
-      430px;
+      26.875rem;
 
     height:
-      430px;
+      26.875rem;
   }
 }
 

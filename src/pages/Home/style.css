@@ -13,7 +13,7 @@
 .coverage-section,
 .alerts-section,
 .activity-section {
-  width: min(1120px, calc(100% - 180px));
+  width: min(70rem, calc(100% - 11.25rem));
   margin-left: auto;
   margin-right: auto;
 }
@@ -21,37 +21,37 @@
 .section-heading {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 30px;
+  gap: 1.125rem;
+  margin-bottom: 1.875rem;
 }
 
 .section-heading span {
   font-family: var(--font-body-bold);
-  font-size: 10px;
-  letter-spacing: 4px;
+  font-size: 0.625rem;
+  letter-spacing: 0.25rem;
   white-space: nowrap;
   color: var(--color-primary);
   opacity: 0.55;
 }
 
 .section-heading div {
-  height: 1px;
+  height: 0.0625rem;
   flex: 1;
   background: rgba(0, 20, 46, 0.12);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 68.75rem) {
   .overview-section,
   .highlights-section,
   .coverage-section,
   .alerts-section,
   .activity-section,
   .home-footer {
-    width: calc(100% - 150px);
+    width: calc(100% - 9.375rem);
   }
 }
 
-@media (max-width: 899px) {
+@media (max-width: 56.1875rem) {
   .home-page {
     overflow-x: hidden;
   }
@@ -61,17 +61,17 @@
   .coverage-section,
   .alerts-section,
   .activity-section {
-    width: calc(100% - 48px);
+    width: calc(100% - 3rem);
     margin: 0 auto;
   }
 
   .section-heading {
-    margin-bottom: 22px;
+    margin-bottom: 1.375rem;
   }
 
   .section-heading span {
-    font-size: 9px;
-    letter-spacing: 3px;
+    font-size: 0.5625rem;
+    letter-spacing: 0.1875rem;
   }
 }
 

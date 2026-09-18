@@ -1,50 +1,50 @@
 .compare-header {
-  margin-bottom: 48px;
+  margin-bottom: 3rem;
 }
 .compare-eyebrow {
   display: block;
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 2.4px;
+  letter-spacing: 0.15rem;
   text-transform: uppercase;
   color: var(--color-secondary);
 }
 .compare-header h1 {
-  margin: 8px 0 0;
+  margin: 0.5rem 0 0;
   font-family: var(--font-title);
-  font-size: clamp(58px, 6vw, 82px);
+  font-size: clamp(3.625rem, 6vw, 5.125rem);
   font-weight: 500;
   line-height: 0.95;
   text-transform: uppercase;
   color: var(--color-primary);
 }
 .compare-header p {
-  margin: 18px 0 0;
-  margin-bottom: 28px;
-  max-width: 600px;
+  margin: 1.125rem 0 0;
+  margin-bottom: 1.75rem;
+  max-width: 37.5rem;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.65;
   color: var(--color-dark-grey);
   opacity: 0.75;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 43.75rem) {
   .compare-header h1 {
-    font-size: clamp(44px, 13vw, 64px);
+    font-size: clamp(2.75rem, 13vw, 4rem);
     line-height: 0.9;
-    letter-spacing: -1px;
+    letter-spacing: -0.0625rem;
   }
   .compare-header p {
-    margin-top: 20px;
-    font-size: 14px;
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
     line-height: 1.6;
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 25rem) {
   .compare-header h1 {
-    font-size: 43px;
+    font-size: 2.6875rem;
   }
 }

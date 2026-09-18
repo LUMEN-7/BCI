@@ -1,19 +1,19 @@
 .alerts-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.625rem;
 }
 .alert-card {
   position: relative;
-  min-height: 100px;
+  min-height: 6.25rem;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 17px 18px;
-  border: 1px solid rgba(0, 20, 46, 0.07);
-  border-radius: 20px;
+  gap: 1rem;
+  padding: 1.0625rem 1.125rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.07);
+  border-radius: 1.25rem;
   background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 7px 22px rgba(0, 20, 46, 0.035);
+  box-shadow: 0 0.4375rem 1.375rem rgba(0, 20, 46, 0.035);
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -22,24 +22,24 @@
     background-color 0.2s ease;
 }
 .alert-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 20, 46, 0.07);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.75rem 1.875rem rgba(0, 20, 46, 0.07);
   border-color: rgba(0, 20, 46, 0.11);
 }
 .alert-card.is-unread {
   background: #ffffff;
   border-color: rgba(0, 20, 46, 0.1);
-  box-shadow: 0 9px 27px rgba(0, 20, 46, 0.055);
+  box-shadow: 0 0.5625rem 1.6875rem rgba(0, 20, 46, 0.055);
 }
 .alert-icon {
-  width: 46px;
-  height: 46px;
+  width: 2.875rem;
+  height: 2.875rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border-radius: 14px;
-  font-size: 20px;
+  border-radius: 0.875rem;
+  font-size: 1.25rem;
 }
 .alert-icon.update {
   background: rgba(0, 20, 46, 0.055);
@@ -65,59 +65,59 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
+  gap: 0.9375rem;
 }
 .alert-type {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 0.4375rem;
 }
 .alert-type > span:last-child {
   font-family: var(--font-body-bold);
-  font-size: 8px;
-  letter-spacing: 1.5px;
+  font-size: 0.5rem;
+  letter-spacing: 0.09375rem;
   text-transform: uppercase;
   color: #8994a1;
 }
 .unread-dot {
-  width: 7px;
-  height: 7px;
+  width: 0.4375rem;
+  height: 0.4375rem;
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--color-secondary);
-  box-shadow: 0 0 0 4px rgba(113, 149, 220, 0.1);
+  box-shadow: 0 0 0 0.25rem rgba(113, 149, 220, 0.1);
 }
 .alert-top small {
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: #9aa3ad;
   white-space: nowrap;
 }
 .alert-content h2 {
-  margin: 6px 0 0;
+  margin: 0.375rem 0 0;
   font-family: var(--font-body-bold);
-  font-size: 14px;
-  letter-spacing: 0.4px;
+  font-size: 0.875rem;
+  letter-spacing: 0.025rem;
   text-transform: uppercase;
   color: var(--color-primary);
 }
 .alert-content p {
-  max-width: 720px;
-  margin: 5px 0 0;
+  max-width: 45rem;
+  margin: 0.3125rem 0 0;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.55;
   color: #7f8995;
 }
 .alert-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.375rem;
 }
 .read-button,
 .delete-alert-button {
-  width: 34px;
-  height: 34px;
+  width: 2.125rem;
+  height: 2.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,96 +145,96 @@
 }
 .read-button svg,
 .delete-alert-button svg {
-  font-size: 15px;
+  font-size: 0.9375rem;
   transform: none;
 }
 .alerts-empty {
-  padding: 65px 30px;
+  padding: 4.0625rem 1.875rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid rgba(0, 20, 46, 0.07);
-  border-radius: 22px;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.07);
+  border-radius: 1.375rem;
   background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 9px 28px rgba(0, 20, 46, 0.04);
+  box-shadow: 0 0.5625rem 1.75rem rgba(0, 20, 46, 0.04);
   text-align: center;
 }
 .alerts-empty-icon {
-  width: 54px;
-  height: 54px;
+  width: 3.375rem;
+  height: 3.375rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   background: rgba(34, 197, 94, 0.08);
   color: #15803d;
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 .alerts-empty h2 {
-  margin: 18px 0 0;
+  margin: 1.125rem 0 0;
   font-family: var(--font-title);
-  font-size: 30px;
+  font-size: 1.875rem;
   line-height: 1;
   text-transform: uppercase;
   color: var(--color-primary);
 }
 .alerts-empty p {
-  margin-top: 8px;
+  margin-top: 0.5rem;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #929ca8;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .alert-card {
     align-items: flex-start;
-    padding: 15px;
-    border-radius: 18px;
+    padding: 0.9375rem;
+    border-radius: 1.125rem;
   }
   .alert-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    font-size: 18px;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    font-size: 1.125rem;
   }
   .alert-top {
     align-items: flex-start;
     flex-direction: column;
-    gap: 5px;
+    gap: 0.3125rem;
   }
   .alert-content h2 {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .alert-content p {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .alert-actions {
     flex-direction: column;
   }
   .read-button,
   .delete-alert-button {
-    width: 30px;
-    height: 30px;
+    width: 1.875rem;
+    height: 1.875rem;
   }
   .alerts-empty {
-    padding: 50px 20px;
+    padding: 3.125rem 1.25rem;
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 25rem) {
   .alert-card {
-    gap: 10px;
-    padding: 13px;
+    gap: 0.625rem;
+    padding: 0.8125rem;
   }
   .alert-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1rem;
   }
   .alert-content h2 {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .alert-content p {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
 }
