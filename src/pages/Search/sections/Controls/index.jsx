@@ -5,9 +5,11 @@ import {
   IoCarOutline,
   IoCloseCircle,
   IoCloseOutline,
+  IoCloudUploadOutline,
   IoRefreshOutline,
   IoSearchOutline,
 } from "react-icons/io5";
+import { useRef, useState } from "react";
 
 import "./style.css";
 
@@ -25,13 +27,31 @@ export default function Controls({
   onExecute,
   onClear,
   onOpenSchedule,
+  onImport,
 }) {
+  const fileInputRef = useRef(null);
+  const [importMessage, setImportMessage] = useState(null);
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       onExecute();
     }
   };
+
+  async function handleImportChange(event) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file || !onImport) return;
+
+    const result = await onImport(file);
+    setImportMessage(
+      result?.success
+        ? { type: "success", text: `${result.count} veículo(s) importado(s) com sucesso.` }
+        : { type: "error", text: result?.message || "Não foi possível importar o arquivo." }
+    );
+    setTimeout(() => setImportMessage(null), 4000);
+  }
 
   return (
     <section className="search-controls">
@@ -109,6 +129,24 @@ export default function Controls({
           )}
         </button>
 
+        <button
+          type="button"
+          className="import-cars-btn"
+          onClick={() => fileInputRef.current?.click()}
+          title="Importar veículos de um arquivo CSV ou JSON"
+        >
+          <IoCloudUploadOutline />
+          <span>Importar</span>
+        </button>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".csv,.json,application/json,text/csv"
+          onChange={handleImportChange}
+          hidden
+        />
+
         {activeFilterChips.length > 0 && (
           <button
             type="button"
@@ -154,6 +192,15 @@ export default function Controls({
         <div className="search-validation-error" role="alert">
           <IoAlertCircleOutline />
           <span>{validationError}</span>
+        </div>
+      )}
+
+      {importMessage && (
+        <div
+          className={`search-import-message search-import-message-${importMessage.type}`}
+          role="status"
+        >
+          <span>{importMessage.text}</span>
         </div>
       )}
     </section>
