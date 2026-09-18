@@ -216,6 +216,41 @@ function adaptCarToDetail(dto) {
 
 
 
+function parseNumber(value) {
+  if (value === null || value === undefined) return null;
+  const match = String(value).match(/(\d+(?:[.,]\d+)?)/);
+  if (!match) return null;
+  return Number(match[1].replace(',', '.'));
+}
+
+// traduz o carro da ficha técnica para o formato usado na tela de comparação
+function adaptCarToCompareSelection(car) {
+  if (!car) return null;
+
+  const specValue = (spec) => (spec?.value && spec.value !== 'Não informado' ? spec.value : null);
+
+  return {
+    id: car.id,
+    brand: car.brand,
+    name: car.name,
+    image: car.image,
+    engine: specValue(car.specs.engine) || 'Motor não informado',
+    power: specValue(car.specs.power) || '-- cv',
+    powerValue: parseNumber(specValue(car.specs.power)),
+    type: specValue(car.specs.type) || 'Geral',
+    transmission: specValue(car.specs.transmission),
+    price: null,
+    dimensions: {
+      length: parseNumber(specValue(car.specs.length)),
+      width: parseNumber(specValue(car.specs.width)),
+      height: parseNumber(specValue(car.specs.height)),
+      wheelbase: parseNumber(specValue(car.specs.wheelbase)),
+    },
+    safetyFeatures: car.sections?.security || [],
+    technologyFeatures: car.sections?.technology || [],
+  };
+}
+
 export default function useCarDetailController() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -372,7 +407,7 @@ useEffect(() => {
     showSources,
     handleBack: () => navigate(-1),
     handleHome: () => navigate('/home'),
-    handleCompare: () => navigate('/compare'),
+    handleCompare: () => navigate('/compare', { state: { firstCar: adaptCarToCompareSelection(car) } }),
     toggleFavorite,
     toggleSection: (sectionId) =>
       setOpenSection((curr) => (curr === sectionId ? null : sectionId)),
