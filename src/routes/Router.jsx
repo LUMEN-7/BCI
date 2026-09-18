@@ -30,6 +30,8 @@ const EditProfile = lazy(() => import('../pages/EditProfile/index'));
 const ResetPassword = lazy(() => import('../pages/ResetPassword'));
 const Workspace = lazy(() => import('../pages/Workspace'));
 const Insights = lazy(() => import('../pages/Insights/index'));
+const Loading = lazy(() => import('../pages/Loading/index'));
+const Error = lazy(() => import('../pages/Error/index'));
 
 function NavigationTracker() {
     const location = useLocation();
@@ -225,7 +227,6 @@ export default function Router() {
             </GlobalErrorBoundary>
             <NavigationTracker />
             <GlobalFloatingNotes />
-            <AnimatedRoutes />
         </BrowserRouter>
     );
 }
