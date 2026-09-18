@@ -1,44 +1,44 @@
 .compare-heading {
-  margin-bottom: 38px;
+  margin-bottom: 2.375rem;
 }
 .compare-heading h1 {
   margin: 0;
   font-family: var(--font-title);
-  font-size: clamp(48px, 5vw, 72px);
+  font-size: clamp(3rem, 5vw, 4.5rem);
   font-weight: 500;
   line-height: 0.92;
-  letter-spacing: -1px;
+  letter-spacing: -0.0625rem;
   text-transform: uppercase;
   color: var(--color-primary);
 }
 .compare-heading p {
-  max-width: 620px;
-  margin: 18px 0 0;
+  max-width: 38.75rem;
+  margin: 1.125rem 0 0;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.7;
   color: var(--color-dark-grey);
   opacity: 0.74;
 }
-@media (max-width: 850px) {
+@media (max-width: 53.125rem) {
   .compare-heading h1 {
-    font-size: 48px;
+    font-size: 3rem;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .compare-heading {
-    margin-bottom: 28px;
+    margin-bottom: 1.75rem;
   }
   .compare-heading h1 {
-    font-size: clamp(42px, 14vw, 58px);
-    letter-spacing: -1px;
+    font-size: clamp(2.625rem, 14vw, 3.625rem);
+    letter-spacing: -0.0625rem;
   }
   .compare-heading p {
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
 }
-@media (max-width: 400px) {
+@media (max-width: 25rem) {
   .compare-heading h1 {
-    font-size: 40px;
+    font-size: 2.5rem;
   }
 }

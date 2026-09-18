@@ -24,7 +24,15 @@ export default function Compare() {
                     removeCar={controller.removeCar}
                     onCompare={controller.handleCompare}
                 />
-                <Search activeSlot={controller.activeSlot} search={controller.search} setSearch={controller.setSearch} />
+                <Search
+                    activeSlot={controller.activeSlot}
+                    search={controller.search}
+                    setSearch={controller.setSearch}
+                    referenceCar={controller.referenceCar}
+                    similarityFilters={controller.similarityFilters}
+                    activeSimilarityFilters={controller.activeSimilarityFilters}
+                    onToggleSimilarityFilter={controller.toggleSimilarityFilter}
+                />
                 
                 {/* Tratamento de Loading da API */}
                 {controller.loading ? (

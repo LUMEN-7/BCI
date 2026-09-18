@@ -18,6 +18,20 @@ function adaptCar(car) {
   };
 }
 
+function parseCsv(text) {
+  const lines = text.split(/\r?\n/).filter((line) => line.trim().length > 0);
+  if (lines.length < 2) return [];
+
+  const headers = lines[0].split(',').map((header) => header.trim());
+  return lines.slice(1).map((line) => {
+    const values = line.split(',');
+    return headers.reduce((row, header, index) => {
+      row[header] = values[index]?.trim() ?? '';
+      return row;
+    }, {});
+  });
+}
+
 export default function useSearchController() {
     const navigate = useNavigate();
     const [selectedBrand, setSelectedBrand] = useState('');
@@ -260,6 +274,35 @@ export default function useSearchController() {
         setScheduleInitialCar(null);
     }
 
+    async function handleImportCars(file) {
+        if (!file) return { success: false, message: 'Nenhum arquivo selecionado.' };
+
+        try {
+            const text = await file.text();
+            const isJson = file.name.toLowerCase().endsWith('.json');
+            const rawItems = isJson ? JSON.parse(text) : parseCsv(text);
+
+            if (!Array.isArray(rawItems) || rawItems.length === 0) {
+                return { success: false, message: 'Nenhum veículo encontrado no arquivo.' };
+            }
+
+            const importedCars = rawItems.map((item, index) => adaptCar({
+                id: item.id ?? item.linhagemId ?? `import-${Date.now()}-${index}`,
+                ...item,
+            }));
+
+            setCars((prev) => {
+                const existingIds = new Set(prev.map((car) => car.id));
+                const novos = importedCars.filter((car) => !existingIds.has(car.id));
+                return [...novos, ...prev];
+            });
+
+            return { success: true, count: importedCars.length };
+        } catch (err) {
+            return { success: false, message: err.message || 'Não foi possível importar o arquivo.' };
+        }
+    }
+
     function handleExecuteScheduledSearch(scheduledItem) {
         if (!scheduledItem) return;
         const targetCar = cars.find((c) => String(c.id) === String(scheduledItem.carId));
@@ -305,5 +348,6 @@ export default function useSearchController() {
         handleOpenSchedule,
         handleCloseSchedule,
         handleExecuteScheduledSearch,
+        handleImportCars,
     };
 }

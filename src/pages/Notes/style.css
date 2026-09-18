@@ -1,7 +1,7 @@
 @import "../../styles/global.css";
 .notes-page {
   min-height: 100vh;
-  padding: 48px 40px 90px;
+  padding: 3rem 2.5rem 5.625rem;
   background:
     radial-gradient(circle at 82% 4%, rgba(0, 20, 46, 0.055), transparent 30%),
     linear-gradient(180deg, #fff 0%, var(--color-light-neutral) 100%);
@@ -9,22 +9,22 @@
 }
 .notes-container {
   width: 100%;
-  max-width: 1180px;
+  max-width: 73.75rem;
   margin: 0 auto;
 }
-@media (max-width: 1050px) {
+@media (max-width: 65.625rem) {
   .notes-page {
-    padding-left: 80px;
-    padding-right: 40px;
+    padding-left: 5rem;
+    padding-right: 2.5rem;
   }
 }
-@media (max-width: 750px) {
+@media (max-width: 46.875rem) {
   .notes-page {
-    padding: 30px 24px 80px;
+    padding: 1.875rem 1.5rem 5rem;
   }
 }
-@media (max-width: 500px) {
+@media (max-width: 31.25rem) {
   .notes-page {
-    padding: 24px 16px 70px;
+    padding: 1.5rem 1rem 4.375rem;
   }
 }

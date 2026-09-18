@@ -10,11 +10,15 @@ export default function useEditProfile() {
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
 
+  const initialName = currentUser?.nomeExibicao || currentUser?.userName || "";
+
   const [formData, setFormData] = useState({
-    name: currentUser?.nomeExibicao || currentUser?.userName || "",
+    name: initialName,
     email: currentUser?.email || "",
     photo: currentUser?.fotoPerfilUrl || null,
   });
+
+  const hasChanges = formData.name.trim() !== initialName.trim() && formData.name.trim().length > 0;
 
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
@@ -155,7 +159,7 @@ export default function useEditProfile() {
   }
 
   return {
-    formData, errors, successMessage, saving, uploadingPhoto,
+    formData, errors, successMessage, saving, uploadingPhoto, hasChanges,
     handleChange, handlePhotoChange, handleRemovePhoto, handleSubmit,
     handleCancel: () => navigate("/profile"),
     handleBack: () => navigate("/profile"),

@@ -2,13 +2,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 28px;
+  margin-bottom: 1.75rem;
 }
 
 .topbar-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .back-button,
@@ -27,12 +27,12 @@
 .back-button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 17px;
-  border-radius: 999px;
+  gap: 0.5rem;
+  padding: 0.625rem 1.0625rem;
+  border-radius: 62.4375rem;
   font-family: var(--font-body-bold);
-  font-size: 11px;
-  letter-spacing: 0.8px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05rem;
   text-transform: uppercase;
 }
 .export-data-button {
@@ -40,27 +40,27 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 0.5625rem;
 
-  height: 46px;
-  padding: 0 18px;
+  height: 2.875rem;
+  padding: 0 1.125rem;
 
   border: none;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 
   background: rgba(255, 255, 255, 0.88);
   color: var(--color-primary);
 
   font-family: var(--font-body-bold);
-  font-size: 11px;
-  letter-spacing: 0.8px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05rem;
   text-transform: uppercase;
 
   cursor: pointer;
 
   box-shadow:
-    0 8px 16px rgba(0, 20, 46, 0.2),
-    0 3px 6px rgba(0, 20, 46, 0.12);
+    0 0.5rem 1rem rgba(0, 20, 46, 0.2),
+    0 0.1875rem 0.375rem rgba(0, 20, 46, 0.12);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -69,7 +69,7 @@
 
 .export-data-button svg {
   flex-shrink: 0;
-  font-size: 19px;
+  font-size: 1.1875rem;
   transition:
     transform 0.22s ease,
     opacity 0.22s ease;
@@ -80,27 +80,27 @@
   color: var(--color-light-neutral);
 
   box-shadow:
-    0 12px 30px rgba(0, 20, 46, 0.15),
-    0 3px 8px rgba(0, 20, 46, 0.08);
+    0 0.75rem 1.875rem rgba(0, 20, 46, 0.15),
+    0 0.1875rem 0.5rem rgba(0, 20, 46, 0.08);
 }
 
 .export-data-button:active {
   transform: translateY(0);
-  box-shadow: 0 5px 14px rgba(0, 20, 46, 0.1);
+  box-shadow: 0 0.3125rem 0.875rem rgba(0, 20, 46, 0.1);
 }
 
 .export-data-button:focus-visible {
   outline: none;
   box-shadow:
-    0 0 0 4px rgba(5, 98, 210, 0.12),
-    0 8px 24px rgba(0, 20, 46, 0.08);
+    0 0 0 0.25rem rgba(5, 98, 210, 0.12),
+    0 0.5rem 1.5rem rgba(0, 20, 46, 0.08);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .export-data-button {
-    width: 46px;
+    width: 2.875rem;
     padding: 0;
-    border-radius: 999px;
+    border-radius: 62.4375rem;
   }
 
   .export-data-button span {
@@ -110,13 +110,13 @@
 
 .home-button,
 .favorite-button {
-  width: 44px;
-  height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .favorite-button.is-favorite {
@@ -127,9 +127,9 @@
 .back-button:hover,
 .home-button:hover,
 .favorite-button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
   background: rgba(0, 20, 46, 0.09);
-  box-shadow: 0 8px 20px rgba(0, 20, 46, 0.08);
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 20, 46, 0.08);
 }
 
 .favorite-button.is-favorite:hover {
@@ -143,56 +143,56 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 1.5rem;
   background: rgba(0, 20, 46, 0.38);
 }
 .export-dialog {
-  width: min(100%, 480px);
-  padding: 28px;
-  border-radius: 20px;
+  width: min(100%, 30rem);
+  padding: 1.75rem;
+  border-radius: 1.25rem;
   background: #fff;
   color: var(--color-primary);
-  box-shadow: 0 24px 70px rgba(0, 20, 46, 0.25);
+  box-shadow: 0 1.5rem 4.375rem rgba(0, 20, 46, 0.25);
 }
 .export-dialog-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 20px;
+  gap: 1.25rem;
 }
 .export-dialog-eyebrow {
   font-family: var(--font-body-bold);
-  font-size: 10px;
-  letter-spacing: 1.2px;
+  font-size: 0.625rem;
+  letter-spacing: 0.075rem;
   text-transform: uppercase;
   color: #7d8793;
 }
 .export-dialog h2 {
-  margin: 6px 0 0;
+  margin: 0.375rem 0 0;
   font-family: var(--font-display);
-  font-size: 25px;
+  font-size: 1.5625rem;
   font-weight: 400;
 }
 .export-dialog-close {
   border: none;
   background: transparent;
   color: var(--color-primary);
-  font-size: 24px;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 .export-format-options {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-top: 26px;
+  gap: 0.5rem;
+  margin-top: 1.625rem;
 }
 .export-format-option {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 52px;
-  border: 1px solid rgba(0, 20, 46, 0.12);
-  border-radius: 10px;
+  min-height: 3.25rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.12);
+  border-radius: 0.625rem;
   cursor: pointer;
 }
 .export-format-option input {
@@ -205,22 +205,22 @@
 }
 .export-format-option strong {
   font-family: var(--font-body-bold);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .csv-separator-options {
   display: flex;
-  gap: 18px;
-  margin: 20px 0 0;
-  padding: 14px;
-  border: 1px solid rgba(0, 20, 46, 0.12);
-  border-radius: 10px;
+  gap: 1.125rem;
+  margin: 1.25rem 0 0;
+  padding: 0.875rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.12);
+  border-radius: 0.625rem;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .csv-separator-options legend {
-  padding: 0 5px;
+  padding: 0 0.3125rem;
   font-family: var(--font-body-bold);
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .csv-separator-options label {
   cursor: pointer;
@@ -228,19 +228,19 @@
 .export-dialog-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 26px;
+  gap: 0.625rem;
+  margin-top: 1.625rem;
 }
 .export-dialog-cancel,
 .export-dialog-confirm {
-  min-height: 42px;
-  padding: 0 18px;
+  min-height: 2.625rem;
+  padding: 0 1.125rem;
   border: none;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
   font-family: var(--font-body-bold);
-  font-size: 11px;
+  font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.7px;
+  letter-spacing: 0.04375rem;
   cursor: pointer;
 }
 .export-dialog-cancel {
@@ -252,25 +252,25 @@
   color: #fff;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .information-topbar {
-    margin-bottom: 22px;
+    margin-bottom: 1.375rem;
   }
 
   .back-button {
-    padding: 9px 13px;
-    font-size: 9px;
+    padding: 0.5625rem 0.8125rem;
+    font-size: 0.5625rem;
   }
 
   .home-button,
   .favorite-button {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.125rem;
   }
 
   .export-dialog {
-    padding: 22px;
+    padding: 1.375rem;
   }
 
   .export-format-options {
@@ -279,6 +279,6 @@
 
   .csv-separator-options {
     flex-direction: column;
-    gap: 10px;
+    gap: 0.625rem;
   }
 }

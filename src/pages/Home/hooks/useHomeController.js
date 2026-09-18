@@ -5,7 +5,8 @@ function getCurrentUser() {
 }
 
 function getFirstName(user) {
-    return user?.name?.trim()?.split(/\s+/)[0] || 'Usuário';
+    const displayName = user?.nomeExibicao || user?.userName || user?.name;
+    return displayName?.trim()?.split(/\s+/)[0] || 'Usuário';
 }
 
 function getGreetingByHour(hour = new Date().getHours()) {

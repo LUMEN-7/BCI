@@ -1,21 +1,21 @@
 .compare-header {
-  margin-bottom: 48px;
+  margin-bottom: 3rem;
 }
 
 .compare-eyebrow {
   display: block;
   font-family: var(--font-body-bold);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 2.4px;
+  letter-spacing: 0.15rem;
   text-transform: uppercase;
   color: var(--color-secondary);
 }
 
 .compare-header h1 {
-  margin: 8px 0 0;
+  margin: 0.5rem 0 0;
   font-family: var(--font-title);
-  font-size: clamp(58px, 6vw, 82px);
+  font-size: clamp(3.625rem, 6vw, 5.125rem);
   font-weight: 500;
   line-height: 0.95;
   text-transform: uppercase;
@@ -23,39 +23,39 @@
 }
 
 .compare-header p {
-  margin: 18px 0 0;
-  max-width: 600px;
+  margin: 1.125rem 0 0;
+  max-width: 37.5rem;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.65;
   color: var(--color-dark-grey);
   opacity: 0.75;
 }
 
-@media (max-width: 999px) {
+@media (max-width: 62.4375rem) {
   .compare-header {
-    margin-bottom: 36px;
+    margin-bottom: 2.25rem;
   }
   .compare-header h1 {
-    font-size: 52px;
+    font-size: 3.25rem;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .compare-header {
-    margin-bottom: 30px;
+    margin-bottom: 1.875rem;
   }
   .compare-eyebrow {
-    font-size: 9px;
-    letter-spacing: 1.8px;
+    font-size: 0.5625rem;
+    letter-spacing: 0.1125rem;
   }
   .compare-header h1 {
-    margin-top: 7px;
-    font-size: 43px;
+    margin-top: 0.4375rem;
+    font-size: 2.6875rem;
   }
   .compare-header p {
-    margin-top: 14px;
-    font-size: 13px;
+    margin-top: 0.875rem;
+    font-size: 0.8125rem;
     line-height: 1.55;
   }
 }

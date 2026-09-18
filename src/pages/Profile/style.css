@@ -7,7 +7,7 @@
 .profile-page {
   min-height: 100vh;
 
-  padding: 48px 40px 90px;
+  padding: 3rem 2.5rem 5.625rem;
 
   background:
     radial-gradient(
@@ -31,7 +31,7 @@
 
 .profile-container {
   width: 100%;
-  max-width: 1180px;
+  max-width: 73.75rem;
 
   margin: 0 auto;
 }
@@ -44,31 +44,31 @@
 .profile-toast-success {
   position: fixed;
 
-  top: 28px;
-  right: 28px;
+  top: 1.75rem;
+  right: 1.75rem;
 
   z-index: 9999;
 
-  width: min(360px, calc(100vw - 40px));
+  width: min(22.5rem, calc(100vw - 2.5rem));
 
   display: flex;
   align-items: center;
 
-  gap: 14px;
+  gap: 0.875rem;
 
-  padding: 16px 18px;
+  padding: 1rem 1.125rem;
 
-  border: 1px solid rgba(5, 98, 210, 0.18);
-  border-radius: 14px;
+  border: 0.0625rem solid rgba(5, 98, 210, 0.18);
+  border-radius: 0.875rem;
 
   background:
     rgba(255, 255, 255, 0.96);
 
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(0.875rem);
+  backdrop-filter: blur(0.875rem);
 
   box-shadow:
-    0 16px 40px rgba(0, 20, 46, 0.16);
+    0 1rem 2.5rem rgba(0, 20, 46, 0.16);
 
   animation:
     profileToastEnter 0.35s ease forwards;
@@ -80,8 +80,8 @@
 ========================================================= */
 
 .profile-toast-icon {
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
 
   flex-shrink: 0;
 
@@ -98,8 +98,8 @@
 }
 
 .profile-toast-icon svg {
-  width: 19px;
-  height: 19px;
+  width: 1.1875rem;
+  height: 1.1875rem;
 
   stroke-width: 2.5;
 }
@@ -115,7 +115,7 @@
   display: flex;
   flex-direction: column;
 
-  gap: 3px;
+  gap: 0.1875rem;
 
   text-align: left;
 }
@@ -123,7 +123,7 @@
 .profile-toast-content strong {
   font-family: var(--font-body-bold);
 
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.3;
 
   color: var(--color-primary);
@@ -132,7 +132,7 @@
 .profile-toast-content span {
   font-family: var(--font-body);
 
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.4;
 
   color:
@@ -149,7 +149,7 @@
     opacity: 0;
 
     transform:
-      translateX(30px);
+      translateX(1.875rem);
   }
 
   to {
@@ -165,65 +165,65 @@
    RESPONSIVE
 ========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .profile-page {
-    padding-left: 80px;
-    padding-right: 40px;
+    padding-left: 5rem;
+    padding-right: 2.5rem;
   }
 }
 
 
-@media (max-width: 700px) {
+@media (max-width: 43.75rem) {
   .profile-page {
-    padding: 30px 24px 80px;
+    padding: 1.875rem 1.5rem 5rem;
   }
 
   .profile-toast-success {
-    top: 20px;
-    right: 20px;
+    top: 1.25rem;
+    right: 1.25rem;
 
     width:
-      min(340px, calc(100vw - 40px));
+      min(21.25rem, calc(100vw - 2.5rem));
   }
 }
 
 
-@media (max-width: 500px) {
+@media (max-width: 31.25rem) {
   .profile-page {
-    padding: 24px 16px 70px;
+    padding: 1.5rem 1rem 4.375rem;
   }
 
   .profile-toast-success {
-    top: 16px;
-    left: 16px;
-    right: 16px;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
 
     width: auto;
 
-    padding: 14px 16px;
+    padding: 0.875rem 1rem;
 
-    border-radius: 12px;
+    border-radius: 0.75rem;
   }
 
   .profile-toast-icon {
-    width: 36px;
-    height: 36px;
+    width: 2.25rem;
+    height: 2.25rem;
   }
 
   .profile-toast-content strong {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   .profile-toast-content span {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
 }
 
 
-@media (max-width: 380px) {
+@media (max-width: 23.75rem) {
   .profile-page {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }
 

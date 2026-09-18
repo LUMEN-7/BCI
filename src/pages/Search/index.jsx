@@ -40,6 +40,7 @@ export default function Search() {
     handleOpenSchedule,
     handleCloseSchedule,
     handleExecuteScheduledSearch,
+    handleImportCars,
   } = useSearchController();
 
   return (
@@ -71,6 +72,7 @@ export default function Search() {
             onExecute={executeSearch}
             onClear={clearFilters}
             onOpenSchedule={() => handleOpenSchedule()}
+            onImport={handleImportCars}
           />
 
           {hasFilters ? (

@@ -1,16 +1,16 @@
 .notes-toolbar {
-  height: 58px;
+  height: 3.625rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  padding: 0 10px 0 17px;
+  gap: 1.25rem;
+  padding: 0 0.625rem 0 1.0625rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
   background: rgba(255, 255, 255, 0.75);
   box-shadow:
-    inset 4px 4px 9px rgba(0, 20, 46, 0.1),
-    inset -4px -4px 9px rgba(255, 255, 255, 0.95);
+    inset 0.25rem 0.25rem 0.5625rem rgba(0, 20, 46, 0.1),
+    inset -0.25rem -0.25rem 0.5625rem rgba(255, 255, 255, 0.95);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
@@ -20,12 +20,12 @@
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 0.6875rem;
   min-width: 0;
 }
 .notes-search svg {
   flex-shrink: 0;
-  font-size: 19px;
+  font-size: 1.1875rem;
   color: #8d98a5;
 }
 .notes-search input {
@@ -34,16 +34,16 @@
   outline: 0;
   background: transparent;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-primary);
 }
 .notes-search input::placeholder {
   color: #9ca5af;
 }
-@media (max-width: 750px) {
+@media (max-width: 46.875rem) {
   .notes-toolbar {
     height: auto;
-    min-height: 58px;
-    padding: 8px 10px 8px 15px;
+    min-height: 3.625rem;
+    padding: 0.5rem 0.625rem 0.5rem 0.9375rem;
   }
 }

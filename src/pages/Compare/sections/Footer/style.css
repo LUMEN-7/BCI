@@ -1,54 +1,54 @@
 .compare-footer {
-  margin-top: 38px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(0, 20, 46, 0.09);
+  margin-top: 2.375rem;
+  padding-top: 1.5rem;
+  border-top: 0.0625rem solid rgba(0, 20, 46, 0.09);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 1.5rem;
 }
 .footer-info {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 0.5625rem;
 }
 .footer-info p {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-dark-grey);
   opacity: 0.65;
 }
 .footer-indicator {
-  width: 7px;
-  height: 7px;
+  width: 0.4375rem;
+  height: 0.4375rem;
   border-radius: 50%;
   background: rgba(0, 20, 46, 0.2);
 }
 .footer-indicator.ready {
   background: var(--color-secondary);
-  box-shadow: 0 0 0 4px rgba(5, 98, 210, 0.08);
+  box-shadow: 0 0 0 0.25rem rgba(5, 98, 210, 0.08);
 }
 .compare-button {
-  min-height: 50px;
-  padding: 0 24px;
+  min-height: 3.125rem;
+  padding: 0 1.5rem;
   border: none;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0.625rem;
   background: var(--color-primary);
   color: var(--color-light-neutral);
   font-family: var(--font-body-bold);
-  font-size: 11px;
-  letter-spacing: 0.8px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05rem;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 12px 28px rgba(0, 20, 46, 0.16);
+  box-shadow: 0 0.75rem 1.75rem rgba(0, 20, 46, 0.16);
 }
 .compare-button svg {
-  font-size: 17px;
+  font-size: 1.0625rem;
 }
 .compare-button:disabled {
   opacity: 0.35;
@@ -56,18 +56,18 @@
   box-shadow: none;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .compare-footer {
     align-items: stretch;
     flex-direction: column;
-    margin-top: 30px;
-    padding-top: 20px;
+    margin-top: 1.875rem;
+    padding-top: 1.25rem;
   }
   .footer-info {
     justify-content: center;
   }
   .compare-button {
     width: 100%;
-    min-height: 48px;
+    min-height: 3rem;
   }
 }

@@ -2,7 +2,7 @@
 
 .alerts-page {
   min-height: 100vh;
-  padding: 48px 40px 90px;
+  padding: 3rem 2.5rem 5.625rem;
   background:
     radial-gradient(circle at 82% 4%, rgba(0, 20, 46, 0.055), transparent 30%),
     linear-gradient(180deg, #ffffff 0%, var(--color-light-neutral) 100%);
@@ -11,26 +11,26 @@
 
 .alerts-container {
   width: 100%;
-  max-width: 1180px;
+  max-width: 73.75rem;
   margin: 0 auto;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .alerts-page {
-    padding-left: 80px;
-    padding-right: 40px;
+    padding-left: 5rem;
+    padding-right: 2.5rem;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .alerts-page {
-    padding: 30px 20px 70px;
+    padding: 1.875rem 1.25rem 4.375rem;
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 25rem) {
   .alerts-page {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }

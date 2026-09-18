@@ -1,27 +1,27 @@
 .information-hero {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
-  gap: 48px;
+  gap: 3rem;
   align-items: center;
-  margin-bottom: 36px;
+  margin-bottom: 2.25rem;
 }
 .car-preview {
-  min-height: 360px;
+  min-height: 22.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px;
-  border: 1px solid rgba(0, 20, 46, 0.07);
-  border-radius: 28px;
+  padding: 1.875rem;
+  border: 0.0625rem solid rgba(0, 20, 46, 0.07);
+  border-radius: 1.75rem;
   background:
     radial-gradient(circle at center, rgba(0, 20, 46, 0.035), transparent 62%),
     rgba(255, 255, 255, 0.72);
-  box-shadow: 0 12px 35px rgba(0, 20, 46, 0.045);
+  box-shadow: 0 0.75rem 2.1875rem rgba(0, 20, 46, 0.045);
   overflow: hidden;
 }
 .car-preview img {
   width: 100%;
-  max-height: 320px;
+  max-height: 20rem;
   object-fit: contain;
   transition: transform 0.35s ease;
 }
@@ -30,101 +30,101 @@
 }
 .car-info > span {
   font-family: var(--font-body-bold);
-  font-size: 12px;
-  letter-spacing: 2px;
+  font-size: 0.75rem;
+  letter-spacing: 0.125rem;
   text-transform: uppercase;
   color: var(--color-secondary);
 }
 .car-info h1 {
-  margin: 8px 0 0;
+  margin: 0.5rem 0 0;
   font-family: var(--font-title);
-  font-size: clamp(48px, 5vw, 72px);
+  font-size: clamp(3rem, 5vw, 4.5rem);
   font-weight: 500;
   line-height: 0.94;
-  letter-spacing: -1px;
+  letter-spacing: -0.0625rem;
   text-transform: uppercase;
   color: var(--color-primary);
 }
 .car-info p {
-  max-width: 580px;
-  margin-top: 20px;
+  max-width: 36.25rem;
+  margin-top: 1.25rem;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.7;
   color: var(--color-dark-grey);
   opacity: 0.76;
 }
 .compare-button {
-  height: 48px;
+  height: 3rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-top: 26px;
-  padding: 0 22px;
+  gap: 0.75rem;
+  margin-top: 1.625rem;
+  padding: 0 1.375rem;
   border: none;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
   background: var(--color-primary);
   color: var(--color-light-neutral);
   font-family: var(--font-body-bold);
-  font-size: 11px;
-  letter-spacing: 0.8px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05rem;
   text-transform: uppercase;
   cursor: pointer;
   box-shadow:
-    0 9px 20px rgba(0, 20, 46, 0.15),
-    0 2px 5px rgba(0, 20, 46, 0.08);
+    0 0.5625rem 1.25rem rgba(0, 20, 46, 0.15),
+    0 0.125rem 0.3125rem rgba(0, 20, 46, 0.08);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 .compare-button svg {
-  font-size: 16px;
+  font-size: 1rem;
   transition: transform 0.2s ease;
 }
 .compare-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 13px 27px rgba(0, 20, 46, 0.19);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.8125rem 1.6875rem rgba(0, 20, 46, 0.19);
 }
 .compare-button:hover svg {
-  transform: translate(2px, -2px);
+  transform: translate(0.125rem, -0.125rem);
 }
-@media (max-width: 1100px) {
+@media (max-width: 68.75rem) {
   .information-hero {
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    gap: 1.875rem;
   }
 }
-@media (max-width: 850px) {
+@media (max-width: 53.125rem) {
   .information-hero {
     grid-template-columns: 1fr;
-    gap: 25px;
+    gap: 1.5625rem;
   }
   .car-preview {
-    min-height: 280px;
+    min-height: 17.5rem;
   }
   .car-info h1 {
-    font-size: 48px;
+    font-size: 3rem;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .information-hero {
-    margin-bottom: 25px;
+    margin-bottom: 1.5625rem;
   }
   .car-preview {
-    min-height: 230px;
-    padding: 20px;
-    border-radius: 22px;
+    min-height: 14.375rem;
+    padding: 1.25rem;
+    border-radius: 1.375rem;
   }
   .car-preview img {
-    max-height: 210px;
+    max-height: 13.125rem;
   }
   .car-info h1 {
-    font-size: clamp(42px, 14vw, 58px);
-    letter-spacing: -1px;
+    font-size: clamp(2.625rem, 14vw, 3.625rem);
+    letter-spacing: -0.0625rem;
   }
   .car-info p {
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .compare-button {
     width: 100%;

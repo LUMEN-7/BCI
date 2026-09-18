@@ -1,8 +1,16 @@
-import { IoCloseCircleOutline, IoSearchOutline } from "react-icons/io5";
+import { IoCloseCircleOutline, IoSearchOutline, IoSparklesOutline } from "react-icons/io5";
 
 import "./style.css";
 
-export default function Search({ activeSlot, search, setSearch }) {
+export default function Search({
+  activeSlot,
+  search,
+  setSearch,
+  referenceCar,
+  similarityFilters = [],
+  activeSimilarityFilters = [],
+  onToggleSimilarityFilter,
+}) {
   return (
     <section className="search-section">
       <div className="search-header">
@@ -38,6 +46,38 @@ export default function Search({ activeSlot, search, setSearch }) {
           </button>
         )}
       </div>
+
+      <div className="similarity-filters">
+        <div className="similarity-filters-header">
+          <IoSparklesOutline />
+          <span>
+            Filtrar por similaridade com{" "}
+            <strong>{referenceCar ? referenceCar.name : "o veículo selecionado"}</strong>
+          </span>
+        </div>
+
+        <div className="similarity-chips">
+          {similarityFilters.map((filter) => (
+            <button
+              key={filter.id}
+              type="button"
+              className={`similarity-chip ${activeSimilarityFilters.includes(filter.id) ? "is-active" : ""}`}
+              onClick={() => onToggleSimilarityFilter?.(filter.id)}
+              disabled={!referenceCar}
+              title={referenceCar ? filter.label : "Selecione um veículo para habilitar este filtro"}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+
+        {!referenceCar && (
+          <span className="similarity-hint">
+            Selecione o primeiro modelo para habilitar os filtros de similaridade.
+          </span>
+        )}
+      </div>
     </section>
   );
 }
+

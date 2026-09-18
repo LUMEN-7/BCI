@@ -30,8 +30,12 @@ export default function useRegisterController() {
         setErrors(newErrors);
         if (newErrors.name || newErrors.email || newErrors.password) return;
         try {
-            await cadastrar(name, email, password, null);
-            navigate('/home');
+            const resultado = await cadastrar(name, email, password, null);
+            if (!resultado?.usuario?.nomeExibicao?.trim()) {
+                navigate('/welcome');
+            } else {
+                navigate('/home');
+            }
         } catch (error) {
             setAuthError(error.message || 'Não foi possível criar a conta.');
         }
