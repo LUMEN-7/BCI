@@ -5,6 +5,7 @@ import {getFavorites, addFavorites, removeFavorite } from "@/services/userServic
 import { appendNavigationActivity } from '@/utils/navigationActivity';
 import { getRecentViewedCars, appendRecentViewedCar } from '@/utils/recentViewedCars';
 import { getScheduledSearches } from '@/utils/scheduledSearchesStorage';
+import { getUserScopedItem, removeUserScopedItem } from '@/utils/userScopedStorage';
 
 function adaptCar(car) {
   return {
@@ -32,8 +33,8 @@ export default function useSearchController() {
     const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
     const [scheduleInitialCar, setScheduleInitialCar] = useState(null);
     const [scheduledCount, setScheduledCount] = useState(() => getScheduledSearches().length);
-    const [jobId, setJobId] = useState(null);
-    const [jobStatus, setJobStatus] = useState(null)
+    const [jobId, setJobId] = useState(() => getUserScopedItem('jobId'));
+    const [jobStatus, setJobStatus] = useState(() => getUserScopedItem('jobId') ? 'pending' : null);
 
     const updateScheduledCount = () => {
         setScheduledCount(getScheduledSearches().length);
@@ -239,7 +240,7 @@ export default function useSearchController() {
                         const existe = prev.some((c) => c.id === String(status.carro.id));
                         return existe ? prev : [adaptCar(status.carro), ...prev];
                     });
-                    localStorage.removeItem('jobId');
+                    removeUserScopedItem('jobId');
                 }
             } catch {
                 setJobStatus('error');

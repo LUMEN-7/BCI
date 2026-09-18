@@ -1,4 +1,3 @@
-import React from 'react';
 import { IoRepeatOutline } from 'react-icons/io5';
 
 export function RecurrenceSection({ recurrence, setRecurrence, recurrenceOptions }) {

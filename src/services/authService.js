@@ -1,4 +1,5 @@
 import apiFetch from "./api";
+import { removeLegacySharedUserData } from '@/utils/userScopedStorage';
 
 
 export async function cadastrar(Nome,Email, Password,FotoPerfilUrl) {
@@ -40,5 +41,6 @@ function tratarRespostaLogin(resultado) {
   }
   localStorage.setItem("accessToken", resultado.accessToken);
   localStorage.setItem("currentUser", JSON.stringify(resultado.usuario));
+  removeLegacySharedUserData();
   return { requerDoisFatores: false };
 }

@@ -10,7 +10,7 @@ async function fetchComTimeout(url, options) {
     return await fetch(url, { ...options, signal: controller.signal });
   } catch (err) {
     if (err.name === "AbortError") {
-      throw new Error("A IA demorou muito para responder. Tente novamente.");
+      throw new Error("A IA demorou muito para responder. Tente novamente.", { cause: err });
     }
     throw err;
   } finally {

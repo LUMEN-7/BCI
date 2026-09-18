@@ -12,6 +12,7 @@ import {
 } from 'react-icons/io5';
 
 import { cars as informationCars } from '../pages/Information/data';
+import { getUserScopedItem, setUserScopedItem } from './userScopedStorage';
 
 export const RECENT_ACTIVITY_STORAGE_KEY = 'recentNavigationActivities';
 
@@ -122,7 +123,7 @@ export function getActivityMetaByPath(pathname, routeState = {}) {
 
 export function getStoredNavigationActivities() {
   try {
-    const stored = localStorage.getItem(RECENT_ACTIVITY_STORAGE_KEY);
+    const stored = getUserScopedItem(RECENT_ACTIVITY_STORAGE_KEY);
     if (!stored) return [];
 
     const parsed = JSON.parse(stored);
@@ -179,7 +180,7 @@ export function appendNavigationActivity(pathname, routeState = {}) {
     ...currentHistory.filter((activity) => !(activity.path === normalizedPath && activity.label === nextActivity.label)),
   ].slice(0, 3);
 
-  localStorage.setItem(RECENT_ACTIVITY_STORAGE_KEY, JSON.stringify(nextHistory));
+  setUserScopedItem(RECENT_ACTIVITY_STORAGE_KEY, JSON.stringify(nextHistory));
   window.dispatchEvent(new CustomEvent('navigation-activity-updated', { detail: nextHistory }));
 
   return nextHistory;

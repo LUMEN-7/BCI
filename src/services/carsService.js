@@ -1,11 +1,12 @@
 import apiFetch from "./api";
+import { setUserScopedItem } from '@/utils/userScopedStorage';
 
 export async function iniciarBusca(payload) {
   const resultado = await apiFetch("/Pesquisa/busca", {
     method: "POST",
     body: JSON.stringify(payload),
   });
-  localStorage.setItem("jobId", resultado.job_id);
+  setUserScopedItem('jobId', resultado.job_id);
   return resultado;
 }
 

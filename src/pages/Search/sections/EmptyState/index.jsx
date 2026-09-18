@@ -1,4 +1,4 @@
-import { IoArrowForward, IoRefreshOutline, IoSearchOutline } from "react-icons/io5";
+import { IoRefreshOutline, IoSearchOutline } from "react-icons/io5";
 
 import "./style.css";
 

@@ -12,7 +12,7 @@ function getStoredAlerts() {
   }
 }
 
-export default function Alerts({ onReview }) {
+export default function Alerts() {
   const [alerts, setAlerts] = useState(getStoredAlerts);
 
   useEffect(() => {

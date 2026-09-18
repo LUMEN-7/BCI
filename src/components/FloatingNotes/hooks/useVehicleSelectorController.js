@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getFavorites } from '@/services/userService';
 import { getRecentViewedCars } from '@/utils/recentViewedCars';
 
@@ -65,16 +65,16 @@ export function useVehicleSelectorController(isOpen) {
     loadCars();
   }, [isOpen]);
 
-  function filtrar(lista) {
+  const filtrar = useCallback((lista) => {
     const term = search.toLowerCase().trim();
     if (!term) return lista;
     return lista.filter((car) =>
       [car.name, car.brand, car.type, car.engine].filter(Boolean).some((val) => String(val).toLowerCase().includes(term))
     );
-  }
+  }, [search]);
 
-  const favoritosFiltrados = useMemo(() => filtrar(favoritos), [favoritos, search]);
-  const recentesFiltrados = useMemo(() => filtrar(recentes), [recentes, search]);
+  const favoritosFiltrados = useMemo(() => filtrar(favoritos), [favoritos, filtrar]);
+  const recentesFiltrados = useMemo(() => filtrar(recentes), [recentes, filtrar]);
   const semResultado = !loading && !error && favoritosFiltrados.length === 0 && recentesFiltrados.length === 0;
 
   return { search, setSearch, loading, error, favoritosFiltrados, recentesFiltrados, semResultado };

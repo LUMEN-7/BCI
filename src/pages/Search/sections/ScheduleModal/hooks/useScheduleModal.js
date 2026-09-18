@@ -53,7 +53,11 @@ export function useScheduleModal({
   const [unreleasedBrand, setUnreleasedBrand] = useState('');
   const [unreleasedYear, setUnreleasedYear] = useState('');
 
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0];
+  });
   const [time, setTime] = useState('09:00');
   const [recurrence, setRecurrence] = useState('once');
   const [notes, setNotes] = useState('');
@@ -99,8 +103,8 @@ export function useScheduleModal({
         if (initialSelectedCar) {
           setSelectedCarId(String(initialSelectedCar.id));
           setIsCarDropdownOpen(false);
-        } else if (!selectedCarId && listaFinal.length > 0) {
-          setSelectedCarId(String(listaFinal[0].id));
+        } else if (listaFinal.length > 0) {
+          setSelectedCarId((currentId) => currentId || String(listaFinal[0].id));
         }
       } catch (err) {
         setFormError(err.message || 'Não foi possível carregar seus veículos.');
@@ -108,12 +112,6 @@ export function useScheduleModal({
     }
 
     carregar();
-
-    if (!date) {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      setDate(tomorrow.toISOString().split('T')[0]);
-    }
   }, [isOpen, initialSelectedCar, availableCars]);
 
   const selectedCar = useMemo(() => {

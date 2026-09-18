@@ -6,32 +6,30 @@ import {
 } from 'react-router-dom';
 
 import { AnimatePresence } from 'framer-motion';
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 
 import PageTransition from '../components/PageTransition/PageTransition';
 import GlobalErrorBoundary from '../components/GlobalErrorBoundary';
 import FloatingNotes from '../components/FloatingNotes/FloatingNotes';
+import PageLoader from '../components/PageLoader/PageLoader';
 import ProtectedRoute from './ProtectedRoute';
 import { appendNavigationActivity } from '../utils/navigationActivity';
 
-import Login from '../pages/auth/Login/index';
-import Register from '../pages/auth/Register/index';
-import Home from '../pages/Home/index';
-import Search from '../pages/Search/index';
-import Compare from '../pages/Compare/index';
-import Information from '../pages/Information/index';
-import Detail from '../pages/Detail/index';
-import Saved from '../pages/Saved/index';
-import Profile from '../pages/Profile/index';
-import Notes from '../pages/Notes/index';
-import Alerts from '../pages/Alerts/index';
-import EditProfile from "../pages/EditProfile/index";
-import ResetPassword from "../pages/ResetPassword";
-import Workspace from "../pages/Workspace";
-import Loading from "../pages/Loading";
-import Error from "../pages/Error";
-// import Insights from '../pages/Insights/index';
-import Insights from '../pages/Insights/index';
+const Login = lazy(() => import('../pages/auth/Login/index'));
+const Register = lazy(() => import('../pages/auth/Register/index'));
+const Home = lazy(() => import('../pages/Home/index'));
+const Search = lazy(() => import('../pages/Search/index'));
+const Compare = lazy(() => import('../pages/Compare/index'));
+const Information = lazy(() => import('../pages/Information/index'));
+const Detail = lazy(() => import('../pages/Detail/index'));
+const Saved = lazy(() => import('../pages/Saved/index'));
+const Profile = lazy(() => import('../pages/Profile/index'));
+const Notes = lazy(() => import('../pages/Notes/index'));
+const Alerts = lazy(() => import('../pages/Alerts/index'));
+const EditProfile = lazy(() => import('../pages/EditProfile/index'));
+const ResetPassword = lazy(() => import('../pages/ResetPassword'));
+const Workspace = lazy(() => import('../pages/Workspace'));
+const Insights = lazy(() => import('../pages/Insights/index'));
 
 function NavigationTracker() {
     const location = useLocation();
@@ -50,6 +48,7 @@ function AnimatedRoutes() {
     return (
         <AnimatePresence mode="wait">
             <PageTransition key={location.pathname}>
+                <Suspense fallback={<PageLoader />}>
                 <Routes location={location}>
 
                     <Route
@@ -202,6 +201,7 @@ function AnimatedRoutes() {
                         }
                     />
                 </Routes>
+                </Suspense>
             </PageTransition>
         </AnimatePresence>
     );

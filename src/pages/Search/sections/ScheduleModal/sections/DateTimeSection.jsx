@@ -1,4 +1,3 @@
-import React from 'react';
 import { IoCalendarOutline, IoTimeOutline } from 'react-icons/io5';
 
 export function DateTimeSection({ date, time, todayStr, setDate, setTime }) {

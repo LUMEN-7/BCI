@@ -2,11 +2,12 @@
 // Baseado no comportamento real de navegação do usuário (sem dados mockados).
 
 export const RECENT_VIEWED_CARS_KEY = 'lumen-recent-viewed-cars';
+import { getUserScopedItem, removeUserScopedItem, setUserScopedItem } from './userScopedStorage';
 const MAX_STORED = 10;
 
 function readStorage() {
   try {
-    const raw = localStorage.getItem(RECENT_VIEWED_CARS_KEY);
+    const raw = getUserScopedItem(RECENT_VIEWED_CARS_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
@@ -17,7 +18,7 @@ function readStorage() {
 
 function writeStorage(list) {
   try {
-    localStorage.setItem(RECENT_VIEWED_CARS_KEY, JSON.stringify(list));
+    setUserScopedItem(RECENT_VIEWED_CARS_KEY, JSON.stringify(list));
     window.dispatchEvent(new CustomEvent('recent-viewed-cars-updated', { detail: list }));
   } catch (error) {
     console.error('Erro ao salvar veículos visualizados:', error);
@@ -62,7 +63,7 @@ export function appendRecentViewedCar(car) {
 
 export function clearRecentViewedCars() {
   try {
-    localStorage.removeItem(RECENT_VIEWED_CARS_KEY);
+    removeUserScopedItem(RECENT_VIEWED_CARS_KEY);
     window.dispatchEvent(new CustomEvent('recent-viewed-cars-updated', { detail: [] }));
   } catch (error) {
     console.error(error);

@@ -14,7 +14,7 @@ export default function useProfileController() {
 	const navigate = useNavigate();
 	const currentUser = getCurrentUser();
 
-	async function logoutUser(params) {
+	async function logoutUser() {
 			localStorage.removeItem('currentUser');
 			await logout();
 			navigate('/');
