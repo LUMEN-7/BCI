@@ -108,7 +108,7 @@ export function getActivityMetaByPath(pathname, routeState = {}) {
     return getComparisonMeta(routeState);
   }
 
-  if (normalizedPath === '/search' || normalizedPath === '/compare' || normalizedPath === '/home') {
+  if (normalizedPath === '/search' || normalizedPath === '/compare' || normalizedPath === '/home' || normalizedPath === '/welcome') {
     return null;
   }
 

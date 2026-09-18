@@ -221,7 +221,7 @@ function AnimatedRoutes() {
 
 function GlobalFloatingNotes() {
     const location = useLocation();
-    const publicRoutes = ['/', '/register', '/reset-password'];
+    const publicRoutes = ['/', '/register', '/reset-password', '/welcome'];
     const isPublic = publicRoutes.includes(location.pathname);
 
     if (isPublic) return null;
