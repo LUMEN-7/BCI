@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import "./style.css";
 
 function CarPreview({ car }) {
@@ -10,14 +11,19 @@ function CarPreview({ car }) {
   );
 }
 
-export default function Hero({ firstCar, secondCar }) {
+export default function Hero({ cars = [] }) {
   return (
     <section className="compare-hero">
-      <CarPreview car={firstCar} />
-      <div className="vs-wrapper">
-        <span className="vs-label">VS</span>
-      </div>
-      <CarPreview car={secondCar} />
+      {cars.map((car, index) => (
+        <Fragment key={car.id}>
+          {index > 0 && (
+            <div className="vs-wrapper">
+              <span className="vs-label">VS</span>
+            </div>
+          )}
+          <CarPreview car={car} />
+        </Fragment>
+      ))}
     </section>
   );
 }

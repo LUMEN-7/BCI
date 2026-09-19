@@ -144,8 +144,7 @@ export default function useDetailController() {
   const [salvando, setSalvando] = useState(false);
   const [expandedSection, setExpandedSection] = useState("base");
 
-  const [firstCar, setFirstCar] = useState(null);
-  const [secondCar, setSecondCar] = useState(null);
+  const [cars, setCars] = useState([]);
   const [comparisonSummary, setComparisonSummary] = useState("");
   const [mathConclusions, setMathConclusions] = useState({});
 
@@ -158,7 +157,7 @@ export default function useDetailController() {
   useEffect(() => {
     let isCurrentRequest = true;
 
-    async function enriquecerComIA(adaptado, setCarState) {
+    async function enriquecerComIA(adaptado, index) {
       if (!hasEmptyFieldsOrSections(adaptado)) return;
       try {
         const missing = getMissingSpecKeys(adaptado.specs);
@@ -166,30 +165,35 @@ export default function useDetailController() {
 
         if (!isCurrentRequest) return;
 
-        setCarState((curr) =>
-          curr
-            ? {
-                ...curr,
-                specs: { ...curr.specs, ...enriched.specs },
-                sections: {
-                  performance: curr.sections.performance.length ? curr.sections.performance : enriched.sections.performance,
-                  security: curr.sections.security.length ? curr.sections.security : enriched.sections.security,
-                  technology: curr.sections.technology.length ? curr.sections.technology : enriched.sections.technology,
-                  comfort: curr.sections.comfort.length ? curr.sections.comfort : enriched.sections.comfort,
-                },
-              }
-            : curr
-        );
+        setCars((curr) => {
+          const atual = curr[index];
+          if (!atual) return curr;
+          const next = [...curr];
+          next[index] = {
+            ...atual,
+            specs: { ...atual.specs, ...enriched.specs },
+            sections: {
+              performance: atual.sections.performance.length ? atual.sections.performance : enriched.sections.performance,
+              security: atual.sections.security.length ? atual.sections.security : enriched.sections.security,
+              technology: atual.sections.technology.length ? atual.sections.technology : enriched.sections.technology,
+              comfort: atual.sections.comfort.length ? atual.sections.comfort : enriched.sections.comfort,
+            },
+          };
+          return next;
+        });
       } catch (errAi) {
         console.warn("Falha ao enriquecer com IA:", errAi);
       }
     }
 
     async function fetchComparison() {
+      // Aceita tanto o fluxo antigo (firstCar/secondCar) quanto o novo (cars: [ref, ...similares])
+      const stateCars = location.state?.cars;
       const car1 = location.state?.firstCar;
       const car2 = location.state?.secondCar;
+      const carRefs = Array.isArray(stateCars) && stateCars.length >= 2 ? stateCars : (car1 && car2 ? [car1, car2] : null);
 
-      if (!car1 || !car2) {
+      if (!carRefs) {
         navigate(-1);
         return;
       }
@@ -197,46 +201,43 @@ export default function useDetailController() {
       try {
         setLoading(true);
 
-        const id1 = Number.isFinite(car1) ? car1 : car1.id;
-        const id2 = Number.isFinite(car2) ? car2 : car2.id;
-        carrosIdsRef.current = [id1, id2];
+        const ids = carRefs.map((c) => (Number.isFinite(c) ? c : c.id));
+        carrosIdsRef.current = ids;
 
-        const data = await direct(carrosIdsRef.current);
+        const data = await direct(ids);
         if (!isCurrentRequest) return;
 
-        const adaptado1 = adaptCarToComparison(
-          data.carrosComparados.find((c) => String(c.id) === String(id1)) || data.carrosComparados[0]
-        );
-        const adaptado2 = adaptCarToComparison(
-          data.carrosComparados.find((c) => String(c.id) === String(id2)) || data.carrosComparados[1]
+        const adaptedCars = ids.map((id, index) =>
+          adaptCarToComparison(
+            data.carrosComparados.find((c) => String(c.id) === String(id)) || data.carrosComparados[index]
+          )
         );
 
         // Mostra a tela JÁ com os dados base do C# — sem esperar a IA
-        setFirstCar(adaptado1);
-        setSecondCar(adaptado2);
+        setCars(adaptedCars);
         setComparisonSummary(data.parecerIA || "");
         setMathConclusions(data.conclusoesMatematicas || {});
         setLoading(false);
 
         // A partir daqui, tudo roda em background, com indicadores próprios
         setAiEnriching(true);
-        await Promise.all([
-          enriquecerComIA(adaptado1, setFirstCar),
-          enriquecerComIA(adaptado2, setSecondCar),
-        ]);
+        await Promise.all(adaptedCars.map((adaptado, index) => enriquecerComIA(adaptado, index)));
         if (isCurrentRequest) setAiEnriching(false);
 
-        setAiSummaryLoading(true);
-        try {
-          const aiCompare = await analisarComparacao(adaptado1, adaptado2, data.conclusoesMatematicas);
-          if (isCurrentRequest) {
-            setComparisonSummary(aiCompare.comparisonSummary || "Resumo comparativo não disponível.");
-            setMathConclusions(aiCompare.mathConclusions || data.conclusoesMatematicas || {});
+        // O resumo comparativo da IA é pareado (backend só entende dois veículos por vez)
+        if (adaptedCars.length === 2) {
+          setAiSummaryLoading(true);
+          try {
+            const aiCompare = await analisarComparacao(adaptedCars[0], adaptedCars[1], data.conclusoesMatematicas);
+            if (isCurrentRequest) {
+              setComparisonSummary(aiCompare.comparisonSummary || "Resumo comparativo não disponível.");
+              setMathConclusions(aiCompare.mathConclusions || data.conclusoesMatematicas || {});
+            }
+          } catch (errAi) {
+            console.warn("Falha ao obter resumo comparativo da IA:", errAi);
+          } finally {
+            if (isCurrentRequest) setAiSummaryLoading(false);
           }
-        } catch (errAi) {
-          console.warn("Falha ao obter resumo comparativo da IA:", errAi);
-        } finally {
-          if (isCurrentRequest) setAiSummaryLoading(false);
         }
       } catch (err) {
         if (!isCurrentRequest) return;
@@ -260,7 +261,7 @@ export default function useDetailController() {
     setSalvando(true);
     try {
       const requestPayload = JSON.stringify({ carrosIds: carrosIdsRef.current });
-      const titulo = `${firstCar?.brand ?? ""} ${firstCar?.name ?? ""} vs ${secondCar?.brand ?? ""} ${secondCar?.name ?? ""}`.trim();
+      const titulo = cars.map((c) => `${c?.brand ?? ""} ${c?.name ?? ""}`.trim()).join(" vs ");
 
       await salvarComparacao({ titulo, tipo: "Direta", requestPayload });
       setFavorite(true);
@@ -273,10 +274,10 @@ export default function useDetailController() {
   }
 
   async function handleExport(formato, separador) {
-    if (!firstCar || !secondCar) return;
+    if (cars.length < 2) return;
     try {
       await exportCar(
-        [{ linhagemId: Number(firstCar.id) }, { linhagemId: Number(secondCar.id) }],
+        cars.map((c) => ({ linhagemId: Number(c.id) })),
         formato,
         undefined,
         separador
@@ -290,8 +291,9 @@ export default function useDetailController() {
   return {
     loading,
     error,
-    firstCar,
-    secondCar,
+    cars,
+    firstCar: cars[0] || null,
+    secondCar: cars[1] || null,
     favorite,
     salvando,
     handleExport,
