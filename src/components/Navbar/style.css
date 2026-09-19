@@ -4,66 +4,124 @@
     position: fixed;
     left: 0;
     top: 0;
+
     width: 4.25rem;
     height: 100vh;
+    box-sizing: border-box;
+
     padding: 1.125rem 0.5625rem;
+
     display: flex;
     flex-direction: column;
+
     background: rgba(255, 255, 255, 0.48);
+
     backdrop-filter: blur(0.875rem);
     -webkit-backdrop-filter: blur(0.875rem);
+
     border-radius: 0 0.625rem 0.625rem 0;
+
     box-shadow:
         0 0.5rem 1rem rgba(0, 20, 46, 0.12),
         0 0.1875rem 0.375rem rgba(0, 20, 46, 0.08);
+
     z-index: 20;
-    transition: width 0.25s ease, padding 0.25s ease;
+
+    transition:
+        width 0.25s ease,
+        padding 0.25s ease;
 }
+
+/* =========================
+   MENU PRINCIPAL
+========================= */
 
 .navbar-main {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    /*
+     * Centraliza o conjunto dos ícones
+     * no espaço disponível da navbar.
+     */
+    margin: auto 0;
 }
 
+/* =========================
+   MENU INFERIOR
+========================= */
+
 .navbar-bottom {
-    margin-top: auto;
-    padding-top: 1.75rem;
+    flex-shrink: 0;
+
+    margin-top: 1rem;
+    padding-top: 0;
+
     border-top: none;
 }
 
+/* =========================
+   ITEM
+========================= */
+
 .nav-item {
     position: relative;
+
     width: 100%;
     height: 3rem;
+
     padding: 0 0.75rem;
+
     display: flex;
     align-items: center;
+
     gap: 0.75rem;
+
     border: none;
     border-radius: 0.875rem;
+
     background: transparent;
+
     color: var(--color-primary);
+
     font-family: var(--font-body-bold);
     font-size: 0.75rem;
+
     text-transform: uppercase;
+
     cursor: pointer;
     overflow: hidden;
-    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .nav-item svg {
     min-width: 1.5rem;
+
     font-size: 1.4375rem;
+
     flex-shrink: 0;
 }
 
 .nav-item span:not(.alert-indicator) {
     opacity: 0;
+
     white-space: nowrap;
+
     transform: translateX(-0.5rem);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
 }
+
+/* =========================
+   EXPANSÃO DESKTOP
+========================= */
 
 .home-navbar:hover {
     width: 12.5rem;
@@ -75,11 +133,20 @@
     transform: translateX(0);
 }
 
+/* =========================
+   HOVER
+========================= */
+
 .nav-item:hover {
     background: var(--color-primary);
     color: var(--color-light-neutral);
+
     transform: translateX(0.125rem);
 }
+
+/* =========================
+   ALERTA
+========================= */
 
 .nav-alerts {
     position: relative;
@@ -87,14 +154,23 @@
 
 .alert-indicator {
     position: absolute;
+
     top: 0.5625rem;
     left: 1.9375rem;
+
     width: 0.375rem;
     height: 0.375rem;
+
     border-radius: 50%;
+
     background: #d96b55;
-    box-shadow: 0 0 0 0.1875rem rgba(217, 107, 85, 0.12);
-    transition: left 0.25s ease, right 0.25s ease;
+
+    box-shadow:
+        0 0 0 0.1875rem rgba(217, 107, 85, 0.12);
+
+    transition:
+        left 0.25s ease,
+        right 0.25s ease;
 }
 
 .home-navbar:hover .alert-indicator {
@@ -102,18 +178,26 @@
     right: 0.875rem;
 }
 
+/* =========================
+   MOBILE
+========================= */
+
 .mobile-navbar {
     display: none;
 }
 
 @media (max-width: 56.1875rem) {
+
     .mobile-navbar {
         position: fixed;
+
         top: 1.125rem;
         right: 1.125rem;
+
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+
         z-index: 1000;
     }
 
@@ -121,26 +205,40 @@
         display: none;
     }
 
+    /* =========================
+       BOTÃO MENU
+    ========================= */
+
     .mobile-menu-toggle {
         width: 2.875rem;
         height: 2.875rem;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         border: none;
         border-radius: 50%;
+
         background: var(--color-light-neutral);
         color: var(--color-primary);
+
         font-size: 1.5rem;
+
         cursor: pointer;
+
         box-shadow:
             0 0.5rem 1rem rgba(0, 20, 46, 0.12),
             0 0.1875rem 0.375rem rgba(0, 20, 46, 0.08);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
     }
 
     .mobile-menu-toggle:hover {
         transform: translateY(-0.125rem);
+
         box-shadow:
             0 0.875rem 1.875rem rgba(0, 20, 46, 0.22),
             0 0.3125rem 0.75rem rgba(0, 20, 46, 0.12);
@@ -150,30 +248,49 @@
         transform: scale(0.95);
     }
 
+    /* =========================
+       MENU MOBILE
+    ========================= */
+
     .mobile-menu {
         position: absolute;
+
         top: 4rem;
         right: 0;
+
         width: 13.125rem;
+
         padding: 0.75rem;
+
         background: rgba(255, 255, 255, 0.726);
+
         backdrop-filter: blur(1.125rem);
         -webkit-backdrop-filter: blur(1.125rem);
+
         border: 0.0625rem solid rgba(0, 20, 46, 0.08);
         border-radius: 1.25rem;
+
         box-shadow:
             0 1.25rem 2.8125rem rgba(0, 20, 46, 0.14),
             0 0.3125rem 0.9375rem rgba(0, 20, 46, 0.08);
+
         opacity: 0;
         visibility: hidden;
+
         transform: translateY(-0.5rem) scale(0.97);
+
         transform-origin: top right;
-        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+
+        transition:
+            opacity 0.2s ease,
+            transform 0.2s ease,
+            visibility 0.2s ease;
     }
 
     .mobile-navbar.is-open .mobile-menu {
         opacity: 1;
         visibility: visible;
+
         transform: translateY(0) scale(1);
     }
 
@@ -181,7 +298,10 @@
     .mobile-menu .navbar-bottom {
         display: flex;
         flex-direction: column;
+
         gap: 0.375rem;
+
+        margin: 0;
     }
 
     .mobile-menu .navbar-bottom {
@@ -191,20 +311,31 @@
     .mobile-menu .nav-item {
         width: 100%;
         height: 2.875rem;
+
         padding: 0 0.75rem;
+
         display: flex;
         align-items: center;
         justify-content: flex-start;
+
         gap: 0.75rem;
+
         border: none;
         border-radius: 0.75rem;
+
         background: transparent;
         color: var(--color-primary);
+
         font-family: var(--font-body-bold);
         font-size: 0.6875rem;
+
         text-transform: uppercase;
+
         cursor: pointer;
-        transition: background 0.2s ease, color 0.2s ease;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
     }
 
     .mobile-menu .nav-item svg {
@@ -214,14 +345,17 @@
 
     .mobile-menu .nav-item span {
         display: block;
+
         opacity: 1;
         transform: none;
+
         white-space: nowrap;
     }
 
     .mobile-menu .nav-item:hover {
         background: var(--color-primary);
         color: var(--color-light-neutral);
+
         transform: none;
     }
 }
