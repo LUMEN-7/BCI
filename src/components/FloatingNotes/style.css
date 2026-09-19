@@ -128,6 +128,8 @@
 .notes-panel-header {
   min-height: 4.75rem;
 
+  font-family: var(--font-body);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -366,6 +368,7 @@
 }
 
 .note-card-header {
+  font-family: var(--font-body);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -449,6 +452,8 @@
 .note-card-snippet {
   margin: 0.5625rem 0 0.8125rem;
 
+  font-family: var(--font-body);
+
   display: -webkit-box;
 
   overflow: hidden;
@@ -523,6 +528,8 @@
 
 .notes-empty-state {
   min-height: 17.5rem;
+
+  font-family: var(--font-body);
 
   display: flex;
   flex-direction: column;
@@ -1036,6 +1043,7 @@
   word-break: break-word;
 
   color: #27323d;
+  font-family: var(--font-body);
   font-size: 0.8125rem;
   line-height: 1.65;
 }
@@ -1044,6 +1052,7 @@
   text-align: center;
   padding: 1.875rem 0.9375rem;
   color: #7d8793;
+  font-family: var(--font-body);
 }
 
 .markdown-empty-state p {
@@ -2134,6 +2143,8 @@
 
 .notes-delete-modal-backdrop {
   position: fixed;
+
+  font-family: var(--font-body);
 
   inset: 0;
 
