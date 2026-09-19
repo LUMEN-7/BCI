@@ -10,6 +10,12 @@ export async function iniciarBusca(payload) {
   return resultado;
 }
 
+export async function importCarsFromFiles(file) {
+  const formData = new FormData();
+  formData.append('arquivo', file, fileName);
+  return apiFetchMultipart('/Carro/importar-arquivo', formData);
+}
+
 export async function getJobStatus(jobId) {
   return apiFetch(`/Pesquisa/jobs/${jobId}`, { method: "GET" });
 }

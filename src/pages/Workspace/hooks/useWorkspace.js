@@ -1,870 +1,209 @@
+import { useEffect, useMemo, useState } from "react";
 import {
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+  listarPosts, criarPost, comentar, toggleCurtida, togglePin,
+  atualizarStatus, excluirPost, listarMembros, listarConteudosVinculaveis,
+} from "@/services/workspaceService";
 
-import {
-  initialPosts,
-  linkedContents,
-  postTypes,
-} from "../data";
-
-
-const initialNewPost = {
-  type: "update",
-
-  content: "",
-
-  tags: "",
-
-  responsible: "",
-
-  status: "",
-
-  linkedType: "",
-
-  linkedItemId: "",
+export const postTypes = {
+  update: { label: "Atualização", className: "update" },
+  insight: { label: "Insight", className: "insight" },
+  review: { label: "Dado para revisão", className: "review" },
+  decision: { label: "Decisão", className: "decision" },
+  comparison: { label: "Comparação", className: "comparison" },
 };
 
+export const linkedContentTypes = {
+  research: { label: "Pesquisa competitiva" },
+  comparison: { label: "Comparação" },
+  aiAnalysis: { label: "Análise da IA" },
+  vehicle: { label: "Veículo / Modelo" },
+};
+
+const initialNewPost = { type: "update", content: "", tags: "", responsible: "", status: "", linkedType: "", linkedItemId: "", linkedItemTitle: "" };
+
+function getCurrentUser() {
+  try { return JSON.parse(localStorage.getItem("currentUser")) || null; } catch { return null; }
+}
 
 export default function useWorkspace() {
+  const currentUser = getCurrentUser();
+  const currentUserId = currentUser?.id;
 
-  // IDs locais não dependem do relógio, evitando colisões em renderizações repetidas.
-  const nextPostIdRef = useRef(10000);
+  const [posts, setPosts] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // =========================================================
-  // USUÁRIO ATUAL
-  // =========================================================
+  const [activeTab, setActiveTab] = useState("feed");
+  const [myActivitiesView, setMyActivitiesView] = useState("assigned");
+  const [search, setSearch] = useState("");
+  const [selectedType, setSelectedType] = useState("all");
 
-  const currentUserName =
-    "Ianny Raquel";
+  const [newPostOpen, setNewPostOpen] = useState(false);
+  const [posting, setPosting] = useState(false);
+  const [newPost, setNewPost] = useState(initialNewPost);
+  const [linkedOptions, setLinkedOptions] = useState([]);
 
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
-  // =========================================================
-  // POSTS
-  // =========================================================
-
-  const [
-    posts,
-    setPosts,
-  ] = useState(
-    initialPosts
-  );
-
-
-  // =========================================================
-  // TAB ATIVA
-  // =========================================================
-
-  const [
-    activeTab,
-    setActiveTab,
-  ] = useState(
-    "feed"
-  );
-
-
-  // =========================================================
-  // MINHAS ATIVIDADES
-  // =========================================================
-
-  const [
-    myActivitiesView,
-    setMyActivitiesView,
-  ] = useState(
-    "assigned"
-  );
-
-
-  // =========================================================
-  // BUSCA
-  // =========================================================
-
-  const [
-    search,
-    setSearch,
-  ] = useState(
-    ""
-  );
-
-
-  // =========================================================
-  // FILTRO
-  // =========================================================
-
-  const [
-    selectedType,
-    setSelectedType,
-  ] = useState(
-    "all"
-  );
-
-
-  // =========================================================
-  // NOVA PUBLICAÇÃO
-  // =========================================================
-
-  const [
-    newPostOpen,
-    setNewPostOpen,
-  ] = useState(
-    false
-  );
-
-  const [
-    newPost,
-    setNewPost,
-  ] = useState(
-    initialNewPost
-  );
-
-
-  // =========================================================
-  // THREAD
-  // =========================================================
-
-  const [
-    selectedPostId,
-    setSelectedPostId,
-  ] = useState(
-    null
-  );
-
-
-  // =========================================================
-  // MINHAS PUBLICAÇÕES
-  // =========================================================
-
-  const myPosts =
-    useMemo(() => {
-
-      return posts.filter(
-        (post) =>
-          post.author?.name ===
-          currentUserName
-      );
-
-    }, [
-      posts,
-      currentUserName,
-    ]);
-
-
-  // =========================================================
-  // ATRIBUÍDOS A MIM
-  // =========================================================
-
-  const assignedPosts =
-    useMemo(() => {
-
-      return posts.filter(
-        (post) =>
-          post.responsible ===
-          currentUserName
-      );
-
-    }, [
-      posts,
-      currentUserName,
-    ]);
-
-
-  // =========================================================
-  // CONTEÚDOS VINCULÁVEIS
-  // =========================================================
-
-  const availableLinkedContents =
-    useMemo(() => {
-
-      if (
-        !newPost.linkedType
-      ) {
-        return [];
+  useEffect(() => {
+    async function carregar() {
+      setLoading(true);
+      setError("");
+      try {
+        const [postsResult, membrosResult] = await Promise.all([listarPosts(), listarMembros()]);
+        setPosts(postsResult);
+        setMembers(membrosResult);
+      } catch (err) {
+        setError(err.message || "Não foi possível carregar o workspace.");
+      } finally {
+        setLoading(false);
       }
-
-      return linkedContents.filter(
-        (item) =>
-          item.type ===
-          newPost.linkedType
-      );
-
-    }, [
-      newPost.linkedType,
-    ]);
-
-
-  // =========================================================
-  // FILTRAR POSTS
-  // =========================================================
-
-  const filteredPosts =
-    useMemo(() => {
-
-      const normalizedSearch =
-        search
-          .trim()
-          .toLowerCase();
-
-      return posts.filter(
-        (post) => {
-
-          const matchesType =
-            selectedType ===
-              "all" ||
-            post.type ===
-              selectedType;
-
-          const searchableContent =
-            [
-              post.author?.name ||
-                "",
-
-              post.content ||
-                "",
-
-              post.responsible ||
-                "",
-
-              ...(post.tags ||
-                []),
-
-              post.linkedItem
-                ?.title || "",
-            ]
-              .join(" ")
-              .toLowerCase();
-
-          const matchesSearch =
-            !normalizedSearch ||
-            searchableContent.includes(
-              normalizedSearch
-            );
-
-          return (
-            matchesType &&
-            matchesSearch
-          );
-        }
-      );
-
-    }, [
-      posts,
-      search,
-      selectedType,
-    ]);
-
-
-  // =========================================================
-  // POST SELECIONADO
-  // =========================================================
-
-  const selectedPost =
-    useMemo(() => {
-
-      if (
-        selectedPostId ===
-        null
-      ) {
-        return null;
-      }
-
-      return (
-        posts.find(
-          (post) =>
-            post.id ===
-            selectedPostId
-        ) || null
-      );
-
-    }, [
-      posts,
-      selectedPostId,
-    ]);
-
-
-  // =========================================================
-  // RESUMO
-  // =========================================================
-
-  const summary =
-    useMemo(() => {
-
-      return {
-        posts:
-          posts.length,
-
-        insights:
-          posts.filter(
-            (post) =>
-              post.type ===
-              "insight"
-          ).length,
-
-        reviews:
-          posts.filter(
-            (post) =>
-              post.type ===
-                "review" &&
-              post.status !==
-                "resolved"
-          ).length,
-
-        decisions:
-          posts.filter(
-            (post) =>
-              post.type ===
-              "decision"
-          ).length,
-      };
-
-    }, [
-      posts,
-    ]);
-
-
-  // =========================================================
-  // CURTIR
-  // =========================================================
-
-  function toggleLike(
-    postId
-  ) {
-
-    setPosts(
-      (
-        previousPosts
-      ) =>
-        previousPosts.map(
-          (post) => {
-
-            if (
-              post.id !==
-              postId
-            ) {
-              return post;
-            }
-
-            const newLikedState =
-              !post.liked;
-
-            return {
-              ...post,
-
-              liked:
-                newLikedState,
-
-              likes:
-                newLikedState
-                  ? (
-                      post.likes ||
-                      0
-                    ) + 1
-                  : Math.max(
-                      (
-                        post.likes ||
-                        0
-                      ) - 1,
-                      0
-                    ),
-            };
-          }
-        )
-    );
-  }
-
-
-  // =========================================================
-  // COMENTAR
-  // =========================================================
-
-  function addComment(
-    postId,
-    content
-  ) {
-
-    if (
-      !content ||
-      !content.trim()
-    ) {
-      return;
     }
+    carregar();
+  }, []);
 
-    const newComment = {
-      id:
-        nextPostIdRef.current++,
+  useEffect(() => {
+    if (!newPost.linkedType) { setLinkedOptions([]); return; }
+    listarConteudosVinculaveis(newPost.linkedType).then(setLinkedOptions).catch(() => setLinkedOptions([]));
+  }, [newPost.linkedType]);
 
-      author:
-        currentUserName,
+  const myPosts = useMemo(() => posts.filter((p) => p.author.name === currentUser?.nomeExibicao), [posts, currentUser]);
+  const assignedPosts = useMemo(() => posts.filter((p) => p.responsibleUserId === currentUserId), [posts, currentUserId]);
 
-      initials:
-        "IR",
+  const availableLinkedContents = useMemo(
+    () => linkedOptions.map((o) => ({ id: o.id, title: o.title })),
+    [linkedOptions]
+  );
 
-      time:
-        "agora",
-
-      content:
-        content.trim(),
-    };
-
-    setPosts(
-      (
-        previousPosts
-      ) =>
-        previousPosts.map(
-          (post) => {
-
-            if (
-              post.id !==
-              postId
-            ) {
-              return post;
-            }
-
-            return {
-              ...post,
-
-              comments: [
-                ...(post.comments ||
-                  []),
-
-                newComment,
-              ],
-            };
-          }
-        )
-    );
-  }
-
-
-  // =========================================================
-  // THREAD
-  // =========================================================
-
-  function openThread(
-    post
-  ) {
-
-    if (!post) {
-      return;
-    }
-
-    setSelectedPostId(
-      post.id
-    );
-  }
-
-
-  function openThreadById(
-    postId
-  ) {
-
-    const postExists =
-      posts.some(
-        (post) =>
-          post.id === postId
-      );
-
-    if (!postExists) {
-      return;
-    }
-
-    setSelectedPostId(
-      postId
-    );
-  }
-
-
-  function closeThread() {
-
-    setSelectedPostId(
-      null
-    );
-  }
-
-
-  // =========================================================
-  // STATUS
-  // =========================================================
-
-  function updatePostStatus(
-    postId,
-    status
-  ) {
-
-    setPosts(
-      (
-        previousPosts
-      ) =>
-        previousPosts.map(
-          (post) =>
-            post.id ===
-            postId
-              ? {
-                  ...post,
-                  status,
-                }
-              : post
-        )
-    );
-  }
-
-
-  // =========================================================
-  // FIXAR
-  // =========================================================
-
-  function togglePin(
-    postId
-  ) {
-
-    setPosts(
-      (
-        previousPosts
-      ) =>
-        previousPosts.map(
-          (post) =>
-            post.id ===
-            postId
-              ? {
-                  ...post,
-                  pinned:
-                    !post.pinned,
-                }
-              : post
-        )
-    );
-  }
-
-
-  // =========================================================
-  // EXCLUIR
-  // =========================================================
-
-  function deletePost(
-    postId
-  ) {
-
-    setPosts(
-      (
-        previousPosts
-      ) =>
-        previousPosts.filter(
-          (post) =>
-            post.id !==
-            postId
-        )
-    );
-
-    if (
-      selectedPostId ===
-      postId
-    ) {
-      setSelectedPostId(
-        null
-      );
-    }
-  }
-
-
-  // =========================================================
-  // ABRIR NOVA PUBLICAÇÃO
-  // =========================================================
-
-  function openNewPost(
-    type = "update"
-  ) {
-
-    setNewPost({
-      ...initialNewPost,
-
-      type,
-
-      status:
-        type === "review"
-          ? "pending"
-          : "",
+  const filteredPosts = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    return posts.filter((post) => {
+      const matchesType = selectedType === "all" || post.type === selectedType;
+      const searchable = [post.author?.name, post.content, post.responsible, ...(post.tags || []), post.linkedItem?.title].filter(Boolean).join(" ").toLowerCase();
+      return matchesType && (!term || searchable.includes(term));
     });
+  }, [posts, search, selectedType]);
 
-    setNewPostOpen(
-      true
-    );
+  const selectedPost = useMemo(() => posts.find((p) => p.id === selectedPostId) || null, [posts, selectedPostId]);
+
+  const summary = useMemo(() => ({
+    posts: posts.length,
+    insights: posts.filter((p) => p.type === "insight").length,
+    reviews: posts.filter((p) => p.type === "review" && p.status !== "resolved").length,
+    decisions: posts.filter((p) => p.type === "decision").length,
+  }), [posts]);
+
+  async function toggleLike(postId) {
+    setPosts((current) => current.map((p) => p.id === postId ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 } : p));
+    try {
+      const resultado = await toggleCurtida(postId);
+      setPosts((current) => current.map((p) => p.id === postId ? { ...p, likes: resultado.totalCurtidas } : p));
+    } catch (err) {
+      setError(err.message || "Não foi possível curtir.");
+    }
   }
 
+  async function addComment(postId, content) {
+    if (!content?.trim()) return;
+    try {
+      const novoComentario = await comentar(postId, content);
+      setPosts((current) => current.map((p) => p.id === postId ? { ...p, comments: [...p.comments, novoComentario] } : p));
+    } catch (err) {
+      setError(err.message || "Não foi possível comentar.");
+    }
+  }
 
-  // =========================================================
-  // ALTERAR NOVA PUBLICAÇÃO
-  // =========================================================
+  function openThread(post) { if (post) setSelectedPostId(post.id); }
+  function openThreadById(postId) { if (posts.some((p) => p.id === postId)) setSelectedPostId(postId); }
+  function closeThread() { setSelectedPostId(null); }
 
-  function handleNewPostChange(
-    event
-  ) {
+  async function updatePostStatus(postId, status) {
+    setPosts((current) => current.map((p) => p.id === postId ? { ...p, status } : p));
+    try { await atualizarStatus(postId, status); }
+    catch (err) { setError(err.message || "Não foi possível atualizar o status."); }
+  }
 
-    const {
-      name,
-      value,
-    } =
-      event.target;
+  async function togglePinPost(postId) {
+    setPosts((current) => current.map((p) => p.id === postId ? { ...p, pinned: !p.pinned } : p));
+    try { await togglePin(postId); }
+    catch (err) { setError(err.message || "Não foi possível fixar."); }
+  }
 
+  async function deletePost(postId) {
+    const anterior = posts;
+    setPosts((current) => current.filter((p) => p.id !== postId));
+    if (selectedPostId === postId) setSelectedPostId(null);
+    try { await excluirPost(postId); }
+    catch (err) { setPosts(anterior); setError(err.message || "Não foi possível excluir."); }
+  }
 
-    if (
-      name === "type"
-    ) {
+  function openNewPost(type = "update") {
+    setNewPost({ ...initialNewPost, type, status: type === "review" ? "pending" : "" });
+    setNewPostOpen(true);
+  }
 
-      setNewPost(
-        (previous) => ({
-          ...previous,
-
-          type:
-            value,
-
-          responsible:
-            value === "review"
-              ? previous.responsible
-              : "",
-
-          status:
-            value === "review"
-              ? (
-                  previous.status ||
-                  "pending"
-                )
-              : "",
-        })
-      );
-
+  function handleNewPostChange(event) {
+    const { name, value } = event.target;
+    if (name === "type") {
+      setNewPost((p) => ({ ...p, type: value, responsible: value === "review" ? p.responsible : "", status: value === "review" ? (p.status || "pending") : "" }));
       return;
     }
-
-
-    if (
-      name === "linkedType"
-    ) {
-
-      setNewPost(
-        (previous) => ({
-          ...previous,
-
-          linkedType:
-            value,
-
-          linkedItemId:
-            "",
-        })
-      );
-
+    if (name === "linkedType") {
+      setNewPost((p) => ({ ...p, linkedType: value, linkedItemId: "", linkedItemTitle: "" }));
       return;
     }
-
-
-    setNewPost(
-      (previous) => ({
-        ...previous,
-
-        [name]:
-          value,
-      })
-    );
-  }
-
-
-  // =========================================================
-  // CRIAR PUBLICAÇÃO
-  // =========================================================
-
-  function createPost() {
-
-    const normalizedContent =
-      newPost.content
-        .trim();
-
-    if (
-      !normalizedContent
-    ) {
+    if (name === "linkedItemId") {
+      const item = linkedOptions.find((o) => o.id === value);
+      setNewPost((p) => ({ ...p, linkedItemId: value, linkedItemTitle: item?.title ?? "" }));
       return;
     }
-
-
-    const normalizedTags =
-      newPost.tags
-        .split(",")
-        .map(
-          (tag) =>
-            tag.trim()
-        )
-        .filter(
-          Boolean
-        );
-
-
-    const selectedLinkedItem =
-      newPost.linkedItemId
-        ? linkedContents.find(
-            (item) =>
-              item.id ===
-              newPost.linkedItemId
-          ) || null
-        : null;
-
-
-    const post = {
-
-      id:
-        nextPostIdRef.current++,
-
-      type:
-        newPost.type,
-
-      author: {
-        name:
-          currentUserName,
-
-        initials:
-          "IR",
-      },
-
-      createdAt:
-        "agora",
-
-      content:
-        normalizedContent,
-
-      tags:
-        normalizedTags,
-
-      responsible:
-        newPost.type ===
-          "review" &&
-        newPost.responsible
-          ? newPost.responsible
-          : null,
-
-      status:
-        newPost.type ===
-          "review"
-          ? (
-              newPost.status ||
-              "pending"
-            )
-          : null,
-
-      linkedItem:
-        selectedLinkedItem
-          ? {
-              ...selectedLinkedItem,
-            }
-          : null,
-
-      pinned:
-        false,
-
-      liked:
-        false,
-
-      likes:
-        0,
-
-      comments:
-        [],
-    };
-
-
-    setPosts(
-      (
-        previousPosts
-      ) => [
-        post,
-        ...previousPosts,
-      ]
-    );
-
-
-    resetNewPost();
+    setNewPost((p) => ({ ...p, [name]: value }));
   }
 
+  async function createPost() {
+    console.log(posting)
+    const conteudo = newPost.content.trim();
+    if (!conteudo) return;
 
-  // =========================================================
-  // CANCELAR / RESETAR
-  // =========================================================
-
-  function cancelNewPost() {
-
-    resetNewPost();
+    try {
+      setPosting(true)
+      const novoPost = await criarPost({
+        type: newPost.type,
+        content: conteudo,
+        tags: newPost.tags.split(",").map((t) => t.trim()).filter(Boolean),
+        responsibleUserId: newPost.responsible,
+        status: newPost.status,
+        linkedType: newPost.linkedType || null,
+        linkedItemId: newPost.linkedItemId || null,
+        linkedItemTitle: newPost.linkedType === "research" ? newPost.linkedItemTitle : (linkedOptions.find((o) => o.id === newPost.linkedItemId)?.title ?? null),
+      });
+      setPosting(false)
+      setPosts((current) => [novoPost, ...current]);
+      resetNewPost();
+    } catch (err) {
+      setPosting(false)
+      setError(err.message || "Não foi possível publicar.");
+    }
   }
 
-
-  function resetNewPost() {
-
-    setNewPost(
-      initialNewPost
-    );
-
-    setNewPostOpen(
-      false
-    );
-  }
-
-
-  // =========================================================
-  // RETURN
-  // =========================================================
+  function cancelNewPost() { resetNewPost(); }
+  function resetNewPost() { setNewPost(initialNewPost); setNewPostOpen(false); }
 
   return {
-
-    posts,
-    filteredPosts,
-    postTypes,
-
-    linkedContents,
-    availableLinkedContents,
-
-
+    posts, filteredPosts, postTypes, linkedContents: linkedOptions, availableLinkedContents,
+    members, loading, error,
     summary,
-
-
-    activeTab,
-    setActiveTab,
-
-
-    myActivitiesView,
-    setMyActivitiesView,
-
-    myPosts,
-    assignedPosts,
-
-
-    search,
-    setSearch,
-
-
-    selectedType,
-    setSelectedType,
-
-
-    selectedPost,
-
-    openThread,
-    openThreadById,
-    closeThread,
-
-
-    newPost,
-    newPostOpen,
-
-    openNewPost,
-    handleNewPostChange,
-    createPost,
-    cancelNewPost,
-
-
-    toggleLike,
-    addComment,
-
-
+    posting,
+    activeTab, setActiveTab,
+    myActivitiesView, setMyActivitiesView,
+    myPosts, assignedPosts,
+    search, setSearch,
+    selectedType, setSelectedType,
+    selectedPost, openThread, openThreadById, closeThread,
+    newPost, newPostOpen, openNewPost, handleNewPostChange, createPost, cancelNewPost,
+    toggleLike, addComment,
     updatePostStatus,
-
-
-    togglePin,
-    deletePost,
+    togglePin: togglePinPost, deletePost,
   };
 }

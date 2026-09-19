@@ -17,7 +17,7 @@ import {
 export default function FeedSection({
   posts,
   postTypes,
-
+  posting,
   search,
   onSearchChange,
 
@@ -200,7 +200,7 @@ export default function FeedSection({
                               member.id
                             }
                             value={
-                              member.name
+                              member.id
                             }
                           >
                             {member.name}
@@ -283,42 +283,26 @@ export default function FeedSection({
 
                 {newPost.linkedType && (
                   <>
-                    <label htmlFor="linked-item">
-                      SELECIONAR CONTEÚDO
-                    </label>
-
-                    <select
-                      id="linked-item"
-                      name="linkedItemId"
-                      value={
-                        newPost.linkedItemId
-                      }
-                      onChange={
-                        onNewPostChange
-                      }
-                    >
-                      <option value="">
-                        Selecionar conteúdo
-                      </option>
-
-                      {availableLinkedContents.map(
-                        (item) => (
-                          <option
-                            key={
-                              item.id
-                            }
-                            value={
-                              item.id
-                            }
-                          >
-                            {item.title}
-                          </option>
-                        )
-                      )}
-                    </select>
+                    <label htmlFor="linked-item">SELECIONAR CONTEÚDO</label>
+                    {newPost.linkedType === "research" ? (
+                      <input
+                        id="linked-item"
+                        name="linkedItemTitle"
+                        type="text"
+                        value={newPost.linkedItemTitle}
+                        onChange={onNewPostChange}
+                        placeholder="Título da pesquisa"
+                      />
+                    ) : (
+                      <select id="linked-item" name="linkedItemId" value={newPost.linkedItemId} onChange={onNewPostChange}>
+                        <option value="">Selecionar conteúdo</option>
+                        {availableLinkedContents.map((item) => (
+                          <option key={item.id} value={item.id}>{item.title}</option>
+                        ))}
+                      </select>
+                    )}
                   </>
                 )}
-
 
                 {/* =================================================
                     AÇÕES
@@ -340,7 +324,7 @@ export default function FeedSection({
                     type="button"
                     className="workspace-primary-button"
                     onClick={
-                      onCreatePost
+                      () => (posting ? null : onCreatePost())
                     }
                   >
                     PUBLICAR

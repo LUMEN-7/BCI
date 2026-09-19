@@ -26,8 +26,8 @@ export default function useLoginController() {
             navigate('/verificar-2fa', { state: { tokenDesafio: resultado.tokenDesafio } });
             return;
         }
-
-        if (!resultado.usuario?.nomeExibicao?.trim()) {
+        
+        if (!resultado.usuario?.userName?.trim()) {
             navigate('/welcome');
             return;
         }
@@ -55,15 +55,21 @@ export default function useLoginController() {
         setCarregandoGoogle(true);
         setAuthError('');
         try {
+            
             const result = await signInWithPopup(auth, googleProvider);
             const credential = GoogleAuthProvider.credentialFromResult(result);
-
+            
             if (!credential?.idToken) throw new Error('Não foi possível obter o token do Google.');
-
+            
             const resultado = await loginComGoogle(credential.idToken);
             irParaProximoPasso(resultado);
+            
         } catch (error) {
-            setAuthError(error.message || 'Erro ao entrar com Google.');
+            
+            if (error.message !== "Firebase: Error (auth/popup-closed-by-user)."){
+                setAuthError(error.message || 'Erro ao entrar com Google.');        
+            }
+            setCarregandoGoogle(false)
         }
     }
 

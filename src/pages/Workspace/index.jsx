@@ -159,7 +159,7 @@ export default function Workspace() {
 
               onStatusChange={workspace.updatePostStatus}
 
-
+              posting = {workspace.posting}
               newPostOpen={workspace.newPostOpen}
 
               onOpenNewPost={workspace.openNewPost}

@@ -42,6 +42,10 @@ export async function salvas() {
     return apiFetch('/user/comparacoes/quantidade-salvas', { method: "GET" });
 }
 
+export async function isAdmin() {
+  return apiFetch('/user/ehAdmin', {method: "GET"})
+}
+
 //===================================== Perfil =====================================
 
 export async function atualizarPerfil(nomeExibicao) {

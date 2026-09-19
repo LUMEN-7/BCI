@@ -1,5 +1,15 @@
 const API_BASE_URL = "https://apiford.onrender.com";
 
+function erro401(response){
+    if (response.status === 401) {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("currentUser");
+    window.location.href = "/";
+    throw new Error("Sessão expirada. Faça login novamente.");
+  }
+  else return
+}
+
 async function apiFetch(path, options = {}) {
   const token = localStorage.getItem("accessToken");
   const isFormData = options.body instanceof FormData;
@@ -13,13 +23,7 @@ async function apiFetch(path, options = {}) {
     },
   });
 
-    if (response.status === 401) {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("currentUser");
-    window.location.href = "/";
-    throw new Error("Sessão expirada. Faça login novamente.");
-  }
-
+  erro401(response)
 
   if (!response.ok) {
     const erro = await response.json().catch(() => ({ message: "Erro desconhecido" }));
@@ -47,12 +51,7 @@ export async function apiFetchBlob(path, options = {}) {
     },
   });
 
-  if (response.status === 401) {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("currentUser");
-    window.location.href = "/";
-    throw new Error("Sessão expirada. Faça login novamente.");
-  }
+  erro401(response)
 
   if (!response.ok) {
     const erro = await response.json().catch(() => ({ message: "Erro desconhecido" }));
@@ -81,12 +80,7 @@ export async function apiFetchMultipart(path, formData) {
     body: formData,
   });
 
-  if (response.status === 401) {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("currentUser");
-    window.location.href = "/";
-    throw new Error("Sessão expirada. Faça login novamente.");
-  }
+  erro401(response)
 
   if (!response.ok) {
     const erro = await response.json().catch(() => ({ message: "Erro desconhecido" }));
