@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { IoWarningOutline } from "react-icons/io5";
+import {
+  IoWarningOutline,
+  IoCheckmarkOutline,
+} from "react-icons/io5";
 
 import "./style.css";
 
@@ -17,22 +20,29 @@ export default function Alerts() {
 
   useEffect(() => {
     const syncAlerts = () => setAlerts(getStoredAlerts());
+
     syncAlerts();
 
     window.addEventListener("storage", syncAlerts);
-    return () => window.removeEventListener("storage", syncAlerts);
+
+    return () => {
+      window.removeEventListener("storage", syncAlerts);
+    };
   }, []);
 
   const unreadAlerts = useMemo(
     () => alerts.filter((alert) => !alert.read),
     [alerts]
   );
+
   const latestUnreadAlert = useMemo(
     () =>
-      [...unreadAlerts].sort((a, b) => Number(b.id || 0) - Number(a.id || 0))[0] ||
-      null,
+      [...unreadAlerts].sort(
+        (a, b) => Number(b.id || 0) - Number(a.id || 0)
+      )[0] || null,
     [unreadAlerts]
   );
+
   const unreadCount = unreadAlerts.length;
   const alertLabel = unreadCount === 1 ? "alerta" : "alertas";
 
@@ -48,7 +58,14 @@ export default function Alerts() {
           <div className="alerts-header">
             <div>
               <div>
-                <h2>{`${alertLabel.toUpperCase()}${unreadCount === 1 ? " AGUARDA REVISÃO" : " AGUARDAM REVISÃO"}`}</h2>
+                <h2>
+                  {`${alertLabel.toUpperCase()}${
+                    unreadCount === 1
+                      ? " AGUARDA REVISÃO"
+                      : " AGUARDAM REVISÃO"
+                  }`}
+                </h2>
+
                 <p>
                   {unreadCount === 1
                     ? "Existe uma movimentação do mercado que pode exigir sua atenção."
@@ -56,29 +73,36 @@ export default function Alerts() {
                 </p>
               </div>
             </div>
+
             <IoWarningOutline />
           </div>
 
           {latestUnreadAlert && (
             <div className="alert-card">
               <span className="alert-dot" />
+
               <div>
                 <strong>{latestUnreadAlert.title}</strong>
+
                 {latestUnreadAlert.description && (
-                  <p className="alert-description">{latestUnreadAlert.description}</p>
+                  <p className="alert-description">
+                    {latestUnreadAlert.description}
+                  </p>
                 )}
               </div>
             </div>
           )}
         </>
       ) : (
-        <div className="alerts-header alerts-header-empty">
-          <div>
-            <div>
-              <h2>Tudo certo por aqui, sem alertas</h2>
-            </div>
+        <div className="alerts-empty">
+          <div className="alerts-empty-icon">
+            <IoCheckmarkOutline />
           </div>
-          <IoWarningOutline />
+
+          <div className="alerts-empty-content">
+            <h2>Monitoramento em dia</h2>
+            <p>Nenhuma movimentação relevante encontrada.</p>
+          </div>
         </div>
       )}
     </section>

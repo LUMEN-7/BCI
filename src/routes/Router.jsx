@@ -11,6 +11,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import PageTransition from '../components/PageTransition/PageTransition';
 import GlobalErrorBoundary from '../components/GlobalErrorBoundary';
 import FloatingNotes from '../components/FloatingNotes/FloatingNotes';
+import AlertToast from '../components/AlertToast';
 import PageLoader from '../components/PageLoader/PageLoader';
 import ProtectedRoute from './ProtectedRoute';
 import { appendNavigationActivity } from '../utils/navigationActivity';
@@ -229,6 +230,16 @@ function GlobalFloatingNotes() {
     return <FloatingNotes />;
 }
 
+function GlobalAlertToast() {
+    const location = useLocation();
+    const publicRoutes = ['/', '/register', '/reset-password', '/welcome'];
+    const isPublic = publicRoutes.includes(location.pathname);
+
+    if (isPublic) return null;
+
+    return <AlertToast />;
+}
+
 export default function Router() {
     return (
         <BrowserRouter>
@@ -237,6 +248,7 @@ export default function Router() {
             </GlobalErrorBoundary>
             <NavigationTracker />
             <GlobalFloatingNotes />
+            <GlobalAlertToast />
         </BrowserRouter>
     );
 }

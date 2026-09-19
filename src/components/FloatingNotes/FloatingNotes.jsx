@@ -461,10 +461,10 @@ export default function FloatingNotes() {
                   type="button"
                   className="notes-save-button"
                   onClick={actions.handleSave}
-                  disabled={!state.title?.trim() && !state.content?.trim()}
+                  disabled={state.saving || (!state.title?.trim() && !state.content?.trim())}
                 >
                   <IoSaveOutline />
-                  <span>Salvar Anotação</span>
+                  <span>{state.saving ? 'Salvando...' : 'Salvar Anotação'}</span>
                 </button>
               </footer>
             </div>

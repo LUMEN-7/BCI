@@ -115,6 +115,7 @@ export function useFloatingController() {
   };
 
   const handleSave = async () => {
+    if (saving) return; // evita duplicar a nota com cliques repetidos enquanto salva
     if (!title.trim() && !content.trim()) {
       showToast('Preencha ao menos o título ou conteúdo da nota.', 'error');
       return;

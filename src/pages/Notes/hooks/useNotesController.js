@@ -100,12 +100,14 @@ export default function useNotesController() {
 
 	async function handleDelete(id) {
 		setNotes((current) => current.filter((note) => String(note.id) !== String(id)));
-		deleteStoredNote(id);
 		try {
 			await excluirAnotacaoCompleta(id);
 		} catch {
 			// Prossegue com exclusão local sem quebrar a UI
 		}
+		// só apaga do storage (e dispara o reload) depois da API confirmar,
+		// senão o recarregamento pega a nota ainda presente na API e ela reaparece
+		deleteStoredNote(id);
 	}
 
 	return {
