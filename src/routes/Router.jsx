@@ -20,13 +20,6 @@ import {
     appendNavigationActivity
 } from '../utils/navigationActivity';
 
-/*
- * O Loading especial NÃO é lazy.
- *
- * Assim, ao sair do Login para /loading,
- * o Suspense não precisa mostrar o PageLoader
- * antes da animação do BCI.
- */
 import Loading from '../pages/Loading/index';
 
 
@@ -86,6 +79,10 @@ const ResetPassword = lazy(() =>
     import('../pages/ResetPassword')
 );
 
+const WorkspaceAccess = lazy(() =>
+    import('../pages/WorkspaceAccess')
+);
+
 const Workspace = lazy(() =>
     import('../pages/Workspace')
 );
@@ -141,21 +138,18 @@ function AnimatedRoutes() {
                 >
                     <Routes location={location}>
 
-                        {/* LOGIN */}
                         <Route
                             path="/"
                             element={<Login />}
                         />
 
 
-                        {/* CADASTRO */}
                         <Route
                             path="/register"
                             element={<Register />}
                         />
 
 
-                        {/* WELCOME */}
                         <Route
                             path="/welcome"
                             element={
@@ -166,7 +160,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* LOADING ESPECIAL LOGIN → HOME */}
                         <Route
                             path="/loading"
                             element={
@@ -177,7 +170,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* HOME */}
                         <Route
                             path="/home"
                             element={
@@ -188,7 +180,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* SEARCH */}
                         <Route
                             path="/search"
                             element={
@@ -199,7 +190,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* COMPARE */}
                         <Route
                             path="/compare"
                             element={
@@ -210,7 +200,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* INFORMATION */}
                         <Route
                             path="/information/:id"
                             element={
@@ -221,7 +210,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* DETAIL */}
                         <Route
                             path="/compare/detail"
                             element={
@@ -232,7 +220,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* SAVED */}
                         <Route
                             path="/saved"
                             element={
@@ -243,7 +230,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* PROFILE */}
                         <Route
                             path="/profile"
                             element={
@@ -254,7 +240,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* EDIT PROFILE */}
                         <Route
                             path="/edit-profile"
                             element={
@@ -265,7 +250,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* RESET PASSWORD */}
                         <Route
                             path="/reset-password"
                             element={
@@ -274,7 +258,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* NOTES */}
                         <Route
                             path="/notes"
                             element={
@@ -285,7 +268,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* ALERTS */}
                         <Route
                             path="/alerts"
                             element={
@@ -296,9 +278,26 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* WORKSPACE */}
+                        {/* =================================================
+                            WORKSPACE — ENTRADA
+                        ================================================= */}
+
                         <Route
                             path="/workspace"
+                            element={
+                                <ProtectedRoute>
+                                    <WorkspaceAccess />
+                                </ProtectedRoute>
+                            }
+                        />
+
+
+                        {/* =================================================
+                            WORKSPACE — AMBIENTE
+                        ================================================= */}
+
+                        <Route
+                            path="/workspace/:workspaceId"
                             element={
                                 <ProtectedRoute>
                                     <Workspace />
@@ -307,7 +306,6 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* INSIGHTS */}
                         <Route
                             path="/insights"
                             element={
@@ -318,14 +316,12 @@ function AnimatedRoutes() {
                         />
 
 
-                        {/* ERRO GLOBAL */}
                         <Route
                             path="/error"
                             element={<Error />}
                         />
 
 
-                        {/* 404 */}
                         <Route
                             path="*"
                             element={
@@ -355,7 +351,8 @@ function GlobalFloatingNotes() {
         '/register',
         '/reset-password',
         '/welcome',
-        '/loading'
+        '/loading',
+        '/workspace'
     ];
 
     const shouldHide =
@@ -383,7 +380,8 @@ function GlobalAlertToast() {
         '/register',
         '/reset-password',
         '/welcome',
-        '/loading'
+        '/loading',
+        '/workspace'
     ];
 
     const shouldHide =
