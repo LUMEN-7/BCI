@@ -38,7 +38,7 @@ export default function useWelcomeController() {
             await atualizarPerfil(trimmed);
             const currentUser = getCurrentUser();
             localStorage.setItem('currentUser', JSON.stringify({ ...currentUser, nomeExibicao: trimmed }));
-            navigate('/home', { replace: true });
+            navigate('/loading', { replace: true });
         } catch (err) {
             setError(err.message || 'Não foi possível salvar seu nome.');
         } finally {

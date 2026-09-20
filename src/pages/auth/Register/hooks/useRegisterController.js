@@ -34,7 +34,7 @@ export default function useRegisterController() {
             if (!resultado?.usuario?.nomeExibicao?.trim()) {
                 navigate('/welcome');
             } else {
-                navigate('/home');
+                navigate('/loading', { replace: true });
             }
         } catch (error) {
             setAuthError(error.message || 'Não foi possível criar a conta.');
