@@ -1,4 +1,5 @@
 import apiFetch from "./api";
+import {apiFetchMultipart} from "./api";
 import { setUserScopedItem } from '@/utils/userScopedStorage';
 
 export async function iniciarBusca(payload) {
@@ -12,7 +13,7 @@ export async function iniciarBusca(payload) {
 
 export async function importCarsFromFiles(file) {
   const formData = new FormData();
-  formData.append('arquivo', file, fileName);
+  formData.append('arquivo', file, file.name);
   return apiFetchMultipart('/Carro/importar-arquivo', formData);
 }
 

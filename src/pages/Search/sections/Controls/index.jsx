@@ -10,7 +10,7 @@ import {
   IoSearchOutline,
 } from "react-icons/io5";
 import { useRef, useState } from "react";
-
+import { isAdmin } from '@/utils/auth';
 import "./style.css";
 
 export default function Controls({
@@ -47,7 +47,7 @@ export default function Controls({
     const result = await onImport(file);
     setImportMessage(
       result?.success
-        ? { type: "success", text: `${result.count} veículo(s) importado(s) com sucesso.` }
+        ? { type: "success", text: `veículo importado com sucesso.` }
         : { type: "error", text: result?.message || "Não foi possível importar o arquivo." }
     );
     setTimeout(() => setImportMessage(null), 4000);
@@ -132,7 +132,7 @@ export default function Controls({
         <button
           type="button"
           className="import-cars-btn"
-          onClick={() => fileInputRef.current?.click()}
+          onClick={() =>  isAdmin() ? fileInputRef.current?.click() : console.log(isAdmin())}//alert("tem que ser admin") }
           title="Importar veículos de um arquivo CSV ou JSON"
         >
           <IoCloudUploadOutline />

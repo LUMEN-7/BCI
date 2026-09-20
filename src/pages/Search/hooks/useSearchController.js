@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCars, iniciarBusca, getJobStatus, importCarsFromFiles} from '@/services/carsService';
-import {getFavorites, addFavorites, removeFavorite, isAdmin } from "@/services/userService"
+import {getFavorites, addFavorites, removeFavorite } from "@/services/userService"
 import { appendNavigationActivity } from '@/utils/navigationActivity';
 import { getRecentViewedCars, appendRecentViewedCar } from '@/utils/recentViewedCars';
 import { getScheduledSearches } from '@/utils/scheduledSearchesStorage';
@@ -265,13 +265,9 @@ export default function useSearchController() {
 
     async function handleImportCars(file) {
         if (!file) return { success: false, message: 'Nenhum arquivo selecionado.' };
-        if(!isAdmin()) return { success: false, message: 'Campo para admins' };
         try {
-            if(!file.name.toLowerCase().endsWith('.json')){
-                JSON.parse(file)
-            }
             importCarsFromFiles(file)
-            return { success: true, count: importedCars.length };
+            return { success: true };
         } catch (err) {
             return { success: false, message: err.message || 'Não foi possível importar o arquivo.' };
         }
