@@ -266,7 +266,7 @@ export default function useSearchController() {
     async function handleImportCars(file) {
         if (!file) return { success: false, message: 'Nenhum arquivo selecionado.' };
         try {
-            importCarsFromFiles(file)
+            await importCarsFromFiles(file)
             return { success: true };
         } catch (err) {
             return { success: false, message: err.message || 'Não foi possível importar o arquivo.' };
