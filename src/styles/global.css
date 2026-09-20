@@ -37,18 +37,21 @@ body,
     width: 100%;
     min-height: 100%;
     min-height: 100dvh;
+    height: auto;
     margin: 0;
     padding: 0;
 }
 
-html,
-body {
+html {
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: auto;
 }
 
 body {
     position: relative;
+    overflow-x: hidden;
+    overflow-y: visible;
+    overscroll-behavior-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
