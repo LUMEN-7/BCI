@@ -35,7 +35,7 @@ export default function useWelcomeController() {
         setSaving(true);
         setError('');
         try {
-            await atualizarPerfil(trimmed);
+            await atualizarPerfil(trimmed) 
             const currentUser = getCurrentUser();
             localStorage.setItem('currentUser', JSON.stringify({ ...currentUser, nomeExibicao: trimmed }));
             navigate('/home', { replace: true });

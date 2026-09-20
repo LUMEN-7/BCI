@@ -26,8 +26,8 @@ export default function useLoginController() {
             navigate('/verificar-2fa', { state: { tokenDesafio: resultado.tokenDesafio } });
             return;
         }
-        
-        if (!resultado.usuario?.userName?.trim()) {
+        // console.log(resultado)
+        if (!resultado.usuario?.NomeExibicao?.trim()) {
             navigate('/welcome');
             return;
         }
