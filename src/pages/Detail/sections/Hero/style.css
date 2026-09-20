@@ -1,12 +1,15 @@
 .compare-hero {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 1.25rem;
   margin-bottom: 3.375rem;
 }
 .car-preview {
   position: relative;
+  flex: 1 1 16rem;
+  max-width: 24rem;
   min-height: 18.75rem;
   display: flex;
   flex-direction: column;
@@ -80,9 +83,12 @@
 }
 @media (max-width: 53.125rem) {
   .compare-hero {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 0.875rem;
     margin-bottom: 2.5rem;
+  }
+  .car-preview {
+    max-width: 100%;
   }
   .vs-wrapper {
     margin: 0 auto;

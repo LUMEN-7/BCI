@@ -76,7 +76,7 @@ function Accordion({ title, open, onClick, verified, children }) {
   );
 }
 
-function TechnicalAccordion({ section, firstCar, secondCar, open, onClick }) {
+function TechnicalAccordion({ section, cars, open, onClick }) {
   return (
     <Accordion
       title={section.title}
@@ -84,11 +84,11 @@ function TechnicalAccordion({ section, firstCar, secondCar, open, onClick }) {
       open={open}
       onClick={onClick}
     >
-      <div className="technical-list">
+      <div className="technical-list" style={{ '--tech-cols': cars.length }}>
         {section.items.map(([label, key]) => (
           <div className="technical-row" key={key}>
             <span className="technical-label">{label}</span>
-            {[firstCar, secondCar].map((car) => (
+            {cars.map((car) => (
               <div className="technical-car-value" key={car.id}>
                 <span>{car.name}</span>
                 <strong>
@@ -119,7 +119,7 @@ function FeatureCard({ car, items }) {
   );
 }
 
-function ResourceAccordion({ section, firstCar, secondCar, open, onClick }) {
+function ResourceAccordion({ section, cars, open, onClick }) {
   return (
     <Accordion
       title={section.title}
@@ -127,23 +127,17 @@ function ResourceAccordion({ section, firstCar, secondCar, open, onClick }) {
       open={open}
       onClick={onClick}
     >
-      <div className="feature-grid">
-        <FeatureCard
-          car={firstCar}
-          items={firstCar.sections?.[section.id] || []}
-        />
-        <FeatureCard
-          car={secondCar}
-          items={secondCar.sections?.[section.id] || []}
-        />
+      <div className="feature-grid" style={{ '--tech-cols': cars.length }}>
+        {cars.map((car) => (
+          <FeatureCard key={car.id} car={car} items={car.sections?.[section.id] || []} />
+        ))}
       </div>
     </Accordion>
   );
 }
 
 export default function Technical({
-  firstCar,
-  secondCar,
+  cars = [],
   expandedSection,
   showSources,
   onToggleSection,
@@ -191,8 +185,7 @@ export default function Technical({
           <TechnicalAccordion
             key={section.id}
             section={section}
-            firstCar={firstCar}
-            secondCar={secondCar}
+            cars={cars}
             open={expandedSection === section.id}
             onClick={() => onToggleSection(section.id)}
           />
@@ -207,8 +200,7 @@ export default function Technical({
           <ResourceAccordion
             key={section.id}
             section={section}
-            firstCar={firstCar}
-            secondCar={secondCar}
+            cars={cars}
             open={expandedSection === section.id}
             onClick={() => onToggleSection(section.id)}
           />

@@ -29,7 +29,7 @@ function InsightCard({ label, value, featured = false }) {
   );
 }
 
-export default function AiAnalysis({ firstCar, secondCar, comparisonSummary, mathConclusions }) {
+export default function AiAnalysis({ cars = [], comparisonSummary, mathConclusions }) {
   const mathEntries = Object.entries(mathConclusions || {}).flatMap(([key, value]) => {
     if (value && typeof value === "object" && !Array.isArray(value)) {
       return Object.entries(value).map(([subKey, subValue]) => ({
@@ -55,8 +55,13 @@ export default function AiAnalysis({ firstCar, secondCar, comparisonSummary, mat
       <p className="ai-summary">{comparisonSummary}</p>
 
       <div className="ai-insights">
-        <InsightCard label="Melhor para desempenho" value={firstCar.name} />
-        <InsightCard label="Melhor para versatilidade" value={secondCar.name} />
+        {cars.map((car, index) => (
+          <InsightCard
+            key={car.id}
+            label={index === 0 ? "Modelo de referência" : `Modelo comparado ${index}`}
+            value={car.name}
+          />
+        ))}
         <InsightCard
           label="Decisão recomendada"
           value="Depende do perfil de uso"
