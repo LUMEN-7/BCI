@@ -7,8 +7,8 @@
 
     width: 4.25rem;
     height: 100vh;
-    box-sizing: border-box;
 
+    box-sizing: border-box;
     padding: 1.125rem 0.5625rem;
 
     display: flex;
@@ -16,8 +16,10 @@
 
     background: rgba(255, 255, 255, 0.48);
 
-    backdrop-filter: blur(0.875rem);
     -webkit-backdrop-filter: blur(0.875rem);
+    backdrop-filter: blur(0.875rem);
+
+    border-right: 0.0625rem solid rgba(255, 255, 255, 0.35);
 
     border-radius: 0 0.625rem 0.625rem 0;
 
@@ -41,10 +43,6 @@
     flex-direction: column;
     gap: 0.5rem;
 
-    /*
-     * Centraliza o conjunto dos ícones
-     * no espaço disponível da navbar.
-     */
     margin: auto 0;
 }
 
@@ -54,10 +52,8 @@
 
 .navbar-bottom {
     flex-shrink: 0;
-
     margin-top: 1rem;
     padding-top: 0;
-
     border-top: none;
 }
 
@@ -91,6 +87,7 @@
     text-transform: uppercase;
 
     cursor: pointer;
+
     overflow: hidden;
 
     transition:
@@ -101,9 +98,7 @@
 
 .nav-item svg {
     min-width: 1.5rem;
-
     font-size: 1.4375rem;
-
     flex-shrink: 0;
 }
 
@@ -264,10 +259,11 @@
 
         background: rgba(255, 255, 255, 0.726);
 
-        backdrop-filter: blur(1.125rem);
         -webkit-backdrop-filter: blur(1.125rem);
+        backdrop-filter: blur(1.125rem);
 
         border: 0.0625rem solid rgba(0, 20, 46, 0.08);
+
         border-radius: 1.25rem;
 
         box-shadow:

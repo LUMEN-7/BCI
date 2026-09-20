@@ -9,8 +9,11 @@ export default function Overview({ metrics }) {
       </div>
 
       <div className="metrics-grid">
-        {metrics.map((metric) => (
-          <div className="metric" key={metric.value}>
+        {metrics.map((metric, index) => (
+          <div
+            className="metric"
+            key={`${metric.label}-${index}`}
+          >
             <strong>{metric.value}</strong>
             <span>{metric.label}</span>
           </div>
