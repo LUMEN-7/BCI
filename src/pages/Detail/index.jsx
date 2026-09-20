@@ -45,10 +45,9 @@ export default function CompareDetail() {
                     handleExport = {controller.handleExport}
                 />
                 <Header />
-                <Hero firstCar={controller.firstCar} secondCar={controller.secondCar} />
+                <Hero cars={controller.cars} />
                 <Technical
-                    firstCar={controller.firstCar}
-                    secondCar={controller.secondCar}
+                    cars={controller.cars}
                     expandedSection={controller.expandedSection}
                     showSources={controller.showSources}
                     onToggleSection={controller.toggleSection}
@@ -56,8 +55,7 @@ export default function CompareDetail() {
                 />
 
                 <AiAnalysis
-                    firstCar={controller.firstCar}
-                    secondCar={controller.secondCar}
+                    cars={controller.cars}
                     comparisonSummary={controller.comparisonSummary}
                     mathConclusions={controller.mathConclusions}
                 />

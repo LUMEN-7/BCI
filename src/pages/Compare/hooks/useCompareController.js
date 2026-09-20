@@ -208,6 +208,7 @@ export default function useCompareController() {
     return {
         loading,
         error,
+        cars,
         firstCar,
         secondCar,
         activeSlot,

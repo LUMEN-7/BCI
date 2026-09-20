@@ -32,7 +32,7 @@ export default function useLoginController() {
             return;
         }
 
-        navigate('/home');
+        navigate('/loading', { replace: true });
     }
 
     async function handleLogin(event) {

@@ -185,6 +185,62 @@
   color: #929ca8;
 }
 
+/* =========================================================
+   LOADING DA LISTA
+========================================================= */
+
+.alerts-list-loading {
+  min-height: 14rem;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.875rem;
+
+  padding: 2rem;
+
+  text-align: center;
+}
+
+.alerts-list-loading-spinner {
+  width: 2rem;
+  height: 2rem;
+
+  border: 0.1875rem solid rgba(5, 98, 210, 0.12);
+  border-top-color: var(--color-secondary);
+
+  border-radius: 50%;
+
+  animation:
+    alertsListLoadingSpin
+    0.8s linear infinite;
+}
+
+.alerts-list-loading p {
+  margin: 0;
+
+  font-family: var(--font-body-bold);
+
+  font-size: 0.75rem;
+
+  color: var(--color-primary);
+}
+
+@keyframes alertsListLoadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alerts-list-loading-spinner {
+    animation: none;
+  }
+}
+
 @media (max-width: 37.5rem) {
   .alert-card {
     align-items: flex-start;

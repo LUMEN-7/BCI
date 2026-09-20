@@ -14,6 +14,55 @@
 	margin: 0 auto;
 }
 
+.compare-tabs {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	margin-bottom: 1.875rem;
+}
+
+.compare-tabs button {
+	height: 2.75rem;
+	display: inline-flex;
+	align-items: center;
+	padding: 0 1.125rem;
+	border: 0.0625rem solid rgba(0, 20, 46, 0.07);
+	border-radius: 62.4375rem;
+	background: rgba(0, 20, 46, 0.045);
+	color: var(--color-primary);
+	font-family: var(--font-body-bold);
+	font-size: 0.6875rem;
+	letter-spacing: 0.03rem;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition:
+		transform 0.2s ease,
+		background-color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.compare-tabs button:hover {
+	transform: translateY(-0.0625rem);
+	background: rgba(0, 20, 46, 0.075);
+}
+
+.compare-tabs button.active {
+	background: var(--color-primary);
+	color: var(--color-light-neutral);
+	border-color: var(--color-primary);
+	box-shadow: 0 0.5rem 1.25rem rgba(0, 20, 46, 0.13);
+}
+
+@media (max-width: 37.5rem) {
+	.compare-tabs {
+		flex-wrap: wrap;
+	}
+	.compare-tabs button {
+		flex: 1 1 auto;
+		justify-content: center;
+	}
+}
+
 @media (max-width: 62.4375rem) {
 	.compare-page { padding: 2rem 1.75rem 3rem; }
 }

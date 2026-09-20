@@ -1,56 +1,90 @@
-import Navbar from '../../components/Navbar/Navbar';
-import useCompareController from './hooks/useCompareController';
-import Footer from './sections/Footer';
-import Header from './sections/Header';
-import Results from './sections/Results';
-import Search from './sections/Search';
-import Selection from './sections/Selection';
-import './style.css';
+import Navbar from "../../components/Navbar/Navbar";
+import ErrorState from "../../components/ErrorState";
+
+import useCompareController from "./hooks/useCompareController";
+
+import Footer from "./sections/Footer";
+import Header from "./sections/Header";
+import MultiCompare from "./sections/MultiCompare";
+import Results from "./sections/Results";
+import Search from "./sections/Search";
+import Selection from "./sections/Selection";
+
+import "./style.css";
+import { useState } from "react";
 
 export default function Compare() {
     const controller = useCompareController();
+    const [activeTab, setActiveTab] = useState("direct");
 
     return (
         <main className="compare-page">
             <Navbar />
             <div className="compare-container">
                 <Header />
-                <Selection
-                    firstCar={controller.firstCar}
-                    secondCar={controller.secondCar}
-                    activeSlot={controller.activeSlot}
-                    canCompare={controller.canCompare}
-                    setActiveSlot={controller.setActiveSlot}
-                    removeCar={controller.removeCar}
-                    onCompare={controller.handleCompare}
-                />
-                <Search
-                    activeSlot={controller.activeSlot}
-                    search={controller.search}
-                    setSearch={controller.setSearch}
-                    referenceCar={controller.referenceCar}
-                    similarityFilters={controller.similarityFilters}
-                    activeSimilarityFilters={controller.activeSimilarityFilters}
-                    onToggleSimilarityFilter={controller.toggleSimilarityFilter}
-                />
-                
-                {/* Tratamento de Loading da API */}
-                {controller.loading ? (
-                    <div style={{ padding: '2rem', textAlign: 'center' }}>Carregando catálogo de veículos...</div>
-                ) : controller.error ? (
-                    <div style={{ padding: '2rem', color: 'red', textAlign: 'center' }}>{controller.error}</div>
+
+                <div className="compare-tabs" role="tablist" aria-label="Tipos de comparação">
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected={activeTab === "direct"}
+                        className={activeTab === "direct" ? "active" : ""}
+                        onClick={() => setActiveTab("direct")}
+                    >
+                        Comparação direta
+                    </button>
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected={activeTab === "multi"}
+                        className={activeTab === "multi" ? "active" : ""}
+                        onClick={() => setActiveTab("multi")}
+                    >
+                        Comparação múltipla
+                    </button>
+                </div>
+
+                {activeTab === "multi" ? (
+                    <MultiCompare cars={controller.cars} />
                 ) : (
-                    <Results
-                        results={controller.results}
-                        search={controller.search}
-                        firstCar={controller.firstCar}
-                        secondCar={controller.secondCar}
-                        onSelect={controller.selectCar}
-                        onClear={() => controller.setSearch('')}
-                    />
+                    <>
+                        <Selection
+                            firstCar={controller.firstCar}
+                            secondCar={controller.secondCar}
+                            activeSlot={controller.activeSlot}
+                            canCompare={controller.canCompare}
+                            setActiveSlot={controller.setActiveSlot}
+                            removeCar={controller.removeCar}
+                            onCompare={controller.handleCompare}
+                        />
+                        <Search
+                            activeSlot={controller.activeSlot}
+                            search={controller.search}
+                            setSearch={controller.setSearch}
+                            referenceCar={controller.referenceCar}
+                            similarityFilters={controller.similarityFilters}
+                            activeSimilarityFilters={controller.activeSimilarityFilters}
+                            onToggleSimilarityFilter={controller.toggleSimilarityFilter}
+                        />
+
+                        {controller.loading ? (
+                            <div style={{ padding: '2rem', textAlign: 'center' }}>Carregando catálogo de veículos...</div>
+                        ) : controller.error ? (
+                            <div style={{ padding: '2rem', color: 'red', textAlign: 'center' }}>{controller.error}</div>
+                        ) : (
+                            <Results
+                                results={controller.results}
+                                search={controller.search}
+                                firstCar={controller.firstCar}
+                                secondCar={controller.secondCar}
+                                onSelect={controller.selectCar}
+                                onClear={() => controller.setSearch('')}
+                            />
+                        )}
+
+                        <Footer canCompare={controller.canCompare} onCompare={controller.handleCompare} />
+                    </>
                 )}
-                
-                <Footer canCompare={controller.canCompare} onCompare={controller.handleCompare} />
             </div>
         </main>
     );

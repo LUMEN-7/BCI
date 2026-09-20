@@ -1,0 +1,1701 @@
+@import "../../styles/global.css";
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.workspace-access-page {
+  min-height: 100vh;
+
+  padding:
+    3rem 3rem 5rem;
+
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(5, 98, 210, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      var(--color-light-neutral) 100%
+    );
+
+  color:
+    var(--color-primary);
+
+  box-sizing:
+    border-box;
+}
+
+
+.workspace-access-page *,
+.workspace-access-page *::before,
+.workspace-access-page *::after {
+  box-sizing:
+    border-box;
+}
+
+
+.workspace-access-container {
+  width:
+    100%;
+
+  max-width:
+    73.75rem;
+
+  margin:
+    0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.workspace-access-header {
+  max-width:
+    48rem;
+
+  margin-bottom:
+    3rem;
+}
+
+
+.workspace-access-eyebrow {
+  display:
+    block;
+
+  margin-bottom:
+    0.5rem;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.625rem;
+
+  letter-spacing:
+    0.25rem;
+
+  color:
+    var(--color-secondary);
+}
+
+
+.workspace-access-header h1 {
+  margin:
+    0;
+
+  font-family:
+    var(--font-title);
+
+  font-size:
+    clamp(
+      4rem,
+      7vw,
+      6rem
+    );
+
+  font-weight:
+    400;
+
+  line-height:
+    0.95;
+}
+
+
+.workspace-access-header p {
+  max-width:
+    43rem;
+
+  margin:
+    1rem 0 0;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.9375rem;
+
+  line-height:
+    1.65;
+
+  color:
+    var(--color-muted);
+}
+
+
+/* =========================================================
+   INITIAL OPTIONS
+========================================================= */
+
+.workspace-access-options {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    1.25rem;
+}
+
+
+/* =========================================================
+   OPTION CARD
+========================================================= */
+
+.workspace-access-card {
+  min-height:
+    20rem;
+
+  padding:
+    2rem;
+
+  border:
+    0.0625rem solid
+    rgba(0, 20, 46, 0.08);
+
+  border-radius:
+    1.5rem;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    flex-start;
+
+  background:
+    rgba(255, 255, 255, 0.76);
+
+  color:
+    var(--color-primary);
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 0.75rem 2.5rem
+    rgba(0, 20, 46, 0.04);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.workspace-access-card:hover {
+  transform:
+    translateY(-0.25rem);
+
+  border-color:
+    rgba(5, 98, 210, 0.22);
+
+  box-shadow:
+    0 1.25rem 3.125rem
+    rgba(0, 20, 46, 0.08);
+}
+
+
+.workspace-access-card-primary {
+  background:
+    linear-gradient(
+      145deg,
+      #00142e,
+      #002a5c
+    );
+
+  color:
+    #ffffff;
+}
+
+
+/* =========================================================
+   CARD ICON
+========================================================= */
+
+.workspace-access-card-icon {
+  width:
+    3.25rem;
+
+  height:
+    3.25rem;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    1rem;
+
+  background:
+    rgba(5, 98, 210, 0.08);
+
+  color:
+    var(--color-secondary);
+
+  font-size:
+    1.375rem;
+}
+
+
+.workspace-access-card-primary
+.workspace-access-card-icon {
+  background:
+    rgba(255, 255, 255, 0.1);
+
+  color:
+    #ffffff;
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.workspace-access-card-content {
+  margin-top:
+    2rem;
+}
+
+
+.workspace-access-card-content > span {
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.5625rem;
+
+  letter-spacing:
+    0.15rem;
+
+  opacity:
+    0.45;
+}
+
+
+.workspace-access-card-content h2 {
+  margin:
+    0.625rem 0 0;
+
+  font-family:
+    var(--font-title);
+
+  font-size:
+    2rem;
+
+  font-weight:
+    400;
+
+  text-transform:
+    uppercase;
+}
+
+
+.workspace-access-card-content p {
+  max-width:
+    27rem;
+
+  margin:
+    0.875rem 0 0;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.8125rem;
+
+  line-height:
+    1.6;
+
+  opacity:
+    0.58;
+}
+
+
+.workspace-access-card-action {
+  width:
+    100%;
+
+  margin-top:
+    auto;
+
+  padding-top:
+    2rem;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+}
+
+
+.workspace-access-card-action span {
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.625rem;
+
+  letter-spacing:
+    0.08rem;
+}
+
+
+.workspace-access-card-action svg {
+  font-size:
+    1.125rem;
+}
+
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+.workspace-access-panel {
+  width:
+    100%;
+
+  max-width:
+    none;
+
+  padding:
+    2rem;
+
+  border:
+    0.0625rem solid
+    rgba(0, 20, 46, 0.08);
+
+  border-radius:
+    1.5rem;
+
+  background:
+    rgba(255, 255, 255, 0.82);
+
+  box-shadow:
+    0 1rem 3.125rem
+    rgba(0, 20, 46, 0.055);
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+.workspace-access-back {
+  padding:
+    0;
+
+  border:
+    none;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.4375rem;
+
+  background:
+    transparent;
+
+  color:
+    var(--color-muted);
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.5625rem;
+
+  letter-spacing:
+    0.0625rem;
+
+  cursor:
+    pointer;
+}
+
+
+/* =========================================================
+   PANEL HEADING
+========================================================= */
+
+.workspace-access-panel-heading {
+  margin-top:
+    2rem;
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  gap:
+    1rem;
+}
+
+
+.workspace-access-panel-icon {
+  width:
+    3rem;
+
+  height:
+    3rem;
+
+  flex-shrink:
+    0;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    0.875rem;
+
+  background:
+    rgba(5, 98, 210, 0.08);
+
+  color:
+    var(--color-secondary);
+
+  font-size:
+    1.25rem;
+}
+
+
+.workspace-access-panel-heading span {
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.5rem;
+
+  letter-spacing:
+    0.125rem;
+
+  color:
+    var(--color-secondary);
+}
+
+
+.workspace-access-panel-heading h2 {
+  margin:
+    0.25rem 0 0;
+
+  font-family:
+    var(--font-title);
+
+  font-size:
+    2rem;
+
+  font-weight:
+    400;
+
+  text-transform:
+    uppercase;
+}
+
+
+.workspace-access-panel-heading p {
+  max-width:
+    38rem;
+
+  margin:
+    0.5rem 0 0;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.75rem;
+
+  line-height:
+    1.55;
+
+  color:
+    var(--color-muted);
+}
+
+
+/* =========================================================
+   ENTRY TABS
+========================================================= */
+
+.workspace-entry-tabs {
+  width:
+    100%;
+
+  margin-top:
+    2rem;
+
+  padding-bottom:
+    0.875rem;
+
+  border-bottom:
+    0.0625rem solid
+    rgba(0, 20, 46, 0.07);
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.5rem;
+}
+
+
+.workspace-entry-tab {
+  min-height:
+    2.625rem;
+
+  padding:
+    0 1rem;
+
+  border:
+    0.0625rem solid
+    rgba(0, 20, 46, 0.08);
+
+  border-radius:
+    62.4375rem;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    0.5rem;
+
+  background:
+    rgba(255, 255, 255, 0.75);
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.5625rem;
+
+  letter-spacing:
+    0.04rem;
+
+  cursor:
+    pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.workspace-entry-tab:hover {
+  border-color:
+    rgba(5, 98, 210, 0.18);
+}
+
+
+.workspace-entry-tab > span {
+  min-width:
+    1.375rem;
+
+  height:
+    1.375rem;
+
+  padding:
+    0 0.375rem;
+
+  border-radius:
+    62.4375rem;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  background:
+    rgba(0, 20, 46, 0.06);
+
+  font-size:
+    0.5rem;
+}
+
+
+.workspace-entry-tab.is-active {
+  border-color:
+    var(--color-primary);
+
+  background:
+    var(--color-primary);
+
+  color:
+    #ffffff;
+}
+
+
+.workspace-entry-tab.is-active
+> span {
+  background:
+    rgba(255, 255, 255, 0.13);
+}
+
+
+/* =========================================================
+   MY WORKSPACES AREA
+========================================================= */
+
+.workspace-mine-area {
+  margin-top:
+    1.25rem;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.workspace-mine-search {
+  width:
+    100%;
+
+  min-height:
+    3rem;
+
+  padding:
+    0 0.875rem;
+
+  border:
+    0.0625rem solid
+    rgba(0, 20, 46, 0.1);
+
+  border-radius:
+    0.75rem;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.625rem;
+
+  background:
+    #ffffff;
+}
+
+
+.workspace-mine-search > svg {
+  flex-shrink:
+    0;
+
+  color:
+    var(--color-secondary);
+}
+
+
+.workspace-mine-search input {
+  width:
+    100%;
+
+  border:
+    none;
+
+  outline:
+    none;
+
+  background:
+    transparent;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.8125rem;
+}
+
+
+/* =========================================================
+   WORKSPACE LIST
+========================================================= */
+
+.workspace-mine-list {
+  max-height:
+    23rem;
+
+  margin-top:
+    1rem;
+
+  padding-right:
+    0.375rem;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    0.625rem;
+
+  overflow-y:
+    auto;
+
+  overscroll-behavior:
+    contain;
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+.workspace-mine-list::-webkit-scrollbar {
+  width:
+    0.375rem;
+}
+
+
+.workspace-mine-list::-webkit-scrollbar-track {
+  background:
+    rgba(0, 20, 46, 0.03);
+
+  border-radius:
+    62.4375rem;
+}
+
+
+.workspace-mine-list::-webkit-scrollbar-thumb {
+  background:
+    rgba(0, 20, 46, 0.16);
+
+  border-radius:
+    62.4375rem;
+}
+
+
+/* =========================================================
+   WORKSPACE ROW
+========================================================= */
+
+.workspace-mine-card {
+  width:
+    100%;
+
+  padding:
+    1rem;
+
+  border:
+    0.0625rem solid
+    rgba(0, 20, 46, 0.075);
+
+  border-radius:
+    0.875rem;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    auto minmax(0, 1fr) auto;
+
+  align-items:
+    center;
+
+  gap:
+    0.875rem;
+
+  background:
+    rgba(255, 255, 255, 0.75);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.workspace-mine-card:hover {
+  border-color:
+    rgba(5, 98, 210, 0.18);
+
+  background:
+    #ffffff;
+}
+
+
+/* =========================================================
+   ROW ICON
+========================================================= */
+
+.workspace-mine-card-icon {
+  width:
+    2.75rem;
+
+  height:
+    2.75rem;
+
+  border-radius:
+    0.8125rem;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  background:
+    rgba(5, 98, 210, 0.08);
+
+  color:
+    var(--color-secondary);
+}
+
+
+/* =========================================================
+   ROW CONTENT
+========================================================= */
+
+.workspace-mine-card-content {
+  min-width:
+    0;
+}
+
+
+.workspace-mine-card-content > span {
+  display:
+    block;
+
+  margin-bottom:
+    0.1875rem;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.4375rem;
+
+  letter-spacing:
+    0.0875rem;
+
+  color:
+    var(--color-secondary);
+}
+
+
+.workspace-mine-card-content h3 {
+  margin:
+    0;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.875rem;
+
+  color:
+    var(--color-primary);
+
+  overflow-wrap:
+    anywhere;
+}
+
+
+.workspace-mine-card-content p {
+  max-width:
+    35rem;
+
+  margin:
+    0.25rem 0 0;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.625rem;
+
+  line-height:
+    1.45;
+
+  color:
+    var(--color-muted);
+}
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+.workspace-mine-members {
+  margin-top:
+    0.4375rem;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.375rem;
+
+  color:
+    var(--color-muted);
+}
+
+
+.workspace-mine-members svg {
+  font-size:
+    0.75rem;
+}
+
+
+.workspace-mine-members span {
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.5625rem;
+}
+
+
+/* =========================================================
+   OPEN BUTTON
+========================================================= */
+
+.workspace-mine-open {
+  min-height:
+    2.375rem;
+
+  padding:
+    0 0.875rem;
+
+  border:
+    none;
+
+  border-radius:
+    0.625rem;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    0.4375rem;
+
+  background:
+    var(--color-primary);
+
+  color:
+    #ffffff;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.5625rem;
+
+  letter-spacing:
+    0.05rem;
+
+  cursor:
+    pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.workspace-mine-open:hover {
+  background:
+    var(--color-secondary);
+
+  transform:
+    translateX(0.125rem);
+}
+
+
+/* =========================================================
+   HELPER
+========================================================= */
+
+.workspace-mine-helper {
+  margin:
+    0.75rem 0 0;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.625rem;
+
+  line-height:
+    1.5;
+
+  color:
+    var(--color-muted);
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.workspace-mine-empty {
+  min-height:
+    14rem;
+
+  padding:
+    2rem;
+
+  border:
+    0.0625rem dashed
+    rgba(0, 20, 46, 0.12);
+
+  border-radius:
+    1rem;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  text-align:
+    center;
+
+  color:
+    var(--color-primary);
+}
+
+
+.workspace-mine-empty > svg {
+  font-size:
+    1.5rem;
+
+  opacity:
+    0.25;
+}
+
+
+.workspace-mine-empty strong {
+  margin-top:
+    0.625rem;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.75rem;
+}
+
+
+.workspace-mine-empty p {
+  max-width:
+    24rem;
+
+  margin:
+    0.375rem 0 0;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.625rem;
+
+  line-height:
+    1.5;
+
+  color:
+    var(--color-muted);
+}
+
+
+.workspace-mine-empty button {
+  min-height:
+    2.5rem;
+
+  margin-top:
+    1rem;
+
+  padding:
+    0 0.875rem;
+
+  border:
+    none;
+
+  border-radius:
+    0.625rem;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    0.4375rem;
+
+  background:
+    var(--color-primary);
+
+  color:
+    #ffffff;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.5625rem;
+
+  cursor:
+    pointer;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.workspace-access-form {
+  margin-top:
+    2rem;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    1.125rem;
+}
+
+
+.workspace-access-code-form {
+  margin-top:
+    1.25rem;
+}
+
+
+.workspace-access-form label {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    0.4375rem;
+}
+
+
+.workspace-access-form label > span {
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.5rem;
+
+  letter-spacing:
+    0.0875rem;
+
+  color:
+    rgba(0, 20, 46, 0.52);
+}
+
+
+.workspace-access-form input,
+.workspace-access-form textarea {
+  width:
+    100%;
+
+  border:
+    0.0625rem solid
+    rgba(0, 20, 46, 0.11);
+
+  border-radius:
+    0.75rem;
+
+  outline:
+    none;
+
+  background:
+    #ffffff;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.8125rem;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.workspace-access-form input {
+  min-height:
+    3rem;
+
+  padding:
+    0 0.875rem;
+}
+
+
+.workspace-access-form textarea {
+  min-height:
+    7rem;
+
+  padding:
+    0.875rem;
+
+  resize:
+    vertical;
+}
+
+
+.workspace-access-form input:focus,
+.workspace-access-form textarea:focus {
+  border-color:
+    rgba(5, 98, 210, 0.45);
+
+  box-shadow:
+    0 0 0 0.1875rem
+    rgba(5, 98, 210, 0.07);
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.workspace-access-error {
+  margin:
+    0;
+
+  padding:
+    0.75rem
+    0.875rem;
+
+  border-radius:
+    0.625rem;
+
+  background:
+    rgba(201, 67, 79, 0.07);
+
+  color:
+    var(--color-error);
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.6875rem;
+}
+
+
+/* =========================================================
+   MOCK TIP
+========================================================= */
+
+.workspace-access-mock-tip {
+  padding:
+    1rem;
+
+  border:
+    0.0625rem dashed
+    rgba(5, 98, 210, 0.2);
+
+  border-radius:
+    0.75rem;
+
+  background:
+    rgba(5, 98, 210, 0.035);
+}
+
+
+.workspace-access-mock-tip strong {
+  display:
+    block;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.5rem;
+
+  letter-spacing:
+    0.1rem;
+
+  color:
+    var(--color-secondary);
+}
+
+
+.workspace-access-mock-tip p {
+  margin:
+    0.375rem 0 0;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.6875rem;
+
+  color:
+    var(--color-muted);
+}
+
+
+.workspace-access-mock-tip code {
+  display:
+    inline-block;
+
+  margin-top:
+    0.75rem;
+
+  padding:
+    0.4375rem
+    0.625rem;
+
+  border-radius:
+    0.4375rem;
+
+  background:
+    var(--color-primary);
+
+  color:
+    #ffffff;
+
+  font-family:
+    monospace;
+
+  font-size:
+    0.75rem;
+
+  letter-spacing:
+    0.0625rem;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+========================================================= */
+
+.workspace-access-form-actions {
+  margin-top:
+    0.5rem;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    flex-end;
+
+  gap:
+    0.625rem;
+}
+
+
+.workspace-access-primary-button,
+.workspace-access-secondary-button {
+  min-height:
+    2.75rem;
+
+  padding:
+    0 1rem;
+
+  border-radius:
+    0.625rem;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    0.5rem;
+
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.625rem;
+
+  letter-spacing:
+    0.0625rem;
+
+  cursor:
+    pointer;
+}
+
+
+.workspace-access-primary-button {
+  border:
+    0.0625rem solid
+    var(--color-primary);
+
+  background:
+    var(--color-primary);
+
+  color:
+    #ffffff;
+}
+
+
+.workspace-access-primary-button:hover {
+  border-color:
+    var(--color-secondary);
+
+  background:
+    var(--color-secondary);
+}
+
+
+.workspace-access-secondary-button {
+  border:
+    0.0625rem solid
+    rgba(0, 20, 46, 0.1);
+
+  background:
+    #ffffff;
+
+  color:
+    var(--color-primary);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 68.75rem
+) {
+
+  .workspace-access-page {
+    padding-left:
+      5rem;
+
+    padding-right:
+      2.5rem;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (
+  max-width: 50rem
+) {
+
+  .workspace-access-options {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .workspace-access-card {
+    min-height:
+      17rem;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE NAVBAR
+========================================================= */
+
+@media (
+  max-width: 43.75rem
+) {
+
+  .workspace-access-page {
+    padding:
+      2.625rem
+      1.25rem
+      6.875rem;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 37.5rem
+) {
+
+  .workspace-access-header h1 {
+    font-size:
+      3.25rem;
+  }
+
+
+  .workspace-access-panel {
+    padding:
+      1.375rem;
+  }
+
+
+  .workspace-access-panel-heading {
+    flex-direction:
+      column;
+  }
+
+
+  .workspace-entry-tabs {
+    align-items:
+      stretch;
+
+    flex-direction:
+      column;
+  }
+
+
+  .workspace-entry-tab {
+    width:
+      100%;
+
+    justify-content:
+      flex-start;
+  }
+
+
+  .workspace-mine-card {
+    grid-template-columns:
+      auto minmax(0, 1fr);
+  }
+
+
+  .workspace-mine-open {
+    grid-column:
+      1 / -1;
+
+    width:
+      100%;
+  }
+
+
+  .workspace-access-form-actions {
+    flex-direction:
+      column-reverse;
+
+    align-items:
+      stretch;
+  }
+
+
+  .workspace-access-primary-button,
+  .workspace-access-secondary-button {
+    width:
+      100%;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL
+========================================================= */
+
+@media (
+  max-width: 25rem
+) {
+
+  .workspace-access-page {
+    padding-left:
+      1rem;
+
+    padding-right:
+      1rem;
+  }
+
+
+  .workspace-mine-card {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .workspace-mine-card-icon {
+    margin-bottom:
+      0.25rem;
+  }
+
+}

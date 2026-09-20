@@ -1,5 +1,21 @@
 import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+
+import {
   FiActivity,
+  FiArrowLeft,
+  FiCheck,
+  FiCopy,
+  FiGrid,
+  FiKey,
+  FiMail,
   FiMessageSquare,
   FiUsers,
 } from "react-icons/fi";
@@ -7,26 +23,359 @@ import {
 import useWorkspace from "./hooks/useWorkspace";
 
 import Navbar from "../../components/Navbar/Navbar";
+
 import WorkspaceTabs from "./components/WorkspaceTabs";
+
 import FeedSection from "./sections/FeedSection";
+
 import MyActivitiesSection from "./sections/MyActivitiesSection";
+
 import ThreadDrawer from "./components/ThreadDrawer";
 
-import "./style.css";
+import WorkspaceInviteModal from "./components/WorkspaceInviteModal";
 
+import {
+  ACTIVE_WORKSPACE_STORAGE_KEY,
+  MOCK_WORKSPACES,
+  WORKSPACE_STORAGE_KEY,
+} from "../WorkspaceAccess/data";
+
+import "./style.css";
+import "./workspace-access.css";
+
+
+/* =========================================================
+   MOCK — WORKSPACES SALVOS
+========================================================= */
+
+function getStoredWorkspaces() {
+  try {
+    const stored =
+      localStorage.getItem(
+        WORKSPACE_STORAGE_KEY
+      );
+
+    if (!stored) {
+      return [];
+    }
+
+
+    const parsed =
+      JSON.parse(stored);
+
+
+    return Array.isArray(parsed)
+      ? parsed
+      : [];
+
+  } catch {
+    return [];
+  }
+}
+
+
+/* =========================================================
+   MOCK — WORKSPACE ATUAL
+========================================================= */
+
+function getCurrentWorkspace(
+  workspaceId
+) {
+  const storedWorkspaces =
+    getStoredWorkspaces();
+
+
+  const availableWorkspaces = [
+    ...storedWorkspaces,
+    ...MOCK_WORKSPACES,
+  ];
+
+
+  return (
+    availableWorkspaces.find(
+      (item) =>
+        String(item.id) ===
+        String(workspaceId)
+    ) || null
+  );
+}
+
+
+/* =========================================================
+   WORKSPACE
+========================================================= */
 
 export default function Workspace() {
+  const workspace =
+    useWorkspace();
 
-  const workspace = useWorkspace();
+
+  const navigate =
+    useNavigate();
+
+
+  const {
+    workspaceId,
+  } = useParams();
+
+
+  const [
+    copiedInviteCode,
+    setCopiedInviteCode,
+  ] = useState(false);
+
+
+  const [
+    inviteModalOpen,
+    setInviteModalOpen,
+  ] = useState(false);
+
+
+  const currentWorkspace =
+    getCurrentWorkspace(
+      workspaceId
+    );
+
+
+  /* =======================================================
+     ÚLTIMO WORKSPACE
+  ======================================================= */
+
+  useEffect(() => {
+    if (!workspaceId) {
+      return;
+    }
+
+
+    localStorage.setItem(
+      ACTIVE_WORKSPACE_STORAGE_KEY,
+      workspaceId
+    );
+
+  }, [
+    workspaceId,
+  ]);
+
+
+  /* =======================================================
+     TROCAR WORKSPACE
+  ======================================================= */
+
+  function handleChangeWorkspace() {
+    navigate(
+      "/workspace"
+    );
+  }
+
+
+  /* =======================================================
+     COPIAR CÓDIGO
+  ======================================================= */
+
+  async function handleCopyInviteCode() {
+    const inviteCode =
+      currentWorkspace?.inviteCode;
+
+
+    if (!inviteCode) {
+      return;
+    }
+
+
+    try {
+      await navigator.clipboard.writeText(
+        inviteCode
+      );
+
+
+      setCopiedInviteCode(
+        true
+      );
+
+
+      setTimeout(() => {
+        setCopiedInviteCode(
+          false
+        );
+      }, 2000);
+
+    } catch (error) {
+      console.error(
+        "Não foi possível copiar o código:",
+        error
+      );
+    }
+  }
+
+
+  /* =======================================================
+     PERMISSÃO MOCK
+  ======================================================= */
+
+  const canShareInviteCode =
+    currentWorkspace?.role ===
+    "owner";
 
 
   return (
     <>
       <Navbar />
 
+
       <main className="workspace-page">
 
         <div className="workspace-container">
+
+
+          {/* =====================================================
+              CONTEXTO
+          ====================================================== */}
+
+          <div className="workspace-context-bar">
+
+            <button
+              type="button"
+              className="workspace-change-button"
+              onClick={
+                handleChangeWorkspace
+              }
+            >
+              <FiArrowLeft />
+
+              TROCAR WORKSPACE
+            </button>
+
+
+            <div className="workspace-current-area">
+
+
+              {/* ===============================================
+                  WORKSPACE ATUAL
+              =============================================== */}
+
+              <div className="workspace-current-info">
+
+                <div className="workspace-current-icon">
+                  <FiGrid />
+                </div>
+
+
+                <div>
+
+                  <span>
+                    WORKSPACE ATUAL
+                  </span>
+
+
+                  <strong>
+                    {
+                      currentWorkspace
+                        ?.name ||
+                      "Workspace BCI"
+                    }
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              {/* ===============================================
+                  CONVITE
+              =============================================== */}
+
+              {
+                canShareInviteCode &&
+                currentWorkspace
+                  ?.inviteCode && (
+
+                  <div className="workspace-invite">
+
+                    <div className="workspace-invite-icon">
+                      <FiKey />
+                    </div>
+
+
+                    <div className="workspace-invite-content">
+
+                      <span>
+                        CÓDIGO DE CONVITE
+                      </span>
+
+
+                      <strong>
+                        {
+                          currentWorkspace
+                            .inviteCode
+                        }
+                      </strong>
+
+                    </div>
+
+
+                    <div className="workspace-invite-actions">
+
+                      <button
+                        type="button"
+                        className={
+                          `workspace-invite-action ${
+                            copiedInviteCode
+                              ? "is-copied"
+                              : ""
+                          }`
+                        }
+                        onClick={
+                          handleCopyInviteCode
+                        }
+                        title="Copiar código"
+                      >
+
+                        {
+                          copiedInviteCode
+                            ? <FiCheck />
+                            : <FiCopy />
+                        }
+
+
+                        <span>
+                          {
+                            copiedInviteCode
+                              ? "COPIADO"
+                              : "COPIAR"
+                          }
+                        </span>
+
+                      </button>
+
+
+                      <button
+                        type="button"
+                        className="workspace-invite-action"
+                        onClick={() =>
+                          setInviteModalOpen(
+                            true
+                          )
+                        }
+                        title="Enviar convite por e-mail"
+                      >
+                        <FiMail />
+
+                        <span>
+                          E-MAIL
+                        </span>
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                )
+              }
+
+            </div>
+
+          </div>
+
 
           {/* =====================================================
               HEADER
@@ -40,13 +389,20 @@ export default function Workspace() {
                 CENTRAL DA EQUIPE
               </span>
 
+
               <h1>
-                WORKSPACE
+                {
+                  currentWorkspace?.name ||
+                  "WORKSPACE"
+                }
               </h1>
 
+
               <p>
-                Compartilhe análises, registre decisões e acompanhe
-                as atividades da equipe em um único ambiente colaborativo.
+                {
+                  currentWorkspace?.description ||
+                  "Compartilhe análises, registre decisões e acompanhe as atividades da equipe em um único ambiente colaborativo."
+                }
               </p>
 
             </div>
@@ -62,9 +418,15 @@ export default function Workspace() {
 
                 <FiMessageSquare />
 
+
                 <strong>
-                  {workspace.summary.posts}
+                  {
+                    workspace
+                      .summary
+                      .posts
+                  }
                 </strong>
+
 
                 <span>
                   Publicações
@@ -77,9 +439,15 @@ export default function Workspace() {
 
                 <FiActivity />
 
+
                 <strong>
-                  {workspace.summary.insights}
+                  {
+                    workspace
+                      .summary
+                      .insights
+                  }
                 </strong>
+
 
                 <span>
                   Insights
@@ -92,9 +460,15 @@ export default function Workspace() {
 
                 <FiUsers />
 
+
                 <strong>
-                  5
+                  {
+                    currentWorkspace
+                      ?.members ??
+                    1
+                  }
                 </strong>
+
 
                 <span>
                   Membros
@@ -108,12 +482,16 @@ export default function Workspace() {
 
 
           {/* =====================================================
-              TABS PRINCIPAIS
+              TABS
           ====================================================== */}
 
           <WorkspaceTabs
-            activeTab={workspace.activeTab}
-            onChange={workspace.setActiveTab}
+            activeTab={
+              workspace.activeTab
+            }
+            onChange={
+              workspace.setActiveTab
+            }
           />
 
 
@@ -121,97 +499,156 @@ export default function Workspace() {
               FEED
           ====================================================== */}
 
-          {workspace.activeTab === "feed" && (
+          {
+            workspace.activeTab ===
+            "feed" && (
 
-            <FeedSection
+              <FeedSection
+                posts={
+                  workspace.filteredPosts
+                }
 
-              posts={workspace.filteredPosts}
+                postTypes={
+                  workspace.postTypes
+                }
 
-              postTypes={workspace.postTypes}
+                search={
+                  workspace.search
+                }
 
+                onSearchChange={
+                  workspace.setSearch
+                }
 
-              search={workspace.search}
+                selectedType={
+                  workspace.selectedType
+                }
 
-              onSearchChange={workspace.setSearch}
+                onTypeChange={
+                  workspace.setSelectedType
+                }
 
+                onLike={
+                  workspace.toggleLike
+                }
 
-              selectedType={workspace.selectedType}
+                onTogglePin={
+                  workspace.togglePin
+                }
 
-              onTypeChange={workspace.setSelectedType}
+                onDelete={
+                  workspace.deletePost
+                }
 
+                selectedPost={
+                  workspace.selectedPost
+                }
 
-              onLike={workspace.toggleLike}
+                onOpenThread={
+                  workspace.openThread
+                }
 
-              onTogglePin={workspace.togglePin}
+                onActivityClick={
+                  workspace.openThreadById
+                }
 
-              onDelete={workspace.deletePost}
+                onCloseThread={
+                  workspace.closeThread
+                }
 
+                onComment={
+                  workspace.addComment
+                }
 
-              selectedPost={workspace.selectedPost}
+                onStatusChange={
+                  workspace.updatePostStatus
+                }
 
-              onOpenThread={workspace.openThread}
+                posting={
+                  workspace.posting
+                }
 
-              onActivityClick={workspace.openThreadById}
+                newPostOpen={
+                  workspace.newPostOpen
+                }
 
-              onCloseThread={workspace.closeThread}
+                onOpenNewPost={
+                  workspace.openNewPost
+                }
 
-              onComment={workspace.addComment}
+                newPost={
+                  workspace.newPost
+                }
 
-              onStatusChange={workspace.updatePostStatus}
+                onNewPostChange={
+                  workspace.handleNewPostChange
+                }
 
-              posting = {workspace.posting}
-              newPostOpen={workspace.newPostOpen}
+                availableLinkedContents={
+                  workspace.availableLinkedContents
+                }
 
-              onOpenNewPost={workspace.openNewPost}
+                onCreatePost={
+                  workspace.createPost
+                }
 
-              newPost={workspace.newPost}
+                onCancelPost={
+                  workspace.cancelNewPost
+                }
+              />
 
-              onNewPostChange={workspace.handleNewPostChange}
-
-              availableLinkedContents={
-                workspace.availableLinkedContents
-              }
-
-              onCreatePost={workspace.createPost}
-
-              onCancelPost={workspace.cancelNewPost}
-
-            />
-
-          )}
+            )
+          }
 
 
           {/* =====================================================
               MINHAS ATIVIDADES
           ====================================================== */}
 
-          {workspace.activeTab === "my-activity" && (
+          {
+            workspace.activeTab ===
+            "my-activity" && (
 
-            <MyActivitiesSection
+              <MyActivitiesSection
+                assignedPosts={
+                  workspace.assignedPosts
+                }
 
-              assignedPosts={workspace.assignedPosts}
+                myPosts={
+                  workspace.myPosts
+                }
 
-              myPosts={workspace.myPosts}
+                postTypes={
+                  workspace.postTypes
+                }
 
-              postTypes={workspace.postTypes}
+                activeView={
+                  workspace.myActivitiesView
+                }
 
+                onViewChange={
+                  workspace.setMyActivitiesView
+                }
 
-              activeView={workspace.myActivitiesView}
+                onLike={
+                  workspace.toggleLike
+                }
 
-              onViewChange={workspace.setMyActivitiesView}
+                onOpenThread={
+                  workspace.openThread
+                }
 
+                onTogglePin={
+                  workspace.togglePin
+                }
 
-              onLike={workspace.toggleLike}
+                onDelete={
+                  workspace.deletePost
+                }
+              />
 
-              onOpenThread={workspace.openThread}
-
-              onTogglePin={workspace.togglePin}
-
-              onDelete={workspace.deletePost}
-
-            />
-
-          )}
+            )
+          }
 
         </div>
 
@@ -219,31 +656,67 @@ export default function Workspace() {
 
 
       {/* =====================================================
-          THREAD GLOBAL
+          THREAD
       ====================================================== */}
 
-      {workspace.activeTab === "my-activity" &&
+      {
+        workspace.activeTab ===
+          "my-activity" &&
+
         workspace.selectedPost && (
 
           <ThreadDrawer
-
-            post={workspace.selectedPost}
+            post={
+              workspace.selectedPost
+            }
 
             type={
               workspace.postTypes[
-                workspace.selectedPost.type
+                workspace
+                  .selectedPost
+                  .type
               ]
             }
 
-            onClose={workspace.closeThread}
+            onClose={
+              workspace.closeThread
+            }
 
-            onComment={workspace.addComment}
+            onComment={
+              workspace.addComment
+            }
 
-            onStatusChange={workspace.updatePostStatus}
-
+            onStatusChange={
+              workspace.updatePostStatus
+            }
           />
 
-        )}
+        )
+      }
+
+
+      {/* =====================================================
+          MODAL DE CONVITE
+      ====================================================== */}
+
+      {
+        inviteModalOpen &&
+        currentWorkspace && (
+
+          <WorkspaceInviteModal
+            workspace={
+              currentWorkspace
+            }
+
+            onClose={() =>
+              setInviteModalOpen(
+                false
+              )
+            }
+          />
+
+        )
+      }
 
     </>
   );
