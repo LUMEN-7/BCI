@@ -7,7 +7,6 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { COLORS } from "../../../../pages/Insights/data";
 import "./style.css";
 
 const AXES = [
@@ -18,7 +17,7 @@ const AXES = [
   ["Eficiência", "efficiency"],
 ];
 
-const RADAR_COLORS = [COLORS.blue, COLORS.cyan, COLORS.green, COLORS.red, "#8b5cf6"];
+const RADAR_COLORS = ["#2563eb", "#dc2626", "#16a34a", "#f97316", "#7c3aed"];
 
 function clamp(value) {
   return Math.max(0, Math.min(100, Math.round(value)));
@@ -91,8 +90,15 @@ export default function ComparisonChart({ cars = [] }) {
         <ResponsiveContainer width="100%" height={330}>
           <RadarChart data={data} outerRadius="70%">
             <PolarGrid stroke="#e8edf2" />
-            <PolarAngleAxis dataKey="atributo" tick={{ fill: "#637184", fontSize: 11 }} />
-            <PolarRadiusAxis tick={false} axisLine={false} domain={[0, 100]} />
+            <PolarAngleAxis
+              dataKey="atributo"
+              tick={{ fill: "#637184", fontFamily: "Titillium Web, sans-serif", fontSize: 11 }}
+            />
+            <PolarRadiusAxis
+              tick={false}
+              axisLine={false}
+              domain={[0, 100]}
+            />
             {cars.map((car, index) => (
               <Radar
                 key={car.id || index}
