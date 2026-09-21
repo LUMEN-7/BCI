@@ -1,8 +1,8 @@
 const API_BASE_URL = "https://apiford.onrender.com";
 // const API_BASE_URL = "https://localhost:7213";
 
-function erro401(response){
-    if (response.status === 401) {
+function erro401(response, skipRedirect = false){
+  if (response.status === 401 && !skipRedirect) {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("currentUser");
     window.location.href = "/";
@@ -12,19 +12,20 @@ function erro401(response){
 }
 
 async function apiFetch(path, options = {}) {
+  const { skip401Redirect = false, ...fetchOptions } = options;
   const token = localStorage.getItem("accessToken");
-  const isFormData = options.body instanceof FormData;
+  const isFormData = fetchOptions.body instanceof FormData;
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
+    ...fetchOptions,
     headers: {
       ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers,
+      ...fetchOptions.headers,
     },
   });
 
-  erro401(response)
+  erro401(response, skip401Redirect)
 
   if (!response.ok) {
     const erro = await response.json().catch(() => ({ message: "Erro desconhecido" }));

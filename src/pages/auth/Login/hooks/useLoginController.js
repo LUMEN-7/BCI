@@ -46,7 +46,7 @@ export default function useLoginController() {
             const resultado = await login(email, password);
             irParaProximoPasso(resultado);
         } catch (error) {
-            setAuthError(error.message || 'Não foi possível entrar.');
+            setAuthError('Usuário ou senha incorretos.');
         }
     }
 

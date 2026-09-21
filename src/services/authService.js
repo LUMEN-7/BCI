@@ -14,6 +14,7 @@ export async function cadastrar(Nome,Email, Password,FotoPerfilUrl) {
 export async function login(email, password) {
   const resultado = await apiFetch("/User/login", {
     method: "POST",
+    skip401Redirect: true,
     body: JSON.stringify({ userIdentifier: email, password }),
   });
   return tratarRespostaLogin(resultado);
@@ -22,6 +23,7 @@ export async function login(email, password) {
 export async function loginComGoogle(idToken) {
   const resultado = await apiFetch("/User/login/google", {
     method: "POST",
+    skip401Redirect: true,
     body: JSON.stringify({ idToken }),
   });
   return tratarRespostaLogin(resultado);

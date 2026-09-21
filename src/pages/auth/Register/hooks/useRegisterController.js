@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cadastrar } from '@/services/authService';
-
-function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+import { isValidEmail, validarSenha } from '../validation';
 
 export default function useRegisterController() {
     const navigate = useNavigate();
@@ -26,7 +23,8 @@ export default function useRegisterController() {
         const newErrors = { name: '', email: '', password: '' };
         if (name.trim().length < 3) newErrors.name = 'Nome muito curto.';
         if (!isValidEmail(email)) newErrors.email = 'E-mail inválido.';
-        if (password.trim().length < 6) newErrors.password = 'Mínimo de 6 caracteres.';
+        const errosSenha = validarSenha(password);
+        if (errosSenha.length > 0) newErrors.password = errosSenha.join(' ');
         setErrors(newErrors);
         if (newErrors.name || newErrors.email || newErrors.password) return;
         try {
