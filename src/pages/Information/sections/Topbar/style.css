@@ -24,6 +24,24 @@
     box-shadow 0.2s ease;
 }
 
+.information-action-button {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 20, 46, 0.055);
+  color: var(--color-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.information-action-button.danger {
+  color: var(--color-error);
+}
+
 .back-button {
   display: flex;
   align-items: center;

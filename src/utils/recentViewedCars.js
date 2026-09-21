@@ -49,6 +49,7 @@ export function appendRecentViewedCar(car) {
     ano: year ? Number(year) || year : '',
     segment,
     image,
+    isImported: Boolean(car.isImported),
     viewedAt: new Date().toISOString(),
   };
 

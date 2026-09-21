@@ -9,8 +9,7 @@ import {
   IoRefreshOutline,
   IoSearchOutline,
 } from "react-icons/io5";
-import { useRef, useState } from "react";
-import { isAdmin } from '@/utils/auth';
+import { useState } from "react";
 import "./style.css";
 
 export default function Controls({
@@ -27,9 +26,8 @@ export default function Controls({
   onExecute,
   onClear,
   onOpenSchedule,
-  onImport,
+  onOpenImport,
 }) {
-  const fileInputRef = useRef(null);
   const [importMessage, setImportMessage] = useState(null);
 
   const handleKeyDown = (e) => {
@@ -38,20 +36,6 @@ export default function Controls({
       onExecute();
     }
   };
-
-  async function handleImportChange(event) {
-    const file = event.target.files?.[0];
-    event.target.value = "";
-    if (!file || !onImport) return;
-
-    const result = await onImport(file);
-    setImportMessage(
-      result?.success
-        ? { type: "success", text: `veículo importado com sucesso.` }
-        : { type: "error", text: result?.message || "Não foi possível importar o arquivo." }
-    );
-    setTimeout(() => setImportMessage(null), 4000);
-  }
 
   return (
     <section className="search-controls">
@@ -132,20 +116,12 @@ export default function Controls({
         <button
           type="button"
           className="import-cars-btn"
-          onClick={() =>  isAdmin() ? fileInputRef.current?.click() : console.log(isAdmin())}//alert("tem que ser admin") }
-          title="Importar veículos de um arquivo CSV ou JSON"
+          onClick={() => onOpenImport?.()}
+          title="Cadastrar veículo"
         >
           <IoCloudUploadOutline />
           <span>Importar</span>
         </button>
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".csv,.json,application/json,text/csv"
-          onChange={handleImportChange}
-          hidden
-        />
 
         {activeFilterChips.length > 0 && (
           <button

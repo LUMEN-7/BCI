@@ -13,7 +13,7 @@ function AnalysisCard({ title, items }) {
   );
 }
 
-export default function AiAnalysis({ analysis, loading, error }) {
+export default function AiAnalysis({ analysis, loading, error, isImported, onGenerate }) {
   return (
     <section className="ai-analysis-section">
       <div className="ai-analysis-header">
@@ -23,6 +23,11 @@ export default function AiAnalysis({ analysis, loading, error }) {
           Resumo gerado com base nas características técnicas, perfil de uso e
           posicionamento do modelo.
         </p>
+        {isImported && !loading && (
+          <button type="button" className="generate-ai-button" onClick={onGenerate}>
+            Gerar análise da IA
+          </button>
+        )}
       </div>
       {loading ? (
         <div className="ai-analysis-feedback" role="status">

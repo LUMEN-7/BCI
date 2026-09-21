@@ -34,6 +34,16 @@
   align-items: center;
   gap: 0.5rem;
 }
+.imported-car-badge {
+  padding: 0.3125rem 0.5rem;
+  border-radius: 62.4375rem;
+  background: rgba(5, 98, 210, 0.1);
+  color: var(--color-secondary);
+  font-family: var(--font-body-bold);
+  font-size: 0.5rem;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
+}
 .car-brand {
   font-family: var(--font-body-bold);
   font-size: 0.6875rem;
@@ -182,6 +192,21 @@
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
+}
+.edit-details-button {
+  background: var(--color-secondary);
+}
+
+.imported-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.imported-card-actions .details-button {
+  min-width: 0;
+  padding: 0 0.75rem;
+  font-size: 0.5625rem;
 }
 .details-button svg {
   font-size: 1.1875rem;

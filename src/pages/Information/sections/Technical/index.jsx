@@ -230,7 +230,7 @@ function Accordion({
               <span>IA</span>
             </span>
           )}
-          {confidence !== undefined && !verified && (
+          {confidence !== undefined && !verified && !car?.isImported && (
             <ConfidenceBadge confidence={confidence} />
           )}
         </span>
@@ -272,7 +272,7 @@ function Accordion({
                       <span>IA</span>
                     </span>
                   ) : (
-                    item.source && <SourceTag sourceId={item.source} car={car} />
+                    !car?.isImported && item.source && <SourceTag sourceId={item.source} car={car} />
                   )}
                 </div>
               );
@@ -480,6 +480,7 @@ export default function Technical({
   showSources,
   onToggleSection,
   onToggleSources,
+  isImported = false,
 }) {
   const { groups } = useTechnical(car);
 
@@ -507,7 +508,7 @@ export default function Technical({
           </div>
         </div>
       </div>
-      <div className="information-legend">
+      {!isImported && <div className="information-legend">
         <div className="legend-header">
           <div className="legend-title">
             <IoInformationCircleOutline />
@@ -532,7 +533,7 @@ export default function Technical({
           ))}
         </div>
         {showSources && <SourcesPanel car={car} />}
-      </div>
+      </div>}
       <h2 className="subsection-title">Dados técnicos</h2>
       <div className="accordion-group">
         {groups.slice(0, 6).map(({ key, ...group }) => (

@@ -5,6 +5,8 @@ import {
   IoStar,
   IoStarOutline,
   IoDownloadOutline,
+  IoCreateOutline,
+  IoTrashOutline,
 } from "react-icons/io5";
 import { useState } from "react";
 import "./style.css";
@@ -99,7 +101,7 @@ function ExportDialog({ handleExport, onClose }) {
   );
 }
 
-export default function Topbar({ isFavorite, onBack, onHome, handleExport, onToggleFavorite }) {
+export default function Topbar({ isFavorite, isImported, onBack, onHome, handleExport, onToggleFavorite, onEdit, onDelete }) {
   const [isExportOpen, setIsExportOpen] = useState(false);
 
   return (
@@ -124,6 +126,16 @@ export default function Topbar({ isFavorite, onBack, onHome, handleExport, onTog
           >
             {isFavorite ? <IoStar /> : <IoStarOutline />}
           </button>
+          {isImported && (
+            <>
+              <button type="button" className="information-action-button" onClick={onEdit} aria-label="Editar veículo">
+                <IoCreateOutline />
+              </button>
+              <button type="button" className="information-action-button danger" onClick={onDelete} aria-label="Excluir veículo">
+                <IoTrashOutline />
+              </button>
+            </>
+          )}
           <button
             type="button"
             className="export-data-button"

@@ -4,10 +4,13 @@ import Specs from './sections/Specs';
 import Technical from './sections/Technical';
 import AiAnalysis from './sections/AiAnalysis';
 import useCarDetailController from './hooks/useCarDetailController';
+import ImportVehicleModal from '../Search/sections/ImportVehicleModal';
+import { useState } from 'react';
 import './style.css';
 
 export default function Information() {
     const controller = useCarDetailController();
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
     if (controller.loading) {
         return (
@@ -35,10 +38,15 @@ export default function Information() {
             <div className="information-container">
                 <Topbar
                     isFavorite={controller.isFavorite}
+                    isImported={controller.isImported}
                     onBack={controller.handleBack}
                     onHome={controller.handleHome}
                     onToggleFavorite={controller.toggleFavorite}
                     handleExport = {controller.handleExport}
+                    onEdit={() => setIsEditOpen(true)}
+                    onDelete={() => {
+                        if (window.confirm('Excluir este veículo importado?')) controller.deleteImportedVehicle();
+                    }}
                 />
                 
                 <Hero 
@@ -57,14 +65,26 @@ export default function Information() {
                     showSources={controller.showSources}
                     onToggleSection={controller.toggleSection}
                     onToggleSources={controller.toggleSources}
+                    isImported={controller.isImported}
                 />
                 
                 <AiAnalysis 
                     analysis={controller.car.analysis} 
                     loading={controller.analysisLoading}
                     error={controller.analysisError}
+                    isImported={controller.isImported}
+                    onGenerate={controller.generateAnalysis}
                 />
             </div>
+            <ImportVehicleModal
+                isOpen={isEditOpen}
+                initialVehicle={controller.importedVehicle}
+                onClose={() => setIsEditOpen(false)}
+                onSaved={(vehicle) => {
+                    controller.updateImportedVehicle(vehicle);
+                    setIsEditOpen(false);
+                }}
+            />
         </main>
     );
 }

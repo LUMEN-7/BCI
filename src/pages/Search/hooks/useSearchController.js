@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCars, iniciarBusca, getJobStatus, importCarsFromFiles} from '@/services/carsService';
+import { getCars, iniciarBusca, getJobStatus } from '@/services/carsService';
 import { getFavorites, getFavoriteIds, addFavorites, removeFavorite } from "@/services/userService"
 import { appendNavigationActivity } from '@/utils/navigationActivity';
 import { getRecentViewedCars, appendRecentViewedCar } from '@/utils/recentViewedCars';
 import { getScheduledSearches } from '@/utils/scheduledSearchesStorage';
 import { getUserScopedItem, removeUserScopedItem } from '@/utils/userScopedStorage';
+import { getImportedVehicles } from '@/utils/importedVehiclesStorage';
 
 
 function adaptCar(car) {
@@ -17,6 +18,27 @@ function adaptCar(car) {
     image: car.imagemUrl ?? car.image ?? null,
     segment: car.categoria?.Fontes?.[0]?.Valor ?? car.categoria ?? car.segment ?? '',
   };
+}
+
+function adaptImportedCar(car) {
+        return {
+                ...car,
+                id: String(car.id),
+                modelo: car.modelo || 'Modelo sem nome',
+                brand: car.brand || 'Ford',
+                ano: car.ano || '',
+                image: car.image || null,
+                segment: car.segment || 'Veículo importado',
+                isImported: true,
+        };
+}
+
+function markImportedRecentCars(cars) {
+    const importedIds = new Set(getImportedVehicles().map((car) => String(car.id)));
+    return cars.map((car) => ({
+        ...car,
+        isImported: Boolean(car.isImported || importedIds.has(String(car.id))),
+    }));
 }
 
 
@@ -32,7 +54,7 @@ export default function useSearchController() {
     const [error, setError] = useState('');
     const [isSearchExecuted, setIsSearchExecuted] = useState(false);
     const [validationError, setValidationError] = useState('');
-    const [recentCars, setRecentCars] = useState(() => getRecentViewedCars(5));
+    const [recentCars, setRecentCars] = useState(() => markImportedRecentCars(getRecentViewedCars(5)));
     const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
     const [scheduleInitialCar, setScheduleInitialCar] = useState(null);
     const [scheduledCount, setScheduledCount] = useState(() => getScheduledSearches().length);
@@ -61,9 +83,9 @@ export default function useSearchController() {
                     getCars().catch(() => []),
                     getFavorites().catch(() => ({ favoriteCarros: [] })),
                 ]);
-                if (Array.isArray(carrosResult) && carrosResult.length > 0) {
-                    setCars(carrosResult.map(adaptCar));
-                }
+                const catalogCars = Array.isArray(carrosResult) ? carrosResult.map(adaptCar) : [];
+                const importedCars = getImportedVehicles().map(adaptImportedCar);
+                setCars([...importedCars, ...catalogCars.filter((car) => !importedCars.some((imported) => imported.id === car.id))]);
                 setFavorites(getFavoriteIds(favoritosResult));
             } catch (err) {
                 setError(err.message || 'Não foi possível carregar os carros.');
@@ -75,8 +97,21 @@ export default function useSearchController() {
     }, []);
 
     useEffect(() => {
+        function updateImportedCars() {
+            const importedCars = getImportedVehicles().map(adaptImportedCar);
+            setCars((current) => [
+                ...importedCars,
+                ...current.filter((car) => !car.isImported && !importedCars.some((imported) => imported.id === car.id)),
+            ]);
+        }
+
+        window.addEventListener('imported-vehicles-updated', updateImportedCars);
+        return () => window.removeEventListener('imported-vehicles-updated', updateImportedCars);
+    }, []);
+
+    useEffect(() => {
         function updateRecent() {
-            setRecentCars(getRecentViewedCars(5));
+            setRecentCars(markImportedRecentCars(getRecentViewedCars(5)));
         }
 
         window.addEventListener('recent-viewed-cars-updated', updateRecent);
@@ -190,7 +225,7 @@ export default function useSearchController() {
         setValidationError('');
     }
 
-    function handleDetails(id) {
+    function handleDetails(id, carOverride = null) {
         const strId = String(id);
         const selectedCar = cars.find((car) => String(car.id) === strId) ||
             recentCars.find((car) => String(car.id) === strId);
@@ -201,7 +236,7 @@ export default function useSearchController() {
             appendRecentViewedCar(selectedCar);
         }
         appendNavigationActivity(`/information/${id}`, { car: { name: carName } });
-        navigate(`/information/${id}`, { state: { car: selectedCar } });
+        navigate(`/information/${id}`, { state: { car: carOverride || selectedCar } });
     }
 
     async function executeSearch() {
@@ -263,14 +298,11 @@ export default function useSearchController() {
         setScheduleInitialCar(null);
     }
 
-    async function handleImportCars(file) {
-        if (!file) return { success: false, message: 'Nenhum arquivo selecionado.' };
-        try {
-            await importCarsFromFiles(file)
-            return { success: true };
-        } catch (err) {
-            return { success: false, message: err.message || 'Não foi possível importar o arquivo.' };
-        }
+    function handleImportedVehicle(vehicle) {
+        const imported = adaptImportedCar(vehicle);
+        setCars((current) => [imported, ...current.filter((car) => car.id !== imported.id)]);
+        setIsSearchExecuted(true);
+        return imported;
     }
 
     function handleExecuteScheduledSearch(scheduledItem) {
@@ -318,6 +350,6 @@ export default function useSearchController() {
         handleOpenSchedule,
         handleCloseSchedule,
         handleExecuteScheduledSearch,
-        handleImportCars,
+        handleImportedVehicle,
     };
 }

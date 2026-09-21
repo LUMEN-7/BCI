@@ -7,11 +7,15 @@ import InitialState from "./sections/InitialState";
 import RecentViewed from "./sections/RecentViewed";
 import ResultsHeader from "./sections/ResultsHeader";
 import ScheduleModal from "./sections/ScheduleModal";
+import ImportVehicleModal from "./sections/ImportVehicleModal";
 import useSearchController from "./hooks/useSearchController";
+import { useState } from "react";
 
 import "./style.css";
 
 export default function Search() {
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [editingVehicle, setEditingVehicle] = useState(null);
   const {
     cars,
     brands,
@@ -40,7 +44,7 @@ export default function Search() {
     handleOpenSchedule,
     handleCloseSchedule,
     handleExecuteScheduledSearch,
-    handleImportCars,
+    handleImportedVehicle,
   } = useSearchController();
 
   return (
@@ -72,7 +76,10 @@ export default function Search() {
             onExecute={executeSearch}
             onClear={clearFilters}
             onOpenSchedule={() => handleOpenSchedule()}
-            onImport={handleImportCars}
+            onOpenImport={() => {
+              setEditingVehicle(null);
+              setIsImportModalOpen(true);
+            }}
           />
 
           {hasFilters ? (
@@ -89,6 +96,10 @@ export default function Search() {
                   onToggleFavorite={toggleFavorite}
                   onDetails={handleDetails}
                   onSchedule={handleOpenSchedule}
+                  onEdit={(car) => {
+                    setEditingVehicle(car);
+                    setIsImportModalOpen(true);
+                  }}
                 />
               </>
             ) : (
@@ -101,6 +112,10 @@ export default function Search() {
               onToggleFavorite={toggleFavorite}
               onDetails={handleDetails}
               onSchedule={handleOpenSchedule}
+              onEdit={(car) => {
+                setEditingVehicle(car);
+                setIsImportModalOpen(true);
+              }}
             />
           ) : (
             <InitialState />
@@ -114,6 +129,20 @@ export default function Search() {
         availableCars={cars.length > 0 ? cars : recentCars}
         initialSelectedCar={scheduleInitialCar}
         onExecuteScheduledSearch={handleExecuteScheduledSearch}
+      />
+
+      <ImportVehicleModal
+        isOpen={isImportModalOpen}
+        initialVehicle={editingVehicle}
+        onClose={() => {
+          setIsImportModalOpen(false);
+          setEditingVehicle(null);
+        }}
+        onSaved={(vehicle) => {
+          handleImportedVehicle(vehicle);
+          setIsImportModalOpen(false);
+          setEditingVehicle(null);
+        }}
       />
     </main>
   );

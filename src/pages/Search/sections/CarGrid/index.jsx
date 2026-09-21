@@ -14,6 +14,7 @@ export default function CarGrid({
   onToggleFavorite,
   onDetails,
   onSchedule,
+  onEdit,
 }) {
   return (
     <div className="cars-grid">
@@ -22,7 +23,10 @@ export default function CarGrid({
           <div className="card-top">
             <span className="car-brand">{car.brand}</span>
             <div className="card-top-actions">
-              {onSchedule && (
+              {car.isImported && (
+                <span className="imported-car-badge">IMPORTADO</span>
+              )}
+              {!car.isImported && onSchedule && (
                 <button
                   type="button"
                   className="schedule-card-button"
@@ -65,14 +69,17 @@ export default function CarGrid({
             <span className="car-year">{car.ano}</span>
           </div>
 
-          <button
-            type="button"
-            className="details-button"
-            onClick={() => onDetails(car.id)}
-          >
-            <span>EXPLORAR MODELO</span>
-            <IoArrowForward />
-          </button>
+          {car.isImported ? (
+            <button type="button" className="details-button" onClick={() => onDetails(car.id, car)}>
+              <span>EXPLORAR MODELO</span>
+              <IoArrowForward />
+            </button>
+          ) : (
+            <button type="button" className="details-button" onClick={() => onDetails(car.id)}>
+              <span>EXPLORAR MODELO</span>
+              <IoArrowForward />
+            </button>
+          )}
         </article>
       ))}
     </div>

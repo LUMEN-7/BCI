@@ -8,6 +8,7 @@ import {
   buscarFeaturesECompletarVeiculo,
 } from '@/services/aiService';
 import { appendRecentViewedCar } from '@/utils/recentViewedCars';
+import { getImportedVehicles, removeImportedVehicle, saveImportedVehicle } from '@/utils/importedVehiclesStorage';
 
 function extractList(source) {
   if (!source) return [];
@@ -213,8 +214,40 @@ function adaptCarToDetail(dto) {
   };
 }
 
+function adaptImportedVehicleToDetail(vehicle) {
+  const spec = (value) => ({ value: value || 'Não informado', source: null, confidence: 100 });
+  const list = (value) => Array.isArray(value)
+    ? value
+    : String(value || '').split(/\r?\n/).map((item) => item.trim()).filter(Boolean);
 
-
+  return {
+    ...vehicle,
+    id: String(vehicle.id),
+    name: `${vehicle.modelo || 'Modelo sem nome'} ${vehicle.ano || ''}`.trim(),
+    image: vehicle.image || 'https://via.placeholder.com/600x400?text=Sem+Foto',
+    description: vehicle.description || 'Veículo cadastrado manualmente no Search.',
+    isImported: true,
+    sources: [],
+    fontes: [],
+    specs: {
+      model: spec(vehicle.modelo), brand: spec(vehicle.brand), year: spec(vehicle.ano),
+      engine: spec(vehicle.engine), power: spec(vehicle.power), type: spec(vehicle.segment),
+      consumption: spec(vehicle.consumption || vehicle.cityConsumption),
+      cityConsumption: spec(vehicle.cityConsumption), highwayConsumption: spec(vehicle.highwayConsumption),
+      torque: spec(vehicle.torque), transmission: spec(vehicle.transmission), drivetrain: spec(vehicle.drivetrain),
+      driveModes: spec('Não informado'), length: spec(vehicle.length),
+      width: spec(vehicle.width), height: spec(vehicle.height), wheelbase: spec(vehicle.wheelbase),
+      tireType: spec(vehicle.tireType), rim: spec(vehicle.rim), tireWidth: spec(vehicle.tireWidth), tireProfile: spec(vehicle.tireProfile),
+      tankCapacity: spec(vehicle.tankCapacity), fuelType: spec(vehicle.fuelType),
+      loadCapacity: spec(vehicle.loadCapacity), towingCapacity: spec(vehicle.towingCapacity),
+    },
+    sections: {
+      performance: list(vehicle.performance), security: list(vehicle.security),
+      technology: list(vehicle.technology), comfort: list(vehicle.comfort),
+    },
+    analysis: { strengths: [], weaknesses: [], bestUse: '', competitors: [] },
+  };
+}
 
 function parseNumber(value) {
   if (value === null || value === undefined) return null;
@@ -258,6 +291,7 @@ export default function useCarDetailController() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [car, setCar] = useState(null);
+  const [importedVehicle, setImportedVehicle] = useState(null);
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [analysisError, setAnalysisError] = useState('');
   const [favorites, setFavorites] = useState([]);
@@ -341,6 +375,21 @@ useEffect(() => {
         setLoading(true);
         setError('');
 
+        const imported = location.state?.car?.isImported
+          ? location.state.car
+          : getImportedVehicles().find((vehicle) => String(vehicle.id) === String(id));
+
+        if (imported) {
+          const adaptedImported = adaptImportedVehicleToDetail(imported);
+          appendRecentViewedCar(adaptedImported);
+          setImportedVehicle(imported);
+          setCar(adaptedImported);
+          const favoritos = await getFavorites().catch(() => []);
+          setFavorites(getFavoriteIds(favoritos));
+          setLoading(false);
+          return;
+        }
+
         const dto = await obterCarro(id);
         if (!isCurrentRequest) return;
 
@@ -389,6 +438,37 @@ useEffect(() => {
     }
   }
 
+  async function generateAnalysis() {
+    if (!car || analysisLoading) return;
+    setAnalysisLoading(true);
+    setAnalysisError('');
+    try {
+      const analysis = await analisarVeiculo({
+        nome: car.name,
+        marca: car.brand,
+        ano: car.specs.year.value,
+        dados: car,
+      });
+      setCar((current) => (current ? { ...current, analysis } : current));
+    } catch (analysisErr) {
+      setAnalysisError(analysisErr.message || 'Não foi possível gerar a análise da IA.');
+    } finally {
+      setAnalysisLoading(false);
+    }
+  }
+
+  function updateImportedVehicle(vehicle) {
+    const saved = saveImportedVehicle(vehicle);
+    setImportedVehicle(saved);
+    setCar(adaptImportedVehicleToDetail(saved));
+  }
+
+  function deleteImportedVehicle() {
+    if (!car?.isImported) return;
+    removeImportedVehicle(car.id);
+    navigate('/search');
+  }
+
   async function handleExport(formato = 'csv', separador = ',') {
     try {
       await exportCar([{ linhagemId: Number(id) }], formato, undefined, separador);
@@ -402,10 +482,12 @@ useEffect(() => {
     loading,
     error,
     car,
+    importedVehicle,
     analysisLoading,
     analysisError,
     favorites,
     isFavorite: favorites.includes(String(id)),
+    isImported: Boolean(car?.isImported),
     openSection,
     showSources,
     handleBack: () => navigate(-1),
@@ -416,5 +498,8 @@ useEffect(() => {
       setOpenSection((curr) => (curr === sectionId ? null : sectionId)),
     toggleSources: () => setShowSources((curr) => !curr),
     handleExport,
+    generateAnalysis,
+    updateImportedVehicle,
+    deleteImportedVehicle,
   };
 }
