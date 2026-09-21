@@ -14,7 +14,7 @@ export default function Coverage({ items }) {
             <div className="coverage-header">
               <strong>{item.name}</strong>
               <span>
-                {item.models} modelos — {item.percentage}%
+                {item.percentage}%
               </span>
             </div>
 

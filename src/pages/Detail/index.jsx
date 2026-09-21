@@ -1,4 +1,5 @@
 import AiAnalysis from './sections/AiAnalysis';
+import ComparisonChart from './sections/ComparisonChart';
 import Header from './sections/Header';
 import Hero from './sections/Hero';
 import Technical from './sections/Technical';
@@ -46,6 +47,7 @@ export default function CompareDetail() {
                 />
                 <Header />
                 <Hero cars={controller.cars} />
+                <ComparisonChart cars={controller.cars} />
                 <Technical
                     cars={controller.cars}
                     expandedSection={controller.expandedSection}

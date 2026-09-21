@@ -55,10 +55,10 @@ export const highlights = [
 ];
 
 export const coverage = [
-    { name: 'SUVs Compactos', models: 34, percentage: 82 },
-    { name: 'Pickups', models: 22, percentage: 67 },
-    { name: 'Hatchbacks', models: 41, percentage: 54 },
-    { name: 'Sedãs', models: 17, percentage: 38 },
+    { name: 'SUVs Compactos', percentage: 82 },
+    { name: 'Pickups', percentage: 67 },
+    { name: 'Hatchbacks', percentage: 54 },
+    { name: 'Sedãs', percentage: 38 },
 ];
 
 export const recentActivity = [
