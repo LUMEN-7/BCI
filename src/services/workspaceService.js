@@ -55,12 +55,12 @@ function adaptarPost(post) {
   };
 }
 
-export async function listarPosts() {
-  const posts = await apiFetch("/Workspace/posts", { method: "GET" });
+export async function listarPosts(equipId) {
+  const posts = await apiFetch(`/Workspace/${equipId}/posts`, { method: "GET" });
   return posts.map(adaptarPost);
 }
 
-export async function criarPost({ type, content, tags, responsibleUserId, status, linkedType, linkedItemId, linkedItemTitle }) {
+export async function criarPost(equipeId, { type, content, tags, responsibleUserId, status, linkedType, linkedItemId, linkedItemTitle }) {
   const payload = {
     tipo: TIPO_PARA_API[type],
     conteudo: content,
@@ -71,10 +71,9 @@ export async function criarPost({ type, content, tags, responsibleUserId, status
     conteudoVinculadoId: linkedType && linkedType !== "research" ? Number(linkedItemId) : null,
     conteudoVinculadoTitulo: linkedType ? linkedItemTitle : null,
   };
-  const post = await apiFetch("/Workspace/posts", { method: "POST", body: JSON.stringify(payload) });
+  const post = await apiFetch(`/Workspace/${equipeId}/posts`, { method: "POST", body: JSON.stringify(payload) });
   return adaptarPost(post);
 }
-
 export async function comentar(postId, content) {
   const comentario = await apiFetch(`/Workspace/posts/${postId}/comentarios`, { method: "POST", body: JSON.stringify({ conteudo: content }) });
   return adaptarComentario(comentario);
@@ -94,16 +93,6 @@ export async function atualizarStatus(postId, status) {
 
 export async function excluirPost(postId) {
   return apiFetch(`/Workspace/posts/${postId}`, { method: "DELETE" });
-}
-
-export async function listarMembros() {
-  const usuarios = await apiFetch("/User/usuarios", { method: "GET" });
-  return usuarios.map((u) => {
-    const nome = u.nomeExibicao ?? u.userName ?? u.NomeExibicao ?? u.UserName ?? "Usuário";
-    const partes = nome.split(" ").filter(Boolean);
-    const iniciais = partes.length >= 2 ? `${partes[0][0]}${partes.at(-1)[0]}`.toUpperCase() : (partes[0]?.[0] ?? "?").toUpperCase();
-    return { id: u.id ?? u.Id, name: nome, initials: iniciais };
-  });
 }
 
 export async function listarConteudosVinculaveis(linkedType) {

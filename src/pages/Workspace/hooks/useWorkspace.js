@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   listarPosts, criarPost, comentar, toggleCurtida, togglePin,
-  atualizarStatus, excluirPost, listarMembros, listarConteudosVinculaveis,
+  atualizarStatus, excluirPost,listarConteudosVinculaveis,
 } from "@/services/workspaceService";
+
+import { ListarMembros } from "@/services/equipeService";
 
 export const postTypes = {
   update: { label: "Atualização", className: "update" },
@@ -24,10 +26,17 @@ const initialNewPost = { type: "update", content: "", tags: "", responsible: "",
 function getCurrentUser() {
   try { return JSON.parse(localStorage.getItem("currentUser")) || null; } catch { return null; }
 }
+function getCurrentWorspace() {
+
+  try { return localStorage.getItem("bci_active_workspace") || null; } catch { return null; }
+}
 
 export default function useWorkspace() {
   const currentUser = getCurrentUser();
+  const currentWorkspace = getCurrentWorspace();
+
   const currentUserId = currentUser?.id;
+  
 
   const [posts, setPosts] = useState([]);
   const [members, setMembers] = useState([]);
@@ -51,7 +60,8 @@ export default function useWorkspace() {
       setLoading(true);
       setError("");
       try {
-        const [postsResult, membrosResult] = await Promise.all([listarPosts(), listarMembros()]);
+
+        const [postsResult, membrosResult] = await Promise.all([listarPosts(currentWorkspace), ListarMembros(currentWorkspace)]);
         setPosts(postsResult);
         setMembers(membrosResult);
       } catch (err) {
@@ -61,7 +71,7 @@ export default function useWorkspace() {
       }
     }
     carregar();
-  }, []);
+  }, [currentWorkspace]);
 
   useEffect(() => {
     if (!newPost.linkedType) { setLinkedOptions([]); return; }
@@ -162,13 +172,12 @@ export default function useWorkspace() {
   }
 
   async function createPost() {
-    console.log(posting)
     const conteudo = newPost.content.trim();
     if (!conteudo) return;
 
     try {
-      setPosting(true)
-      const novoPost = await criarPost({
+      setPosting(true);
+      const novoPost = await criarPost(currentWorkspace, {
         type: newPost.type,
         content: conteudo,
         tags: newPost.tags.split(",").map((t) => t.trim()).filter(Boolean),
@@ -178,11 +187,11 @@ export default function useWorkspace() {
         linkedItemId: newPost.linkedItemId || null,
         linkedItemTitle: newPost.linkedType === "research" ? newPost.linkedItemTitle : (linkedOptions.find((o) => o.id === newPost.linkedItemId)?.title ?? null),
       });
-      setPosting(false)
+      setPosting(false);
       setPosts((current) => [novoPost, ...current]);
       resetNewPost();
     } catch (err) {
-      setPosting(false)
+      setPosting(false);
       setError(err.message || "Não foi possível publicar.");
     }
   }

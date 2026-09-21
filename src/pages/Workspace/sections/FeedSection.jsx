@@ -10,7 +10,6 @@ import ActivitySidebar from "../components/ActivitySidebar";
 import {
   linkedContentTypes,
   recentActivities,
-  workspaceMembers,
 } from "../data";
 
 
@@ -18,6 +17,7 @@ export default function FeedSection({
   posts,
   postTypes,
   posting,
+  members,
   search,
   onSearchChange,
 
@@ -193,7 +193,7 @@ export default function FeedSection({
                         Selecionar responsável
                       </option>
 
-                      {workspaceMembers.map(
+                      {members.map(
                         (member) => (
                           <option
                             key={
@@ -481,7 +481,7 @@ export default function FeedSection({
           }
 
           members={
-            workspaceMembers
+            members
           }
 
           onActivityClick={

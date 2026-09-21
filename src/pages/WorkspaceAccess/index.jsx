@@ -556,7 +556,8 @@ export default function WorkspaceAccess() {
 
                                             <p>
                                               {
-                                                item.description ||
+                                                
+                                                item.description||
                                                 "Workspace colaborativo do BCI."
                                               }
                                             </p>
@@ -721,31 +722,6 @@ export default function WorkspaceAccess() {
                         />
 
                       </label>
-
-
-                      {/* =========================================
-                          MOCK TIP
-                      ========================================= */}
-
-                      <div className="workspace-access-mock-tip">
-
-                        <strong>
-                          TESTE COM DADOS MOCKADOS
-                        </strong>
-
-
-                        <p>
-                          Para testar a entrada no workspace
-                          da Equipe Lumen, utilize:
-                        </p>
-
-
-                        <code>
-                          LUMEN-2026
-                        </code>
-
-                      </div>
-
 
                       {
                         workspace.error && (
