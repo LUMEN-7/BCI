@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getCars } from '@/services/carsService';
-import { SIMILARITY_FILTERS, matchesSimilarity } from '../data';
+import { SIMILARITY_FILTERS, matchesSimilarity, parseNumber } from '../data';
 
 // Adaptador para traduzir o DTO do C# para os cards da tela de seleção
 function adaptCarToSelection(carDto) {

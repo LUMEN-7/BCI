@@ -50,7 +50,7 @@ export const SIMILARITY_FILTERS = [
 	{ id: 'technology', label: 'Mesmos recursos de tecnologia' },
 ];
 
-function parseNumber(value) {
+export function parseNumber(value) {
 	if (value === null || value === undefined) return null;
 	const match = String(value).match(/(\d+(?:[.,]\d+)?)/);
 	if (!match) return null;
