@@ -1,71 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getCars } from '@/services/carsService';
-
-export const SIMILARITY_FILTERS = [
-    { id: 'engine', label: 'Motor semelhante' },
-    { id: 'price', label: 'Faixa de preço semelhante' },
-    { id: 'performance', label: 'Desempenho semelhante' },
-    { id: 'category', label: 'Mesma categoria' },
-    { id: 'transmission', label: 'Mesma transmissão' },
-    { id: 'dimensions', label: 'Dimensões semelhantes' },
-    { id: 'safety', label: 'Mesmos recursos de segurança' },
-    { id: 'technology', label: 'Mesmos recursos de tecnologia' },
-];
-
-function parseNumber(value) {
-    if (value === null || value === undefined) return null;
-    const match = String(value).match(/(\d+(?:[.,]\d+)?)/);
-    if (!match) return null;
-    return Number(match[1].replace(',', '.'));
-}
-
-// sem dado em algum dos lados: não bloqueia o resultado, apenas não compara
-function withinTolerance(a, b, tolerance) {
-    if (a === null || b === null) return true;
-    const base = Math.max(Math.abs(a), Math.abs(b), 1);
-    return Math.abs(a - b) / base <= tolerance;
-}
-
-function textOverlaps(a, b) {
-    if (!a || !b) return true;
-    const normA = String(a).toLowerCase().trim();
-    const normB = String(b).toLowerCase().trim();
-    return normA === normB || normA.includes(normB) || normB.includes(normA);
-}
-
-function listOverlapRatio(listA = [], listB = []) {
-    if (!listA.length || !listB.length) return true;
-    const setB = new Set(listB.map((item) => String(item).toLowerCase().trim()));
-    const shared = listA.filter((item) => setB.has(String(item).toLowerCase().trim())).length;
-    return shared / Math.max(listA.length, listB.length) >= 0.5;
-}
-
-function matchesSimilarity(car, reference, filterId) {
-    switch (filterId) {
-        case 'engine':
-            return textOverlaps(car.engine, reference.engine) || withinTolerance(parseNumber(car.engine), parseNumber(reference.engine), 0.25);
-        case 'price':
-            return withinTolerance(car.price, reference.price, 0.2);
-        case 'performance':
-            return withinTolerance(car.powerValue, reference.powerValue, 0.2);
-        case 'category':
-            return textOverlaps(car.type, reference.type);
-        case 'transmission':
-            return textOverlaps(car.transmission, reference.transmission);
-        case 'dimensions': {
-            const carRef = car.dimensions?.wheelbase ?? car.dimensions?.length;
-            const referenceRef = reference.dimensions?.wheelbase ?? reference.dimensions?.length;
-            return withinTolerance(carRef, referenceRef, 0.1);
-        }
-        case 'safety':
-            return listOverlapRatio(car.safetyFeatures, reference.safetyFeatures);
-        case 'technology':
-            return listOverlapRatio(car.technologyFeatures, reference.technologyFeatures);
-        default:
-            return true;
-    }
-}
+import { SIMILARITY_FILTERS, matchesSimilarity } from '../data';
 
 // Adaptador para traduzir o DTO do C# para os cards da tela de seleção
 function adaptCarToSelection(carDto) {

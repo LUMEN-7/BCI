@@ -3,6 +3,7 @@ import {
   IoCheckmarkOutline,
   IoGitCompareOutline,
   IoSearchOutline,
+  IoSparklesOutline,
   IoSwapHorizontalOutline,
 } from "react-icons/io5";
 
@@ -69,47 +70,87 @@ export default function MultiCompare({ cars }) {
         </button>
       </div>
 
-      <div className="multi-compare-intro">
-        <span className="section-eyebrow">PASSO 2</span>
-        <h2>Escolha até {controller.maxSimilar} modelos semelhantes</h2>
-        <p>
-          {controller.selectedIds.length} de {controller.maxSimilar} selecionados · selecione ao menos 2 para
-          liberar a comparação.
-        </p>
-      </div>
+      {!controller.similarityConfirmed ? (
+        <div className="multi-similarity-step">
+          <div className="multi-compare-intro">
+            <span className="section-eyebrow">PASSO 2</span>
+            <h2>Defina o tipo de similaridade</h2>
+            <p>Escolha um ou mais critérios para encontrar veículos semelhantes ao modelo de referência.</p>
+          </div>
 
-      {controller.similarCars.length > 0 ? (
-        <div className="multi-results-grid">
-          {controller.similarCars.map((car) => {
-            const selected = controller.selectedIds.includes(car.id);
-            const disabled = !selected && controller.selectedIds.length >= controller.maxSimilar;
-            return (
-              <ModelCard
-                key={car.id}
-                car={car}
-                selected={selected}
-                disabled={disabled}
-                similarity={car.similarity}
-                onClick={() => controller.toggleSimilar(car)}
-              />
-            );
-          })}
+          <div className="multi-similarity-header">
+            <IoSparklesOutline />
+            <span>Encontrar modelos semelhantes por</span>
+          </div>
+
+          <div className="multi-similarity-chips">
+            {controller.similarityFilters.map((filter) => (
+              <button
+                key={filter.id}
+                type="button"
+                className={`multi-similarity-chip ${controller.activeSimilarityFilters.includes(filter.id) ? "is-active" : ""}`}
+                onClick={() => controller.toggleSimilarityFilter(filter.id)}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="multi-confirm-similarity"
+            disabled={controller.activeSimilarityFilters.length === 0}
+            onClick={controller.confirmSimilarity}
+          >
+            <IoSearchOutline />
+            <span>Encontrar veículos semelhantes</span>
+          </button>
         </div>
       ) : (
-        <EmptyState message="Nenhum modelo semelhante encontrado no catálogo." />
-      )}
+        <>
+          <div className="multi-compare-intro">
+            <span className="section-eyebrow">PASSO 3</span>
+            <h2>Escolha até {controller.maxSimilar} modelos semelhantes</h2>
+            <p>
+              {controller.selectedIds.length} de {controller.maxSimilar} selecionados · selecione ao menos 2 para
+              liberar a comparação.
+            </p>
+          </div>
 
-      <div className="multi-compare-footer">
-        <button
-          type="button"
-          className={`multi-compare-button ${controller.canCompare ? "is-ready" : ""}`}
-          disabled={!controller.canCompare}
-          onClick={controller.handleCompare}
-        >
-          <IoGitCompareOutline />
-          <span>Comparar {controller.selectedIds.length + 1} modelos</span>
-        </button>
-      </div>
+          {controller.similarCars.length > 0 ? (
+            <div className="multi-results-grid">
+              {controller.similarCars.map((car) => {
+                const selected = controller.selectedIds.includes(car.id);
+                const disabled = !selected && controller.selectedIds.length >= controller.maxSimilar;
+                return (
+                  <ModelCard
+                    key={car.id}
+                    car={car}
+                    selected={selected}
+                    disabled={disabled}
+                    similarity={car.similarity}
+                    onClick={() => controller.toggleSimilar(car)}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <EmptyState message="Nenhum modelo semelhante encontrado no catálogo." />
+          )}
+
+          <div className="multi-compare-footer">
+            <button
+              type="button"
+              className={`multi-compare-button ${controller.canCompare ? "is-ready" : ""}`}
+              disabled={!controller.canCompare}
+              onClick={controller.handleCompare}
+            >
+              <IoGitCompareOutline />
+              <span>Comparar {controller.selectedIds.length + 1} modelos</span>
+            </button>
+          </div>
+        </>
+      )}
     </section>
   );
 }

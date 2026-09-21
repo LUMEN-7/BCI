@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MAX_SIMILAR_MODELS, computeSimilarity } from '../data';
+import { MAX_SIMILAR_MODELS, SIMILARITY_FILTERS, computeSimilarity, matchesSimilarity } from '../data';
 
 export default function useMultiCompareController({ cars }) {
     const navigate = useNavigate();
@@ -8,6 +8,8 @@ export default function useMultiCompareController({ cars }) {
     const [referenceCar, setReferenceCar] = useState(null);
     const [referenceSearch, setReferenceSearch] = useState('');
     const [selectedIds, setSelectedIds] = useState([]);
+    const [activeSimilarityFilters, setActiveSimilarityFilters] = useState([]);
+    const [similarityConfirmed, setSimilarityConfirmed] = useState(false);
 
     const referenceResults = useMemo(() => {
         const term = referenceSearch.trim().toLowerCase();
@@ -20,12 +22,13 @@ export default function useMultiCompareController({ cars }) {
     }, [cars, referenceSearch]);
 
     const similarCars = useMemo(() => {
-        if (!referenceCar) return [];
+        if (!referenceCar || !similarityConfirmed) return [];
         return cars
             .filter((car) => car.id !== referenceCar.id)
+            .filter((car) => activeSimilarityFilters.every((filterId) => matchesSimilarity(car, referenceCar, filterId)))
             .map((car) => ({ ...car, similarity: computeSimilarity(car, referenceCar) }))
             .sort((a, b) => b.similarity - a.similarity);
-    }, [cars, referenceCar]);
+    }, [activeSimilarityFilters, cars, referenceCar, similarityConfirmed]);
 
     const selectedCars = useMemo(
         () => similarCars.filter((car) => selectedIds.includes(car.id)),
@@ -36,11 +39,31 @@ export default function useMultiCompareController({ cars }) {
         setReferenceCar(car);
         setSelectedIds([]);
         setReferenceSearch('');
+        setActiveSimilarityFilters([]);
+        setSimilarityConfirmed(false);
     }
 
     function changeReference() {
         setReferenceCar(null);
         setSelectedIds([]);
+        setActiveSimilarityFilters([]);
+        setSimilarityConfirmed(false);
+    }
+
+    function toggleSimilarityFilter(filterId) {
+        setActiveSimilarityFilters((current) =>
+            current.includes(filterId)
+                ? current.filter((id) => id !== filterId)
+                : [...current, filterId]
+        );
+        setSimilarityConfirmed(false);
+        setSelectedIds([]);
+    }
+
+    function confirmSimilarity() {
+        if (activeSimilarityFilters.length === 0) return;
+        setSelectedIds([]);
+        setSimilarityConfirmed(true);
     }
 
     function toggleSimilar(car) {
@@ -66,10 +89,15 @@ export default function useMultiCompareController({ cars }) {
         similarCars,
         selectedIds,
         selectedCars,
+        similarityFilters: SIMILARITY_FILTERS,
+        activeSimilarityFilters,
+        similarityConfirmed,
         canCompare,
         maxSimilar: MAX_SIMILAR_MODELS,
         selectReference,
         changeReference,
+        toggleSimilarityFilter,
+        confirmSimilarity,
         toggleSimilar,
         handleCompare,
     };
