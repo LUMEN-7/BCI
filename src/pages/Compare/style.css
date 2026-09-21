@@ -14,6 +14,19 @@
 	margin: 0 auto;
 }
 
+.compare-status-message {
+	padding: 2rem;
+	font-family: var(--font-body);
+	font-size: 0.875rem;
+	line-height: 1.6;
+	text-align: center;
+	color: var(--color-primary);
+}
+
+.compare-status-message-error {
+	color: var(--color-error);
+}
+
 .compare-tabs {
 	display: flex;
 	align-items: center;

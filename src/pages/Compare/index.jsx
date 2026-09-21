@@ -68,9 +68,9 @@ export default function Compare() {
                         />
 
                         {controller.loading ? (
-                            <div style={{ padding: '2rem', textAlign: 'center' }}>Carregando catálogo de veículos...</div>
+                            <div className="compare-status-message">Carregando catálogo de veículos...</div>
                         ) : controller.error ? (
-                            <div style={{ padding: '2rem', color: 'red', textAlign: 'center' }}>{controller.error}</div>
+                            <div className="compare-status-message compare-status-message-error">{controller.error}</div>
                         ) : (
                             <Results
                                 results={controller.results}
