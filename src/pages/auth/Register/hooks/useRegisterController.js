@@ -29,7 +29,8 @@ export default function useRegisterController() {
         if (newErrors.name || newErrors.email || newErrors.password) return;
         try {
             const resultado = await cadastrar(name, email, password, null);
-            if (!resultado?.usuario?.nomeExibicao?.trim()) {
+            const displayName = resultado?.usuario?.nomeExibicao || resultado?.usuario?.NomeExibicao;
+            if (!displayName?.trim()) {
                 navigate('/welcome');
             } else {
                 navigate('/loading', { replace: true });

@@ -27,7 +27,8 @@ export default function useLoginController() {
             return;
         }
         // console.log(resultado)
-        if (!resultado.usuario?.NomeExibicao?.trim()) {
+        const displayName = resultado.usuario?.nomeExibicao || resultado.usuario?.NomeExibicao;
+        if (!displayName?.trim()) {
             navigate('/welcome');
             return;
         }
