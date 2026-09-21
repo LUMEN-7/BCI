@@ -12,19 +12,26 @@
   max-width: 73.75rem;
   margin: 0 auto;
 }
-@media (max-width: 65.625rem) {
+@media (max-width: 68.75rem) {
   .notes-page {
     padding-left: 5rem;
     padding-right: 2.5rem;
   }
 }
-@media (max-width: 46.875rem) {
+
+@media (max-width: 43.75rem) {
   .notes-page {
-    padding: 1.875rem 1.5rem 5rem;
+    padding: 2.625rem 1.25rem 6.875rem;
+  }
+
+  .notes-container {
+    max-width: 100%;
   }
 }
-@media (max-width: 31.25rem) {
+
+@media (max-width: 25rem) {
   .notes-page {
-    padding: 1.5rem 1rem 4.375rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
