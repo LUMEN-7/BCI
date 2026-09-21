@@ -6,9 +6,18 @@ export async function getFavorites() {
   return apiFetch("/user/modelos", { method: "GET" }); // confirma esse nome de rota rapidinho antes de confiar
 }
 
+export function getFavoriteIds(response) {
+  const favorites = Array.isArray(response) ? response : (response?.favoriteCarros ?? []);
+  return favorites
+    .map((car) => car.linhagemId ?? car.id)
+    .filter((id) => id !== null && id !== undefined)
+    .map(String);
+}
+
 export async function addFavorites(carId) {
-  console.log(carId)
-  return apiFetch("/user/modelos", { method: "POST", body: JSON.stringify({ linhagemId: carId }) });
+  const numericId = Number(carId);
+  const linhagemId = Number.isNaN(numericId) ? carId : numericId;
+  return apiFetch("/user/modelos", { method: "POST", body: JSON.stringify({ linhagemId }) });
 }
 
 export async function removeFavorite(carId) {

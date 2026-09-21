@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCars, iniciarBusca, getJobStatus, importCarsFromFiles} from '@/services/carsService';
-import {getFavorites, addFavorites, removeFavorite } from "@/services/userService"
+import { getFavorites, getFavoriteIds, addFavorites, removeFavorite } from "@/services/userService"
 import { appendNavigationActivity } from '@/utils/navigationActivity';
 import { getRecentViewedCars, appendRecentViewedCar } from '@/utils/recentViewedCars';
 import { getScheduledSearches } from '@/utils/scheduledSearchesStorage';
@@ -64,7 +64,7 @@ export default function useSearchController() {
                 if (Array.isArray(carrosResult) && carrosResult.length > 0) {
                     setCars(carrosResult.map(adaptCar));
                 }
-                setFavorites(favoritosResult.favoriteCarros?.map((c) => String(c.linhagemId ?? c.id)) ?? []);
+                setFavorites(getFavoriteIds(favoritosResult));
             } catch (err) {
                 setError(err.message || 'Não foi possível carregar os carros.');
             } finally {

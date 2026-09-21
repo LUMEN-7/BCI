@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { obterCarro } from '@/services/carsService';
-import { removeFavorite, addFavorites } from '@/services/userService';
+import { getFavorites, getFavoriteIds, removeFavorite, addFavorites } from '@/services/userService';
 import { exportCar } from '@/services/exportService';
 import {
   analisarVeiculo,
@@ -353,6 +353,8 @@ useEffect(() => {
 
         appendRecentViewedCar(adapted);
         setCar(adapted);
+        const favoritos = await getFavorites().catch(() => []);
+        setFavorites(getFavoriteIds(favoritos));
         setLoading(false);
 
         rodarEnriquecimentos(adapted, dto); // dto passado explicitamente agora
@@ -403,6 +405,7 @@ useEffect(() => {
     analysisLoading,
     analysisError,
     favorites,
+    isFavorite: favorites.includes(String(id)),
     openSection,
     showSources,
     handleBack: () => navigate(-1),
