@@ -318,8 +318,6 @@
 
     font-weight: 700;
 
-    letter-spacing: 0.09375rem;
-
     color: var(--color-primary);
 }
 
@@ -375,8 +373,6 @@
     font-family: var(--font-body-bold);
 
     font-size: 1.0625rem;
-
-    letter-spacing: 0.375rem;
 
     color: var(--color-primary);
 }
