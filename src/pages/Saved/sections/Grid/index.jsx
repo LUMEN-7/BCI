@@ -78,12 +78,21 @@ function VersionHistory({ linhagemId }) {
                 </button>
                 {versaoSelecionada === v.carroId && (
                   loadingDetalhe ? (
-                    <p>Carregando...</p>
+                    <div className="update-version-detail is-loading">Carregando alterações...</div>
                   ) : detalheVersao && (
-                      <p>
-                        {detalheVersao.especificacoes?.[0]?.potencia?.Fontes?.[0]?.Valor} cv ·{' '}
-                        {detalheVersao.especificacoes?.[0]?.torque?.Fontes?.[0]?.Valor} Nm
-                      </p>
+                    <div className="update-version-detail">
+                      <strong>O que mudou nesta versão</strong>
+                      <div className="update-version-changes">
+                        <span>
+                          <small>Potência</small>
+                          <b>{detalheVersao.especificacoes?.[0]?.potencia?.Fontes?.[0]?.Valor || 'Não informado'} cv</b>
+                        </span>
+                        <span>
+                          <small>Torque</small>
+                          <b>{detalheVersao.especificacoes?.[0]?.torque?.Fontes?.[0]?.Valor || 'Não informado'} Nm</b>
+                        </span>
+                      </div>
+                    </div>
                   )
                 )}
               </div>
