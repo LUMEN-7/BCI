@@ -1,10 +1,9 @@
 @import '../../styles/global.css';
 
 .compare-page {
-	min-height: 100dvh;
+	min-height: 100vh;
 	padding: 2.5rem 3rem 4rem;
 	overflow-x: hidden;
-	overflow-y: visible;
 	background: radial-gradient(circle at 85% 0%, rgba(5, 98, 210, 0.07), transparent 28%), linear-gradient(180deg, #ffffff 0%, var(--color-light-neutral) 100%);
 	color: var(--color-primary);
 }
@@ -64,12 +63,28 @@
 	}
 }
 
-@media (max-width: 62.4375rem) {
-	.compare-page { padding: 2rem 1.75rem 3rem; }
+@media (max-width: 68.75rem) {
+  .compare-page {
+    padding-left: 5rem;
+    padding-right: 2.5rem;
+  }
 }
 
-@media (max-width: 37.5rem) {
-	.compare-page { padding: 1.5rem 1.125rem 2.5rem; }
+@media (max-width: 43.75rem) {
+  .compare-page {
+    padding: 2.625rem 1.25rem 6.875rem;
+  }
+
+  .compare-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 25rem) {
+  .compare-page {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

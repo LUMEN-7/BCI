@@ -37,17 +37,17 @@
 }
 
 .insights-header h1 {
-	margin: 0;
+	margin: 0.5rem 0 0;
 	color: var(--color-primary);
 	font-family: var(--font-title);
 	font-size: clamp(3.625rem, 6vw, 5.125rem);
 	font-weight: 500;
-	line-height: 0.9;
+	line-height: 0.95;
 	text-transform: uppercase;
 }
 
 .insights-header p {
-	max-width: 38.75rem;
+	max-width: 37.5rem;
 	margin: 1.125rem 0 0;
 	color: var(--color-dark-grey);
 	font-family: var(--font-body);
@@ -87,17 +87,10 @@
 	}
 }
 
-@media (max-width: 56.25rem) {
+@media (max-width: 43.75rem) {
+	.insights-page { padding: 2.625rem 1.25rem 6.875rem; }
 	.insights-dashboard { padding-bottom: 0.625rem; }
 	.insights-header { align-items: flex-start; flex-direction: column; gap: 1.25rem; margin-bottom: 2.125rem; }
-}
-
-@media (max-width: 37.5rem) {
-	.insights-page { padding: 1.875rem 1.25rem 4.375rem; }
-	.insights-header h1 { font-size: clamp(2.75rem, 13vw, 4rem); }
-	.insights-header p { font-size: 0.875rem; }
-}
-
-@media (max-width: 25rem) {
-	.insights-page { padding-left: 0.75rem; padding-right: 0.75rem; }
+	.insights-header h1 { font-size: clamp(2.75rem, 13vw, 4rem); line-height: 0.9; letter-spacing: -0.0625rem; }
+	.insights-header p { margin-top: 1.25rem; font-size: 0.875rem; line-height: 1.6; }
 }

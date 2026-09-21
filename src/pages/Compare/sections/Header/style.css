@@ -32,30 +32,20 @@
   opacity: 0.75;
 }
 
-@media (max-width: 62.4375rem) {
+@media (max-width: 43.75rem) {
   .compare-header {
-    margin-bottom: 2.25rem;
+    margin-bottom: 2.125rem;
   }
-  .compare-header h1 {
-    font-size: 3.25rem;
-  }
-}
 
-@media (max-width: 37.5rem) {
-  .compare-header {
-    margin-bottom: 1.875rem;
-  }
-  .compare-eyebrow {
-    font-size: 0.5625rem;
-    letter-spacing: 0.1125rem;
-  }
   .compare-header h1 {
-    margin-top: 0.4375rem;
-    font-size: 2.6875rem;
+    font-size: clamp(2.75rem, 13vw, 4rem);
+    line-height: 0.9;
+    letter-spacing: -0.0625rem;
   }
+
   .compare-header p {
-    margin-top: 0.875rem;
-    font-size: 0.8125rem;
-    line-height: 1.55;
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
   }
 }

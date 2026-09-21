@@ -182,20 +182,26 @@
   }
 }
 
-@media (max-width: 56.1875rem) {
+@media (max-width: 43.75rem) {
   .eyebrow {
-    margin-bottom: 1.125rem;
-    font-size: 0.5625rem;
-    letter-spacing: 0.1875rem;
+    margin-bottom: 0;
+    font-size: 0.625rem;
+    letter-spacing: 0.15rem;
+    color: var(--color-secondary);
+    opacity: 1;
   }
+
   .hero-content h1 {
-    font-size: clamp(3.625rem, 17vw, 5.125rem);
+    margin-top: 0.5rem;
+    font-size: clamp(2.75rem, 13vw, 4rem);
+    line-height: 0.9;
     letter-spacing: -0.0625rem;
   }
+
   .hero-description {
-    max-width: 20.625rem;
-    margin-top: 1.5rem;
-    font-size: 0.8125rem;
+    max-width: 37.5rem;
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
     line-height: 1.6;
   }
   .hero-actions {
@@ -247,7 +253,7 @@
   margin-top: 2rem;
 }
 
-@media (max-width: 56.1875rem) {
+@media (max-width: 43.75rem) {
   .home-hero {
     min-height: 45rem;
     padding: 4.375rem 1.75rem 0;

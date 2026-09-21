@@ -18,19 +18,20 @@
     padding-right: 2.5rem;
   }
 }
-@media (max-width: 53.125rem) {
+
+@media (max-width: 43.75rem) {
   .saved-page {
-    padding: 1.875rem 1.5rem 5rem;
+    padding: 2.625rem 1.25rem 6.875rem;
+  }
+
+  .saved-container {
+    max-width: 100%;
   }
 }
-@media (max-width: 37.5rem) {
-  .saved-page {
-    padding: 1.5rem 1rem 4.375rem;
-  }
-}
+
 @media (max-width: 25rem) {
   .saved-page {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
