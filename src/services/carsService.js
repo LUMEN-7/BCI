@@ -11,10 +11,11 @@ export async function iniciarBusca(payload) {
   return resultado;
 }
 
-export async function importCarsFromFiles(file) {
+export async function importarVeiculo(payloadCanonico) {
+  const blob = new Blob([JSON.stringify(payloadCanonico)], { type: "application/json" });
   const formData = new FormData();
-  formData.append('arquivo', file, file.name);
-  return apiFetchMultipart('/Carro/importar-arquivo', formData);
+  formData.append("arquivo", blob, "importacao-front.json");
+  return apiFetchMultipart("/Carro/importar-arquivo", formData);
 }
 
 export async function getJobStatus(jobId) {

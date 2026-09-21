@@ -257,6 +257,7 @@ export default function Workspace() {
               posts={workspace.filteredPosts}
               postTypes={workspace.postTypes}
               members={workspace.members}
+              activities={workspace.activities}
               search={workspace.search}
               onSearchChange={workspace.setSearch}
               selectedType={workspace.selectedType}

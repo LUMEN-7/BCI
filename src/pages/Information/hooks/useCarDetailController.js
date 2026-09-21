@@ -120,8 +120,9 @@ function adaptCarToDetail(dto) {
   const dimensoes = dto.dimensoes?.[0] || dto.Dimensoes?.[0] || {};
   const extras = dto.extras?.[0] || dto.Extras?.[0] || {};
   const pneus = dto.pneus?.[0] || dto.Pneus?.[0] || {};
-  const secoes = dto.secoes || dto.Secoes || dto.recursos || dto.Recursos || {};
-
+  
+  console.log(extras)
+  console.log(extras.performance)
   return {
     id: dto.id || dto.Id || dto.linhagemId || dto.LinhagemId,
     name: `${dto.modelo || dto.Modelo || ''} ${dto.ano || dto.Ano || ''}`.trim(),
@@ -200,10 +201,10 @@ function adaptCarToDetail(dto) {
       driveModes: safeExtract(dto.modos || dto.Modos),
     },
     sections: {
-      performance: extractList(secoes.performance || secoes.desempenho),
-      security: extractList(secoes.security || secoes.seguranca || secoes.segurança),
-      technology: extractList(secoes.technology || secoes.tecnologia),
-      comfort: extractList(secoes.comfort || secoes.conforto),
+      performance: extractList(extras.performance || extras.desempenho),
+      security: extractList(extras.security || extras.seguranca || extras.segurança),
+      technology: extractList(extras.technology || extras.tecnologia),
+      comfort: extractList(extras.comfort || extras.conforto),
     },
     analysis: {
       strengths: [],

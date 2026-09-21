@@ -13,6 +13,14 @@ const VINCULO_DA_API = Object.fromEntries(Object.entries(VINCULO_PARA_API).map((
 
 const ROTA_POR_TIPO_VINCULO = { research: "/search", comparison: "/compare", aiAnalysis: "/compare", vehicle: "/detail" };
 
+const TIPO_ATIVIDADE_ACAO = {
+  PostCriado: () => "criou uma publicação",
+  Atribuicao: (a) => `atribuiu "${a.postConteudoResumo ?? "uma publicação"}" para ${a.alvoNome ?? "alguém"}`,
+  StatusAlterado: (a) => `marcou "${a.postConteudoResumo ?? "uma publicação"}" como ${a.statusNovo === "Resolvido" ? "resolvido" : "em análise"}`,
+  Comentario: (a) => `comentou em "${a.postConteudoResumo ?? "uma publicação"}"`,
+  Fixado: (a) => `fixou "${a.postConteudoResumo ?? "uma publicação"}"`,
+};
+
 function formatarTempoRelativo(isoDate) {
   const segundos = Math.floor((Date.now() - new Date(isoDate).getTime()) / 1000);
   if (segundos < 60) return "agora";
@@ -52,11 +60,36 @@ function adaptarPost(post) {
     liked: post.curtidoPeloUsuarioAtual,
     likes: post.totalCurtidas,
     comments: (post.comentarios ?? []).map(adaptarComentario),
+    completedAt: post.concluidoEm ? formatarTempoRelativo(post.concluidoEm) : null,
   };
 }
 
+
+function gerarIniciais(nome) {
+  if (!nome) return "?";
+  const partes = nome.trim().split(" ").filter(Boolean);
+  return partes.length >= 2
+    ? `${partes[0][0]}${partes[partes.length - 1][0]}`.toUpperCase()
+    : partes[0][0].toUpperCase();
+}
+
+function adaptarAtividade(a) {
+  return {
+    id: a.id,
+    user: a.atorNome,
+    initials: gerarIniciais(a.atorNome),
+    action: (TIPO_ATIVIDADE_ACAO[a.tipo] ?? (() => "fez uma ação"))(a),
+    time: formatarTempoRelativo(a.dataCriacao),
+    postId: a.postId,
+  };
+}
+export async function listarAtividades(equipeId) {
+  const atividades = await apiFetch(`/Workspace/${equipeId}/atividades`, { method: "GET" });
+  return atividades.map(adaptarAtividade);
+}
+
 export async function listarPosts(equipId) {
-  const posts = await apiFetch(`/Workspace/${equipId}/posts`, { method: "GET" });
+  const posts = await apiFetch(`/Workspace/${equipId}/posts`, { method: "GET" });  
   return posts.map(adaptarPost);
 }
 
@@ -65,8 +98,8 @@ export async function criarPost(equipeId, { type, content, tags, responsibleUser
     tipo: TIPO_PARA_API[type],
     conteudo: content,
     tags,
-    responsavelUserId: type === "review" ? responsibleUserId || null : null,
-    status: type === "review" ? STATUS_PARA_API[status || "pending"] : null,
+    responsavelUserId: (type === "review" || type === "decision") ? responsibleUserId || null : null,
+    status: (type === "review" || type === "decision") ? STATUS_PARA_API[status || "pending"] : null,
     tipoConteudoVinculado: linkedType ? VINCULO_PARA_API[linkedType] : null,
     conteudoVinculadoId: linkedType && linkedType !== "research" ? Number(linkedItemId) : null,
     conteudoVinculadoTitulo: linkedType ? linkedItemTitle : null,

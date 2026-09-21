@@ -58,8 +58,9 @@ function adaptCarToComparison(dto) {
   const dimensoes = dto.dimensoes?.[0] || {};
   const extras = dto.extras?.[0] || {};
   const pneus = dto.pneus?.[0] || {};  // <- faltava
-  const secoes = dto.secoes || dto.sections || dto.recursos || dto;
-
+  
+  console.log(extras)
+  console.log(extras.performance)
   return {
     id: dto.id,
     name: `${dto.marca} ${dto.modelo} ${dto.ano}`,
@@ -101,10 +102,10 @@ function adaptCarToComparison(dto) {
   },
 
     sections: {
-      performance: extractList(secoes.performance || secoes.desempenho),
-      security: extractList(secoes.security || secoes.seguranca || secoes.segurança),
-      technology: extractList(secoes.technology || secoes.tecnologia),
-      comfort: extractList(secoes.comfort || secoes.conforto),
+      performance: extractList(extras.performance || extras.desempenho),
+      security: extractList(extras.security || extras.seguranca || extras.segurança),
+      technology: extractList(extras.technology || extras.tecnologia),
+      comfort: extractList(extras.comfort || extras.conforto),
     },
 
     sources: dto.fontes || dto.sources || [],

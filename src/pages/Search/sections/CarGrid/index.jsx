@@ -53,8 +53,8 @@ export default function CarGrid({
           </div>
 
           <div className="car-image-container">
-            {car.image ? (
-              <img src={car.image} alt={car.modelo} className="car-image" />
+            {car.image || car.imagemUrl ? (
+              <img src={car.image || car.imagemUrl} alt={car.modelo} className="car-image" />
             ) : (
               <div className="car-image-fallback">
                 <IoCarSportOutline />

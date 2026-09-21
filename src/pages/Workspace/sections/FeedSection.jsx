@@ -8,8 +8,7 @@ import ThreadDrawer from "../components/ThreadDrawer";
 import ActivitySidebar from "../components/ActivitySidebar";
 
 import {
-  linkedContentTypes,
-  recentActivities,
+  linkedContentTypes
 } from "../data";
 
 
@@ -18,6 +17,7 @@ export default function FeedSection({
   postTypes,
   posting,
   members,
+  activities,
   search,
   onSearchChange,
 
@@ -49,9 +49,7 @@ export default function FeedSection({
   onCancelPost,
 }) {
 
-  const isReview =
-    newPost.type ===
-    "review";
+  const temAtribuicao = newPost.type === "review" ;//|| newPost.type === "decision";
 
 
   return (
@@ -173,7 +171,7 @@ export default function FeedSection({
                     CAMPOS DE REVISÃO
                 ================================================= */}
 
-                {isReview && (
+                {temAtribuicao  && (
                   <>
                     <label htmlFor="post-responsible">
                       RESPONSÁVEL
@@ -477,7 +475,7 @@ export default function FeedSection({
 
         <ActivitySidebar
           activities={
-            recentActivities
+            activities
           }
 
           members={

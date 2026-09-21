@@ -136,6 +136,7 @@ export default function useSearchController() {
     const hasFilters = Boolean(search.trim() || selectedBrand || selectedYear);
 
     const results = useMemo(() => {
+        
         if (!hasFilters && !isSearchExecuted) return [];
         
         const term = search.toLowerCase().trim();

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   listarPosts, criarPost, comentar, toggleCurtida, togglePin,
-  atualizarStatus, excluirPost,listarConteudosVinculaveis,
+  atualizarStatus, excluirPost,listarConteudosVinculaveis,listarAtividades 
 } from "@/services/workspaceService";
 
 import { ListarMembros } from "@/services/equipeService";
@@ -52,6 +52,7 @@ export default function useWorkspace() {
   const [posting, setPosting] = useState(false);
   const [newPost, setNewPost] = useState(initialNewPost);
   const [linkedOptions, setLinkedOptions] = useState([]);
+  const [activities, setActivities] = useState([])
 
   const [selectedPostId, setSelectedPostId] = useState(null);
 
@@ -61,9 +62,10 @@ export default function useWorkspace() {
       setError("");
       try {
 
-        const [postsResult, membrosResult] = await Promise.all([listarPosts(currentWorkspace), ListarMembros(currentWorkspace)]);
-        setPosts(postsResult);
-        setMembers(membrosResult);
+        const [posts, members,atividadesResult] = await Promise.all([listarPosts(currentWorkspace), ListarMembros(currentWorkspace), listarAtividades(currentWorkspace)]);
+        setPosts(posts);
+        setMembers(members);
+        setActivities(atividadesResult);
       } catch (err) {
         setError(err.message || "Não foi possível carregar o workspace.");
       } finally {
@@ -71,7 +73,7 @@ export default function useWorkspace() {
       }
     }
     carregar();
-  }, [currentWorkspace]);
+  }, [currentWorkspace, activities]);
 
   useEffect(() => {
     if (!newPost.linkedType) { setLinkedOptions([]); return; }
@@ -149,14 +151,15 @@ export default function useWorkspace() {
   }
 
   function openNewPost(type = "update") {
-    setNewPost({ ...initialNewPost, type, status: type === "review" ? "pending" : "" });
+    setNewPost({ ...initialNewPost, type, status: (type === "review" || type === "decision") ? "pending" : "" });
     setNewPostOpen(true);
   }
 
   function handleNewPostChange(event) {
     const { name, value } = event.target;
     if (name === "type") {
-      setNewPost((p) => ({ ...p, type: value, responsible: value === "review" ? p.responsible : "", status: value === "review" ? (p.status || "pending") : "" }));
+      const temAtribuicao = value === "review" || value === "decision";
+      setNewPost((p) => ({ ...p, type: value, responsible: temAtribuicao ? p.responsible : "", status: temAtribuicao ? (p.status || "pending") : "" }));
       return;
     }
     if (name === "linkedType") {
@@ -201,7 +204,7 @@ export default function useWorkspace() {
 
   return {
     posts, filteredPosts, postTypes, linkedContents: linkedOptions, availableLinkedContents,
-    members, loading, error,
+    members, loading, error,activities, 
     summary,
     posting,
     activeTab, setActiveTab,
