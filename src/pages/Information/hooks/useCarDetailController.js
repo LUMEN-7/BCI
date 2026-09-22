@@ -121,8 +121,7 @@ function adaptCarToDetail(dto) {
   const extras = dto.extras?.[0] || dto.Extras?.[0] || {};
   const pneus = dto.pneus?.[0] || dto.Pneus?.[0] || {};
   
-  console.log(extras)
-  console.log(extras.performance)
+  
   return {
     id: dto.id || dto.Id || dto.linhagemId || dto.LinhagemId,
     name: `${dto.modelo || dto.Modelo || ''} ${dto.ano || dto.Ano || ''}`.trim(),

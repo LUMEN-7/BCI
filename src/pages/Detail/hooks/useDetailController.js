@@ -59,8 +59,7 @@ function adaptCarToComparison(dto) {
   const extras = dto.extras?.[0] || {};
   const pneus = dto.pneus?.[0] || {};  // <- faltava
   
-  console.log(extras)
-  console.log(extras.performance)
+
   return {
     id: dto.id,
     name: `${dto.marca} ${dto.modelo} ${dto.ano}`,
