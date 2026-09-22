@@ -1,13 +1,12 @@
 import {
-  IoCloseOutline,
-  IoCheckmarkDoneOutline,
-  IoPersonOutline,
   IoAttachOutline,
+  IoCheckmarkDoneOutline,
+  IoCloseOutline,
   IoOpenOutline,
+  IoPersonOutline,
   IoSend,
 } from "react-icons/io5";
 
-import "./style.css";
 
 export default function ThreadDrawer({
   post,
@@ -16,177 +15,485 @@ export default function ThreadDrawer({
   onComment,
   onStatusChange,
 }) {
-  if (!post) return null;
+  if (!post) {
+    return null;
+  }
+
+
+  /* =========================================================
+     ENVIAR COMENTÁRIO
+  ========================================================= */
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    const form = event.currentTarget;
-    const input = form.elements.comment;
-    const value = input.value.trim();
+    const form =
+      event.currentTarget;
 
-    if (!value) return;
+    const input =
+      form.elements.comment;
 
-    onComment(post.id, value);
+    const value =
+      input.value.trim();
+
+
+    if (!value) {
+      return;
+    }
+
+
+    onComment(
+      post.id,
+      value
+    );
+
+
     form.reset();
   }
 
+
+  /* =========================================================
+     STATUS
+  ========================================================= */
+
+  const status =
+    post.status ||
+    "pending";
+
+
+  /* =========================================================
+     RENDER
+  ========================================================= */
+
   return (
-    <div
-      className="thread-drawer-overlay"
-      onClick={onClose}
-      role="presentation"
-    >
+    <>
+
+      {/* =====================================================
+          OVERLAY
+      ====================================================== */}
+
+      <div
+        className="thread-overlay"
+        onClick={onClose}
+        role="presentation"
+      />
+
+
+      {/* =====================================================
+          MODAL
+      ====================================================== */}
+
       <section
-        className="thread-drawer-modal"
+        className="thread-drawer"
         role="dialog"
         aria-modal="true"
         aria-labelledby="thread-title"
-        onClick={(event) => event.stopPropagation()}
       >
+
+        {/* ===================================================
+            HEADER
+        ==================================================== */}
+
         <header className="thread-drawer-header">
+
           <div>
-            <span className="thread-drawer-eyebrow">DISCUSSÃO</span>
-            <h2 id="thread-title">Thread</h2>
+
+            <span>
+              DISCUSSÃO
+            </span>
+
+
+            <h2 id="thread-title">
+              Thread
+            </h2>
+
           </div>
+
 
           <button
             type="button"
-            className="thread-drawer-close"
             onClick={onClose}
-            aria-label="Fechar thread"
+            aria-label="Fechar discussão"
           >
             <IoCloseOutline />
           </button>
+
         </header>
 
+
+        {/* ===================================================
+            BODY
+        ==================================================== */}
+
         <div className="thread-drawer-body">
-          <article className="thread-post-card">
-            <div className="thread-post-top">
-              <div className="thread-author-avatar">
-                {post.author?.initials || "BCI"}
+
+          {/* =================================================
+              POST ORIGINAL
+          ================================================= */}
+
+          <article className="thread-original-post">
+
+            {/* AUTOR */}
+
+            <div className="thread-author">
+
+              <div className="post-avatar">
+
+                {
+                  post.author?.initials ||
+                  "?"
+                }
+
               </div>
 
-              <div className="thread-author-info">
-                <strong>{post.author?.name || "Usuário"}</strong>
-                <span>{post.time || "Agora"}</span>
+
+              <div>
+
+                <strong>
+                  {
+                    post.author?.name ||
+                    "Usuário"
+                  }
+                </strong>
+
+
+                <span>
+                  {
+                    post.createdAt ||
+                    "Agora"
+                  }
+                </span>
+
               </div>
+
             </div>
 
-            <div className="thread-post-type-row">
-              <span className={`thread-post-type ${type?.className || ""}`}>
-                {type?.label || post.type}
+
+            {/* TIPO */}
+
+            <div className="post-meta-row">
+
+              <span
+                className={
+                  `post-type post-type-${
+                    type?.className ||
+                    "update"
+                  }`
+                }
+              >
+                {
+                  type?.label ||
+                  "Atualização"
+                }
               </span>
+
             </div>
 
-            <p className="thread-post-text">{post.content}</p>
+
+            {/* TEXTO */}
+
+            <p>
+              {post.content}
+            </p>
+
+
+            {/* TAGS */}
 
             {post.tags?.length > 0 && (
-              <div className="thread-post-tags">
-                {post.tags.map((tag) => (
-                  <span key={tag}>#{tag}</span>
-                ))}
+
+              <div className="post-tags">
+
+                {post.tags.map(
+                  (tag) => (
+
+                    <span key={tag}>
+                      #{tag}
+                    </span>
+
+                  )
+                )}
+
               </div>
+
             )}
 
-            <div className="thread-post-meta-grid">
-              <div className="thread-post-meta-card">
-                <span className="thread-meta-label">RESPONSÁVEL</span>
-                <div className="thread-meta-content">
-                  <IoPersonOutline />
-                  <strong>{post.assignee || "Não definido"}</strong>
-                </div>
+
+            {/* =================================================
+                RESPONSÁVEL
+            ================================================= */}
+
+            <div className="thread-responsible">
+
+              <IoPersonOutline />
+
+
+              <div>
+
+                <span>
+                  RESPONSÁVEL
+                </span>
+
+
+                <strong>
+                  {
+                    post.responsible ||
+                    "Não definido"
+                  }
+                </strong>
+
               </div>
 
-              <div className="thread-post-status-wrapper">
-                <span className="thread-meta-label">STATUS</span>
-                <select
-                  value={post.status || "pendente"}
-                  onChange={(event) =>
-                    onStatusChange(post.id, event.target.value)
-                  }
-                  className="thread-status-select"
-                >
-                  <option value="pendente">Pendente</option>
-                  <option value="andamento">Em andamento</option>
-                  <option value="concluido">Concluído</option>
-                  <option value="resolvido">Resolvido</option>
-                </select>
-              </div>
             </div>
 
-            {post.linkedContent && (
+
+            {/* =================================================
+                STATUS
+            ================================================= */}
+
+            <div className="thread-status-area">
+
+              <span>
+                STATUS
+              </span>
+
+
+              <select
+                value={status}
+                onChange={(event) =>
+                  onStatusChange(
+                    post.id,
+                    event.target.value
+                  )
+                }
+              >
+
+                <option value="pending">
+                  Pendente
+                </option>
+
+
+                <option value="progress">
+                  Em análise
+                </option>
+
+
+                <option value="resolved">
+                  Resolvido
+                </option>
+
+              </select>
+
+            </div>
+
+
+            {/* =================================================
+                CONTEÚDO VINCULADO
+            ================================================= */}
+
+            {post.linkedItem && (
+
               <button
                 type="button"
-                className="thread-linked-content"
+                className="thread-linked-item"
               >
-                <div className="thread-linked-content-info">
-                  <span>CONTEÚDO VINCULADO</span>
-                  <strong>{post.linkedContent.title}</strong>
-                  <small>{post.linkedContent.type}</small>
+
+                <IoAttachOutline />
+
+
+                <div>
+
+                  <span>
+                    CONTEÚDO VINCULADO
+                  </span>
+
+
+                  <strong>
+                    {
+                      post.linkedItem.title
+                    }
+                  </strong>
+
+
+                  {post.linkedItem.type && (
+
+                    <small>
+                      {
+                        post.linkedItem.type
+                      }
+                    </small>
+
+                  )}
+
                 </div>
 
+
                 <IoOpenOutline />
+
               </button>
+
             )}
+
           </article>
 
-          <section className="thread-comments-section">
-            <div className="thread-comments-header">
-              <span>DISCUSSÃO</span>
-              <div className="thread-comments-count">
-                {post.comments?.length || 0}
-              </div>
-            </div>
 
-            {post.comments?.length ? (
-              <div className="thread-comments-list">
-                {post.comments.map((comment) => (
-                  <article className="thread-comment-card" key={comment.id}>
-                    <div className="thread-comment-avatar">
-                      {comment.initials || "U"}
+          {/* =================================================
+              DIVISOR
+          ================================================= */}
+
+          <div className="thread-divider">
+
+            <span>
+              DISCUSSÃO
+            </span>
+
+
+            <strong>
+              {
+                post.comments?.length ||
+                0
+              }
+            </strong>
+
+          </div>
+
+
+          {/* =================================================
+              COMENTÁRIOS
+          ================================================= */}
+
+          <div className="thread-drawer-comments">
+
+            {post.comments?.length > 0 ? (
+
+              post.comments.map(
+                (comment) => (
+
+                  <article
+                    className="workspace-comment"
+                    key={comment.id}
+                  >
+
+                    {/* AVATAR */}
+
+                    <div className="comment-avatar">
+
+                      {
+                        comment.initials ||
+                        "?"
+                      }
+
                     </div>
 
-                    <div className="thread-comment-content">
-                      <div className="thread-comment-header">
-                        <strong>{comment.author}</strong>
-                        <span>{comment.time}</span>
+
+                    {/* CONTEÚDO */}
+
+                    <div className="comment-content">
+
+                      <div className="comment-header">
+
+                        <strong>
+                          {
+                            comment.author ||
+                            "Usuário"
+                          }
+                        </strong>
+
+
+                        <span>
+                          {
+                            comment.time ||
+                            "Agora"
+                          }
+                        </span>
+
                       </div>
 
-                      <p>{comment.message}</p>
+
+                      <p>
+                        {
+                          comment.content
+                        }
+                      </p>
+
                     </div>
+
                   </article>
-                ))}
-              </div>
+
+                )
+              )
+
             ) : (
-              <div className="thread-comments-empty">
+
+              /* =============================================
+                 SEM COMENTÁRIOS
+              ============================================== */
+
+              <div className="thread-empty">
+
                 <IoCheckmarkDoneOutline />
-                <strong>Nenhum comentário ainda</strong>
-                <p>Seja a primeira pessoa a participar dessa discussão.</p>
+
+
+                <strong>
+                  Nenhum comentário ainda
+                </strong>
+
+
+                <span>
+                  Seja a primeira pessoa a
+                  participar dessa discussão.
+                </span>
+
               </div>
+
             )}
-          </section>
+
+          </div>
+
         </div>
 
-        <footer className="thread-drawer-footer">
-          <form className="thread-reply-form" onSubmit={handleSubmit}>
-            <div className="thread-reply-avatar">
-              {post.author?.initials || "BCI"}
-            </div>
 
-            <input
-              type="text"
+        {/* ===================================================
+            FORMULÁRIO
+        ==================================================== */}
+
+        <form
+          className="thread-drawer-form"
+          onSubmit={handleSubmit}
+        >
+
+          <div className="comment-avatar">
+
+            {
+              post.author?.initials ||
+              "?"
+            }
+
+          </div>
+
+
+          <div>
+
+            <textarea
               name="comment"
               placeholder="Escreva uma resposta..."
+              rows="1"
               autoComplete="off"
             />
 
-            <button type="submit" aria-label="Enviar comentário">
+
+            <button
+              type="submit"
+              aria-label="Enviar comentário"
+            >
               <IoSend />
             </button>
-          </form>
-        </footer>
+
+          </div>
+
+        </form>
+
       </section>
-    </div>
+
+    </>
   );
 }
