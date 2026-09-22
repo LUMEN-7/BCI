@@ -3093,3 +3093,596 @@
   }
 }
 
+/* =========================================================
+   WORKSPACE TYPOGRAPHY SCALE — FONTES MAIORES
+   Mantém o .workspace-header sem alterações.
+========================================================= */
+
+/* CONTEXTO / CONTROLES SUPERIORES (fora do header principal) */
+.workspace-change-button {
+  font-size: 0.6875rem;
+}
+
+.workspace-current-info span,
+.workspace-invite-content span {
+  font-size: 0.5625rem;
+}
+
+.workspace-current-info strong,
+.workspace-invite-content strong {
+  font-size: 0.875rem;
+}
+
+.workspace-copy-button {
+  font-size: 0.625rem;
+}
+
+/* TABS E TOOLBAR */
+.workspace-tab {
+  font-size: 0.75rem;
+}
+
+.feed-search input {
+  font-size: 0.875rem;
+}
+
+.feed-filter {
+  font-size: 0.8125rem;
+}
+
+.workspace-new-post-button,
+.workspace-primary-button,
+.workspace-secondary-button {
+  font-size: 0.6875rem;
+}
+
+/* CRIAÇÃO DE POST */
+.create-post-header span {
+  font-size: 0.625rem;
+}
+
+.create-post-header h2 {
+  font-size: 1.25rem;
+}
+
+.create-post-form label {
+  font-size: 0.6875rem;
+}
+
+.create-post-form select,
+.create-post-form input,
+.create-post-form textarea {
+  font-size: 0.875rem;
+}
+
+.create-post-helper {
+  font-size: 0.6875rem;
+}
+
+/* POST CARD */
+.post-pinned-label {
+  font-size: 0.5625rem;
+}
+
+.post-avatar,
+.comment-avatar {
+  font-size: 0.8125rem;
+}
+
+.post-author-area strong {
+  font-size: 0.875rem;
+}
+
+.post-author-area span {
+  font-size: 0.6875rem;
+}
+
+.post-options-menu button {
+  font-size: 0.6875rem;
+}
+
+.post-type,
+.post-status {
+  font-size: 0.625rem;
+}
+
+.post-text {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.post-responsible {
+  font-size: 0.6875rem;
+}
+
+.post-tags span {
+  font-size: 0.75rem;
+}
+
+.linked-content span {
+  font-size: 0.5625rem;
+}
+
+.linked-content strong {
+  font-size: 0.8125rem;
+}
+
+.post-action {
+  font-size: 0.6875rem;
+}
+
+.post-open-thread {
+  font-size: 0.625rem;
+}
+
+/* SIDEBAR */
+.expand-header-info span {
+  font-size: 0.5625rem;
+}
+
+.expand-header-info strong {
+  font-size: 0.6875rem;
+}
+
+.member-avatar,
+.activity-avatar {
+  font-size: 0.5625rem;
+}
+
+.workspace-member span {
+  font-size: 0.6875rem;
+}
+
+.workspace-activity-item p {
+  font-size: 0.6875rem;
+  line-height: 1.55;
+}
+
+.workspace-activity-item span {
+  font-size: 0.5625rem;
+}
+
+/* POST ABERTO / THREAD DRAWER */
+.thread-drawer-header span {
+  font-size: 0.5625rem;
+}
+
+.thread-drawer-header h2 {
+  font-size: 2rem;
+}
+
+.thread-author strong {
+  font-size: 0.8125rem;
+}
+
+.thread-author span {
+  font-size: 0.625rem;
+}
+
+.thread-original-post > p {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.thread-responsible span {
+  font-size: 0.5625rem;
+}
+
+.thread-responsible strong {
+  font-size: 0.6875rem;
+}
+
+.thread-status-area > span {
+  font-size: 0.625rem;
+}
+
+.thread-status-area select {
+  font-size: 0.6875rem;
+}
+
+.thread-linked-item span {
+  font-size: 0.5625rem;
+}
+
+.thread-linked-item strong {
+  font-size: 0.8125rem;
+}
+
+.thread-divider span {
+  font-size: 0.625rem;
+}
+
+.thread-divider strong {
+  font-size: 0.625rem;
+}
+
+.comment-avatar {
+  font-size: 0.625rem;
+}
+
+.comment-header strong {
+  font-size: 0.6875rem;
+}
+
+.comment-header span {
+  font-size: 0.625rem;
+}
+
+.comment-content p {
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.thread-empty strong {
+  font-size: 0.8125rem;
+}
+
+.thread-empty span {
+  font-size: 0.6875rem;
+}
+
+.thread-drawer-form textarea {
+  font-size: 0.75rem;
+}
+
+/* ESTADOS VAZIOS / EM BREVE */
+.workspace-empty-feed strong {
+  font-size: 0.875rem;
+}
+
+.workspace-empty-feed span {
+  font-size: 0.6875rem;
+}
+
+.workspace-coming-soon span {
+  font-size: 0.625rem;
+}
+
+.workspace-coming-soon h2 {
+  font-size: 1.125rem;
+}
+
+.workspace-coming-soon p {
+  font-size: 0.75rem;
+}
+
+/* MINHAS ATIVIDADES */
+.my-activities-eyebrow {
+  font-size: 0.625rem;
+}
+
+.my-activities-header h2 {
+  font-size: 2.375rem;
+}
+
+.my-activities-header p {
+  font-size: 0.75rem;
+}
+
+.my-activities-tab {
+  font-size: 0.625rem;
+}
+
+.my-activities-empty strong {
+  font-size: 0.875rem;
+}
+
+.my-activities-empty span {
+  font-size: 0.6875rem;
+}
+
+/* MOBILE — mantém boa leitura sem exagerar */
+@media (max-width: 40.625rem) {
+  .post-text,
+  .thread-original-post > p {
+    font-size: 0.875rem;
+  }
+
+  .comment-content p,
+  .thread-drawer-form textarea {
+    font-size: 0.75rem;
+  }
+}
+
+
+/* =========================================================
+   THREAD MODAL CENTRALIZADO
+   Substitui o comportamento lateral do drawer sem alterar JSX.
+========================================================= */
+
+.thread-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+
+  background: rgba(0, 20, 46, 0.34);
+  backdrop-filter: blur(0.375rem);
+  -webkit-backdrop-filter: blur(0.375rem);
+
+  animation: threadOverlayFade 0.2s ease;
+}
+
+.thread-drawer {
+  position: fixed;
+
+  top: 50%;
+  left: 50%;
+  right: auto;
+
+  z-index: 999;
+
+  width: min(52rem, calc(100vw - 3rem));
+  height: min(52rem, calc(100vh - 3rem));
+  max-height: 90vh;
+
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border: 0.0625rem solid rgba(0, 20, 46, 0.08);
+  border-radius: 1.75rem;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 2rem 5rem rgba(0, 20, 46, 0.2),
+    0 0.5rem 1.75rem rgba(0, 20, 46, 0.08);
+
+  animation: threadModalEnter 0.24s ease;
+}
+
+@keyframes threadOverlayFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes threadModalEnter {
+  from {
+    opacity: 0;
+    transform:
+      translate(-50%, -47%)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+}
+
+/* HEADER DO MODAL */
+.thread-drawer-header {
+  flex-shrink: 0;
+
+  min-height: 6rem;
+
+  padding: 0 2rem;
+
+  border-bottom: 0.0625rem solid rgba(0, 20, 46, 0.07);
+
+  background: #ffffff;
+}
+
+.thread-drawer-header button {
+  width: 2.75rem;
+  height: 2.75rem;
+
+  flex-shrink: 0;
+}
+
+/* CONTEÚDO COM SCROLL INTERNO */
+.thread-drawer-body {
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 1.75rem 2rem;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(0, 20, 46, 0.24)
+    transparent;
+}
+
+.thread-drawer-body::-webkit-scrollbar {
+  width: 0.45rem;
+}
+
+.thread-drawer-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thread-drawer-body::-webkit-scrollbar-thumb {
+  border-radius: 62.4375rem;
+  background: rgba(0, 20, 46, 0.2);
+}
+
+.thread-drawer-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 20, 46, 0.32);
+}
+
+/* POST ORIGINAL */
+.thread-original-post {
+  padding-bottom: 1.75rem;
+}
+
+.thread-author {
+  margin-bottom: 1.25rem;
+}
+
+.thread-original-post > p {
+  max-width: 100%;
+}
+
+/* ÁREA DE RESPONSÁVEL / STATUS */
+.thread-responsible {
+  border: 0.0625rem solid rgba(0, 20, 46, 0.04);
+  border-radius: 1rem;
+}
+
+.thread-status-area {
+  margin-top: 1rem;
+}
+
+.thread-status-area select {
+  min-width: 10rem;
+  height: 2.75rem;
+
+  border-radius: 0.75rem;
+
+  background: #ffffff;
+}
+
+/* CONTEÚDO VINCULADO */
+.thread-linked-item {
+  border-radius: 1rem;
+}
+
+/* DISCUSSÃO */
+.thread-divider {
+  margin-top: 0.25rem;
+  padding: 1rem 0;
+}
+
+.thread-drawer-comments {
+  padding: 1.5rem 0;
+}
+
+.workspace-comment {
+  padding: 0.875rem;
+
+  border: 0.0625rem solid rgba(0, 20, 46, 0.05);
+  border-radius: 1rem;
+
+  background: rgba(0, 20, 46, 0.018);
+}
+
+.thread-empty {
+  min-height: 14rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 1rem;
+}
+
+/* FORMULÁRIO FIXO NA BASE DO MODAL */
+.thread-drawer-form {
+  flex-shrink: 0;
+
+  padding: 1rem 1.5rem;
+
+  border-top: 0.0625rem solid rgba(0, 20, 46, 0.07);
+
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.thread-drawer-form > div:last-child {
+  min-height: 3rem;
+
+  border-radius: 1.25rem;
+
+  background: #ffffff;
+}
+
+.thread-drawer-form button {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+/* =========================================================
+   THREAD MODAL — TABLET
+========================================================= */
+
+@media (max-width: 56.25rem) {
+  .thread-drawer {
+    width: min(46rem, calc(100vw - 2rem));
+    height: min(48rem, calc(100vh - 2rem));
+
+    border-radius: 1.5rem;
+  }
+
+  .thread-drawer-header {
+    padding: 0 1.5rem;
+  }
+
+  .thread-drawer-body {
+    padding: 1.5rem;
+  }
+}
+
+/* =========================================================
+   THREAD MODAL — MOBILE
+========================================================= */
+
+@media (max-width: 40.625rem) {
+  .thread-overlay {
+    background: rgba(0, 20, 46, 0.4);
+  }
+
+  .thread-drawer {
+    top: 50%;
+    left: 50%;
+    right: auto;
+
+    width: calc(100vw - 1.25rem);
+    height: calc(100vh - 1.25rem);
+    max-height: none;
+
+    border-radius: 1.25rem;
+
+    transform: translate(-50%, -50%);
+  }
+
+  .thread-drawer-header {
+    min-height: 5.25rem;
+
+    padding: 0 1.125rem;
+  }
+
+  .thread-drawer-header h2 {
+    font-size: 1.875rem;
+  }
+
+  .thread-drawer-body {
+    padding: 1.25rem 1.125rem;
+  }
+
+  .thread-drawer-form {
+    padding: 0.8125rem 0.9375rem;
+  }
+
+  .thread-status-area {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .thread-status-area select {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   THREAD MODAL — ACESSIBILIDADE
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .thread-overlay,
+  .thread-drawer {
+    animation: none;
+  }
+}

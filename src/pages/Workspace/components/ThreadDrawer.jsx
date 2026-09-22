@@ -1,249 +1,192 @@
 import {
-    FiCheckCircle,
-    FiExternalLink,
-    FiSend,
-    FiUser,
-    FiX,
-} from "react-icons/fi";
+  IoCloseOutline,
+  IoCheckmarkDoneOutline,
+  IoPersonOutline,
+  IoAttachOutline,
+  IoOpenOutline,
+  IoSend,
+} from "react-icons/io5";
 
-import { useState } from "react";
-
-import CommentItem from "./CommentItem";
+import "./style.css";
 
 export default function ThreadDrawer({
-    post,
-    type,
-
-    onClose,
-    onComment,
-    onStatusChange,
+  post,
+  type,
+  onClose,
+  onComment,
+  onStatusChange,
 }) {
-    const [comment, setComment] =
-        useState("");
+  if (!post) return null;
 
-    if (!post) {
-        return null;
-    }
+  function handleSubmit(event) {
+    event.preventDefault();
 
-    function handleSubmit(event) {
-        event.preventDefault();
+    const form = event.currentTarget;
+    const input = form.elements.comment;
+    const value = input.value.trim();
 
-        if (!comment.trim()) {
-            return;
-        }
+    if (!value) return;
 
-        onComment(
-            post.id,
-            comment
-        );
+    onComment(post.id, value);
+    form.reset();
+  }
 
-        setComment("");
-    }
+  return (
+    <div
+      className="thread-drawer-overlay"
+      onClick={onClose}
+      role="presentation"
+    >
+      <section
+        className="thread-drawer-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="thread-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <header className="thread-drawer-header">
+          <div>
+            <span className="thread-drawer-eyebrow">DISCUSSÃO</span>
+            <h2 id="thread-title">Thread</h2>
+          </div>
 
-    return (
-        <>
-            <div
-                className="thread-overlay"
-                onClick={onClose}
-            />
+          <button
+            type="button"
+            className="thread-drawer-close"
+            onClick={onClose}
+            aria-label="Fechar thread"
+          >
+            <IoCloseOutline />
+          </button>
+        </header>
 
-            <aside className="thread-drawer">
-                <header className="thread-drawer-header">
-                    <div>
-                        <span>
-                            DISCUSSÃO
-                        </span>
+        <div className="thread-drawer-body">
+          <article className="thread-post-card">
+            <div className="thread-post-top">
+              <div className="thread-author-avatar">
+                {post.author?.initials || "BCI"}
+              </div>
 
-                        <h2>
-                            Thread
-                        </h2>
-                    </div>
+              <div className="thread-author-info">
+                <strong>{post.author?.name || "Usuário"}</strong>
+                <span>{post.time || "Agora"}</span>
+              </div>
+            </div>
 
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        aria-label="Fechar thread"
-                    >
-                        <FiX />
-                    </button>
-                </header>
+            <div className="thread-post-type-row">
+              <span className={`thread-post-type ${type?.className || ""}`}>
+                {type?.label || post.type}
+              </span>
+            </div>
 
-                <div className="thread-drawer-body">
+            <p className="thread-post-text">{post.content}</p>
 
-                    <div className="thread-original-post">
-                        <div className="thread-author">
-                            <div className="post-avatar">
-                                {post.author.initials}
-                            </div>
+            {post.tags?.length > 0 && (
+              <div className="thread-post-tags">
+                {post.tags.map((tag) => (
+                  <span key={tag}>#{tag}</span>
+                ))}
+              </div>
+            )}
 
-                            <div>
-                                <strong>
-                                    {post.author.name}
-                                </strong>
+            <div className="thread-post-meta-grid">
+              <div className="thread-post-meta-card">
+                <span className="thread-meta-label">RESPONSÁVEL</span>
+                <div className="thread-meta-content">
+                  <IoPersonOutline />
+                  <strong>{post.assignee || "Não definido"}</strong>
+                </div>
+              </div>
 
-                                <span>
-                                    {post.createdAt}
-                                </span>
-                            </div>
-                        </div>
+              <div className="thread-post-status-wrapper">
+                <span className="thread-meta-label">STATUS</span>
+                <select
+                  value={post.status || "pendente"}
+                  onChange={(event) =>
+                    onStatusChange(post.id, event.target.value)
+                  }
+                  className="thread-status-select"
+                >
+                  <option value="pendente">Pendente</option>
+                  <option value="andamento">Em andamento</option>
+                  <option value="concluido">Concluído</option>
+                  <option value="resolvido">Resolvido</option>
+                </select>
+              </div>
+            </div>
 
-                        <span
-                            className={`post-type post-type-${type.className}`}
-                        >
-                            {type.label}
-                        </span>
-
-                        <p>
-                            {post.content}
-                        </p>
-
-                        {post.tags?.length > 0 && (
-                            <div className="post-tags">
-                                {post.tags.map(
-                                    (tag) => (
-                                        <span key={tag}>
-                                            #{tag}
-                                        </span>
-                                    )
-                                )}
-                            </div>
-                        )}
-
-                        {post.responsible && (
-                            <div className="thread-responsible">
-                                <FiUser />
-
-                                <div>
-                                    <span>
-                                        RESPONSÁVEL
-                                    </span>
-
-                                    <strong>
-                                        {post.responsible}
-                                    </strong>
-                                </div>
-                            </div>
-                        )}
-
-                        {post.status && (
-                            <div className="thread-status-area">
-                                <span>
-                                    STATUS
-                                </span>
-
-                                <select
-                                    value={post.status}
-                                    onChange={(event) =>
-                                        onStatusChange(
-                                            post.id,
-                                            event.target.value
-                                        )
-                                    }
-                                >
-                                    <option value="pending">
-                                        Pendente
-                                    </option>
-
-                                    <option value="progress">
-                                        Em análise
-                                    </option>
-
-                                    <option value="resolved">
-                                        Resolvido
-                                    </option>
-                                </select>
-                            </div>
-                        )}
-
-                        {post.linkedItem && (
-                            <button
-                                type="button"
-                                className="thread-linked-item"
-                            >
-                                <div>
-                                    <span>
-                                        CONTEÚDO VINCULADO
-                                    </span>
-
-                                    <strong>
-                                        {
-                                            post.linkedItem
-                                                .title
-                                        }
-                                    </strong>
-                                </div>
-
-                                <FiExternalLink />
-                            </button>
-                        )}
-                    </div>
-
-                    <div className="thread-divider">
-                        <span>
-                            DISCUSSÃO
-                        </span>
-
-                        <strong>
-                            {post.comments.length}
-                        </strong>
-                    </div>
-
-                    <div className="thread-drawer-comments">
-                        {post.comments.length ===
-                            0 ? (
-                            <div className="thread-empty">
-                                <FiCheckCircle />
-
-                                <strong>
-                                    Nenhum comentário ainda
-                                </strong>
-
-                                <span>
-                                    Seja a primeira pessoa a
-                                    participar dessa discussão.
-                                </span>
-                            </div>
-                        ) : (
-                            post.comments.map(
-                                (item) => (
-                                    <CommentItem
-                                        key={item.id}
-                                        comment={item}
-                                    />
-                                )
-                            )
-                        )}
-                    </div>
+            {post.linkedContent && (
+              <button
+                type="button"
+                className="thread-linked-content"
+              >
+                <div className="thread-linked-content-info">
+                  <span>CONTEÚDO VINCULADO</span>
+                  <strong>{post.linkedContent.title}</strong>
+                  <small>{post.linkedContent.type}</small>
                 </div>
 
-                <form
-                    className="thread-drawer-form"
-                    onSubmit={handleSubmit}
-                >
-                    <div className="comment-avatar">
-                        IR
+                <IoOpenOutline />
+              </button>
+            )}
+          </article>
+
+          <section className="thread-comments-section">
+            <div className="thread-comments-header">
+              <span>DISCUSSÃO</span>
+              <div className="thread-comments-count">
+                {post.comments?.length || 0}
+              </div>
+            </div>
+
+            {post.comments?.length ? (
+              <div className="thread-comments-list">
+                {post.comments.map((comment) => (
+                  <article className="thread-comment-card" key={comment.id}>
+                    <div className="thread-comment-avatar">
+                      {comment.initials || "U"}
                     </div>
 
-                    <div>
-                        <textarea
-                            value={comment}
-                            placeholder="Escreva uma resposta..."
-                            onChange={(event) =>
-                                setComment(
-                                    event.target.value
-                                )
-                            }
-                        />
+                    <div className="thread-comment-content">
+                      <div className="thread-comment-header">
+                        <strong>{comment.author}</strong>
+                        <span>{comment.time}</span>
+                      </div>
 
-                        <button
-                            type="submit"
-                            aria-label="Enviar resposta"
-                        >
-                            <FiSend />
-                        </button>
+                      <p>{comment.message}</p>
                     </div>
-                </form>
-            </aside>
-        </>
-    );
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="thread-comments-empty">
+                <IoCheckmarkDoneOutline />
+                <strong>Nenhum comentário ainda</strong>
+                <p>Seja a primeira pessoa a participar dessa discussão.</p>
+              </div>
+            )}
+          </section>
+        </div>
+
+        <footer className="thread-drawer-footer">
+          <form className="thread-reply-form" onSubmit={handleSubmit}>
+            <div className="thread-reply-avatar">
+              {post.author?.initials || "BCI"}
+            </div>
+
+            <input
+              type="text"
+              name="comment"
+              placeholder="Escreva uma resposta..."
+              autoComplete="off"
+            />
+
+            <button type="submit" aria-label="Enviar comentário">
+              <IoSend />
+            </button>
+          </form>
+        </footer>
+      </section>
+    </div>
+  );
 }

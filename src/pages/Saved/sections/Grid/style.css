@@ -788,6 +788,122 @@
 }
 
 /* =========================================================
+   LOADING DOS SALVOS
+========================================================= */
+
+.saved-loading {
+  grid-column: 1 / -1;
+
+  min-height: 17.5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.625rem;
+
+  padding: 2.5rem;
+
+  border:
+    0.0625rem solid
+    rgba(0, 20, 46, 0.07);
+
+  border-radius: 1.5rem;
+
+  background:
+    rgba(255, 255, 255, 0.7);
+
+  box-shadow:
+    0 0.5625rem 1.75rem
+    rgba(0, 20, 46, 0.04);
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.saved-loading-spinner {
+  width: 2.75rem;
+  height: 2.75rem;
+
+  margin-bottom: 0.625rem;
+
+  border:
+    0.25rem solid
+    rgba(5, 98, 210, 0.12);
+
+  border-top-color:
+    var(--color-secondary);
+
+  border-radius: 50%;
+
+  animation:
+    savedLoadingSpin
+    0.8s
+    linear
+    infinite;
+}
+
+
+/* =========================================================
+   TEXTO
+========================================================= */
+
+.saved-loading strong {
+  font-family:
+    var(--font-body-bold);
+
+  font-size: 0.875rem;
+
+  letter-spacing: 0.0625rem;
+
+  text-transform: uppercase;
+
+  color:
+    var(--color-primary);
+}
+
+
+.saved-loading > span:last-child {
+  font-family:
+    var(--font-body);
+
+  font-size: 0.6875rem;
+
+  color:
+    #8994a1;
+}
+
+
+/* =========================================================
+   ANIMAÇÃO
+========================================================= */
+
+@keyframes savedLoadingSpin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   ACESSIBILIDADE
+========================================================= */
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+  .saved-loading-spinner {
+    animation: none;
+  }
+}
+
+/* =========================================================
    ESTADO VAZIO
    ========================================================= */
 

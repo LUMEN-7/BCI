@@ -8,6 +8,7 @@ import {
 
 import "./style.css";
 
+
 export default function CarGrid({
   cars,
   favorites,
@@ -18,70 +19,192 @@ export default function CarGrid({
 }) {
   return (
     <div className="cars-grid">
-      {cars.map((car) => (
-        <article key={car.id} className="car-card">
-          <div className="card-top">
-            <span className="car-brand">{car.brand}</span>
-            <div className="card-top-actions">
-              {car.isImported && (
-                <span className="imported-car-badge">IMPORTADO</span>
-              )}
-              {!car.isImported && onSchedule && (
+
+      {cars.map((car) => {
+
+        const isFavorite =
+          favorites.includes(
+            String(car.id)
+          );
+
+
+        return (
+          <article
+            key={car.id}
+            className="car-card"
+          >
+
+            <div className="card-top">
+
+              <span className="car-brand">
+                {car.brand}
+              </span>
+
+
+              <div className="card-top-actions">
+
+                {car.isImported && (
+                  <span className="imported-car-badge">
+                    IMPORTADO
+                  </span>
+                )}
+
+
+                {!car.isImported &&
+                  onSchedule && (
+
+                  <button
+                    type="button"
+                    className="schedule-card-button"
+                    onClick={() =>
+                      onSchedule(car)
+                    }
+                    title="Agendar pesquisa deste modelo"
+                    aria-label="Agendar pesquisa deste modelo"
+                  >
+                    <IoAlarmOutline />
+                  </button>
+
+                )}
+
+
                 <button
                   type="button"
-                  className="schedule-card-button"
-                  onClick={() => onSchedule(car)}
-                  title="Agendar pesquisa deste modelo"
-                  aria-label="Agendar pesquisa deste modelo"
+                  className={
+                    `favorite-button ${
+                      isFavorite
+                        ? "is-favorite"
+                        : ""
+                    }`
+                  }
+                  onClick={() =>
+                    onToggleFavorite(
+                      car.id
+                    )
+                  }
+                  aria-label={
+                    isFavorite
+                      ? "Remover dos favoritos"
+                      : "Adicionar aos favoritos"
+                  }
                 >
-                  <IoAlarmOutline />
+                  {
+                    isFavorite
+                      ? <IoStar />
+                      : <IoStarOutline />
+                  }
                 </button>
+
+              </div>
+
+            </div>
+
+
+            <div className="car-image-container">
+
+              {car.image ||
+              car.imagemUrl ? (
+
+                <img
+                  src={
+                    car.image ||
+                    car.imagemUrl
+                  }
+                  alt={
+                    car.modelo
+                  }
+                  className="car-image"
+                />
+
+              ) : (
+
+                <div className="car-image-fallback">
+
+                  <IoCarSportOutline />
+
+                  <span>
+                    Sem foto disponível
+                  </span>
+
+                </div>
+
               )}
+
+            </div>
+
+
+            <div className="car-information">
+
+              <div className="car-meta">
+                {
+                  car.segment ||
+                  "Veículo"
+                }
+              </div>
+
+
+              <h3>
+                {
+                  car.modelo?.replace(
+                    ` ${car.ano}`,
+                    ""
+                  ) ||
+                  car.modelo
+                }
+              </h3>
+
+
+              <span className="car-year">
+                {car.ano}
+              </span>
+
+            </div>
+
+
+            {car.isImported ? (
+
               <button
                 type="button"
-                className={`favorite-button ${favorites.includes(String(car.id)) ? "is-favorite" : ""}`}
-                onClick={() => onToggleFavorite(car.id)}
-                aria-label={
-                  favorites.includes(String(car.id))
-                    ? "Remover dos favoritos"
-                    : "Adicionar aos favoritos"
+                className="details-button"
+                onClick={() =>
+                  onDetails(
+                    car.id,
+                    car
+                  )
                 }
               >
-                {favorites.includes(String(car.id)) ? <IoStar /> : <IoStarOutline />}
+                <span>
+                  EXPLORAR MODELO
+                </span>
+
+                <IoArrowForward />
               </button>
-            </div>
-          </div>
 
-          <div className="car-image-container">
-            {car.image || car.imagemUrl ? (
-              <img src={car.image || car.imagemUrl} alt={car.modelo} className="car-image" />
             ) : (
-              <div className="car-image-fallback">
-                <IoCarSportOutline />
-                <span>Sem foto disponível</span>
-              </div>
+
+              <button
+                type="button"
+                className="details-button"
+                onClick={() =>
+                  onDetails(
+                    car.id
+                  )
+                }
+              >
+                <span>
+                  EXPLORAR MODELO
+                </span>
+
+                <IoArrowForward />
+              </button>
+
             )}
-          </div>
 
-          <div className="car-information">
-            <div className="car-meta">{car.segment || "Veículo"}</div>
-            <h3>{car.modelo?.replace(` ${car.ano}`, "") || car.modelo}</h3>
-            <span className="car-year">{car.ano}</span>
-          </div>
+          </article>
+        );
 
-          {car.isImported ? (
-            <button type="button" className="details-button" onClick={() => onDetails(car.id, car)}>
-              <span>EXPLORAR MODELO</span>
-              <IoArrowForward />
-            </button>
-          ) : (
-            <button type="button" className="details-button" onClick={() => onDetails(car.id)}>
-              <span>EXPLORAR MODELO</span>
-              <IoArrowForward />
-            </button>
-          )}
-        </article>
-      ))}
+      })}
+
     </div>
   );
 }
