@@ -2,7 +2,10 @@ import {
   IoChevronForwardOutline,
   IoLockClosedOutline,
   IoPencilOutline,
+  IoMoonOutline,
+  IoSunnyOutline,
 } from "react-icons/io5";
+import useTheme from "@/context/useTheme";
 import "./style.css";
 
 const icons = {
@@ -11,6 +14,8 @@ const icons = {
 };
 
 export default function ProfileSettings({ items, onNavigate }) {
+  const { theme, setTheme } = useTheme();
+
   return (
     <section className="profile-settings">
       <div className="profile-section-heading">
@@ -38,6 +43,37 @@ export default function ProfileSettings({ items, onNavigate }) {
             </span>
           </button>
         ))}
+      </div>
+
+      <div className="profile-appearance">
+        <div className="profile-appearance-copy">
+          <span className="profile-appearance-icon"><IoSunnyOutline /></span>
+          <div>
+            <strong>Aparência</strong>
+            <p>Personalize como o BCI será exibido.</p>
+          </div>
+        </div>
+
+        <div className="profile-theme-control" role="group" aria-label="Escolha do tema">
+          <button
+            type="button"
+            className={theme === "light" ? "is-selected" : ""}
+            aria-pressed={theme === "light"}
+            onClick={() => setTheme("light")}
+          >
+            <IoSunnyOutline />
+            Claro
+          </button>
+          <button
+            type="button"
+            className={theme === "dark" ? "is-selected" : ""}
+            aria-pressed={theme === "dark"}
+            onClick={() => setTheme("dark")}
+          >
+            <IoMoonOutline />
+            Escuro
+          </button>
+        </div>
       </div>
     </section>
   );

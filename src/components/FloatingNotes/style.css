@@ -23,14 +23,14 @@
   align-items: center;
   justify-content: center;
 
-  border: 0.0625rem solid rgba(255, 255, 255, 0.55);
+  border: 0.0625rem solid var(--border-subtle);
   border-radius: 50%;
 
-  background: rgba(255, 255, 255, 0.78);
+  background: color-mix(in srgb, var(--surface-elevated) 88%, transparent);
   backdrop-filter: blur(1rem);
   -webkit-backdrop-filter: blur(1rem);
 
-  color: #00142e;
+  color: var(--text-primary);
 
   box-shadow:
     0 0.75rem 2.1875rem rgba(0, 20, 46, 0.18),
@@ -49,7 +49,7 @@
 .floating-notes-button:hover {
   transform: translateY(-0.1875rem);
 
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--surface-elevated);
 
   box-shadow:
     0 1rem 2.5rem rgba(0, 20, 46, 0.22),
@@ -90,10 +90,10 @@
 
   overflow: hidden;
 
-  border: 0.0625rem solid rgba(255, 255, 255, 0.55);
+  border: 0.0625rem solid var(--color-border);
   border-radius: 1.5rem;
 
-  background: rgba(255, 255, 255, 0.48);
+  background: color-mix(in srgb, var(--surface-primary) 92%, transparent);
 
   -webkit-backdrop-filter: blur(1.375rem);
   backdrop-filter: blur(1.375rem);
@@ -136,7 +136,7 @@
 
   padding: 1.125rem 1.25rem;
 
-  border-bottom: 0.0625rem solid rgba(0, 20, 46, 0.08);
+  border-bottom: 0.0625rem solid var(--border-subtle);
 }
 
 .notes-panel-title {
@@ -171,7 +171,7 @@
   font-size: 1.25rem;
   font-weight: 700;
 
-  color: #00142e;
+  color: var(--text-primary);
 
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -189,8 +189,8 @@
 
   border-radius: 0.8125rem;
 
-  background: #00142e;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--accent-contrast);
 
   font-size: 1.3125rem;
 }
@@ -209,8 +209,8 @@
   padding: 0 0.75rem;
   border: 0;
   border-radius: 0.625rem;
-  background: #00142e;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--accent-contrast);
   font-family: var(--font-body);
   font-size: 0.75rem;
   font-weight: 600;
@@ -242,9 +242,9 @@
   border: 0;
   border-radius: 0.6875rem;
 
-  background: rgba(0, 20, 46, 0.06);
+  background: var(--color-control);
 
-  color: #00142e;
+  color: var(--text-primary);
 
   cursor: pointer;
 
@@ -255,7 +255,7 @@
 
 .notes-close-button:hover,
 .notes-back-btn:hover {
-  background: rgba(0, 20, 46, 0.1);
+  background: var(--surface-secondary);
   transform: translateY(-0.0625rem);
 }
 
@@ -282,7 +282,7 @@
   border: 0.0625rem solid rgba(0, 20, 46, 0.08);
   border-radius: 0.8125rem;
 
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--input-background);
 }
 
 .notes-list-search svg {
@@ -305,11 +305,11 @@
   font-family: var(--font-body);
   font-size: 0.8125rem;
 
-  color: #00142e;
+  color: var(--text-primary);
 }
 
 .notes-list-search input::placeholder {
-  color: #9aa3ad;
+  color: var(--text-muted);
 }
 
 /* =========================================================
@@ -338,10 +338,10 @@
 
   padding: 0.9375rem;
 
-  border: 0.0625rem solid rgba(0, 20, 46, 0.08);
+  border: 0.0625rem solid var(--border-subtle);
   border-radius: 1.0625rem;
 
-  background: rgba(255, 255, 255, 0.829);
+  background: var(--surface-secondary);
 
   cursor: pointer;
 
@@ -363,7 +363,7 @@
 
 .note-card-item.is-expanded {
   border-color: rgba(5, 98, 210, 0.28);
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--surface-elevated);
   box-shadow: 0 0.625rem 1.75rem rgba(0, 20, 46, 0.1);
 }
 
@@ -400,7 +400,7 @@
   font-size: 0.875rem;
   font-weight: 700;
 
-  color: #00142e;
+  color: var(--text-primary);
 
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -458,7 +458,7 @@
 
   overflow: hidden;
 
-  color: #66717d;
+  color: var(--text-secondary);
 
   font-size: 0.75rem;
   line-height: 1.55;
