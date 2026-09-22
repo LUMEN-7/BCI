@@ -1,5 +1,8 @@
+import { useState } from "react";
+
 import Navbar from "../../components/Navbar/Navbar";
 import ErrorState from "../../components/ErrorState";
+import PageLoader from "../../components/PageLoader/PageLoader";
 
 import useCompareController from "./hooks/useCompareController";
 
@@ -11,43 +14,95 @@ import Search from "./sections/Search";
 import Selection from "./sections/Selection";
 
 import "./style.css";
-import { useState } from "react";
+
 
 export default function Compare() {
     const controller = useCompareController();
+
     const [activeTab, setActiveTab] = useState("direct");
+
+
+    /* =========================================================
+       LOADING GLOBAL
+    ========================================================= */
+
+    if (controller.loading) {
+        return (
+            <PageLoader message="catálogo de veículos" />
+        );
+    }
+
 
     return (
         <main className="compare-page">
             <Navbar />
+
             <div className="compare-container">
+
                 <Header />
 
-                <div className="compare-tabs" role="tablist" aria-label="Tipos de comparação">
+
+                {/* =================================================
+                    TABS
+                ================================================= */}
+
+                <div
+                    className="compare-tabs"
+                    role="tablist"
+                    aria-label="Tipos de comparação"
+                >
                     <button
                         type="button"
                         role="tab"
                         aria-selected={activeTab === "direct"}
-                        className={activeTab === "direct" ? "active" : ""}
-                        onClick={() => setActiveTab("direct")}
+                        className={
+                            activeTab === "direct"
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setActiveTab("direct")
+                        }
                     >
                         Comparação direta
                     </button>
+
+
                     <button
                         type="button"
                         role="tab"
                         aria-selected={activeTab === "multi"}
-                        className={activeTab === "multi" ? "active" : ""}
-                        onClick={() => setActiveTab("multi")}
+                        className={
+                            activeTab === "multi"
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setActiveTab("multi")
+                        }
                     >
                         Comparação múltipla
                     </button>
                 </div>
 
+
+                {/* =================================================
+                    COMPARAÇÃO MÚLTIPLA
+                ================================================= */}
+
                 {activeTab === "multi" ? (
-                    <MultiCompare cars={controller.cars} />
+
+                    <MultiCompare
+                        cars={controller.cars}
+                    />
+
                 ) : (
+
                     <>
+                        {/* =========================================
+                            SELEÇÃO
+                        ========================================= */}
+
                         <Selection
                             firstCar={controller.firstCar}
                             secondCar={controller.secondCar}
@@ -57,34 +112,68 @@ export default function Compare() {
                             removeCar={controller.removeCar}
                             onCompare={controller.handleCompare}
                         />
+
+
+                        {/* =========================================
+                            PESQUISA
+                        ========================================= */}
+
                         <Search
                             activeSlot={controller.activeSlot}
                             search={controller.search}
                             setSearch={controller.setSearch}
                             referenceCar={controller.referenceCar}
-                            similarityFilters={controller.similarityFilters}
-                            activeSimilarityFilters={controller.activeSimilarityFilters}
-                            onToggleSimilarityFilter={controller.toggleSimilarityFilter}
+                            similarityFilters={
+                                controller.similarityFilters
+                            }
+                            activeSimilarityFilters={
+                                controller.activeSimilarityFilters
+                            }
+                            onToggleSimilarityFilter={
+                                controller.toggleSimilarityFilter
+                            }
                         />
 
-                        {controller.loading ? (
-                            <div className="compare-status-message">Carregando catálogo de veículos...</div>
-                        ) : controller.error ? (
-                            <div className="compare-status-message compare-status-message-error">{controller.error}</div>
+
+                        {/* =========================================
+                            ERRO / RESULTADOS
+                        ========================================= */}
+
+                        {controller.error ? (
+
+                            <ErrorState
+                                title="Não foi possível carregar os veículos"
+                                message={controller.error}
+                            />
+
                         ) : (
+
                             <Results
                                 results={controller.results}
                                 search={controller.search}
                                 firstCar={controller.firstCar}
                                 secondCar={controller.secondCar}
                                 onSelect={controller.selectCar}
-                                onClear={() => controller.setSearch('')}
+                                onClear={() =>
+                                    controller.setSearch("")
+                                }
                             />
+
                         )}
 
-                        <Footer canCompare={controller.canCompare} onCompare={controller.handleCompare} />
+
+                        {/* =========================================
+                            FOOTER
+                        ========================================= */}
+
+                        <Footer
+                            canCompare={controller.canCompare}
+                            onCompare={controller.handleCompare}
+                        />
                     </>
+
                 )}
+
             </div>
         </main>
     );

@@ -1,53 +1,85 @@
-import AiAnalysis from './sections/AiAnalysis';
-import ComparisonChart from './sections/ComparisonChart';
-import Header from './sections/Header';
-import Hero from './sections/Hero';
-import Technical from './sections/Technical';
-import Topbar from './sections/Topbar';
-import useDetailController from './hooks/useDetailController';
-import './style.css';
+import AiAnalysis from "./sections/AiAnalysis";
+import ComparisonChart from "./sections/ComparisonChart";
+import Header from "./sections/Header";
+import Hero from "./sections/Hero";
+import Technical from "./sections/Technical";
+import Topbar from "./sections/Topbar";
+
+import PageLoader from "../../components/PageLoader/PageLoader";
+import ErrorState from "../../components/ErrorState";
+
+import useDetailController from "./hooks/useDetailController";
+
+import "./style.css";
+
 
 export default function CompareDetail() {
     const controller = useDetailController();
 
-    // 1. Tela de Carregamento enquanto o C# calcula
+
+    /* =========================================================
+       LOADING GLOBAL
+    ========================================================= */
+
     if (controller.loading) {
         return (
-            <main className="compare-detail-page">
-                <div className="compare-detail-container loading-container">
-                    <h2>Cruzando dados automotivos...</h2>
-                    {/* Aqui você pode colocar um CSS Spinner bonitinho */}
-                </div>
-            </main>
+            <PageLoader message="comparação automotiva" />
         );
     }
 
-    // 2. Tela de Erro caso a API esteja fora do ar
+
+    /* =========================================================
+       ERRO
+    ========================================================= */
+
     if (controller.error) {
         return (
             <main className="compare-detail-page">
-                <div className="compare-detail-container loading-container">
-                    <h2>{controller.error}</h2>
-                    <button onClick={controller.handleBack}>Voltar</button>
+                <div className="compare-detail-container">
+
+                    <ErrorState
+                        title="Não foi possível gerar a comparação"
+                        message={controller.error}
+                        onBack={controller.handleBack}
+                    />
+
                 </div>
             </main>
         );
     }
 
-    // 3. A Tela Real
+
+    /* =========================================================
+       CONTEÚDO
+    ========================================================= */
+
     return (
         <main className="compare-detail-page">
+
             <div className="compare-detail-container">
+
                 <Topbar
                     favorite={controller.favorite}
                     onBack={controller.handleBack}
                     onHome={controller.handleHome}
                     onToggleFavorite={controller.toggleFavorite}
-                    handleExport = {controller.handleExport}
+                    handleExport={controller.handleExport}
                 />
+
+
                 <Header />
-                <Hero cars={controller.cars} />
-                <ComparisonChart cars={controller.cars} />
+
+
+                <Hero
+                    cars={controller.cars}
+                />
+
+
+                <ComparisonChart
+                    cars={controller.cars}
+                />
+
+
                 <Technical
                     cars={controller.cars}
                     expandedSection={controller.expandedSection}
@@ -56,16 +88,19 @@ export default function CompareDetail() {
                     onToggleSources={controller.toggleSources}
                 />
 
+
                 <AiAnalysis
                     cars={controller.cars}
-                    comparisonSummary={controller.comparisonSummary}
-                    mathConclusions={controller.mathConclusions}
+                    comparisonSummary={
+                        controller.comparisonSummary
+                    }
+                    mathConclusions={
+                        controller.mathConclusions
+                    }
                 />
-                
-                {/* BÔNUS: Placar de Matemática do C# */}
-                {/* Se quiser renderizar as conclusões matemáticas prontas do C#, 
-                    elas estão disponíveis em controller.mathConclusions */}
+
             </div>
+
         </main>
     );
 }

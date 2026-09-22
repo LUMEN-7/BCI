@@ -4,112 +4,296 @@ import {
   IoHomeOutline,
   IoStar,
   IoStarOutline,
-  IoDownloadOutline
+  IoDownloadOutline,
 } from "react-icons/io5";
+
 import { useState } from "react";
+
+import PageLoader from "../../../../components/PageLoader/PageLoader";
+
 import "./style.css";
 
-function ExportDialog({ handleExport, onClose }) {
-  const [format, setFormat] = useState("csv");
-  const [separator, setSeparator] = useState(",");
+
+function ExportDialog({
+  handleExport,
+  onClose,
+}) {
+  const [format, setFormat] =
+    useState("csv");
+
+  const [separator, setSeparator] =
+    useState(",");
+
+  const [isExporting, setIsExporting] =
+    useState(false);
+
 
   async function handleConfirm() {
-    await handleExport(format, separator);
-    onClose();
+    try {
+      setIsExporting(true);
+
+      await handleExport(
+        format,
+        separator
+      );
+
+      onClose();
+
+    } catch (error) {
+      console.error(
+        "Erro ao exportar:",
+        error
+      );
+
+    } finally {
+      setIsExporting(false);
+    }
   }
 
+
   return (
-    <div className="export-dialog-backdrop" role="presentation" onMouseDown={onClose}>
+    <div
+      className="export-dialog-backdrop"
+      role="presentation"
+      onMouseDown={
+        isExporting
+          ? undefined
+          : onClose
+      }
+    >
       <section
         className="export-dialog"
         role="dialog"
         aria-modal="true"
         aria-labelledby="export-dialog-title"
-        onMouseDown={(event) => event.stopPropagation()}
+        onMouseDown={(event) =>
+          event.stopPropagation()
+        }
       >
+
         <div className="export-dialog-header">
+
           <div>
-            <span className="export-dialog-eyebrow">Exportação</span>
-            <h2 id="export-dialog-title">Escolha o formato dos dados</h2>
+            <span className="export-dialog-eyebrow">
+              Exportação
+            </span>
+
+            <h2 id="export-dialog-title">
+              Escolha o formato dos dados
+            </h2>
           </div>
+
+
           <button
             type="button"
             className="export-dialog-close"
             onClick={onClose}
             aria-label="Fechar exportação"
+            disabled={isExporting}
           >
             <IoClose />
           </button>
+
         </div>
 
-        <div className="export-format-options">
-          {["csv", "xlsx", "json", "xml"].map((option) => (
-            <label
-              className={`export-format-option ${format === option ? "is-selected" : ""}`}
-              key={option}
-            >
-              <input
-                type="radio"
-                name="export-format"
-                value={option}
-                checked={format === option}
-                onChange={(event) => setFormat(event.target.value)}
-              />
-              <strong>{option.toUpperCase()}</strong>
-            </label>
-          ))}
-        </div>
 
-        {format === "csv" && (
-          <fieldset className="csv-separator-options">
-            <legend>Separador do CSV</legend>
-            <label>
-              <input
-                type="radio"
-                name="csv-separator"
-                value=","
-                checked={separator === ","}
-                onChange={() => setSeparator(",")}
-              />
-              Vírgula (,)
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="csv-separator"
-                value=";"
-                checked={separator === ";"}
-                onChange={() => setSeparator(";")}
-              />
-              Ponto e vírgula (;)
-            </label>
-          </fieldset>
+        {isExporting ? (
+
+          /* =====================================================
+             LOADING LOCAL DO MODAL
+          ====================================================== */
+
+          <div className="export-dialog-loading">
+
+            <span
+              className="export-dialog-spinner"
+              aria-hidden="true"
+            />
+
+            <strong>
+              Preparando exportação...
+            </strong>
+
+            <p>
+              Estamos gerando o arquivo.
+            </p>
+
+          </div>
+
+        ) : (
+
+          <>
+            {/* ===================================================
+                FORMATOS
+            ==================================================== */}
+
+            <div className="export-format-options">
+
+              {[
+                "csv",
+                "xlsx",
+                "json",
+                "xml",
+              ].map((option) => (
+
+                <label
+                  className={
+                    `export-format-option ${
+                      format === option
+                        ? "is-selected"
+                        : ""
+                    }`
+                  }
+                  key={option}
+                >
+
+                  <input
+                    type="radio"
+                    name="export-format"
+                    value={option}
+                    checked={
+                      format === option
+                    }
+                    onChange={(event) =>
+                      setFormat(
+                        event.target.value
+                      )
+                    }
+                  />
+
+                  <strong>
+                    {option.toUpperCase()}
+                  </strong>
+
+                </label>
+
+              ))}
+
+            </div>
+
+
+            {/* ===================================================
+                SEPARADOR CSV
+            ==================================================== */}
+
+            {format === "csv" && (
+
+              <fieldset className="csv-separator-options">
+
+                <legend>
+                  Separador do CSV
+                </legend>
+
+
+                <label>
+
+                  <input
+                    type="radio"
+                    name="csv-separator"
+                    value=","
+                    checked={
+                      separator === ","
+                    }
+                    onChange={() =>
+                      setSeparator(",")
+                    }
+                  />
+
+                  Vírgula (,)
+
+                </label>
+
+
+                <label>
+
+                  <input
+                    type="radio"
+                    name="csv-separator"
+                    value=";"
+                    checked={
+                      separator === ";"
+                    }
+                    onChange={() =>
+                      setSeparator(";")
+                    }
+                  />
+
+                  Ponto e vírgula (;)
+
+                </label>
+
+              </fieldset>
+
+            )}
+
+
+            {/* ===================================================
+                AÇÕES
+            ==================================================== */}
+
+            <div className="export-dialog-actions">
+
+              <button
+                type="button"
+                className="export-dialog-cancel"
+                onClick={onClose}
+              >
+                Cancelar
+              </button>
+
+
+              <button
+                type="button"
+                className="export-dialog-confirm"
+                onClick={handleConfirm}
+              >
+                Baixar arquivo
+              </button>
+
+            </div>
+          </>
+
         )}
 
-        <div className="export-dialog-actions">
-          <button type="button" className="export-dialog-cancel" onClick={onClose}>
-            Cancelar
-          </button>
-          <button type="button" className="export-dialog-confirm" onClick={handleConfirm}>
-            Baixar arquivo
-          </button>
-        </div>
       </section>
     </div>
   );
 }
 
-export default function Topbar({ favorite, onBack, onHome, onToggleFavorite, handleExport }) {
-  const [isExportOpen, setIsExportOpen] = useState(false);
+
+export default function Topbar({
+  favorite,
+  onBack,
+  onHome,
+  onToggleFavorite,
+  handleExport,
+}) {
+  const [
+    isExportOpen,
+    setIsExportOpen,
+  ] = useState(false);
+
 
   return (
     <>
+
       <header className="compare-detail-topbar">
-        <button type="button" className="back-button" onClick={onBack}>
+
+        <button
+          type="button"
+          className="back-button"
+          onClick={onBack}
+        >
           <IoArrowBack />
-          <span>Voltar</span>
+
+          <span>
+            Voltar
+          </span>
         </button>
+
+
         <div className="topbar-actions">
+
           <button
             type="button"
             className="home-button"
@@ -118,31 +302,63 @@ export default function Topbar({ favorite, onBack, onHome, onToggleFavorite, han
           >
             <IoHomeOutline />
           </button>
+
+
           <button
             type="button"
-            className={`favorite-button ${favorite ? "is-favorite" : ""}`}
-            onClick={onToggleFavorite}
+            className={
+              `favorite-button ${
+                favorite
+                  ? "is-favorite"
+                  : ""
+              }`
+            }
+            onClick={
+              onToggleFavorite
+            }
             aria-label="Favoritar comparação"
           >
-            {favorite ? <IoStar /> : <IoStarOutline />}
+            {
+              favorite
+                ? <IoStar />
+                : <IoStarOutline />
+            }
           </button>
+
+
           <button
             type="button"
             className="export-data-button"
-            onClick={() => setIsExportOpen(true)}
+            onClick={() =>
+              setIsExportOpen(true)
+            }
             aria-label="Exportar dados"
           >
             <IoDownloadOutline />
-            <span>Exportar dados</span>
+
+            <span>
+              Exportar dados
+            </span>
           </button>
+
         </div>
+
       </header>
+
+
       {isExportOpen && (
+
         <ExportDialog
-          handleExport={handleExport}
-          onClose={() => setIsExportOpen(false)}
+          handleExport={
+            handleExport
+          }
+          onClose={() =>
+            setIsExportOpen(false)
+          }
         />
+
       )}
+
     </>
   );
 }
