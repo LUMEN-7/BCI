@@ -800,6 +800,117 @@
     min-width: 11.25rem;
 }
 
+/* =========================================================
+   CÓDIGO ENVIADO COM SUCESSO
+========================================================= */
+
+.verification-code-sent {
+    width: fit-content;
+    max-width: 100%;
+
+    margin-bottom: 1.5rem;
+
+    padding: 0.875rem 1rem;
+
+    border:
+        0.0625rem solid rgba(5, 98, 210, 0.14);
+
+    border-radius:
+        1rem;
+
+    display: flex;
+    align-items: center;
+
+    gap:
+        0.75rem;
+
+    background:
+        rgba(5, 98, 210, 0.045);
+
+    color:
+        var(--color-primary);
+}
+
+
+.verification-code-sent-icon {
+    width:
+        2.25rem;
+
+    height:
+        2.25rem;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        50%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        rgba(5, 98, 210, 0.1);
+
+    color:
+        var(--color-secondary);
+}
+
+
+.verification-code-sent-icon svg {
+    font-size:
+        1.125rem;
+}
+
+
+.verification-code-sent strong,
+.verification-code-sent span {
+    display:
+        block;
+}
+
+
+.verification-code-sent strong {
+    font-family:
+        var(--font-body-bold);
+
+    font-size:
+        0.75rem;
+
+    color:
+        var(--color-primary);
+}
+
+
+.verification-code-sent span {
+    margin-top:
+        0.1875rem;
+
+    font-family:
+        var(--font-body);
+
+    font-size:
+        0.6875rem;
+
+    color:
+        rgba(0, 20, 46, 0.62);
+}
+
+
+@media (max-width: 32.5rem) {
+    .verification-code-sent {
+        width:
+            100%;
+
+        box-sizing:
+            border-box;
+    }
+}
 
 /* =========================================================
    TABLET

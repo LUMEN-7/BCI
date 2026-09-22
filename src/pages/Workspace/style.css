@@ -3605,6 +3605,258 @@
 }
 
 /* =========================================================
+   FEED — LOADING INICIAL
+========================================================= */
+
+.workspace-feed-initial-loading {
+  min-height: 18rem;
+
+  border:
+    0.0625rem solid rgba(0, 20, 46, 0.07);
+
+  border-radius:
+    1.5rem;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    1rem;
+
+  padding:
+    2rem;
+
+  background:
+    rgba(255, 255, 255, 0.72);
+
+  text-align:
+    center;
+
+  box-shadow:
+    0 0.875rem 2.25rem rgba(0, 20, 46, 0.025);
+}
+
+
+/* =========================================================
+   SPINNER INICIAL
+========================================================= */
+
+.workspace-feed-initial-spinner {
+  width:
+    2.5rem;
+
+  height:
+    2.5rem;
+
+  border:
+    0.1875rem solid rgba(5, 98, 210, 0.12);
+
+  border-top-color:
+    var(--color-secondary);
+
+  border-radius:
+    50%;
+
+  animation:
+    workspaceFeedInitialSpin 0.75s linear infinite;
+}
+
+
+@keyframes workspaceFeedInitialSpin {
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+
+}
+
+
+/* =========================================================
+   TEXTO DO LOADING
+========================================================= */
+
+.workspace-feed-loading-content {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  gap:
+    0.3125rem;
+}
+
+
+.workspace-feed-loading-content strong {
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.875rem;
+
+  color:
+    var(--color-primary);
+}
+
+
+.workspace-feed-loading-content span {
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.6875rem;
+
+  color:
+    rgba(0, 20, 46, 0.5);
+}
+
+
+/* =========================================================
+   INFINITE SCROLL
+========================================================= */
+
+.workspace-feed-load-more {
+  min-height:
+    7rem;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    0.75rem;
+
+  padding:
+    1.5rem;
+}
+
+
+.workspace-feed-load-more strong {
+  font-family:
+    var(--font-body-bold);
+
+  font-size:
+    0.6875rem;
+
+  color:
+    rgba(0, 20, 46, 0.5);
+}
+
+
+/* =========================================================
+   SPINNER — CARREGAR MAIS
+========================================================= */
+
+.workspace-feed-loader {
+  width:
+    2rem;
+
+  height:
+    2rem;
+
+  border:
+    0.1875rem solid rgba(5, 98, 210, 0.12);
+
+  border-top-color:
+    var(--color-secondary);
+
+  border-radius:
+    50%;
+
+  animation:
+    workspaceFeedSpin 0.8s linear infinite;
+}
+
+
+@keyframes workspaceFeedSpin {
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+
+}
+
+
+/* =========================================================
+   FIM DO FEED
+========================================================= */
+
+.workspace-feed-end {
+  padding:
+    1.75rem 1rem;
+
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  text-align:
+    center;
+}
+
+
+.workspace-feed-end span {
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.6875rem;
+
+  color:
+    rgba(0, 20, 46, 0.38);
+}
+
+
+/* =========================================================
+   ACESSIBILIDADE
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .workspace-feed-initial-spinner,
+  .workspace-feed-loader {
+    animation:
+      none;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-feed-loader {
+    animation:
+      none;
+  }
+}
+
+/* =========================================================
    THREAD MODAL — TABLET
 ========================================================= */
 

@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import {
   IoArrowForwardOutline,
@@ -10,6 +13,8 @@ import {
   IoTimeOutline,
   IoTrashOutline,
 } from "react-icons/io5";
+
+import SectionLoader from "@/components/SectionLoader/index.jsx";
 
 import {
   listarVersoesCarro,
@@ -31,25 +36,30 @@ function VersionHistory({
     setVersoes,
   ] = useState([]);
 
+
   const [
     versaoSelecionada,
     setVersaoSelecionada,
   ] = useState(null);
+
 
   const [
     detalheVersao,
     setDetalheVersao,
   ] = useState(null);
 
+
   const [
     loading,
     setLoading,
   ] = useState(true);
 
+
   const [
     loadingDetalhe,
     setLoadingDetalhe,
   ] = useState(false);
+
 
   const [
     error,
@@ -57,10 +67,20 @@ function VersionHistory({
   ] = useState("");
 
 
+  /* =========================================================
+     CARREGAR HISTÓRICO
+  ========================================================= */
+
   useEffect(() => {
     async function carregar() {
-      setLoading(true);
-      setError("");
+      setLoading(
+        true
+      );
+
+      setError(
+        ""
+      );
+
 
       try {
         const response =
@@ -68,7 +88,10 @@ function VersionHistory({
             linhagemId
           );
 
-        setVersoes(response);
+
+        setVersoes(
+          response
+        );
 
       } catch (err) {
 
@@ -79,15 +102,24 @@ function VersionHistory({
 
       } finally {
 
-        setLoading(false);
+        setLoading(
+          false
+        );
 
       }
     }
 
+
     carregar();
 
-  }, [linhagemId]);
+  }, [
+    linhagemId,
+  ]);
 
+
+  /* =========================================================
+     VER VERSÃO
+  ========================================================= */
 
   async function verVersao(
     carroId
@@ -96,8 +128,16 @@ function VersionHistory({
       carroId
     );
 
-    setLoadingDetalhe(true);
-    setError("");
+
+    setLoadingDetalhe(
+      true
+    );
+
+
+    setError(
+      ""
+    );
+
 
     try {
       const response =
@@ -105,7 +145,10 @@ function VersionHistory({
           carroId
         );
 
-      setDetalheVersao(response);
+
+      setDetalheVersao(
+        response
+      );
 
     } catch (err) {
 
@@ -116,14 +159,24 @@ function VersionHistory({
 
     } finally {
 
-      setLoadingDetalhe(false);
+      setLoadingDetalhe(
+        false
+      );
 
     }
   }
 
 
+  /* =========================================================
+     RENDER
+  ========================================================= */
+
   return (
     <div className="update-history">
+
+      {/* =====================================================
+          HEADER
+      ====================================================== */}
 
       <div className="update-history-header">
 
@@ -131,14 +184,18 @@ function VersionHistory({
 
           <IoTimeOutline />
 
+
           <div>
+
             <strong>
               Histórico de versões
             </strong>
 
+
             <span>
               Todas as vezes que este carro foi atualizado
             </span>
+
           </div>
 
         </div>
@@ -147,32 +204,15 @@ function VersionHistory({
 
 
       {/* =====================================================
-          LOADING DO HISTÓRICO
+          CONTEÚDO
       ====================================================== */}
 
       {loading ? (
 
-        <div
-          className="saved-local-loader"
-          role="status"
-          aria-live="polite"
-        >
-
-          <span
-            className="saved-local-loader-spinner"
-            aria-hidden="true"
-          />
-
-          <p>
-            Carregando histórico
-            <span className="saved-local-loader-dots">
-              <span>.</span>
-              <span>.</span>
-              <span>.</span>
-            </span>
-          </p>
-
-        </div>
+        <SectionLoader
+          message="Carregando histórico"
+          compact
+        />
 
       ) : error ? (
 
@@ -184,155 +224,157 @@ function VersionHistory({
 
         <div className="update-history-list">
 
-          {versoes.map((v) => (
+          {versoes.map(
+            (versao) => (
 
-            <div
-              key={v.carroId}
-              className="update-item"
-            >
+              <div
+                key={
+                  versao.carroId
+                }
+                className="update-item"
+              >
 
-              <div className="update-timeline">
-                <span />
-                <div />
-              </div>
+                {/* TIMELINE */}
 
-
-              <div className="update-content">
-
-                <div className="update-meta">
-
-                  <span>
-                    {
-                      new Date(
-                        v.dataCriacao
-                      ).toLocaleDateString(
-                        "pt-BR"
-                      )
-                    }
-                  </span>
-
-
-                  {v.ehVersaoAtual && (
-                    <small>
-                      ATUAL
-                    </small>
-                  )}
-
+                <div className="update-timeline">
+                  <span />
+                  <div />
                 </div>
 
 
-                <button
-                  type="button"
-                  className="mark-read-button"
-                  onClick={() =>
-                    verVersao(
-                      v.carroId
+                {/* CONTEÚDO */}
+
+                <div className="update-content">
+
+                  <div className="update-meta">
+
+                    <span>
+                      {
+                        new Date(
+                          versao.dataCriacao
+                        ).toLocaleDateString(
+                          "pt-BR"
+                        )
+                      }
+                    </span>
+
+
+                    {versao.ehVersaoAtual && (
+
+                      <small>
+                        ATUAL
+                      </small>
+
+                    )}
+
+                  </div>
+
+
+                  <button
+                    type="button"
+                    className="mark-read-button"
+                    onClick={() =>
+                      verVersao(
+                        versao.carroId
+                      )
+                    }
+                  >
+                    Ver detalhes desta versão
+                  </button>
+
+
+                  {/* ===========================================
+                      DETALHE DA VERSÃO
+                  ============================================ */}
+
+                  {
+                    versaoSelecionada ===
+                    versao.carroId && (
+
+                      loadingDetalhe ? (
+
+                        <div className="update-version-detail">
+
+                          <SectionLoader
+                            message="Carregando alterações"
+                            compact
+                          />
+
+                        </div>
+
+                      ) : detalheVersao ? (
+
+                        <div className="update-version-detail">
+
+                          <strong>
+                            O que mudou nesta versão
+                          </strong>
+
+
+                          <div className="update-version-changes">
+
+                            {/* POTÊNCIA */}
+
+                            <span>
+
+                              <small>
+                                Potência
+                              </small>
+
+
+                              <b>
+                                {
+                                  detalheVersao
+                                    .especificacoes?.[0]
+                                    ?.potencia
+                                    ?.Fontes?.[0]
+                                    ?.Valor ||
+                                  "Não informado"
+                                }{" "}
+                                cv
+                              </b>
+
+                            </span>
+
+
+                            {/* TORQUE */}
+
+                            <span>
+
+                              <small>
+                                Torque
+                              </small>
+
+
+                              <b>
+                                {
+                                  detalheVersao
+                                    .especificacoes?.[0]
+                                    ?.torque
+                                    ?.Fontes?.[0]
+                                    ?.Valor ||
+                                  "Não informado"
+                                }{" "}
+                                Nm
+                              </b>
+
+                            </span>
+
+                          </div>
+
+                        </div>
+
+                      ) : null
+
                     )
                   }
-                >
-                  Ver detalhes desta versão
-                </button>
 
-
-                {versaoSelecionada ===
-                  v.carroId && (
-
-                  loadingDetalhe ? (
-
-                    <div className="update-version-detail">
-
-                      <div
-                        className="
-                          saved-local-loader
-                          saved-local-loader-compact
-                        "
-                        role="status"
-                        aria-live="polite"
-                      >
-
-                        <span
-                          className="saved-local-loader-spinner"
-                          aria-hidden="true"
-                        />
-
-                        <p>
-                          Carregando alterações
-                          <span className="saved-local-loader-dots">
-                            <span>.</span>
-                            <span>.</span>
-                            <span>.</span>
-                          </span>
-                        </p>
-
-                      </div>
-
-                    </div>
-
-                  ) : detalheVersao ? (
-
-                    <div className="update-version-detail">
-
-                      <strong>
-                        O que mudou nesta versão
-                      </strong>
-
-
-                      <div className="update-version-changes">
-
-                        <span>
-
-                          <small>
-                            Potência
-                          </small>
-
-                          <b>
-                            {
-                              detalheVersao
-                                .especificacoes?.[0]
-                                ?.potencia
-                                ?.Fontes?.[0]
-                                ?.Valor ||
-                              "Não informado"
-                            }{" "}
-                            cv
-                          </b>
-
-                        </span>
-
-
-                        <span>
-
-                          <small>
-                            Torque
-                          </small>
-
-                          <b>
-                            {
-                              detalheVersao
-                                .especificacoes?.[0]
-                                ?.torque
-                                ?.Fontes?.[0]
-                                ?.Valor ||
-                              "Não informado"
-                            }{" "}
-                            Nm
-                          </b>
-
-                        </span>
-
-                      </div>
-
-                    </div>
-
-                  ) : null
-
-                )}
+                </div>
 
               </div>
 
-            </div>
-
-          ))}
+            )
+          )}
 
         </div>
 
@@ -364,7 +406,8 @@ function SavedCard({
   onComparisonDetails,
 }) {
   const isCar =
-    activeTab === "cars";
+    activeTab ===
+    "cars";
 
 
   const imageContent =
@@ -380,22 +423,30 @@ function SavedCard({
       >
 
         <img
-          src={item.image}
-          alt={item.name}
+          src={
+            item.image
+          }
+          alt={
+            item.name
+          }
         />
 
 
         <button
           type="button"
-          onClick={(event) => {
+          onClick={
+            (event) => {
 
-            event.stopPropagation();
+              event
+                .stopPropagation();
 
-            onCarDetails(
-              item.id
-            );
 
-          }}
+              onCarDetails(
+                item.id
+              );
+
+            }
+          }
         >
           Ver detalhes
 
@@ -409,10 +460,16 @@ function SavedCard({
       <div className="saved-compare-image">
 
         <div>
+
           <img
-            src={item.firstImage}
-            alt={item.firstCar}
+            src={
+              item.firstImage
+            }
+            alt={
+              item.firstCar
+            }
           />
+
         </div>
 
 
@@ -422,10 +479,16 @@ function SavedCard({
 
 
         <div>
+
           <img
-            src={item.secondImage}
-            alt={item.secondCar}
+            src={
+              item.secondImage
+            }
+            alt={
+              item.secondCar
+            }
           />
+
         </div>
 
 
@@ -450,10 +513,9 @@ function SavedCard({
   return (
     <article
       className={
-        `saved-card ${
-          isOpen
-            ? "saved-card-open"
-            : ""
+        `saved-card ${isOpen
+          ? "saved-card-open"
+          : ""
         }`
       }
     >
@@ -462,6 +524,10 @@ function SavedCard({
 
 
       <div className="saved-info">
+
+        {/* ===================================================
+            HEADER
+        ==================================================== */}
 
         <div className="saved-card-header">
 
@@ -480,14 +546,12 @@ function SavedCard({
               {
                 isCar
                   ? item.name
-                  : `${
-                    item.firstCar
-                      ?.split(" ")[0] ||
-                    "Modelo"
-                  } VS ${
-                    item.secondCar
-                      ?.split(" ")[0] ||
-                    "Modelo"
+                  : `${item.firstCar
+                    ?.split(" ")[0] ||
+                  "Modelo"
+                  } VS ${item.secondCar
+                    ?.split(" ")[0] ||
+                  "Modelo"
                   }`
               }
             </h2>
@@ -505,7 +569,9 @@ function SavedCard({
                 title="Ver histórico"
                 aria-label="Ver histórico"
                 onClick={() =>
-                  onHistory(item)
+                  onHistory(
+                    item
+                  )
                 }
               >
                 <IoTimeOutline />
@@ -546,29 +612,46 @@ function SavedCard({
               {isCar ? (
 
                 <>
-                  <span>
-                    {item.engine}
-                  </span>
 
                   <span>
-                    {item.power}
+                    {
+                      item.engine
+                    }
                   </span>
 
+
                   <span>
-                    {item.type}
+                    {
+                      item.power
+                    }
                   </span>
+
+
+                  <span>
+                    {
+                      item.type
+                    }
+                  </span>
+
                 </>
 
               ) : (
 
                 <>
-                  <span>
-                    {item.firstCar}
-                  </span>
 
                   <span>
-                    {item.secondCar}
+                    {
+                      item.firstCar
+                    }
                   </span>
+
+
+                  <span>
+                    {
+                      item.secondCar
+                    }
+                  </span>
+
                 </>
 
               )}
@@ -577,7 +660,9 @@ function SavedCard({
 
 
             <p>
-              {item.description}
+              {
+                item.description
+              }
             </p>
 
           </div>
@@ -617,8 +702,12 @@ function SavedCard({
 
             {
               isOpen
-                ? <IoChevronUpOutline />
-                : <IoChevronDownOutline />
+                ? (
+                  <IoChevronUpOutline />
+                )
+                : (
+                  <IoChevronDownOutline />
+                )
             }
 
           </button>
@@ -664,31 +753,12 @@ export default function SavedGrid({
         {loading ? (
 
           /* ===================================================
-             LOADING DOS SALVOS
+             LOADING
           ==================================================== */
 
-          <div
-            className="saved-loading"
-            role="status"
-            aria-live="polite"
-          >
-
-            <span
-              className="saved-loading-spinner"
-              aria-hidden="true"
-            />
-
-
-            <strong>
-              Carregando salvos
-            </strong>
-
-
-            <span>
-              Buscando suas informações salvas...
-            </span>
-
-          </div>
+          <SectionLoader
+            message="Carregando salvos"
+          />
 
         ) : !items.length ? (
 
@@ -701,9 +771,14 @@ export default function SavedGrid({
             <div className="saved-empty-icon">
 
               {
-                activeTab === "cars"
-                  ? <IoCarSportOutline />
-                  : <IoGitCompareOutline />
+                activeTab ===
+                  "cars"
+                  ? (
+                    <IoCarSportOutline />
+                  )
+                  : (
+                    <IoGitCompareOutline />
+                  )
               }
 
             </div>
@@ -711,7 +786,8 @@ export default function SavedGrid({
 
             <h2>
               {
-                activeTab === "cars"
+                activeTab ===
+                  "cars"
                   ? "Nenhum modelo salvo"
                   : "Nenhuma comparação salva"
               }
@@ -720,7 +796,8 @@ export default function SavedGrid({
 
             <p>
               {
-                activeTab === "cars"
+                activeTab ===
+                  "cars"
                   ? "Seus veículos favoritos aparecerão aqui."
                   : "Suas comparações salvas aparecerão aqui."
               }
@@ -734,35 +811,43 @@ export default function SavedGrid({
              CARDS
           ==================================================== */
 
-          items.map((item) => (
+          items.map(
+            (item) => (
 
-            <SavedCard
-              key={item.id}
-              item={item}
-              activeTab={activeTab}
-              isOpen={
-                !!openCards[
+              <SavedCard
+                key={
                   item.id
-                ]
-              }
-              onToggleCard={
-                onToggleCard
-              }
-              onHistory={
-                setHistoryItem
-              }
-              onDelete={
-                onDelete
-              }
-              onCarDetails={
-                onCarDetails
-              }
-              onComparisonDetails={
-                onComparisonDetails
-              }
-            />
+                }
+                item={
+                  item
+                }
+                activeTab={
+                  activeTab
+                }
+                isOpen={
+                  !!openCards[
+                  item.id
+                  ]
+                }
+                onToggleCard={
+                  onToggleCard
+                }
+                onHistory={
+                  setHistoryItem
+                }
+                onDelete={
+                  onDelete
+                }
+                onCarDetails={
+                  onCarDetails
+                }
+                onComparisonDetails={
+                  onComparisonDetails
+                }
+              />
 
-          ))
+            )
+          )
 
         )}
 
@@ -778,7 +863,9 @@ export default function SavedGrid({
         <div
           className="saved-history-modal-backdrop"
           onClick={() =>
-            setHistoryItem(null)
+            setHistoryItem(
+              null
+            )
           }
         >
 
@@ -787,13 +874,15 @@ export default function SavedGrid({
             role="dialog"
             aria-modal="true"
             aria-labelledby="saved-history-title"
-            onClick={(event) =>
-              event.stopPropagation()
+            onClick={
+              (event) =>
+                event
+                  .stopPropagation()
             }
           >
 
             {/* =================================================
-                HEADER DO MODAL
+                HEADER
             ================================================= */}
 
             <header className="saved-history-modal-header">
@@ -806,7 +895,9 @@ export default function SavedGrid({
 
 
                 <h2 id="saved-history-title">
-                  {historyItem.name}
+                  {
+                    historyItem.name
+                  }
                 </h2>
 
               </div>
@@ -817,7 +908,9 @@ export default function SavedGrid({
                 className="saved-history-modal-close"
                 aria-label="Fechar histórico"
                 onClick={() =>
-                  setHistoryItem(null)
+                  setHistoryItem(
+                    null
+                  )
                 }
               >
                 <IoCloseOutline />
@@ -832,7 +925,8 @@ export default function SavedGrid({
 
             <VersionHistory
               linhagemId={
-                historyItem.linhagemId
+                historyItem
+                  .linhagemId
               }
             />
 

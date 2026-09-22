@@ -1,6 +1,14 @@
 import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import {
   FiSearch,
 } from "react-icons/fi";
+
+import SectionLoader from "@/components/SectionLoader/index.jsx";
 
 import PostCard from "../components/PostCard";
 import PostComposer from "../components/PostComposer";
@@ -8,16 +16,31 @@ import ThreadDrawer from "../components/ThreadDrawer";
 import ActivitySidebar from "../components/ActivitySidebar";
 
 import {
-  linkedContentTypes
+  linkedContentTypes,
 } from "../data";
 
 
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const POSTS_PER_PAGE =
+  6;
+
+
+/* =========================================================
+   FEED
+========================================================= */
+
 export default function FeedSection({
+  loading,
+
   posts,
   postTypes,
   posting,
   members,
   activities,
+
   search,
   onSearchChange,
 
@@ -48,16 +71,204 @@ export default function FeedSection({
   onCreatePost,
   onCancelPost,
 }) {
+  /* =========================================================
+     PAGINAÇÃO VISUAL
+  ========================================================= */
 
-  const temAtribuicao = newPost.type === "review" ;//|| newPost.type === "decision";
+  const [
+    visibleCount,
+    setVisibleCount,
+  ] = useState(
+    POSTS_PER_PAGE
+  );
 
+
+  const [
+    loadingMore,
+    setLoadingMore,
+  ] = useState(false);
+
+
+  const loadMoreRef =
+    useRef(null);
+
+
+  const loadingMoreRef =
+    useRef(false);
+
+
+  const timerRef =
+    useRef(null);
+
+
+  const temAtribuicao =
+    newPost.type ===
+    "review";
+
+
+  /* =========================================================
+     POSTS VISÍVEIS
+  ========================================================= */
+
+  const visiblePosts =
+    posts.slice(
+      0,
+      visibleCount
+    );
+
+
+  const hasMorePosts =
+    visibleCount <
+    posts.length;
+
+
+  /* =========================================================
+     RESET AO FILTRAR
+  ========================================================= */
+
+  useEffect(() => {
+    setVisibleCount(
+      POSTS_PER_PAGE
+    );
+
+
+    loadingMoreRef.current =
+      false;
+
+
+    setLoadingMore(
+      false
+    );
+
+  }, [
+    search,
+    selectedType,
+  ]);
+
+
+  /* =========================================================
+     INFINITE SCROLL
+  ========================================================= */
+
+  useEffect(() => {
+    const element =
+      loadMoreRef.current;
+
+
+    if (
+      loading ||
+      !element ||
+      !hasMorePosts
+    ) {
+      return undefined;
+    }
+
+
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          const [
+            entry,
+          ] = entries;
+
+
+          if (
+            !entry.isIntersecting ||
+            loadingMoreRef.current
+          ) {
+            return;
+          }
+
+
+          loadingMoreRef.current =
+            true;
+
+
+          setLoadingMore(
+            true
+          );
+
+
+          timerRef.current =
+            window.setTimeout(
+              () => {
+
+                setVisibleCount(
+                  (current) =>
+                    Math.min(
+                      current +
+                      POSTS_PER_PAGE,
+
+                      posts.length
+                    )
+                );
+
+
+                loadingMoreRef.current =
+                  false;
+
+
+                setLoadingMore(
+                  false
+                );
+
+              },
+              450
+            );
+        },
+        {
+          root:
+            null,
+
+          rootMargin:
+            "250px 0px",
+
+          threshold:
+            0.01,
+        }
+      );
+
+
+    observer.observe(
+      element
+    );
+
+
+    return () => {
+      observer.disconnect();
+
+
+      if (
+        timerRef.current
+      ) {
+        window.clearTimeout(
+          timerRef.current
+        );
+
+
+        timerRef.current =
+          null;
+      }
+    };
+
+  }, [
+    loading,
+    hasMorePosts,
+    posts.length,
+  ]);
+
+
+  /* =========================================================
+     RENDER
+  ========================================================= */
 
   return (
     <>
+
       <div className="workspace-feed-layout">
 
         {/* =====================================================
-            CONTEÚDO PRINCIPAL
+            MAIN
         ====================================================== */}
 
         <section className="workspace-feed-main">
@@ -67,6 +278,7 @@ export default function FeedSection({
           ==================================================== */}
 
           {newPostOpen && (
+
             <section className="create-post-card">
 
               <div className="create-post-header">
@@ -74,6 +286,7 @@ export default function FeedSection({
                 <span>
                   WORKSPACE
                 </span>
+
 
                 <h2>
                   Nova publicação
@@ -84,13 +297,12 @@ export default function FeedSection({
 
               <div className="create-post-form">
 
-                {/* =================================================
-                    TIPO
-                ================================================= */}
+                {/* TIPO */}
 
                 <label htmlFor="post-type">
                   TIPO DA PUBLICAÇÃO
                 </label>
+
 
                 <select
                   id="post-type"
@@ -102,6 +314,7 @@ export default function FeedSection({
                     onNewPostChange
                   }
                 >
+
                   {Object.entries(
                     postTypes
                   ).map(
@@ -109,24 +322,32 @@ export default function FeedSection({
                       key,
                       type,
                     ]) => (
+
                       <option
-                        key={key}
-                        value={key}
+                        key={
+                          key
+                        }
+                        value={
+                          key
+                        }
                       >
-                        {type.label}
+                        {
+                          type.label
+                        }
                       </option>
+
                     )
                   )}
+
                 </select>
 
 
-                {/* =================================================
-                    CONTEÚDO
-                ================================================= */}
+                {/* CONTEÚDO */}
 
                 <label htmlFor="post-content">
                   CONTEÚDO
                 </label>
+
 
                 <textarea
                   id="post-content"
@@ -141,13 +362,12 @@ export default function FeedSection({
                 />
 
 
-                {/* =================================================
-                    TAGS
-                ================================================= */}
+                {/* TAGS */}
 
                 <label htmlFor="post-tags">
                   TAGS
                 </label>
+
 
                 <input
                   id="post-tags"
@@ -162,20 +382,22 @@ export default function FeedSection({
                   placeholder="Ex.: Territory, Compass, Tecnologia"
                 />
 
+
                 <span className="create-post-helper">
                   Separe as tags por vírgula.
                 </span>
 
 
-                {/* =================================================
-                    CAMPOS DE REVISÃO
-                ================================================= */}
+                {/* RESPONSÁVEL */}
 
-                {temAtribuicao  && (
+                {temAtribuicao && (
+
                   <>
+
                     <label htmlFor="post-responsible">
                       RESPONSÁVEL
                     </label>
+
 
                     <select
                       id="post-responsible"
@@ -187,12 +409,15 @@ export default function FeedSection({
                         onNewPostChange
                       }
                     >
+
                       <option value="">
                         Selecionar responsável
                       </option>
 
+
                       {members.map(
                         (member) => (
+
                           <option
                             key={
                               member.id
@@ -201,16 +426,21 @@ export default function FeedSection({
                               member.id
                             }
                           >
-                            {member.name}
+                            {
+                              member.name
+                            }
                           </option>
+
                         )
                       )}
+
                     </select>
 
 
                     <label htmlFor="post-status">
                       STATUS
                     </label>
+
 
                     <select
                       id="post-status"
@@ -223,29 +453,34 @@ export default function FeedSection({
                         onNewPostChange
                       }
                     >
+
                       <option value="pending">
                         Pendente
                       </option>
+
 
                       <option value="progress">
                         Em análise
                       </option>
 
+
                       <option value="resolved">
                         Resolvido
                       </option>
+
                     </select>
+
                   </>
+
                 )}
 
 
-                {/* =================================================
-                    CONTEÚDO VINCULADO
-                ================================================= */}
+                {/* CONTEÚDO VINCULADO */}
 
                 <label htmlFor="linked-type">
                   CONTEÚDO VINCULADO
                 </label>
+
 
                 <select
                   id="linked-type"
@@ -257,9 +492,11 @@ export default function FeedSection({
                     onNewPostChange
                   }
                 >
+
                   <option value="">
                     Não vincular conteúdo
                   </option>
+
 
                   {Object.entries(
                     linkedContentTypes
@@ -268,43 +505,104 @@ export default function FeedSection({
                       key,
                       item,
                     ]) => (
+
                       <option
-                        key={key}
-                        value={key}
+                        key={
+                          key
+                        }
+                        value={
+                          key
+                        }
                       >
-                        {item.label}
+                        {
+                          item.label
+                        }
                       </option>
+
                     )
                   )}
+
                 </select>
 
 
                 {newPost.linkedType && (
+
                   <>
-                    <label htmlFor="linked-item">SELECIONAR CONTEÚDO</label>
-                    {newPost.linkedType === "research" ? (
-                      <input
-                        id="linked-item"
-                        name="linkedItemTitle"
-                        type="text"
-                        value={newPost.linkedItemTitle}
-                        onChange={onNewPostChange}
-                        placeholder="Título da pesquisa"
-                      />
-                    ) : (
-                      <select id="linked-item" name="linkedItemId" value={newPost.linkedItemId} onChange={onNewPostChange}>
-                        <option value="">Selecionar conteúdo</option>
-                        {availableLinkedContents.map((item) => (
-                          <option key={item.id} value={item.id}>{item.title}</option>
-                        ))}
-                      </select>
-                    )}
+
+                    <label htmlFor="linked-item">
+                      SELECIONAR CONTEÚDO
+                    </label>
+
+
+                    {
+                      newPost.linkedType ===
+                        "research"
+                        ? (
+
+                          <input
+                            id="linked-item"
+                            name="linkedItemTitle"
+                            type="text"
+                            value={
+                              newPost
+                                .linkedItemTitle
+                            }
+                            onChange={
+                              onNewPostChange
+                            }
+                            placeholder="Título da pesquisa"
+                          />
+
+                        )
+                        : (
+
+                          <select
+                            id="linked-item"
+                            name="linkedItemId"
+                            value={
+                              newPost
+                                .linkedItemId
+                            }
+                            onChange={
+                              onNewPostChange
+                            }
+                          >
+
+                            <option value="">
+                              Selecionar conteúdo
+                            </option>
+
+
+                            {availableLinkedContents.map(
+                              (item) => (
+
+                                <option
+                                  key={
+                                    item.id
+                                  }
+                                  value={
+                                    item.id
+                                  }
+                                >
+                                  {
+                                    item.title
+                                  }
+                                </option>
+
+                              )
+                            )}
+
+                          </select>
+
+                        )
+                    }
+
                   </>
+
                 )}
 
-                {/* =================================================
-                    AÇÕES
-                ================================================= */}
+
+                {/* AÇÕES */}
 
                 <div className="create-post-actions">
 
@@ -314,24 +612,41 @@ export default function FeedSection({
                     onClick={
                       onCancelPost
                     }
+                    disabled={
+                      posting
+                    }
                   >
                     CANCELAR
                   </button>
 
+
                   <button
                     type="button"
                     className="workspace-primary-button"
-                    onClick={
-                      () => (posting ? null : onCreatePost())
+                    disabled={
+                      posting
                     }
+                    onClick={() => {
+                      if (
+                        !posting
+                      ) {
+                        onCreatePost();
+                      }
+                    }}
                   >
-                    PUBLICAR
+                    {
+                      posting
+                        ? "PUBLICANDO..."
+                        : "PUBLICAR"
+                    }
                   </button>
 
                 </div>
 
               </div>
+
             </section>
+
           )}
 
 
@@ -345,6 +660,7 @@ export default function FeedSection({
 
               <FiSearch />
 
+
               <input
                 type="text"
                 value={
@@ -353,7 +669,9 @@ export default function FeedSection({
                 onChange={
                   (event) =>
                     onSearchChange(
-                      event.target.value
+                      event
+                        .target
+                        .value
                     )
                 }
                 placeholder="Buscar no Workspace..."
@@ -370,13 +688,17 @@ export default function FeedSection({
               onChange={
                 (event) =>
                   onTypeChange(
-                    event.target.value
+                    event
+                      .target
+                      .value
                   )
               }
             >
+
               <option value="all">
                 Todos os tipos
               </option>
+
 
               {Object.entries(
                 postTypes
@@ -385,14 +707,23 @@ export default function FeedSection({
                   key,
                   type,
                 ]) => (
+
                   <option
-                    key={key}
-                    value={key}
+                    key={
+                      key
+                    }
+                    value={
+                      key
+                    }
                   >
-                    {type.label}
+                    {
+                      type.label
+                    }
                   </option>
+
                 )
               )}
+
             </select>
 
 
@@ -411,43 +742,105 @@ export default function FeedSection({
 
           <div className="workspace-feed">
 
-            {posts.length > 0 ? (
+            {loading ? (
 
-              posts.map(
-                (post) => (
-                  <PostCard
-                    key={
-                      post.id
-                    }
+              /* ===============================================
+                 MESMO LOADING DAS OUTRAS SEÇÕES
+              ================================================ */
 
-                    post={
-                      post
-                    }
+              <SectionLoader
+                message="Carregando publicações"
+              />
 
-                    type={
-                      postTypes[
+            ) : posts.length > 0 ? (
+
+              <>
+
+                {/* POSTS */}
+
+                {visiblePosts.map(
+                  (post) => (
+
+                    <PostCard
+                      key={
+                        post.id
+                      }
+                      post={
+                        post
+                      }
+                      type={
+                        postTypes[
                         post.type
-                      ]
-                    }
+                        ]
+                      }
+                      onLike={
+                        onLike
+                      }
+                      onOpenThread={
+                        onOpenThread
+                      }
+                      onTogglePin={
+                        onTogglePin
+                      }
+                      onDelete={
+                        onDelete
+                      }
+                    />
 
-                    onLike={
-                      onLike
-                    }
+                  )
+                )}
 
-                    onOpenThread={
-                      onOpenThread
-                    }
 
-                    onTogglePin={
-                      onTogglePin
-                    }
+                {/* =============================================
+                    INFINITE SCROLL
+                ============================================== */}
 
-                    onDelete={
-                      onDelete
+                {hasMorePosts && (
+
+                  <div
+                    ref={
+                      loadMoreRef
                     }
-                  />
-                )
-              )
+                  >
+
+                    {loadingMore ? (
+
+                      <SectionLoader
+                        message="Carregando mais publicações"
+                        compact
+                      />
+
+                    ) : (
+
+                      <SectionLoader
+                        message="Carregando mais publicações"
+                        compact
+                      />
+
+                    )}
+
+                  </div>
+
+                )}
+
+
+                {/* FIM */}
+
+                {!hasMorePosts &&
+                  posts.length >
+                  POSTS_PER_PAGE && (
+
+                    <div className="workspace-feed-end">
+
+                      <span>
+                        Você chegou ao fim das publicações.
+                      </span>
+
+                    </div>
+
+                  )}
+
+              </>
 
             ) : (
 
@@ -457,15 +850,18 @@ export default function FeedSection({
                   Nenhuma publicação encontrada
                 </strong>
 
+
                 <span>
                   Tente alterar os filtros
                   ou faça uma nova publicação.
                 </span>
 
               </div>
+
             )}
 
           </div>
+
         </section>
 
 
@@ -477,11 +873,9 @@ export default function FeedSection({
           activities={
             activities
           }
-
           members={
             members
           }
-
           onActivityClick={
             onActivityClick
           }
@@ -495,30 +889,29 @@ export default function FeedSection({
       ======================================================== */}
 
       {selectedPost && (
+
         <ThreadDrawer
           post={
             selectedPost
           }
-
           type={
             postTypes[
-              selectedPost.type
+            selectedPost.type
             ]
           }
-
           onClose={
             onCloseThread
           }
-
           onComment={
             onComment
           }
-
           onStatusChange={
             onStatusChange
           }
         />
+
       )}
+
     </>
   );
 }

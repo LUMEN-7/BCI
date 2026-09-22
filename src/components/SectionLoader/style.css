@@ -1,0 +1,241 @@
+@import "../../styles/global.css";
+
+/* =========================================================
+   SECTION LOADER
+========================================================= */
+
+.section-loader {
+    width: 100%;
+    min-height: 17.5rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+
+    padding: 2.5rem;
+
+    border:
+        0.0625rem solid rgba(0, 20, 46, 0.07);
+
+    border-radius:
+        1.5rem;
+
+    background:
+        rgba(255, 255, 255, 0.72);
+
+    box-shadow:
+        0 0.5625rem 1.75rem rgba(0, 20, 46, 0.04);
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.section-loader__spinner {
+    width: 2.625rem;
+    height: 2.625rem;
+
+    border:
+        0.25rem solid rgba(5, 98, 210, 0.12);
+
+    border-top-color:
+        var(--color-secondary);
+
+    border-radius:
+        50%;
+
+    animation:
+        sectionLoaderSpin 0.8s linear infinite;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.section-loader__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 0.3125rem;
+}
+
+
+.section-loader__content strong {
+    margin: 0;
+
+    font-family:
+        var(--font-body-bold);
+
+    font-size:
+        0.875rem;
+
+    line-height:
+        1.4;
+
+    color:
+        var(--color-primary);
+}
+
+
+.section-loader__description {
+    max-width: 24rem;
+
+    font-family:
+        var(--font-body);
+
+    font-size:
+        0.6875rem;
+
+    line-height:
+        1.5;
+
+    color:
+        rgba(0, 20, 46, 0.5);
+}
+
+
+/* =========================================================
+   DOTS
+========================================================= */
+
+.section-loader__dots span {
+    display:
+        inline-block;
+
+    animation:
+        sectionLoaderDot 1.2s infinite both;
+}
+
+
+.section-loader__dots span:nth-child(2) {
+    animation-delay:
+        0.15s;
+}
+
+
+.section-loader__dots span:nth-child(3) {
+    animation-delay:
+        0.3s;
+}
+
+
+/* =========================================================
+   COMPACT
+========================================================= */
+
+.section-loader--compact {
+    min-height:
+        8rem;
+
+    padding:
+        1.5rem;
+
+    border-radius:
+        1rem;
+
+    box-shadow:
+        none;
+}
+
+
+.section-loader--compact .section-loader__spinner {
+    width:
+        2rem;
+
+    height:
+        2rem;
+
+    border-width:
+        0.1875rem;
+}
+
+
+.section-loader--compact .section-loader__content strong {
+    font-size:
+        0.75rem;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes sectionLoaderSpin {
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+@keyframes sectionLoaderDot {
+
+    0%,
+    80%,
+    100% {
+        opacity:
+            0.25;
+    }
+
+    40% {
+        opacity:
+            1;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 37.5rem) {
+    .section-loader {
+        min-height:
+            14rem;
+
+        padding:
+            2rem 1.25rem;
+    }
+
+
+    .section-loader__spinner {
+        width:
+            2.25rem;
+
+        height:
+            2.25rem;
+
+        border-width:
+            0.1875rem;
+    }
+
+
+    .section-loader__content strong {
+        font-size:
+            0.8125rem;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .section-loader__spinner,
+    .section-loader__dots span {
+        animation:
+            none;
+    }
+}
