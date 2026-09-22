@@ -95,10 +95,24 @@ export default function Controls({
           </span>
         </label>
 
-        <button type="button" className="execute-search" onClick={onExecute}>
+        <button
+          type="button"
+          className="execute-search"
+          onClick={onExecute}
+          disabled={isSearchInFlight}
+        >
           <IoSearchOutline />
-          <span>Pesquisar</span>
+          <span>{isSearchInFlight ? 'Buscando...' : 'Pesquisar'}</span>
         </button>
+
+        {isSearchInFlight && inFlightLabel && (
+          <div className="search-validation-error" role="status">
+            <IoAlertCircleOutline />
+            <span>
+              Já existe uma busca em andamento para {inFlightLabel}. Aguarde o resultado.
+            </span>
+          </div>
+        )}
 
         <button
           type="button"
