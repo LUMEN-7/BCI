@@ -37,6 +37,19 @@ export function removeUserScopedItem(baseKey) {
   if (key) localStorage.removeItem(key);
 }
 
+export function getUserScopedJson(baseKey, fallback = null) {
+  try {
+    const raw = getUserScopedItem(baseKey);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export function setUserScopedJson(baseKey, value) {
+  setUserScopedItem(baseKey, JSON.stringify(value));
+}
+
 // Versões antigas eram compartilhadas entre contas. Nunca as migramos, pois não há
 // como identificar com segurança o proprietário dos dados já gravados.
 export function removeLegacySharedUserData() {
@@ -44,6 +57,7 @@ export function removeLegacySharedUserData() {
     'recentNavigationActivities',
     'lumen-recent-viewed-cars',
     'jobId',
+    'search-inflight',
     'lumen-floating-notes',
     'lumen-scheduled-searches',
   ].forEach((key) => localStorage.removeItem(key));

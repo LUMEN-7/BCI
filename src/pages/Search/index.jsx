@@ -26,10 +26,6 @@ import useSearchController from "./hooks/useSearchController";
 import "./style.css";
 
 
-/* =========================================================
-   SAVE LOADING MODAL
-========================================================= */
-
 function SaveLoadingModal() {
   return (
     <div
@@ -61,10 +57,6 @@ function SaveLoadingModal() {
   );
 }
 
-
-/* =========================================================
-   SUCCESS TOAST
-========================================================= */
 
 function SaveSuccessToast({
   onClose,
@@ -101,10 +93,6 @@ function SaveSuccessToast({
   );
 }
 
-
-/* =========================================================
-   SEARCH
-========================================================= */
 
 export default function Search() {
   const [
@@ -145,6 +133,9 @@ export default function Search() {
     isScheduleModalOpen,
     scheduleInitialCar,
     scheduledCount,
+    isSearchInFlight,
+    avisoBuscaDuplicada,
+    inFlightLabel,
 
     handleSearchChange,
     handleBrandChange,
@@ -161,10 +152,6 @@ export default function Search() {
   } = useSearchController();
 
 
-  /* =========================================================
-     FECHAR TOAST AUTOMATICAMENTE
-  ========================================================= */
-
   useEffect(() => {
     if (!showSaveSuccess) {
       return undefined;
@@ -180,10 +167,6 @@ export default function Search() {
   }, [showSaveSuccess]);
 
 
-  /* =========================================================
-     SALVAR FAVORITO
-  ========================================================= */
-
   async function handleFavoriteClick(
     carId
   ) {
@@ -192,11 +175,6 @@ export default function Search() {
         String(carId)
       );
 
-
-    /*
-      Já está salvo:
-      apenas remove normalmente.
-    */
     if (isFavorite) {
       await toggleFavorite(
         carId
@@ -205,11 +183,6 @@ export default function Search() {
       return;
     }
 
-
-    /* =====================================================
-       NOVO FAVORITO
-    ====================================================== */
-
     try {
       setShowSaveSuccess(false);
 
@@ -217,12 +190,10 @@ export default function Search() {
         String(carId)
       );
 
-
       const result =
         await toggleFavorite(
           carId
         );
-
 
       if (
         result?.success &&
@@ -243,10 +214,6 @@ export default function Search() {
   }
 
 
-  /* =========================================================
-     LOADING PRINCIPAL
-  ========================================================= */
-
   if (loading) {
     return (
       <PageLoader
@@ -255,10 +222,6 @@ export default function Search() {
     );
   }
 
-
-  /* =========================================================
-     PÁGINA
-  ========================================================= */
 
   return (
     <main className="search-page">
@@ -280,7 +243,9 @@ export default function Search() {
           activeFilterChips={activeFilterChips}
           validationError={validationError}
           scheduledCount={scheduledCount}
-
+          isSearchInFlight={isSearchInFlight}
+          inFlightLabel={inFlightLabel}
+          avisoBuscaDuplicada={avisoBuscaDuplicada}
           onSearchChange={handleSearchChange}
           onBrandChange={handleBrandChange}
           onYearChange={handleYearChange}
@@ -301,10 +266,6 @@ export default function Search() {
           }}
         />
 
-
-        {/* ===================================================
-            RESULTADOS
-        ==================================================== */}
 
         {hasFilters ? (
 
@@ -397,10 +358,6 @@ export default function Search() {
       </div>
 
 
-      {/* =====================================================
-          AGENDAMENTO
-      ====================================================== */}
-
       <ScheduleModal
         isOpen={
           isScheduleModalOpen
@@ -425,10 +382,6 @@ export default function Search() {
         }
       />
 
-
-      {/* =====================================================
-          IMPORTAÇÃO
-      ====================================================== */}
 
       <ImportVehicleModal
         isOpen={
@@ -465,18 +418,10 @@ export default function Search() {
       />
 
 
-      {/* =====================================================
-          LOADING GLOBAL DE SALVAMENTO
-      ====================================================== */}
-
       {savingCarId && (
         <SaveLoadingModal />
       )}
 
-
-      {/* =====================================================
-          TOAST
-      ====================================================== */}
 
       {showSaveSuccess && (
 

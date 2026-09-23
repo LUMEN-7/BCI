@@ -12,15 +12,39 @@ import { getImportedVehicles, removeImportedVehicle, saveImportedVehicle } from 
 
 function extractList(source) {
   if (!source) return [];
-  if (Array.isArray(source)) {
-    return source.map((item) =>
-      typeof item === 'object'
-        ? item.nome || item.descricao || item.label || String(item)
-        : String(item)
-    );
+
+  if (typeof source === "string") {
+    return source
+      .split(/[;\n,]/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((value) => ({ value, source: null, confidence: 0 }));
   }
-  if (typeof source === 'string') return [source];
-  return [];
+
+  if (Array.isArray(source)) {
+    return source.flatMap((item) => extractList(item));
+  }
+
+  const fontes = source.fontes || source.Fontes || [];
+  const confEnvelope = Math.round((source.confianca ?? source.Confianca ?? 0) * 100);
+
+  if (fontes.length) {
+    return fontes.flatMap((f) => {
+      const val = f?.valor ?? f?.Valor;
+      const items = typeof val === "string"
+        ? val.split(/[;\n,]/).map((s) => s.trim()).filter(Boolean)
+        : extractList(val).map((x) => x.value ?? x);
+      const confItem = Math.round((f.confianca ?? f.Confianca ?? source.confianca ?? source.Confianca ?? 0) * 100);
+      const fonte = f.fonte ?? f.Fonte ?? null;
+      return items.map((value) => ({
+        value,
+        source: fonte,
+        confidence: confItem || confEnvelope,
+      }));
+    });
+  }
+
+  return extractList(source.valor ?? source.Valor);
 }
 
 function hasEmptySections(sections) {
@@ -122,7 +146,6 @@ function adaptCarToDetail(dto) {
   const pneus = dto.pneus?.[0] || dto.Pneus?.[0] || {};
   
   console.log(extras)
-  console.log(extras.performance)
   return {
     id: dto.id || dto.Id || dto.linhagemId || dto.LinhagemId,
     name: `${dto.modelo || dto.Modelo || ''} ${dto.ano || dto.Ano || ''}`.trim(),
@@ -203,7 +226,7 @@ function adaptCarToDetail(dto) {
     sections: {
       performance: extractList(extras.performance || extras.desempenho),
       security: extractList(extras.security || extras.seguranca || extras.segurança),
-      technology: extractList(extras.technology || extras.tecnologia),
+      technology: extractList(extras.technology || extras.tecnologia || extras.tecnologias),
       comfort: extractList(extras.comfort || extras.conforto),
     },
     analysis: {

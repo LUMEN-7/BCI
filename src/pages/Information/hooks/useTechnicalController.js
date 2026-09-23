@@ -77,13 +77,19 @@ export function useTechnical(car) {
 
     const sections = car.sections || {};
     const prepareSectionGroup = (key, title, itemsArray) => {
-    const items = (itemsArray || []).map((texto) => ({
-        label: null,
-        value: texto,
-        confidence: null,
-        source: null,
-    }));
-    return { key, title, items, ...calculateBadges(items) };
+      const items = (itemsArray || []).map((item) => {
+        if (item && typeof item === "object") {
+          return {
+            label: null,
+            value: item.value ?? item.valor ?? "",
+            confidence: item.confidence ?? 0,
+            source: item.source ?? item.fonte ?? null,
+          };
+        }
+        return { label: null, value: item, confidence: null, source: null };
+      });
+
+      return { key, title, items, ...calculateBadges(items) };
     };
 
     return [

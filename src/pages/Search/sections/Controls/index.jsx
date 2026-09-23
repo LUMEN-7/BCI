@@ -19,6 +19,9 @@ export default function Controls({
   activeFilterChips = [],
   validationError,
   scheduledCount = 0,
+  isSearchInFlight = false,
+  inFlightLabel = "",
+  avisoBuscaDuplicada,
   onSearchChange,
   onBrandChange,
   onYearChange,
@@ -33,7 +36,7 @@ export default function Controls({
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      onExecute();
+      if (!isSearchInFlight) onExecute();
     }
   };
 
@@ -95,9 +98,13 @@ export default function Controls({
           </span>
         </label>
 
-        <button type="button" className="execute-search" onClick={onExecute}>
+        <button
+          type="button"
+          className="execute-search"
+          onClick={onExecute}
+        >
           <IoSearchOutline />
-          <span>Pesquisar</span>
+          <span>{isSearchInFlight ? "Buscando..." : "Pesquisar"}</span>
         </button>
 
         <button
@@ -161,6 +168,15 @@ export default function Controls({
               Remover todos
             </button>
           </div>
+        </div>
+      )}
+
+      {avisoBuscaDuplicada && inFlightLabel && (
+        <div className="search-validation-error" role="status">
+          <IoAlertCircleOutline />
+          <span>
+            Já existe uma busca em andamento para {inFlightLabel}. Aguarde o resultado.
+          </span>
         </div>
       )}
 
