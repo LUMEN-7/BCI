@@ -88,6 +88,8 @@ export function useTechnical(car) {
         }
         return { label: null, value: item, confidence: null, source: null };
       });
+
+      return { key, title, items, ...calculateBadges(items) };
     };
 
     return [
