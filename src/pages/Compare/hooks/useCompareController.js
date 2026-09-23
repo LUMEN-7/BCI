@@ -30,8 +30,8 @@ function adaptCarToSelection(carDto) {
             height: safeGet(dimensoesDto, 'altura') ?? null,
             wheelbase: safeGet(dimensoesDto, 'entreEixos') ?? null,
         },
-        safetyFeatures: secoes.seguranca || secoes.security || [],
-        technologyFeatures: secoes.tecnologia || secoes.technology || [],
+        safetyFeatures: secoes.seguranca ||secoes.segurança || secoes.security || [],
+        technologyFeatures: secoes.tecnologia || secoes.technology ||secoes.tecnologias|| [],
     };
 }
 

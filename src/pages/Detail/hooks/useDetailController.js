@@ -113,7 +113,7 @@ function adaptCarToComparison(dto) {
     sections: {
       performance: extractList(extras.performance || extras.desempenho),
       security: extractList(extras.security || extras.seguranca || extras.segurança),
-      technology: extractList(extras.technology || extras.tecnologia),
+      technology: extractList(extras.technology || extras.tecnologia || extras.tecnologias),
       comfort: extractList(extras.comfort || extras.conforto),
     },
 
