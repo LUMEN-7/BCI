@@ -134,6 +134,7 @@ export default function Search() {
     scheduleInitialCar,
     scheduledCount,
     isSearchInFlight,
+    avisoBuscaDuplicada,
     inFlightLabel,
 
     handleSearchChange,
@@ -244,7 +245,7 @@ export default function Search() {
           scheduledCount={scheduledCount}
           isSearchInFlight={isSearchInFlight}
           inFlightLabel={inFlightLabel}
-
+          avisoBuscaDuplicada={avisoBuscaDuplicada}
           onSearchChange={handleSearchChange}
           onBrandChange={handleBrandChange}
           onYearChange={handleYearChange}

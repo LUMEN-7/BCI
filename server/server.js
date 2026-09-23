@@ -137,7 +137,12 @@ async function callDeepSeek(systemPrompt, userPrompt, requestId = "SYS", maxToke
 // MIDDLEWARES DE MONITORAMENTO E REGISTRO DE REQUISIÇÕES
 // =========================================================
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://SEU-FRONT.vercel.app",
+  ],
+}));
 app.use(express.json());
 app.use((req, res, next) => {
   res.setTimeout(28000, () => {

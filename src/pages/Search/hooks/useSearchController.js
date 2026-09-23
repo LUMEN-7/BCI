@@ -92,6 +92,7 @@ export default function useSearchController() {
   const [favorites, setFavorites] = useState([]);
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [avisoBuscaDuplicada, setAvisoBuscaDuplicada] = useState(false);
   const [error, setError] = useState('');
   const [isSearchExecuted, setIsSearchExecuted] = useState(false);
   const [validationError, setValidationError] = useState('');
@@ -104,7 +105,7 @@ export default function useSearchController() {
   const [searchInFlight, setSearchInFlight] = useState(() => getUserScopedJson(INFLIGHT_KEY));
 
   const isSearchInFlight = Boolean(
-    searchInFlight && jobId && jobStatus !== 'done' && jobStatus !== 'error'
+    searchInFlight && jobStatus !== 'done' && jobStatus !== 'error'
   );
 
   const updateScheduledCount = () => {
@@ -184,29 +185,39 @@ export default function useSearchController() {
 
   const hasFilters = Boolean(search.trim() || selectedBrand || selectedYear);
 
-  const results = useMemo(() => {
+    const results = useMemo(() => {
     if (!hasFilters && !isSearchExecuted) return [];
 
     const term = search.toLowerCase().trim();
 
-    return cars.filter((car) => {
-      const matchesSearch =
+    const filtrados = cars.filter((car) => {
+        const matchesSearch =
         !term ||
         car.modelo.toLowerCase().includes(term) ||
         car.brand.toLowerCase().includes(term) ||
         String(car.segment || '').toLowerCase().includes(term);
 
-      const matchesBrand =
+        const matchesBrand =
         !selectedBrand ||
         car.brand.toLowerCase() === selectedBrand.trim().toLowerCase();
 
-      const matchesYear =
+        const matchesYear =
         !selectedYear ||
         Number(car.ano) === Number(selectedYear);
 
-      return matchesSearch && matchesBrand && matchesYear;
+        return matchesSearch && matchesBrand && matchesYear;
     });
-  }, [cars, search, selectedBrand, selectedYear, hasFilters, isSearchExecuted]);
+
+    const porLinhagem = new Map();
+    for (const car of filtrados) {
+        const key = String(car.id);
+        const atual = porLinhagem.get(key);
+        if (!atual || Number(car.ano) > Number(atual.ano)) {
+        porLinhagem.set(key, car);
+        }
+    }
+    return [...porLinhagem.values()];
+    }, [cars, search, selectedBrand, selectedYear, hasFilters, isSearchExecuted]);
 
   const activeFilterChips = useMemo(() => {
     const chips = [];
@@ -294,50 +305,59 @@ export default function useSearchController() {
     navigate(`/information/${id}`, { state: { car: carOverride || selectedCar } });
   }
 
-  async function executeSearch() {
-    if (!selectedBrand.trim()) {
-      setValidationError('Digite uma marca para realizar a pesquisa.');
+async function executeSearch() {
+  if (!selectedBrand.trim()) {
+    setValidationError('Digite uma marca para realizar a pesquisa.');
+    return;
+  }
+
+  if (!search.trim() && !selectedBrand && !selectedYear) {
+    setIsSearchExecuted(false);
+    setValidationError('Digite um termo de pesquisa ou informe uma marca ou ano para começar.');
+    return;
+  }
+
+  if (selectedYear) {
+    const year = Number(selectedYear);
+    if (!Number.isInteger(year) || year < 1950 || year > 2050) {
+      setValidationError('Digite um ano válido.');
       return;
     }
+  }
 
-    if (!search.trim() && !selectedBrand && !selectedYear) {
-      setIsSearchExecuted(false);
-      setValidationError('Digite um termo de pesquisa ou informe uma marca ou ano para começar.');
-      return;
-    }
+  const brand = selectedBrand.trim();
+  const model = search.trim();
+  const year = selectedYear;
+  const chave = chaveBusca(brand, model, year);
 
-    if (selectedYear) {
-      const year = Number(selectedYear);
-      if (!Number.isInteger(year) || year < 1950 || year > 2050) {
-        setValidationError('Digite um ano válido.');
-        return;
-      }
-    }
-
-    const brand = selectedBrand.trim();
-    const model = search.trim();
-    const year = selectedYear;
-    const chave = chaveBusca(brand, model, year);
-
-    if (cars.some((car) => carroBateComBusca(car, brand, model, year))) {
-      setValidationError('');
-      setIsSearchExecuted(true);
-      return;
-    }
-
-    if (searchInFlight?.key === chave && jobId && jobStatus !== 'done' && jobStatus !== 'error') {
-      setValidationError('');
-      setIsSearchExecuted(true);
-      return;
-    }
-
+  if (cars.some((car) => carroBateComBusca(car, brand, model, year))) {
     setValidationError('');
-    const response = await iniciarBusca({ model, brand, year });
-    const id = response.job_id ?? response.jobId;
-
-    setJobId(id);
-    setJobStatus('pending');
     setIsSearchExecuted(true);
+    return;
+  }
+
+    if (searchInFlight?.key === chave && jobStatus !== 'done' && jobStatus !== 'error') {
+    setAvisoBuscaDuplicada(true);
+    setValidationError('');
+    setIsSearchExecuted(true);
+    return;
+    }
+
+  setValidationError('');
+  setIsSearchExecuted(true);
+  setJobStatus('pending');
+  setAvisoBuscaDuplicada(false);
+  gravarInflight({
+    key: chave,
+    label: `${brand} ${model} ${year}`.trim(),
+    status: 'pending',
+  });
+
+  try {
+    const response = await iniciarBusca({ model, brand, year });
+    console.log(response)
+    const id = response.job_id ?? response.jobId;
+    setJobId(id);
     setUserScopedItem('jobId', id);
     gravarInflight({
       key: chave,
@@ -345,39 +365,55 @@ export default function useSearchController() {
       label: `${brand} ${model} ${year}`.trim(),
       status: 'pending',
     });
+  } catch (err) {
+    setJobStatus('error');
+    gravarInflight(null);
+    setAvisoBuscaDuplicada(false);
+    setValidationError(err.message || 'Não foi possível iniciar a busca.');
   }
-
-  useEffect(() => {
+}
+    useEffect(() => {
+        console.log(jobStatus, jobId)
     if (!jobId || jobStatus === 'done' || jobStatus === 'error') return;
 
     const interval = setInterval(async () => {
-      try {
+        try {
         const status = await getJobStatus(jobId);
-        setJobStatus(status.status);
+        const estado = status.status;
+        const carro = status.carro;
 
-        if (status.status === 'done' && status.carro) {
-          setCars((prev) => {
-            const novoId = String(status.carro.linhagemId ?? status.carro.id);
-            const existe = prev.some((c) => String(c.id) === novoId);
-            return existe ? prev : [adaptCar(status.carro), ...prev];
-          });
-          removeUserScopedItem('jobId');
-          gravarInflight(null);
+        if (estado === 'done' && carro) {
+            setCars((prev) => {
+            const novo = adaptCar(carro);
+            return [novo, ...prev.filter((c) => String(c.id) !== String(novo.id))];
+            });
+            setJobStatus('done');
+            setIsSearchExecuted(true);
+            removeUserScopedItem('jobId');
+            gravarInflight(null);
+            setAvisoBuscaDuplicada(false);
+            return;
         }
 
-        if (status.status === 'error') {
-          gravarInflight(null);
-          removeUserScopedItem('jobId');
+        if (estado === 'error') {
+            setJobStatus('error');
+            gravarInflight(null);
+            removeUserScopedItem('jobId');
+            setAvisoBuscaDuplicada(false);
+            return;
         }
-      } catch {
-        setJobStatus('error');
-        gravarInflight(null);
-        removeUserScopedItem('jobId');
-      }
+
+        if (estado === 'pending' || estado === 'running') {
+            setJobStatus(estado);
+        }
+        // done sem carro: não chama setJobStatus — o intervalo segue
+        } catch {
+        // erro de rede: não mata o poll
+        }
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [jobId, jobStatus]);
+    }, [jobId, jobStatus]);
 
   function handleOpenSchedule(car = null) {
     setScheduleInitialCar(car);
@@ -438,6 +474,7 @@ export default function useSearchController() {
     handleYearChange,
     removeFilter,
     toggleFavorite,
+    avisoBuscaDuplicada,
     clearFilters,
     handleDetails,
     handleOpenSchedule,
