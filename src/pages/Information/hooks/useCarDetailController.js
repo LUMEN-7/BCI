@@ -14,20 +14,34 @@ function extractList(source) {
   if (!source) return [];
 
   if (typeof source === "string") {
-    return source.split(/[;\n,]/).map((s) => s.trim()).filter(Boolean);
+    return source
+      .split(/[;\n,]/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((value) => ({ value, source: null, confidence: 0 }));
   }
 
   if (Array.isArray(source)) {
-    return source.flatMap((item) => {
-      if (typeof item === "string") return extractList(item);
-      const val = item?.valor ?? item?.Valor ?? item?.nome ?? item?.descricao ?? item?.label;
-      return extractList(val);
-    });
+    return source.flatMap((item) => extractList(item));
   }
 
-  const fontes = source.fontes || source.Fontes;
-  if (Array.isArray(fontes) && fontes.length) {
-    return fontes.flatMap((f) => extractList(f?.valor ?? f?.Valor));
+  const fontes = source.fontes || source.Fontes || [];
+  const confEnvelope = Math.round((source.confianca ?? source.Confianca ?? 0) * 100);
+
+  if (fontes.length) {
+    return fontes.flatMap((f) => {
+      const val = f?.valor ?? f?.Valor;
+      const items = typeof val === "string"
+        ? val.split(/[;\n,]/).map((s) => s.trim()).filter(Boolean)
+        : extractList(val).map((x) => x.value ?? x);
+      const confItem = Math.round((f.confianca ?? f.Confianca ?? source.confianca ?? source.Confianca ?? 0) * 100);
+      const fonte = f.fonte ?? f.Fonte ?? null;
+      return items.map((value) => ({
+        value,
+        source: fonte,
+        confidence: confItem || confEnvelope,
+      }));
+    });
   }
 
   return extractList(source.valor ?? source.Valor);
@@ -131,7 +145,7 @@ function adaptCarToDetail(dto) {
   const extras = dto.extras?.[0] || dto.Extras?.[0] || {};
   const pneus = dto.pneus?.[0] || dto.Pneus?.[0] || {};
   
-  
+  console.log(extras)
   return {
     id: dto.id || dto.Id || dto.linhagemId || dto.LinhagemId,
     name: `${dto.modelo || dto.Modelo || ''} ${dto.ano || dto.Ano || ''}`.trim(),
