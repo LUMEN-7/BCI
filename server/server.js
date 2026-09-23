@@ -140,7 +140,8 @@ async function callDeepSeek(systemPrompt, userPrompt, requestId = "SYS", maxToke
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://SEU-FRONT.vercel.app",
+    "https://beyond-compare.vercel.app",
+    /^https:\/\/beyond-compare.*\.vercel\.app$/,
   ],
 }));
 app.use(express.json());
