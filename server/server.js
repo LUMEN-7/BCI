@@ -204,6 +204,7 @@ Sua função é analisar o MODELO DO VEÍCULO e produzir um parecer contextual s
 FORMATO ESPERADO:
 Retorne SOMENTE um JSON válido:
 {
+    "descricao": "Descrição objetiva do veículo em até 3 frases, destacando proposta e diferenciais.",
     "pontosFortes": ["Ponto forte 1", "Ponto forte 2"],
     "pontosFracos": ["Ponto fraco 1", "Ponto fraco 2"],
     "melhorUso": "Descrição objetiva do melhor cenário de utilização.",
@@ -215,6 +216,7 @@ Retorne SOMENTE um JSON válido:
     const analysis = await callDeepSeek(systemPrompt, userPrompt, req.id);
 
     return res.json({
+      descricao: typeof analysis.descricao === "string" ? analysis.descricao : "",
       pontosFortes: Array.isArray(analysis.pontosFortes) ? analysis.pontosFortes : [],
       pontosFracos: Array.isArray(analysis.pontosFracos) ? analysis.pontosFracos : [],
       melhorUso: typeof analysis.melhorUso === "string" ? analysis.melhorUso : "",

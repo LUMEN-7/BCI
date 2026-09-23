@@ -47,6 +47,8 @@ function extractList(source) {
   return extractList(source.valor ?? source.Valor);
 }
 
+const DEFAULT_DESCRIPTION = 'Dados técnicos detalhados extraídos da base da API Forde.';
+
 function hasEmptySections(sections) {
   if (!sections) return true;
   return (
@@ -157,7 +159,7 @@ function adaptCarToDetail(dto) {
     description:
       dto.descricao ||
       dto.Descricao ||
-      'Dados técnicos detalhados extraídos da base da API Forde.',
+      DEFAULT_DESCRIPTION,
     lastUpdated: 'Hoje',
     updatedAgo: 'Base atualizada',
     sources: fontesList,
@@ -382,7 +384,17 @@ useEffect(() => {
       setAnalysisError('');
       try {
         const analysis = await analisarVeiculo({ nome: adapted.name, marca: adapted.brand, ano: adapted.specs.year.value, dados: dto });
-        if (isCurrentRequest) setCar((curr) => (curr ? { ...curr, analysis } : curr));
+        if (isCurrentRequest) {
+          setCar((curr) => {
+            if (!curr) return curr;
+            const precisaDescricao = !curr.description || curr.description === DEFAULT_DESCRIPTION;
+            return {
+              ...curr,
+              analysis,
+              description: precisaDescricao && analysis.description ? analysis.description : curr.description,
+            };
+          });
+        }
       } catch (analysisErr) {
         if (isCurrentRequest) {
           console.error(analysisErr);

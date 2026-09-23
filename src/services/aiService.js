@@ -37,6 +37,7 @@ export async function analisarVeiculo(vehicle) {
   }
 
   return {
+    description: data.descricao || "",
     strengths: Array.isArray(data.pontosFortes) ? data.pontosFortes : [],
     weaknesses: Array.isArray(data.pontosFracos) ? data.pontosFracos : [],
     bestUse: data.melhorUso || "Não foi possível determinar o melhor uso.",
