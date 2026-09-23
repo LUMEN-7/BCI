@@ -12,15 +12,25 @@ import { getImportedVehicles, removeImportedVehicle, saveImportedVehicle } from 
 
 function extractList(source) {
   if (!source) return [];
-  if (Array.isArray(source)) {
-    return source.map((item) =>
-      typeof item === 'object'
-        ? item.nome || item.descricao || item.label || String(item)
-        : String(item)
-    );
+
+  if (typeof source === "string") {
+    return source.split(/[;\n,]/).map((s) => s.trim()).filter(Boolean);
   }
-  if (typeof source === 'string') return [source];
-  return [];
+
+  if (Array.isArray(source)) {
+    return source.flatMap((item) => {
+      if (typeof item === "string") return extractList(item);
+      const val = item?.valor ?? item?.Valor ?? item?.nome ?? item?.descricao ?? item?.label;
+      return extractList(val);
+    });
+  }
+
+  const fontes = source.fontes || source.Fontes;
+  if (Array.isArray(fontes) && fontes.length) {
+    return fontes.flatMap((f) => extractList(f?.valor ?? f?.Valor));
+  }
+
+  return extractList(source.valor ?? source.Valor);
 }
 
 function hasEmptySections(sections) {
