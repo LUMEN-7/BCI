@@ -388,7 +388,7 @@
 }
 .information-badges {
   display: grid;
-  grid-template-columns: 5.75rem 3rem 11rem;
+  grid-template-columns: 5.75rem 3rem 8.5rem;
   align-items: center;
   gap: 0.375rem;
   margin-left: auto;
@@ -409,6 +409,7 @@
   justify-content: center;
   text-align: center;
   font-size: 0.625rem;
+  padding: 0.1875rem 0.375rem;
 }
 .information-source .source-tag span {
   min-width: 0;

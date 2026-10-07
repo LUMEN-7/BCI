@@ -1,4 +1,4 @@
-import { extractConfidenceList as extractList } from '@/utils/confidence';
+import { extractConfidenceList as extractList, normalizeConfidence } from '@/utils/confidence';
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { direct } from "@/services/comprationService";
@@ -13,7 +13,15 @@ import {
 function adaptCarToComparison(dto) {
   if (!dto) return null;
 
-    const safeExtract = (obj, suffix = "") => {
+    const specsMetadata = {};
+    const safeExtract = (key, obj, suffix = "") => {
+    const rawSources = obj?.Fontes ?? obj?.fontes;
+    const source = Array.isArray(rawSources) ? rawSources[0] : rawSources;
+    specsMetadata[key] = {
+      confidence: normalizeConfidence(obj?.Confianca ?? obj?.confianca ?? obj?.confidence ?? source?.Confianca ?? source?.confianca),
+      source: source?.Fonte ?? source?.fonte ?? obj?.source ?? obj?.Fonte ?? obj?.fonte ?? null,
+      iaGen: Boolean(obj?.iaGen || obj?.isAiGenerated || source?.iaGen || source?.isAiGenerated),
+    };
     if (obj === null || obj === undefined) return "Não informado";
 
     // Já é primitivo — usa direto
@@ -59,34 +67,34 @@ function adaptCarToComparison(dto) {
     model: dto.modelo || specs.model || "Não informado",
     brand: dto.marca || specs.brand || "Não informado",
     year: dto.ano?.toString() || specs.year || "Não informado",
-    driveModes: safeExtract(dto.modos || specs.driveModes),
+    driveModes: safeExtract('driveModes', dto.modos || specs.driveModes),
 
-    engine: safeExtract(specs.engine || specs.motor),
-    power: safeExtract(specs.power || specs.potencia, " cv"),
-    torque: safeExtract(specs.torque, " kgfm"),
-    powerRpm: safeExtract(specs.powerRpm || specs.potenciaRpm, " rpm"),      // <- faltava
-    torqueRpm: safeExtract(specs.torqueRpm, " rpm"),                        // <- faltava
-    transmission: safeExtract(specs.transmission || specs.transmissao),
-    drivetrain: safeExtract(specs.drivetrain || specs.tracao),
-    type: safeExtract(dto.categoria || specs.type),
+    engine: safeExtract('engine', specs.engine || specs.motor),
+    power: safeExtract('power', specs.power || specs.potencia, " cv"),
+    torque: safeExtract('torque', specs.torque, " kgfm"),
+    powerRpm: safeExtract('powerRpm', specs.powerRpm || specs.potenciaRpm, " rpm"),      // <- faltava
+    torqueRpm: safeExtract('torqueRpm', specs.torqueRpm, " rpm"),                        // <- faltava
+    transmission: safeExtract('transmission', specs.transmission || specs.transmissao),
+    drivetrain: safeExtract('drivetrain', specs.drivetrain || specs.tracao),
+    type: safeExtract('type', dto.categoria || specs.type),
 
-    cityConsumption: safeExtract(consumos.cidade || specs.cityConsumption, " km/l"),
-    highwayConsumption: safeExtract(consumos.estrada || specs.highwayConsumption, " km/l"),
+    cityConsumption: safeExtract('cityConsumption', consumos.cidade || specs.cityConsumption, " km/l"),
+    highwayConsumption: safeExtract('highwayConsumption', consumos.estrada || specs.highwayConsumption, " km/l"),
 
-    length: safeExtract(dimensoes.comprimento || specs.length, " m"),
-    width: safeExtract(dimensoes.largura || specs.width, " m"),
-    height: safeExtract(dimensoes.altura || specs.height, " m"),
-    wheelbase: safeExtract(dimensoes.entreEixos || specs.wheelbase, " m"),
+    length: safeExtract('length', dimensoes.comprimento || specs.length, " m"),
+    width: safeExtract('width', dimensoes.largura || specs.width, " m"),
+    height: safeExtract('height', dimensoes.altura || specs.height, " m"),
+    wheelbase: safeExtract('wheelbase', dimensoes.entreEixos || specs.wheelbase, " m"),
 
-    tireType: safeExtract(pneus.tipo || specs.tireType),              // <- faltava
-    rim: safeExtract(pneus.aro || specs.rim, '"'),                    // <- faltava
-    tireWidth: safeExtract(pneus.largura || specs.tireWidth, " mm"),  // <- faltava
-    tireProfile: safeExtract(pneus.perfil || specs.tireProfile, "%"), // <- faltava
+    tireType: safeExtract('tireType', pneus.tipo || specs.tireType),              // <- faltava
+    rim: safeExtract('rim', pneus.aro || specs.rim, '"'),                    // <- faltava
+    tireWidth: safeExtract('tireWidth', pneus.largura || specs.tireWidth, " mm"),  // <- faltava
+    tireProfile: safeExtract('tireProfile', pneus.perfil || specs.tireProfile, "%"), // <- faltava
 
-    tankCapacity: safeExtract(extras.capacidadeTanque || specs.tankCapacity, " L"),
-    loadCapacity: safeExtract(extras.capacidadeCarga || specs.loadCapacity, " kg"),
-    towingCapacity: safeExtract(extras.capacidadeReboque || specs.towingCapacity, " kg"), // <- também faltava, existe no detail
-    fuelType: safeExtract(extras.tipoCombustivel || specs.fuelType),
+    tankCapacity: safeExtract('tankCapacity', extras.capacidadeTanque || specs.tankCapacity, " L"),
+    loadCapacity: safeExtract('loadCapacity', extras.capacidadeCarga || specs.loadCapacity, " kg"),
+    towingCapacity: safeExtract('towingCapacity', extras.capacidadeReboque || specs.towingCapacity, " kg"), // <- também faltava, existe no detail
+    fuelType: safeExtract('fuelType', extras.tipoCombustivel || specs.fuelType),
   },
 
     sections: {
@@ -96,6 +104,7 @@ function adaptCarToComparison(dto) {
       comfort: extractList(extras.comfort || extras.conforto),
     },
 
+    specsMetadata,
     sources: dto.fontes || dto.sources || [],
   };
 }
@@ -160,12 +169,13 @@ export default function useDetailController() {
           const next = [...curr];
           next[index] = {
             ...atual,
-            specs: { ...atual.specs, ...enriched.specs },
+            specs: { ...atual.specs, ...Object.fromEntries(Object.entries(enriched.specs || {}).filter(([key]) => missing.includes(key))) },
+            specsMetadata: { ...atual.specsMetadata, ...Object.fromEntries(Object.keys(enriched.specs || {}).filter((key) => missing.includes(key)).map((key) => [key, { confidence: 0, iaGen: true, source: null }])) },
             sections: {
-              performance: atual.sections.performance.length ? atual.sections.performance : enriched.sections.performance,
-              security: atual.sections.security.length ? atual.sections.security : enriched.sections.security,
-              technology: atual.sections.technology.length ? atual.sections.technology : enriched.sections.technology,
-              comfort: atual.sections.comfort.length ? atual.sections.comfort : enriched.sections.comfort,
+              performance: atual.sections.performance.length ? atual.sections.performance : extractList(enriched.sections?.performance).map((item) => ({ ...item, iaGen: true })),
+              security: atual.sections.security.length ? atual.sections.security : extractList(enriched.sections?.security).map((item) => ({ ...item, iaGen: true })),
+              technology: atual.sections.technology.length ? atual.sections.technology : extractList(enriched.sections?.technology).map((item) => ({ ...item, iaGen: true })),
+              comfort: atual.sections.comfort.length ? atual.sections.comfort : extractList(enriched.sections?.comfort).map((item) => ({ ...item, iaGen: true })),
             },
           };
           return next;

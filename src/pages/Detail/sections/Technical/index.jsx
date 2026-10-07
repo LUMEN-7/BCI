@@ -1,3 +1,4 @@
+import { getInformationStatus } from '@/utils/confidence';
 import {
   IoCheckmarkCircleOutline,
   IoChevronDown,
@@ -5,6 +6,9 @@ import {
   IoDocumentTextOutline,
   IoHardwareChipOutline,
   IoInformationCircleOutline,
+  IoShieldCheckmarkOutline,
+  IoShieldHalfOutline,
+  IoWarningOutline,
 } from "react-icons/io5";
 import { resourceSections, technicalSections } from "../../data";
 import "./style.css";
@@ -23,7 +27,9 @@ function LegendItem({ type, label, description }) {
       <span className="legend-badge">
         {type === "verified" && <IoCheckmarkCircleOutline />}
         {type === "ia" && <IoHardwareChipOutline />}
-        {!['verified', 'ia'].includes(type) && <span className="legend-dot" />}
+        {type === 'high' && <IoShieldCheckmarkOutline />}
+        {type === 'medium' && <IoShieldHalfOutline />}
+        {type === 'low' && <IoWarningOutline />}
         <span className="legend-label">{label}</span>
       </span>
       <span className="legend-description">{description}</span>
@@ -51,7 +57,23 @@ function SourcesPanel() {
   );
 }
 
-function Accordion({ title, open, onClick, verified, children }) {
+function InformationBadges({ item }) {
+  const status = getInformationStatus(item);
+  if (status.missing) return null;
+  const level = status.confidence >= 80 ? 'high' : status.confidence >= 60 ? 'medium' : 'low';
+  return (
+    <div className="detail-information-badges">
+      <div className="detail-status">
+        {status.iaGen ? <span className="detail-badge ai"><IoHardwareChipOutline />IA</span>
+          : status.verified && <span className="detail-badge verified"><IoCheckmarkCircleOutline />Verificado</span>}
+      </div>
+      <div>{status.confidence < 100 && <span className={`detail-badge confidence ${level}`} title="Confiança da informação">{status.confidence}%</span>}</div>
+      <div>{item.source && <span className="detail-badge source" title={String(item.source)}>{String(item.source)}</span>}</div>
+    </div>
+  );
+}
+
+function Accordion({ title, open, onClick, children }) {
   return (
     <div className={`accordion ${open ? "is-open" : ""}`}>
       <button
@@ -61,12 +83,6 @@ function Accordion({ title, open, onClick, verified, children }) {
         aria-expanded={open}
       >
         <span className="accordion-title">{title}</span>
-        {verified && (
-          <span className="verified-badge">
-            <IoCheckmarkCircleOutline />
-            Verificado
-          </span>
-        )}
         <span className="accordion-arrow">
           {open ? <IoChevronUp /> : <IoChevronDown />}
         </span>
@@ -80,7 +96,6 @@ function TechnicalAccordion({ section, cars, open, onClick }) {
   return (
     <Accordion
       title={section.title}
-      verified={section.verified}
       open={open}
       onClick={onClick}
     >
@@ -91,9 +106,11 @@ function TechnicalAccordion({ section, cars, open, onClick }) {
             {cars.map((car) => (
               <div className="technical-car-value" key={car.id}>
                 <span>{car.name}</span>
-                <strong>
+                <div className="detail-information-line"><strong>
                   {car.specs?.[key] || car[key] || "Não informado"}
                 </strong>
+                {section.id !== 'base' && <InformationBadges item={{ ...car.specsMetadata?.[key], value: car.specs?.[key] || car[key] }} />}
+                </div>
               </div>
             ))}
           </div>
@@ -111,9 +128,10 @@ function FeatureCard({ car, items }) {
         <strong>{car.name}</strong>
       </div>
       <ul>
-        {items.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
+        {items.map((item, index) => {
+          const information = typeof item === 'object' && item !== null ? item : { value: item };
+          return <li key={`${information.value}-${index}`}><span>{information.value}</span><InformationBadges item={information} /></li>;
+        })}
       </ul>
     </div>
   );
@@ -123,7 +141,6 @@ function ResourceAccordion({ section, cars, open, onClick }) {
   return (
     <Accordion
       title={section.title}
-      verified={section.verified}
       open={open}
       onClick={onClick}
     >
