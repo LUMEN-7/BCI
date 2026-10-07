@@ -1,3 +1,4 @@
+import { extractConfidenceList as extractList } from '@/utils/confidence';
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { direct } from "@/services/comprationService";
@@ -8,42 +9,7 @@ import {
   buscarFeaturesECompletarVeiculo,
 } from "@/services/aiService";
 
-function extractList(source) {
-  if (!source) return [];
 
-  if (typeof source === "string") {
-    return source
-      .split(/[;\n,]/)
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .map((value) => ({ value, source: null, confidence: 0 }));
-  }
-
-  if (Array.isArray(source)) {
-    return source.flatMap((item) => extractList(item));
-  }
-
-  const fontes = source.fontes || source.Fontes || [];
-  const confEnvelope = Math.round((source.confianca ?? source.Confianca ?? 0) * 100);
-
-  if (fontes.length) {
-    return fontes.flatMap((f) => {
-      const val = f?.valor ?? f?.Valor;
-      const items = typeof val === "string"
-        ? val.split(/[;\n,]/).map((s) => s.trim()).filter(Boolean)
-        : extractList(val).map((x) => x.value ?? x);
-      const confItem = Math.round((f.confianca ?? f.Confianca ?? source.confianca ?? source.Confianca ?? 0) * 100);
-      const fonte = f.fonte ?? f.Fonte ?? null;
-      return items.map((value) => ({
-        value,
-        source: fonte,
-        confidence: confItem || confEnvelope,
-      }));
-    });
-  }
-
-  return extractList(source.valor ?? source.Valor);
-}
 function adaptCarToComparison(dto) {
   if (!dto) return null;
 

@@ -386,12 +386,43 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.accordion-badges {
-  display: flex;
+.information-badges {
+  display: grid;
+  grid-template-columns: 5.75rem 3rem 11rem;
   align-items: center;
-  flex-wrap: wrap;
   gap: 0.375rem;
   margin-left: auto;
+  min-width: 0;
+  flex-shrink: 0;
+}
+.information-status,
+.information-confidence,
+.information-source { min-width: 0; display: flex; align-items: center; }
+.information-confidence .confidence-badge {
+  width: 100%;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+.information-source .source-tag {
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.625rem;
+}
+.information-source .source-tag span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.information-source .source-tag svg { flex-shrink: 0; }
+.technical-row { flex-wrap: wrap; }
+.technical-value { flex: 1; flex-wrap: wrap; }
+.information-badges .source-tag {
+  position: static;
+  transform: none;
+  overflow-wrap: anywhere;
 }
 .verified-badge {
   background: rgba(34, 197, 94, 0.08);
@@ -578,6 +609,11 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 0.75rem;
+  }
+  .information-badges {
+    width: 100%;
+    grid-template-columns: 5rem 2.75rem minmax(0, 1fr);
+    margin-left: 0;
   }
   .technical-value {
     width: 100%;

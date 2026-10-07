@@ -1,3 +1,4 @@
+import { getInformationStatus } from '@/utils/confidence';
 import {
   IoCheckmarkCircleOutline,
   IoChevronDown,
@@ -8,6 +9,9 @@ import {
   IoLinkOutline,
   IoOpenOutline,
   IoTimeOutline,
+  IoShieldCheckmarkOutline,
+  IoShieldHalfOutline,
+  IoWarningOutline,
 } from "react-icons/io5";
 
 import { sources } from "../../data";
@@ -148,7 +152,9 @@ function LegendItem({ type, label, description }) {
       <span className="legend-badge">
         {type === "verified" && <IoCheckmarkCircleOutline />}
         {type === "ia" && <IoHardwareChipOutline />}
-        {!["verified", "ia"].includes(type) && <span className="legend-dot" />}
+        {type === "high" && <IoShieldCheckmarkOutline />}
+        {type === "medium" && <IoShieldHalfOutline />}
+        {type === "low" && <IoWarningOutline />}
         <span className="legend-label">{label}</span>
       </span>
       <span className="legend-description">{description}</span>
@@ -195,9 +201,7 @@ function ConfidenceBadge({ confidence }) {
         ? "Média confiança"
         : "Baixa confiança";
   return (
-    <span className={`confidence-badge ${type}`}>
-      <span className="confidence-dot" />
-      <span>{label}</span>
+    <span className={`confidence-badge ${type}`} title={`${label}: ${confidence}%`} aria-label={`${label}: ${confidence}%`}>
       <strong>{confidence}%</strong>
     </span>
   );
@@ -208,32 +212,13 @@ function Accordion({
   items,
   open,
   onClick,
-  verified,
-  iaGen,
-  confidence,
   car,
+  showBadges = true,
 }) {
   return (
     <div className={`accordion ${open ? "is-open" : ""}`}>
-      <button type="button" className="accordion-trigger" onClick={onClick}>
+      <button type="button" className="accordion-trigger" onClick={onClick} aria-expanded={open}>
         <span className="accordion-title">{title}</span>
-        <span className="accordion-badges">
-          {verified && (
-            <span className="verified-badge">
-              <IoCheckmarkCircleOutline />
-              <span>Verificado</span>
-            </span>
-          )}
-          {iaGen && (
-            <span className="iaGen-badge">
-              <IoHardwareChipOutline />
-              <span>IA</span>
-            </span>
-          )}
-          {confidence !== undefined && !verified && !car?.isImported && (
-            <ConfidenceBadge confidence={confidence} />
-          )}
-        </span>
         <span className="accordion-arrow">
           {open ? <IoChevronUp /> : <IoChevronDown />}
         </span>
@@ -243,10 +228,8 @@ function Accordion({
         <div className="accordion-content">
           <div className="technical-list">
             {items?.map((item, index) => {
-              const isUninformed =
-                !item.value ||
-                item.value === "Não informado" ||
-                item.value === "N/A";
+              const status = getInformationStatus(item);
+              const isUninformed = status.missing;
 
               return (
                 <div
@@ -262,18 +245,27 @@ function Accordion({
                     )}
                   </div>
 
-                  {/* Exibe o selo de IA se a especificação estiver como não informada */}
-                  {isUninformed ? (
-                    <span
-                      className="source-tag source-tag-ia"
-                      title="Dado gerado ou estimado por IA"
-                    >
-                      <IoHardwareChipOutline />
-                      <span>IA</span>
-                    </span>
-                  ) : (
-                    !car?.isImported && item.source && <SourceTag sourceId={item.source} car={car} />
-                  )}
+                  <div className="information-badges">
+                    {showBadges && !isUninformed && (
+                      <>
+                        <div className="information-status">{status.iaGen ? (
+                          <span className="iaGen-badge" title="Dado gerado ou estimado por IA">
+                            <IoHardwareChipOutline /><span>IA</span>
+                          </span>
+                        ) : status.verified && (
+                          <span className="verified-badge">
+                            <IoCheckmarkCircleOutline /><span>Verificado</span>
+                          </span>
+                        )}</div>
+                        <div className="information-confidence">
+                          {status.confidence < 100 && <ConfidenceBadge confidence={status.confidence} />}
+                        </div>
+                        <div className="information-source">
+                          {!car?.isImported && item.source && <SourceTag sourceId={item.source} car={car} />}
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -540,6 +532,7 @@ export default function Technical({
           <Accordion
             key={key}
             {...group}
+            showBadges={key !== "base"}
             car={car}
             open={openSection === key}
             onClick={() => onToggleSection(key)}
