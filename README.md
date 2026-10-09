@@ -1,179 +1,211 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/LUMEN-7/images/refs/heads/main/logo.png" width="200" />
+  <img src="https://raw.githubusercontent.com/LUMEN-7/images/main/logo.png" alt="Lumen" width="160" />
 </p>
 
-<h1 align="center">BCI - Beyond Compare Intelligence</h1>
+<h1 align="center">BCI · Beyond Compare Intelligence</h1>
 
 <p align="center">
-  <b>Inteligência competitiva para transformar dados de veículos em decisões estratégicas.</b>
-</p>
-
-<p align="center">
-  Plataforma interna desenvolvida para apoiar profissionais de marketing na pesquisa,
-  análise e comparação de veículos concorrentes e futuros lançamentos.
-</p>
-
----
-
-![Status](https://img.shields.io/badge/STATUS-EM%20DESENVOLVIMENTO-0562D2?style=for-the-badge&labelColor=00142E)
-![Version](https://img.shields.io/badge/VERSION-1.0.0-0562D2?style=for-the-badge&labelColor=00142E)
-![React](https://img.shields.io/badge/REACT-61DAFB?style=for-the-badge&logo=react&logoColor=61DAFB&labelColor=00142E)
-![Vite](https://img.shields.io/badge/VITE-646CFF?style=for-the-badge&logo=vite&logoColor=646CFF&labelColor=00142E)
-![Node.js](https://img.shields.io/badge/NODE.JS-339933?style=for-the-badge&logo=node.js&logoColor=339933&labelColor=00142E)
-
----
-
-## 📌 Sobre o projeto
-
-O **BCI (Beyond Compare Intelligence)** é uma plataforma de Business Competitive Intelligence desenvolvida para a análise estratégica do mercado automotivo.
-
-A ferramenta centraliza informações sobre veículos concorrentes, modelos atuais e veículos ainda não lançados, permitindo que profissionais de marketing encontrem, organizem e comparem informações de forma mais rápida e confiável.
-
-O BCI combina **pesquisa automatizada, curadoria de fontes e inteligência artificial** para transformar informações dispersas em análises que podem apoiar decisões estratégicas.
-
-> **Compare. Entenda. Antecipe.**
-
----
-
-## 🎯 Problema
-
-Profissionais de marketing precisam acompanhar constantemente os movimentos dos concorrentes.
-
-Porém, pesquisar informações sobre diferentes veículos, conferir fontes, acompanhar lançamentos e comparar especificações pode consumir tempo que deveria estar sendo utilizado para atividades estratégicas.
-
-Além disso, informações sobre veículos futuros podem ser incompletas, especulativas ou contraditórias.
-
-O BCI foi desenvolvido para centralizar esse processo em um único ambiente.
-
----
-
-## 💡 Solução
-
-O BCI permite:
-
-- Pesquisar veículos e marcas
-- Consultar informações de modelos atuais e futuros
-- Comparar diferentes veículos
-- Identificar informações verificadas e especulativas
-- Visualizar níveis de confiança dos dados
-- Utilizar inteligência artificial para análise
-- Salvar veículos e comparações
-- Criar anotações para uso da equipe
-- Acompanhar atualizações relevantes
-- Visualizar insights sobre o mercado
-
-A plataforma também diferencia informações encontradas em fontes confiáveis de informações que precisam ser tratadas como previsão ou especulação.
-
----
-
-## 📸 Preview
-
-<p align="center">
-  <img src="./assets/home.png" width="850"/>
+  <strong>Conheça a concorrência. Transforme informação em inteligência competitiva.</strong>
 </p>
 
 <p align="center">
-  <i>Dashboard principal do BCI</i>
+  Plataforma de pesquisa, comparação e análise estratégica de veículos desenvolvida para apoiar equipes de marketing automotivo.
+</p>
+
+<p align="center">
+  <a href="https://beyond-compare.vercel.app/">Acessar aplicação</a> ·
+  <a href="#funcionalidades">Funcionalidades</a> ·
+  <a href="#arquitetura-e-tecnologias">Tecnologias</a> ·
+  <a href="#executando-localmente">Instalação</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/STATUS-EM%20DESENVOLVIMENTO-0562D2?style=for-the-badge&labelColor=00142E" alt="Em desenvolvimento" />
+  <img src="https://img.shields.io/badge/PLATAFORMA-WEB-0562D2?style=for-the-badge&labelColor=00142E" alt="Web" />
+  <img src="https://img.shields.io/badge/REACT-19-61DAFB?style=for-the-badge&logo=react&logoColor=61DAFB&labelColor=00142E" alt="React 19" />
+  <img src="https://img.shields.io/badge/VITE-8-646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=00142E" alt="Vite 8" />
 </p>
 
 ---
 
-## ✨ Funcionalidades
+## Visão geral
 
-### 🔍 Pesquisa de veículos
+O **Beyond Compare Intelligence (BCI)** é uma solução de inteligência competitiva voltada à pesquisa e à análise do setor automotivo. Seu objetivo é reduzir a fragmentação de informações sobre veículos concorrentes — incluindo modelos em circulação e futuros lançamentos — e transformar dados técnicos, referências e tendências em conteúdo útil para decisões de marketing.
 
-Pesquisa de modelos e informações relevantes do mercado automotivo.
+Em um único ambiente, a equipe pode **pesquisar modelos, confrontar especificações, avaliar evidências, consultar análises apoiadas por IA e organizar o conhecimento produzido**.
 
-A plataforma organiza os dados encontrados para facilitar a consulta e a análise.
+> **Mais do que reunir dados, o BCI busca oferecer contexto, rastreabilidade e clareza para decisões estratégicas.**
 
----
+### O desafio
 
-### ⚖️ Comparação
+Informações automotivas estão distribuídas entre sites de fabricantes, notícias, fichas técnicas e outros materiais. A pesquisa manual exige tempo para localizar fontes, verificar divergências e estruturar comparativos — especialmente quando envolve veículos ainda não lançados, sujeitos a mudanças e especulações.
 
-Permite selecionar diferentes veículos e visualizar suas características lado a lado.
+### A proposta
 
-A comparação pode considerar diferentes aspectos dos modelos, facilitando a identificação de diferenças e similaridades.
+O BCI organiza esse fluxo em uma experiência centralizada, combinando **pesquisa estruturada, comparação, gestão de conteúdo, indicadores de confiabilidade e interpretação assistida por inteligência artificial**. A análise automatizada complementa, mas não substitui, a validação das fontes.
 
----
+## Funcionalidades
 
-### 🤖 Análise com IA
+| Módulo | O que oferece |
+| :--- | :--- |
+| **Pesquisa de veículos** | Busca, consulta de modelos e exploração de informações relevantes do mercado automotivo. |
+| **Ficha do veículo** | Visualização de dados técnicos, versões e contexto de cada modelo. |
+| **Comparação** | Análise lado a lado de veículos para identificar diferenças, semelhanças e posicionamento competitivo. |
+| **Análise com IA** | Síntese interpretativa com pontos fortes, pontos de atenção e panorama geral dos veículos pesquisados. |
+| **Fontes e confiabilidade** | Contextualização de evidências e distinção entre dados confirmados e informações estimadas ou especulativas. |
+| **Modelos e comparações salvos** | Acesso rápido a consultas importantes para o trabalho recorrente. |
+| **Notas e workspace** | Registro e organização de observações associadas ao processo de pesquisa. |
+| **Importação e exportação** | Entrada de informações de veículos e saída de dados para análises e relatórios. |
+| **Alertas e atividade** | Acompanhamento de notificações e histórico de utilização. |
+| **Insights** | Visualização de indicadores e informações consolidadas para apoiar a leitura do mercado. |
+| **Conta e perfil** | Autenticação com Firebase, acesso com Google e gerenciamento de informações do usuário. |
 
-A inteligência artificial auxilia na interpretação dos dados dos veículos.
+### Diferencial: informação com contexto
 
-A análise considera as informações disponíveis para gerar:
+A plataforma foi pensada para não tratar todos os dados como igualmente certos. **Especificações confirmadas, estimativas e rumores exigem interpretações distintas.** Ao consultar modelos futuros, considere que informações preliminares podem ser revistas antes do lançamento oficial.
 
-- Pontos fortes
-- Pontos fracos
-- Análise geral
-- Interpretação dos dados
-- Nível de confiança
+### Análise assistida por IA
 
-A IA funciona como uma camada de análise sobre os dados coletados, e não como substituição das fontes utilizadas pela plataforma.
+O serviço de IA utiliza a **API DeepSeek** para apoiar a interpretação estruturada dos dados disponíveis. Os resultados podem ajudar a compreender diferenciais competitivos e pontos de atenção, mas devem ser conferidos antes de qualquer utilização em campanhas ou decisões de negócio.
 
----
+## Fluxo da solução
 
-### 🛡️ Confiabilidade das informações
+```mermaid
+flowchart LR
+    A["Pesquisa de veículos"] --> B["Dados e fontes"]
+    B --> C["Organização e verificação"]
+    C --> D["Fichas e comparações"]
+    C --> E["Análise assistida por IA"]
+    D --> F["Insights e anotações"]
+    E --> F
+    F --> G["Apoio à decisão"]
+```
 
-O BCI diferencia informações de acordo com sua confiabilidade.
+## Arquitetura e tecnologias
 
-Dados encontrados em fontes verificáveis são apresentados de forma diferente de informações que representam previsões ou possibilidades sobre veículos ainda não lançados.
+O projeto utiliza uma arquitetura web com interface React, consumo de API externa e serviço Express para funcionalidades de inteligência artificial.
 
-Isso permite que o usuário saiba **o que é informação confirmada e o que deve ser interpretado como previsão**.
+```mermaid
+flowchart TD
+    U["Usuário"] --> W["BCI Web · React + Vite"]
+    W --> F["Firebase Authentication"]
+    W --> A["API BCI · serviços de veículos e usuários"]
+    W --> S["Serviço de IA · Node.js + Express"]
+    S --> D["DeepSeek API"]
+```
 
----
+| Camada | Tecnologias |
+| :--- | :--- |
+| **Interface** | React 19, JavaScript, HTML, CSS |
+| **Build e desenvolvimento** | Vite 8 |
+| **Navegação** | React Router 7 |
+| **Visualização de dados** | Recharts |
+| **Animações e ícones** | Framer Motion, Lucide React, React Icons |
+| **Autenticação** | Firebase Authentication |
+| **Serviço de IA** | Node.js, Express 5, DeepSeek API |
+| **Implantação web** | Vercel |
+| **API consumida pelo front-end** | Serviço HTTP hospedado no Render |
 
-### 📊 Insights
-
-Área dedicada à análise competitiva do mercado.
-
-Permite visualizar informações relevantes sobre marcas, modelos e movimentações do mercado automotivo.
-
----
-
-### ❤️ Modelos salvos
-
-Usuários podem salvar veículos para facilitar consultas futuras.
-
----
-
-### 📝 BCI Notas
-
-Sistema de anotações integrado à plataforma.
-
-Permite registrar observações durante pesquisas e análises, além de relacionar informações com veículos específicos.
-
----
-
-### 🔔 Alertas
-
-Sistema de notificações para acompanhar atualizações relacionadas aos modelos monitorados.
-
----
-
-### 👤 Autenticação
-
-Sistema de autenticação de usuários integrado ao Firebase, incluindo acesso com conta Google.
-
----
-
-## 🧠 Como funciona
+### Organização do repositório
 
 ```text
-        PESQUISA
-           │
-           ▼
-   Fontes e informações
-           │
-           ▼
-     Curadoria dos dados
-           │
-           ▼
-      Análise com IA
-           │
-           ▼
- ┌───────────────────────┐
- │ Comparação e Insights  │
- └───────────────────────┘
-           │
-           ▼
-   Decisão estratégica
+BCI/
+├── public/                 # Recursos públicos
+├── src/
+│   ├── components/         # Componentes reutilizáveis
+│   ├── config/             # Configurações, incluindo Firebase
+│   ├── pages/              # Telas e módulos da aplicação
+│   ├── routes/             # Rotas de navegação
+│   ├── services/           # Integração com APIs
+│   └── App.jsx             # Componente principal
+├── server/
+│   └── server.js           # Serviço Express para IA
+├── package.json
+├── vite.config.js
+└── README.md
+```
+
+## Executando localmente
+
+### Pré-requisitos
+
+- **Node.js** compatível com Vite 8 (recomenda-se Node.js 22.12+).
+- **npm**.
+- Acesso aos serviços externos necessários para as operações de pesquisa e análise.
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/LUMEN-7/BCI.git
+cd BCI
+```
+
+### 2. Instale as dependências
+
+```bash
+npm install
+```
+
+### 3. Inicie a aplicação web
+
+```bash
+npm run dev
+```
+
+Abra o endereço local informado pelo Vite no terminal (normalmente `http://localhost:5173`).
+
+### 4. Execute o serviço de IA (quando necessário)
+
+Configure a chave da DeepSeek em um arquivo `.env` na raiz do projeto:
+
+```dotenv
+DEEPSEEK_API_KEY=sua_chave_aqui
+PORT=3001
+```
+
+Em outro terminal:
+
+```bash
+npm run start:ai
+```
+
+O serviço utiliza a porta **3001** por padrão. **Nunca publique arquivos `.env` ou chaves privadas no repositório.** A execução local do front-end não substitui a disponibilidade da API remota, atualmente referenciada em `src/services/api.js`. Dependendo da configuração do ambiente, pode ser necessário ajustar as URLs e a política de CORS dos serviços.
+
+### Comandos disponíveis
+
+| Comando | Finalidade |
+| :--- | :--- |
+| `npm run dev` | Inicia o servidor de desenvolvimento Vite. |
+| `npm run build` | Gera o build de produção. |
+| `npm run preview` | Visualiza localmente o build. |
+| `npm run lint` | Executa o ESLint. |
+| `npm run start:ai` | Inicia o serviço Express de IA. |
+
+## Qualidade e cuidados com os dados
+
+- **Rastreabilidade:** sempre verificar as fontes ao utilizar informações em materiais externos.
+- **Dados preliminares:** tratar especificações de futuros lançamentos como passíveis de alteração.
+- **IA responsável:** revisar saídas automáticas, que podem conter omissões ou interpretações incorretas.
+- **Credenciais:** manter tokens, segredos e chaves da API fora do código-fonte e do controle de versão.
+- **Acesso:** funcionalidades dependem da autenticação e das permissões fornecidas pelos serviços integrados.
+
+## Aplicação e ecossistema
+
+- **Web:** [BCI — Beyond Compare Intelligence](https://beyond-compare.vercel.app/)
+- **Repositório web:** [LUMEN-7/BCI](https://github.com/LUMEN-7/BCI)
+- **Versão mobile:** [LUMEN-7/BCI-Native](https://github.com/LUMEN-7/BCI-Native)
+
+A versão mobile é mantida em um repositório separado. Este README documenta especificamente a **aplicação web**.
+
+## Desenvolvimento
+
+Projeto desenvolvido pela **[LUMEN](https://github.com/LUMEN-7)** como proposta de apoio à inteligência competitiva aplicada ao setor automotivo, no contexto do desafio Ford.
+
+Este repositório tem finalidade de desenvolvimento e demonstração da solução. As marcas citadas pertencem aos seus respectivos titulares.
+
+---
+
+<p align="center">
+  <strong>BCI · Beyond Compare Intelligence</strong><br />
+  <sub>Conheça a concorrência. Vá além da comparação.</sub>
+</p>
